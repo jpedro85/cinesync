@@ -38,6 +38,19 @@ namespace CineSync.Controllers.Movie
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetMovieById([FromQuery] string id)
+        {
+            try
+            {
+                string endpoint = $"movie/{id}";
+                return await ProcessRequestAsync(endpoint);
+            }
+            catch (Exception ex){
+                // NOTE: Needs Logger
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
 
         [HttpGet("search")]
         public async Task<IActionResult> GetQueryResults([FromQuery] MovieSearchParameters parameters)
