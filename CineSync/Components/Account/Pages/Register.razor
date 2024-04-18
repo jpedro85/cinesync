@@ -18,10 +18,11 @@
 <PageTitle>Register</PageTitle>
 
 <h1>Register</h1>
-<div class="page">
+<di class="page">
     <div class="main-content">
-    <div class="form-container">
-      <div class="row">
+    
+     <div class="form-container">
+
         <div class="col-md-4">
         <StatusMessage Message="@Message" />
         <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
@@ -47,10 +48,10 @@
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
-</div>
-</div>
-</div>
-</div>
+    </div>
+    </div>
+
+
 
 @code {
     private IEnumerable<IdentityError>? identityErrors;
