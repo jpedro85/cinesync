@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineSync", "CineSync\CineSync.csproj", "{1835C061-A4BC-4B56-A712-2D54A75B9C2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineSync.Client", "CineSync.Client\CineSync.Client.csproj", "{95368EC0-7728-47BF-8DB6-20538F400C5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1835C061-A4BC-4B56-A712-2D54A75B9C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1835C061-A4BC-4B56-A712-2D54A75B9C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1835C061-A4BC-4B56-A712-2D54A75B9C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1835C061-A4BC-4B56-A712-2D54A75B9C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95368EC0-7728-47BF-8DB6-20538F400C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95368EC0-7728-47BF-8DB6-20538F400C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95368EC0-7728-47BF-8DB6-20538F400C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95368EC0-7728-47BF-8DB6-20538F400C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9FEB805E-AC39-4AB9-89DE-3EFD7B03DA05}
+	EndGlobalSection
+EndGlobal
