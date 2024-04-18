@@ -1,5 +1,7 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding:0;
+    margin:0;
 }
 
 a, .btn-link {
@@ -11,6 +13,10 @@ a, .btn-link {
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
+    .btn-primary:hover {
+        background-color: #007bff; /* Blue background on hover */
+        color: #ffffff; /* Text color white on hover */
+    }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -48,4 +54,20 @@ h1:focus {
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
+}
+
+
+.form-container {
+    background-color: rgba(255, 255, 255, 0.9); /* White background with 90% opacity */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    max-width: 400px;
+    width: 100%;
+}
+footer {
+    background-color: #007bff; /* Blue footer background */
+    color: white; /* Text color white */
+    padding: 20px 0; /* Padding top and bottom */
+    text-align: center; /* Center align text */
 }
