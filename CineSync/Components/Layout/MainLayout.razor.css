@@ -2,11 +2,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-image: url("images.jpg");
+    background-image: url("images.png");
     background-repeat: no-repeat;
     background-size: cover;
-    width: 100%;
-    height:100%;
 }
 
 main {
@@ -18,10 +16,8 @@ main {
 }
 
 .top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
-    height: 3.5rem;
+    background: linear-gradient(to bottom, rgba(0, 1, 5, 10), transparent); /* Black fading background */
+    height: 5rem; /* Adjust height as needed */
     display: flex;
     align-items: center;
 }
@@ -30,16 +26,27 @@ main {
         white-space: nowrap;
         margin-left: 1.5rem;
         text-decoration: none;
+        color: white;
     }
 
-    .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
-        text-decoration: underline;
+        .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .top-row ::deep a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    .top-row a:last-child {
+        margin-right: 1.5rem; /* Adjust margin as needed */
     }
 
-    .top-row ::deep a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+        .top-row a:last-child:hover {
+            text-decoration: none; /* Remove underline on last link hover */
+        }
+
+
 
 @media (max-width: 640.98px) {
     .top-row {
@@ -99,3 +106,11 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+.form-container {
+    background-color: rgba(255, 255, 255, 0.9); /* White background with 90% opacity */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    max-width: 400px;
+    width: 100%;
+}
