@@ -2,6 +2,8 @@ using CineSync.Client.Pages;
 using CineSync.Components;
 using CineSync.Components.Account;
 using CineSync.Data;
+using CineSync.Controllers;
+using CineSync.Controllers.Movie;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,9 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddControllers();
+builder.Services.AddHttpClient<ApiService>();
+builder.Services.AddScoped<MovieService>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -48,14 +53,22 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
