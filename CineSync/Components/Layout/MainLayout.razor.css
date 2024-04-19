@@ -106,11 +106,4 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
-.form-container {
-    background-color: rgba(255, 255, 255, 0.9); /* White background with 90% opacity */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
-    max-width: 400px;
-    width: 100%;
-}
+

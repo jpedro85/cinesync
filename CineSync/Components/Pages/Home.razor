@@ -7,11 +7,14 @@
             <button class="menu-button" @onclick="ToggleMenu">&#9776;</button>
             <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
             <h1 class="navbar-title">CineSync</h1>
+            <NavLink href="/Account/Login">
+            <button class="login-button">Login</button>
+            </NavLink>
         </div>
     </div>
     <div class="main-content">
-        <div class="logo-container">
-             <img src="logo.png" alt="CineSync Logo">
+        <div class="logo-container-main">
+            <img src="logo.png" alt="CineSync Main Logo">
         </div>
         <div class="search-container">
             <input type="text" placeholder="Search..." class="search-input">
@@ -27,5 +30,9 @@
     public void ToggleMenu()
     {
         // Add logic to toggle the menu
+    }
+    public void GoToLoginPage()
+    {
+        NavigationManager.NavigateTo("/Account/Login");
     }
 }

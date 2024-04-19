@@ -18,6 +18,10 @@
             <button class="menu-button">&#9776;</button>
             <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
             <h1 class="navbar-title">CineSync</h1>
+
+            <NavLink href="/Account/Register">
+                <button class="login-button">Register</button>
+            </NavLink>
         </div>
     </div>
  <div class="main-content">
@@ -131,5 +135,9 @@
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+    }
+    public void GoToLoginPage()
+    {
+        NavigationManager.NavigateTo("/Account/Login");
     }
 }

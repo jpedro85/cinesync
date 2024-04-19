@@ -17,17 +17,18 @@
 
 <PageTitle>Register</PageTitle>
 <div class="page">
-    <div class="main-content">
-        <div class="navbar">
-            <div class="navbar-content">
-                <button class="menu-button">&#9776;</button>
-                <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
-                <h1 class="navbar-title">CineSync</h1>
-            </div>
+    <div class="navbar">
+        <div class="navbar-content">
+            <button class="menu-button">&#9776;</button>
+            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+            <h1 class="navbar-title">CineSync</h1>
+            <NavLink href="/Account/Login">
+                <button class="login-button">Login</button>
+            </NavLink>
         </div>
+    </div>
+    <div class="main-content">
      <div class="form-container">
-
-        <div class="col-md-4">
         <StatusMessage Message="@Message" />
         <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
             <DataAnnotationsValidator />
@@ -51,7 +52,7 @@
             </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
-    </div>
+    
    </div>
   </div>
     <footer>&copy; Copyright 2024 Engenharia de Software</footer>
