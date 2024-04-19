@@ -21,7 +21,7 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<ApiService>();
-builder.Services.AddScoped<MovieService>();
+builder.Services.AddScoped<MovieController>();
 
 builder.Services.AddAuthentication(options =>
     {

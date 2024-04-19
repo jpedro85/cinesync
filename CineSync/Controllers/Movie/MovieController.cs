@@ -6,11 +6,11 @@ namespace CineSync.Controllers.Movie
     // TODO: Add the functionality to search first on our DB
     [Route("movie")]
     [ApiController]
-    public class MovieService : ControllerBase
+    public class MovieController : ControllerBase
     {
         private readonly ApiService _apiService;
 
-        public MovieService(ApiService apiService)
+        public MovieController(ApiService apiService)
         {
             _apiService = apiService;
         }
