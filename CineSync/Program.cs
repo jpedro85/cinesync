@@ -2,13 +2,16 @@ using CineSync.Client.Pages;
 using CineSync.Components;
 using CineSync.Components.Account;
 using CineSync.Data;
+using CineSync.Middleware;
 using CineSync.Controllers;
 using CineSync.Controllers.Movie;
+using CineSync.Utils.Logger;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+string formattedDate = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -22,6 +25,18 @@ builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAu
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<ApiService>();
 builder.Services.AddScoped<MovieController>();
+builder.Services.AddSingleton<ILoggerStrategy>(provider =>
+        new LoggerBuilder()
+            .UseConsoleLogging()
+            .AddTimeStamp()
+            .AddType()
+            .UseDebugLogging()
+            .AddTimeStamp()
+            .UseTraceDebugging()
+            .UseFileLogging($"./Logs/log_{formattedDate}.txt")
+            .AddTimeStamp()
+            .AddType()
+            .Build());
 
 builder.Services.AddAuthentication(options =>
     {
@@ -44,6 +59,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -59,6 +75,8 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseMiddleware<ErrorLoggingMiddleware>();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -68,7 +86,6 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
