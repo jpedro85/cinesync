@@ -4,13 +4,28 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using CineSync.Data
+@using CineSync.Components.Pages
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+
 <PageTitle>Log in</PageTitle>
 <div class="page">
+    <div class="navbar">
+        <div class="navbar-content">
+            <button class="menu-button">&#9776;</button>
+            <NavLink href="">
+                <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+                <h1 class="navbar-title">CineSync</h1>
+            </NavLink>
+
+            <NavLink href="/Account/Register">
+                <button class="login-button">Register</button>
+            </NavLink>
+        </div>
+    </div>
  <div class="main-content">
    <div class="form-container">
     <h1 class="text-center">Log in</h1>
@@ -39,8 +54,8 @@
                             Remember me
                         </label>
                     </div>
-                    <div>
-                        <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <div class="login-container">
+                                <button type="submit" class="login">Log in</button>
                     </div>
                     <div>
                         <p>
@@ -59,9 +74,8 @@
       </div>
     </div>
    </div>
+        <footer>&copy; Copyright 2024 Engenharia de Software</footer>
 </div>
-
-<footer>&copy; Copyright 2024 Engenharia de Software</footer>
 
 @code {
     private string? errorMessage;
@@ -123,5 +137,9 @@
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+    }
+    public void GoToLoginPage()
+    {
+        NavigationManager.NavigateTo("/Account/Login");
     }
 }
