@@ -1,3 +1,5 @@
+using CineSync.Utils.Logger.Enums;
+
 namespace CineSync.Utils.Logger
 {
     public class CompositeLogger : ILoggerStrategy
@@ -9,11 +11,11 @@ namespace CineSync.Utils.Logger
             Loggers.Add(logger);
         }
 
-        public void Log(string message)
+        public void Log(string message, LogTypes? type)
         {
             foreach (var logger in Loggers)
             {
-                logger.Log(message);
+                logger.Log(message, type);
             }
         }
 

@@ -1,3 +1,4 @@
+using CineSync.Utils.Logger;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
 
@@ -9,10 +10,12 @@ namespace CineSync.Controllers.Movie
     public class MovieController : ControllerBase
     {
         private readonly ApiService _apiService;
+        private readonly ILoggerStrategy _logger;
 
-        public MovieController(ApiService apiService)
+        public MovieController(ApiService apiService, ILoggerStrategy logger)
         {
             _apiService = apiService;
+            _logger = logger;
         }
 
         private string BuildEndpoint(string baseEndpoint, Dictionary<string, string> queryParams)
@@ -27,29 +30,15 @@ namespace CineSync.Controllers.Movie
 
         private async Task<IActionResult> ProcessRequestAsync(string endpoint)
         {
-            try
-            {
-                string data = await _apiService.FetchDataAsync(endpoint);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                // NOTE: Needs Logger
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
+            string data = await _apiService.FetchDataAsync(endpoint);
+            return Ok(data);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] string id)
         {
-            try
-            {
-                string endpoint = $"movie/{id}";
-                return await ProcessRequestAsync(endpoint);
-            }
-            catch (Exception ex){
-                // NOTE: Needs Logger
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
+            string endpoint = $"movie/{id}";
+            return await ProcessRequestAsync(endpoint);
         }
 
         [HttpGet("search")]
@@ -69,76 +58,44 @@ namespace CineSync.Controllers.Movie
 
             string endpoint = $"search/movie?{queryString}";
 
-            try
-            {
-                return await ProcessRequestAsync(endpoint);
-            }
-            catch (Exception ex)
-            {
-                // NOTE: Needs Logger
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
+            return await ProcessRequestAsync(endpoint);
         }
 
 
         [HttpGet("popular")]
         public async Task<IActionResult> GetPopularMovies([FromQuery] string? page)
         {
-            try
+            Dictionary<string, string> queryParams = new Dictionary<string, string>
             {
-                Dictionary<string, string> queryParams = new Dictionary<string, string>
-                {
-                    ["language"] = "en-US",
-                    ["page"] = page ?? "1",
-                };
-                string endpoint = BuildEndpoint("movie/popular", queryParams);
-                return await ProcessRequestAsync(endpoint);
-            }
-            catch (Exception ex)
-            {
-                // NOTE: Needs Logger
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
+                ["language"] = "en-US",
+                ["page"] = page ?? "1",
+            };
+            string endpoint = BuildEndpoint("movie/popular", queryParams);
+            return await ProcessRequestAsync(endpoint);
         }
 
         [HttpGet("upcoming")]
         public async Task<IActionResult> GetUpcomingMovies([FromQuery] string? page)
         {
-            try
+            Dictionary<string, string> queryParams = new Dictionary<string, string>
             {
-                Dictionary<string, string> queryParams = new Dictionary<string, string>
-                {
-                    ["language"] = "en-US",
-                    ["page"] = page ?? "1",
-                };
-                string endpoint = BuildEndpoint("movie/upcoming", queryParams);
-                return await ProcessRequestAsync(endpoint);
-            }
-            catch (Exception ex)
-            {
-                // NOTE: Needs Logger
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
+                ["language"] = "en-US",
+                ["page"] = page ?? "1",
+            };
+            string endpoint = BuildEndpoint("movie/upcoming", queryParams);
+            return await ProcessRequestAsync(endpoint);
         }
 
         [HttpGet("top-rated")]
         public async Task<IActionResult> GetTopRatedMovies([FromQuery] string? page)
         {
-            try
+            Dictionary<string, string> queryParams = new Dictionary<string, string>
             {
-                Dictionary<string, string> queryParams = new Dictionary<string, string>
-                {
-                    ["language"] = "en-US",
-                    ["page"] = page ?? "1",
-                };
-                string endpoint = BuildEndpoint("movie/top_rated", queryParams);
-                return await ProcessRequestAsync(endpoint);
-            }
-            catch (Exception ex)
-            {
-                // NOTE: Needs Logger
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
+                ["language"] = "en-US",
+                ["page"] = page ?? "1",
+            };
+            string endpoint = BuildEndpoint("movie/top_rated", queryParams);
+            return await ProcessRequestAsync(endpoint);
         }
 
     }

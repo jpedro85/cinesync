@@ -1,3 +1,4 @@
+using CineSync.Utils.Logger.Enums;
 using CineSync.Utils.Logger.Strategies;
 using CineSync.Utils.Logger.Decorators;
 
@@ -40,7 +41,7 @@ namespace CineSync.Utils.Logger
         {
             if (_currentLogger != null)
             {
-                _currentLogger = new TimeStampDecorator(_currentLogger);
+                _currentLogger = new TimeStamp(_currentLogger);
                 byte lastElement = (byte)(_compositeLogger.Loggers.Count - 1);
                 _compositeLogger.Loggers[lastElement] = _currentLogger;
             }
@@ -51,14 +52,26 @@ namespace CineSync.Utils.Logger
         {
             if (_currentLogger != null)
             {
-                _currentLogger = new UpperCaseDecorator(_currentLogger);
+                _currentLogger = new UpperCase(_currentLogger);
                 byte lastElement = (byte)(_compositeLogger.Loggers.Count - 1);
                 _compositeLogger.Loggers[lastElement] = _currentLogger;
             }
             return this;
         }
 
-        public ILoggerStrategy Build() {
+        public LoggerBuilder AddType()
+        {
+            if (_currentLogger != null)
+            {
+                _currentLogger = new LogType(_currentLogger);
+                byte lastElement = (byte)(_compositeLogger.Loggers.Count - 1);
+                _compositeLogger.Loggers[lastElement] = _currentLogger;
+            }
+            return this;
+        }
+
+        public ILoggerStrategy Build()
+        {
             return _compositeLogger;
         }
 
