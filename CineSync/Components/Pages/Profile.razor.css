@@ -1,0 +1,88 @@
+﻿.Profile{
+    display: flex;
+    flex-direction:row;
+    background: white;
+    height: 100%;
+}
+.Profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    height: 100vh;
+}
+.Picture {
+    margin-top: 10px;
+    position: relative;
+}
+
+#Edit{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 0;
+    border: none;
+    height: max-content;
+    width: max-content;
+    background: transparent;
+    color: #000000;
+}
+.Followers {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.Profile-pic {
+    width: 100px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 6px;
+}
+
+.Info {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.Info input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.Buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.Buttons button {
+    margin-top: 10px;
+}
+.Profile-info{
+    width: 100%
+}
+.Statistics, .Collections {
+    margin-top: 15px;
+}
+.Stats-title, .Collection-title {
+    margin-left: 20px;
+}
+.Info-line{
+    width: 90%;
+
+}
+.User-Statistics {
+    margin-left: 30px;
+}
+hr {
+    margin-left:5px;
+    width: 100%;
+    border: none;
+    height: 5px;
+    color: black;
+}
+h2{
+    margin-bottom: 0px;
+}
