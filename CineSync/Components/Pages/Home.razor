@@ -1,78 +1,94 @@
 ﻿@page "/"
 @inject NavigationManager NavigationManager
+@using CineSync.Components
 
 <div class="page">
     <div class="navbar">
         <div class="navbar-content">
-            <button class="menu-button" @onclick="ToggleMenu">&#9776;</button>
+            <NavLink href="/NavMenu">
+            <button class="menu-button">&#9776;</button>
+            </NavLink>
             <NavLink href="/">
-            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
-            <h1 class="navbar-title">CineSync</h1>
+                <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+                <h1 class="navbar-title">CineSync</h1>
             </NavLink>
             <NavLink href="/Account/Login">
-            <button class="login-button">Login</button>
+                <button class="login-button">Login</button>
             </NavLink>
         </div>
     </div>
+
+    <!-- Side menu -->
+    <div class="side-menu">
+        <NavLink href="/"><button>Home</button></NavLink>
+        <NavLink href="/"><button>Profile</button></NavLink>
+        <NavLink href="/"><button>Logout</button></NavLink>
+    </div>
+
     <div class="main-content">
         <div class="logo-container-main">
             <img src="logo.png" alt="CineSync Main Logo">
         </div>
-		<div id="search">
-			<svg viewBox="0 0 420 60" xmlns="http://www.w3.org/2000/svg">
-				<rect class="bar" />
+        <div id="search">
+            <svg viewBox="0 0 420 60" xmlns="http://www.w3.org/2000/svg">
+                <rect class="bar" />
 
-				<g class="magnifier">
-					<circle class="glass" />
-					<line class="handle" x1="32" y1="32" x2="44" y2="44"></line>
-				</g>
+                <g class="magnifier">
+                    <circle class="glass" />
+                    <line class="handle" x1="32" y1="32" x2="44" y2="44"></line>
+                </g>
 
-				<g class="sparks">
-					<circle class="spark" />
-					<circle class="spark" />
-					<circle class="spark" />
-				</g>
+                <g class="sparks">
+                    <circle class="spark" />
+                    <circle class="spark" />
+                    <circle class="spark" />
+                </g>
 
-				<g class="burst pattern-one">
-					<circle class="particle circle" />
-					<path class="particle triangle" />
-					<circle class="particle circle" />
-					<path class="particle plus" />
-					<rect class="particle rect" />
-					<path class="particle triangle" />
-				</g>
-				<g class="burst pattern-two">
-					<path class="particle plus" />
-					<circle class="particle circle" />
-					<path class="particle triangle" />
-					<rect class="particle rect" />
-					<circle class="particle circle" />
-					<path class="particle plus" />
-				</g>
-				<g class="burst pattern-three">
-					<circle class="particle circle" />
-					<rect class="particle rect" />
-					<path class="particle plus" />
-					<path class="particle triangle" />
-					<rect class="particle rect" />
-					<path class="particle plus" />
-				</g>
-			</svg>
-			<input type=search name=q aria-label="Search for inspiration" />
-		</div>
+                <g class="burst pattern-one">
+                    <circle class="particle circle" />
+                    <path class="particle triangle" />
+                    <circle class="particle circle" />
+                    <path class="particle plus" />
+                    <rect class="particle rect" />
+                    <path class="particle triangle" />
+                </g>
+                <g class="burst pattern-two">
+                    <path class="particle plus" />
+                    <circle class="particle circle" />
+                    <path class="particle triangle" />
+                    <rect class="particle rect" />
+                    <circle class="particle circle" />
+                    <path class="particle plus" />
+                </g>
+                <g class="burst pattern-three">
+                    <circle class="particle circle" />
+                    <rect class="particle rect" />
+                    <path class="particle plus" />
+                    <path class="particle triangle" />
+                    <rect class="particle rect" />
+                    <path class="particle plus" />
+                </g>
+            </svg>
+            <input type=search name=q aria-label="Search for inspiration" />
+        </div>
     </div>
     <footer class="footer">
         &copy; Copyright 2024 Engenharia de Software
     </footer>
 </div>
 
+@if (showNavMenu)
+{
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+}
+
 @code {
-    public void ToggleMenu()
+    private bool showNavMenu = false;
+
+    private void ToggleNavMenu()
     {
-        // Add logic to toggle the menu
-    }
-    public void GoToLoginPage()
-    {
-        NavigationManager.NavigateTo("/Account/Login");
+        showNavMenu = !showNavMenu;
     }
 }

@@ -42,10 +42,12 @@
     align-content: center;
     justify-items: stretch;
     align-items: stretch;
+    color:white;
     border-radius: 100px;
 }
 
     #search input {
+        font-family:Itim;
         display: block;
         grid-area: search;
         -webkit-appearance: none;
@@ -55,6 +57,7 @@
         background: none;
         padding: 0 30px 0 60px;
         border: none;
+        color: white;
         border-radius: 100px;
         font: 24px/1 system-ui, sans-serif;
         outline-offset: -8px;
@@ -64,7 +67,7 @@
     #search svg {
         grid-area: search;
         overflow: visible;
-        color: hsl(215, 100%, 50%);
+        color: white;
         fill: none;
         stroke: currentColor;
     }
