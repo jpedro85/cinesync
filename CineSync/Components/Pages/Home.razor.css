@@ -1,15 +1,8 @@
 ﻿
 /*Home CSS*/
-.navbar {
-    background: linear-gradient(to bottom, rgba(0, 1, 5, 10), transparent); /* Black fading background */
-    height: 5rem; /* Adjust height as needed */
-    display: flex;
-    align-items: center;
-}
 
 .logo-container {
     text-align: center;
-    flex: 1; /* Take up remaining vertical space */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,22 +11,6 @@
     .logo-container img {
         width: 300px;
     }
-
-.navbar-title {
-    margin: 0;
-    font-size: 24px;
-    display: inline-block;
-    margin-right: 10px;
-    color:white;
-}
-
-.menu-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-}
 
 .content {
     padding: 20px;

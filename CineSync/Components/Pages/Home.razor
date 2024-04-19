@@ -2,14 +2,14 @@
 @inject NavigationManager NavigationManager
 
 <div class="page">
-
-    <main class="content">
     <div class="navbar">
         <div class="navbar-content">
             <button class="menu-button" @onclick="ToggleMenu">&#9776;</button>
+            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
             <h1 class="navbar-title">CineSync</h1>
         </div>
     </div>
+    <div class="main-content">
         <div class="logo-container">
              <img src="logo.png" alt="CineSync Logo">
         </div>
@@ -17,11 +17,10 @@
             <input type="text" placeholder="Search..." class="search-input">
             <button class="search-button">Search</button>
         </div>
+    </div>
     <footer class="footer">
         &copy; Copyright 2024 Engenharia de Software
     </footer>
-    </main>
-
 </div>
 
 @code {

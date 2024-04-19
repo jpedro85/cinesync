@@ -36,7 +36,7 @@ a, .btn-link {
 }
 
 footer {
-    background-color: #007bff;
+    background: linear-gradient(to top, rgba(0, 1, 5, 10), transparent);
     color: white;
     padding: 20px 0;
     text-align: center;
@@ -98,3 +98,30 @@ h1:focus {
     border-color: #929292;
 }
 
+.navbar {
+    background: linear-gradient(to bottom, rgba(0, 1, 5, 10), transparent); /* Black fading background */
+    height: 5rem;
+    display: flex;
+    align-items: center;
+}
+.navbar-title {
+    margin: 0;
+    font-size: 24px;
+    display: inline-block;
+    margin-right: 10px;
+    color: white;
+}
+.menu-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+.Minilogo {
+    width: 50px;
+}
+.form-floating mb-3{
+    width:100%;
+    border-radius:10%;
+}
