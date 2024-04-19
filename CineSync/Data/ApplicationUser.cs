@@ -16,7 +16,7 @@ namespace CineSync.Data
 
         public float WatchTime { get; set; } = 0;
 
-        public ICollection<MovieCollection>? CreatedCollections { get; set; }
+        public ICollection<MovieCollection>? Collections { get; set; }
 
         public ICollection<UsersNotifications>? Notifications { get; set; }
 

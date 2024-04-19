@@ -1,3 +1,4 @@
+using CineSync;
 using CineSync.Client.Pages;
 using CineSync.Components;
 using CineSync.Components.Account;
@@ -9,6 +10,7 @@ using CineSync.Utils.Logger;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 string formattedDate = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
@@ -50,7 +52,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
@@ -71,6 +73,10 @@ else
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();
 }
+
+
+ServerConfigurationFacade serverConfigurationFacade = new ServerConfigurationFacade(app);
+serverConfigurationFacade.Config();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
