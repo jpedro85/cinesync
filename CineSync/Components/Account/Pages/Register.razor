@@ -61,6 +61,7 @@
 
 
 @code {
+
     private IEnumerable<IdentityError>? identityErrors;
 
     [SupplyParameterFromForm]
@@ -83,6 +84,13 @@
         if (!result.Succeeded)
         {
             identityErrors = result.Errors;
+            result = await UserManager.AddToRoleAsync(user, "User");
+
+            if (!result.Succeeded)
+            {
+                await UserManager.DeleteAsync(user);
+            }
+
             return;
         }
 

@@ -8,6 +8,8 @@ namespace CineSync.Data.Models
     {
         public uint Id { get; set; }
 
+        public uint? TmdbId { get; set; }
+ 
         [Required]
         public string? Title { get; set; }
 
