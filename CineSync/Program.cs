@@ -15,7 +15,7 @@ using dotenv.net;
 DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
-string formattedDate = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
+string formattedDate = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
