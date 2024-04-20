@@ -19,8 +19,7 @@ namespace CineSync.Data.Models
         [Column(TypeName = "decimal(3,1)")]
         public float RatingIMDB { get; set; } = 0;
 
-        [StringLength(30)]
-        public string? Gender { get; set; }
+        public string[]? Genders { get; set; }
 
         public byte[]? Poster { get; set; }
 

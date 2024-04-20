@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CineSync.Data
 {
@@ -8,18 +9,18 @@ namespace CineSync.Data
      * <param name="TEntity"> Class type of the Entity Set to initialize.</param
      * </summary>
      */
-    public abstract class DbInitializer<TEntity> where TEntity : class
-    {
-        public IdentityDbContext<ApplicationUser> context { get; private set; }
+    public abstract class DbInitializer<TEntity,TUser> where TEntity : class where TUser : IdentityUser
+	{
+        public IdentityDbContext<TUser> context { get; private set; }
 
         private List<TEntity> entities;
-        public DbInitializer(IdentityDbContext<ApplicationUser> context ) 
+        public DbInitializer(IdentityDbContext<TUser> context ) 
         { 
             this.context = context;
             this.entities = new List<TEntity>();
         }
 
-        public DbInitializer<TEntity> WithEntity(TEntity entity )
+        public DbInitializer<TEntity, TUser> WithEntity(TEntity entity )
         {
             if ( !entities.Contains(entity) )
                 entities.Add( entity );
