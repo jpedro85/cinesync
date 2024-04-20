@@ -1,6 +1,8 @@
 using CineSync.Utils.Logger;
+using CineSync.Utils.Logger.Enums;
+using CineSync.Utils.Adapters.ApiAdapters;
+using CineSync.Utils.Adapters;
 using Microsoft.AspNetCore.Mvc;
-using System.Web;
 
 namespace CineSync.Controllers.Movie
 {
@@ -18,26 +20,19 @@ namespace CineSync.Controllers.Movie
             _logger = logger;
         }
 
-        private string BuildEndpoint(string baseEndpoint, Dictionary<string, string> queryParams)
-        {
-            var query = HttpUtility.ParseQueryString(string.Empty);
-            foreach (var param in queryParams)
-            {
-                query[param.Key] = param.Value;
-            }
-            return $"{baseEndpoint}?{query.ToString()}";
-        }
-
+        // WARN: Maybe its not necessary as each one can have a different Adapter Process??????
         private async Task<IActionResult> ProcessRequestAsync(string endpoint)
         {
             string data = await _apiService.FetchDataAsync(endpoint);
-            return Ok(data);
+            IMovie movie = await MovieAdapter.FromJson(data);
+            return Ok(movie);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] string id)
         {
-            string endpoint = $"movie/{id}";
+            string endpoint = $"movie/{id}?append_to_response=credits,videos";
+            _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             return await ProcessRequestAsync(endpoint);
         }
 
@@ -58,6 +53,7 @@ namespace CineSync.Controllers.Movie
 
             string endpoint = $"search/movie?{queryString}";
 
+            _logger.Log($"Fetching the query results for {parameters.Query}", LogTypes.INFO);
             return await ProcessRequestAsync(endpoint);
         }
 
@@ -70,7 +66,8 @@ namespace CineSync.Controllers.Movie
                 ["language"] = "en-US",
                 ["page"] = page ?? "1",
             };
-            string endpoint = BuildEndpoint("movie/popular", queryParams);
+            string endpoint = _apiService.BuildEndpoint("movie/popular", queryParams);
+            _logger.Log($"Fetching the results for the popular movies query", LogTypes.INFO);
             return await ProcessRequestAsync(endpoint);
         }
 
@@ -82,7 +79,8 @@ namespace CineSync.Controllers.Movie
                 ["language"] = "en-US",
                 ["page"] = page ?? "1",
             };
-            string endpoint = BuildEndpoint("movie/upcoming", queryParams);
+            string endpoint = _apiService.BuildEndpoint("movie/upcoming", queryParams);
+            _logger.Log($"Fetching the results for the upcoming movies query", LogTypes.INFO);
             return await ProcessRequestAsync(endpoint);
         }
 
@@ -94,7 +92,8 @@ namespace CineSync.Controllers.Movie
                 ["language"] = "en-US",
                 ["page"] = page ?? "1",
             };
-            string endpoint = BuildEndpoint("movie/top_rated", queryParams);
+            string endpoint = _apiService.BuildEndpoint("movie/top_rated", queryParams);
+            _logger.Log($"Fetching the results for the toprated movies query", LogTypes.INFO);
             return await ProcessRequestAsync(endpoint);
         }
 
