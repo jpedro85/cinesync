@@ -15,5 +15,21 @@ namespace CineSync.Data.Models
 
         public MovieCollection MovieCollection { get; set; } = null!;
 
-    }
+        public override bool Equals( object? obj )
+        {
+
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            CollectionsMovies castObj = (CollectionsMovies)obj;
+
+            return Id == castObj.Id && MovieId == castObj.MovieId;
+
+		}
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
