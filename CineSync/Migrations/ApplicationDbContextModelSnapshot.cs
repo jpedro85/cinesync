@@ -29,7 +29,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("ApplicationUserApplicationUser");
+                    b.ToTable("ApplicationUserApplicationUser", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.ApplicationUser", b =>
@@ -120,7 +120,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("CollectionsMovies");
+                    b.ToTable("CollectionsMovies", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Comment", b =>
@@ -157,7 +157,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.CommentAttachment", b =>
@@ -176,7 +176,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("CommentAttachments");
+                    b.ToTable("CommentAttachments", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Discussion", b =>
@@ -206,7 +206,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Discutions");
+                    b.ToTable("Discutions", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Movie", b =>
@@ -258,7 +258,7 @@ namespace CineSync.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>
@@ -281,7 +281,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Collections");
+                    b.ToTable("Collections", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Notification", b =>
@@ -304,7 +304,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UsersNotifications", b =>
@@ -326,7 +326,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("NotificationId");
 
-                    b.ToTable("UsersNotifications");
+                    b.ToTable("UsersNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

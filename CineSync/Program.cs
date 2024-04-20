@@ -52,10 +52,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentityCore<ApplicationUser>( options => options.SignIn.RequireConfirmedAccount = false )
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthorization(options =>
+{
+	options.AddPolicy("RequireAdmin", policy =>
+	{
+		policy.RequireRole("Admin");
+	});
+});
+
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
@@ -77,6 +86,7 @@ else
 
 ServerConfigurationFacade serverConfigurationFacade = new ServerConfigurationFacade(app);
 serverConfigurationFacade.Config();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
