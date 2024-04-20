@@ -29,7 +29,7 @@ namespace CineSync.Utils.Logger.Decorators
         /// </remarks>
         public override void Log(string message, LogTypes? type)
         {
-            if (type.HasValue())
+            if (type.HasValue)
             {
                 string decoratedMessage = $"[{type.ToString()}] {message}";
                 base.Log(decoratedMessage, type);

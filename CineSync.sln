@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineSync", "CineSync\CineSy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineSync.Client", "CineSync.Client\CineSync.Client.csproj", "{95368EC0-7728-47BF-8DB6-20538F400C5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineSync.Tests", "CineSync.Tests\CineSync.Tests.csproj", "{4AAF239A-1FAC-4616-AA30-D63EED0B61E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{95368EC0-7728-47BF-8DB6-20538F400C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95368EC0-7728-47BF-8DB6-20538F400C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95368EC0-7728-47BF-8DB6-20538F400C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AAF239A-1FAC-4616-AA30-D63EED0B61E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AAF239A-1FAC-4616-AA30-D63EED0B61E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AAF239A-1FAC-4616-AA30-D63EED0B61E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AAF239A-1FAC-4616-AA30-D63EED0B61E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
