@@ -37,7 +37,7 @@ builder.Services.AddSingleton<ILoggerStrategy>(provider =>
             .UseDebugLogging()
             .AddTimeStamp()
             .UseTraceDebugging()
-            .UseFileLogging($"./Logs/log_{formattedDate}.txt")
+            .UseFileLogging($"./Logs/log_{formattedDate}.log")
             .AddTimeStamp()
             .AddType()
             .Build());
