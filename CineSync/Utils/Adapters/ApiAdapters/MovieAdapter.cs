@@ -3,40 +3,39 @@ using System.Text;
 
 namespace CineSync.Utils.Adapters.ApiAdapters
 {
-    public class MovieAdapter
+    public class MovieAdapter : IMovie
     {
-        public int MovieId { get; private set; }
-        public byte[] PosterImage { get; private set; }
-        public ICollection<string> Genres { get; private set; }
-        public string Overview { get; private set; }
-        public DateTime ReleaseDate { get; private set; }
-        public ICollection<string> Cast { get; private set; }
-        public string TrailerKey { get; private set; }
-        public short RunTime { get; private set; }
-        public Half Rating { get; private set; }
+        private dynamic rawResponse;
 
-        public async static Task<MovieAdapter> FromJson(string jsonString)
+        private MovieAdapter(dynamic rawResponse)
+        {
+            this.rawResponse = rawResponse;
+        }
+
+        public int MovieId => rawResponse.id;
+        public byte[] PosterImage { get; private set; }
+        public ICollection<string> Genres => ((IEnumerable<dynamic>)rawResponse.genres).Select(genre => (string)genre.name).ToList();
+        public string Overview => rawResponse.overview;
+        public DateTime ReleaseDate => DateTime.Parse((string)rawResponse.release_date);
+        public ICollection<string> Cast => ((IEnumerable<dynamic>)rawResponse.credits.cast).Select(cast => (string)cast.name).ToList();
+        public string TrailerKey => ((IEnumerable<dynamic>)rawResponse.videos.results).First(video => video.type == "Trailer").key;
+        public short RunTime => (short)rawResponse.runtime;
+        public Half Rating => (Half)(float)rawResponse.vote_average;
+
+
+        public static async Task<IMovie> FromJson(string jsonString)
         {
             var rawResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
-
-            MovieAdapter adapter = new MovieAdapter
-            {
-                MovieId = rawResponse.id,
-                Overview = rawResponse.overview,
-                ReleaseDate = DateTime.Parse((string)rawResponse.release_date),
-                RunTime = (short)rawResponse.runtime,
-                Genres = ((IEnumerable<dynamic>)rawResponse.genres).Select(genre => (string)genre.name).ToList(),
-                Cast = ((IEnumerable<dynamic>)rawResponse.credits.cast).Select(cast => (string)cast.name).ToList(),
-                TrailerKey = ((IEnumerable<dynamic>)rawResponse.videos.results).First(video => video.type == "Trailer").key,
-                Rating = (Half)(float)rawResponse.vote_average
-            };
-
-            string endpoint = rawResponse.poster_path;
-            adapter.PosterImage = await FetchImageAsync(endpoint);
-
+            var adapter = new MovieAdapter(rawResponse);
+            await adapter.InitializeAsync();
             return adapter;
         }
 
+        private async Task InitializeAsync()
+        {
+            string endpoint = rawResponse.poster_path;
+            PosterImage = await FetchImageAsync(endpoint);
+        }
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -48,7 +47,6 @@ namespace CineSync.Utils.Adapters.ApiAdapters
             sb.AppendLine($"Cast: {string.Join(", ", Cast)}");
             sb.AppendLine($"Trailer Key: {TrailerKey}");
             sb.AppendLine($"Rating: {Rating}");
-            sb.AppendLine($"Image: {PosterImage}");
 
             return sb.ToString();
         }
