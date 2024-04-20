@@ -36,20 +36,6 @@ namespace CineSync.Utils.Adapters.ApiAdapters
             string endpoint = rawResponse.poster_path;
             PosterImage = await FetchImageAsync(endpoint);
         }
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine($"Movie ID: {MovieId}");
-            sb.AppendLine($"Overview: {Overview}");
-            sb.AppendLine($"Release Date: {ReleaseDate.ToShortDateString()}");
-            sb.AppendLine($"Run Time: {RunTime} minutes");
-            sb.AppendLine($"Genres: {string.Join(", ", Genres)}");
-            sb.AppendLine($"Cast: {string.Join(", ", Cast)}");
-            sb.AppendLine($"Trailer Key: {TrailerKey}");
-            sb.AppendLine($"Rating: {Rating}");
-
-            return sb.ToString();
-        }
 
         private static async Task<byte[]> FetchImageAsync(string endpoint)
         {
@@ -63,6 +49,21 @@ namespace CineSync.Utils.Adapters.ApiAdapters
                 }
                 throw new Exception("Failed to download the image.");
             }
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Movie ID: {MovieId}");
+            sb.AppendLine($"Overview: {Overview}");
+            sb.AppendLine($"Release Date: {ReleaseDate.ToShortDateString()}");
+            sb.AppendLine($"Run Time: {RunTime} minutes");
+            sb.AppendLine($"Genres: {string.Join(", ", Genres)}");
+            sb.AppendLine($"Cast: {string.Join(", ", Cast)}");
+            sb.AppendLine($"Trailer Key: {TrailerKey}");
+            sb.AppendLine($"Rating: {Rating}");
+
+            return sb.ToString();
         }
     }
 }
