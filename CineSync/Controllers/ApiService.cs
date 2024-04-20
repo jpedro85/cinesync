@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Web;
 
 namespace CineSync.Controllers
 {
@@ -46,6 +47,16 @@ namespace CineSync.Controllers
                 Console.WriteLine("Message :{0} ", e.Message);
                 return null;
             }
+        }
+
+        public string BuildEndpoint(string baseEndpoint, Dictionary<string, string> queryParams)
+        {
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            foreach (var param in queryParams)
+            {
+                query[param.Key] = param.Value;
+            }
+            return $"{baseEndpoint}?{query.ToString()}";
         }
     }
 }
