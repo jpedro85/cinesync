@@ -10,7 +10,9 @@ using CineSync.Utils.Logger;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using dotenv.net;
+
+DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 string formattedDate = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");

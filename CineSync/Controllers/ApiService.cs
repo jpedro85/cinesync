@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace CineSync.Controllers
 {
     /// <summary>
@@ -9,7 +11,7 @@ namespace CineSync.Controllers
     public class ApiService
     {
         private readonly HttpClient _client;
-        private readonly string BEARER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNTkyMTlhZTQ3MjcxZmE5NDg3YzI3MTJjMzRhMTZkMiIsInN1YiI6IjY2MGFjNzMzMTVkZWEwMDE2MjMyZTQxZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qMp8g8AF-OnuKWknE-1-eN5BqqwHlrvyHXgTqvT_wG4";
+        private readonly string BEARER_TOKEN = Environment.GetEnvironmentVariable("BEARER_TOKEN");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiService"/> class, configuring it for communication with the TMDb API.
@@ -19,7 +21,7 @@ namespace CineSync.Controllers
         {
             _client = client;
             _client.BaseAddress = new Uri("https://api.themoviedb.org/3/");
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", BEARER_TOKEN);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", BEARER_TOKEN);
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
         }
 
