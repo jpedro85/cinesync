@@ -18,7 +18,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
         public short RunTime { get; set; }
         public float Rating { get; set; }
 
-        public static MovieDetailsAdapter FromJson(string json)
+        public static IMovie FromJson(string json)
         {
             var jObject = JObject.Parse(json);
 

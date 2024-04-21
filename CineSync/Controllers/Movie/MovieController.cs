@@ -2,33 +2,59 @@ using CineSync.Utils.Logger;
 using CineSync.Utils.Logger.Enums;
 using CineSync.Utils.Adapters.ApiAdapters;
 using CineSync.Utils.Adapters;
+using CineSync.DbManagers;
+using CineSync.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace CineSync.Controllers.Movie
+namespace CineSync.Controllers.MovieEndpoint
 {
-    // TODO: Add the functionality to search first on our DB
     [Route("movie")]
     [ApiController]
     public class MovieController : ControllerBase
     {
+        private readonly MovieManager _movieManager;
         private readonly ApiService _apiService;
         private readonly ILoggerStrategy _logger;
 
-        public MovieController(ApiService apiService, ILoggerStrategy logger)
+        public MovieController(ApiService apiService, ILoggerStrategy logger, MovieManager movieManager)
         {
             _apiService = apiService;
             _logger = logger;
+            _movieManager = movieManager;
         }
 
-        // TODO: Check our database first if there is a movie if not fetch from api and upload to the database and send the response we got
         [HttpGet]
-        public async Task<IActionResult> GetMovieById([FromQuery] string id)
+        public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
+            var databaseResult = _movieManager.GetByTmdbId(id);
+
+            if (databaseResult != null)
+            {
+                return Ok(databaseResult);
+            }
+
+            // In case its not on the database
             string endpoint = $"movie/{id}?append_to_response=credits,videos";
             _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            MovieDetailsAdapter movie = MovieDetailsAdapter.FromJson(data);
+            IMovie movie = MovieDetailsAdapter.FromJson(data);
+            var databaseMovie = new Movie()
+            {
+                MovieId = movie.MovieId,
+                Title = movie.Title,
+                PosterImage = movie.PosterImage,
+                Genres = movie.Genres,
+                Overview = movie.Overview,
+                ReleaseDate = movie.ReleaseDate,
+                Cast = (IList<string>)movie.Cast,
+                TrailerKey = movie.TrailerKey,
+                RunTime = movie.RunTime,
+                Rating = movie.Rating,
+            };
+            // Add to the Database async
+            _movieManager.AddAsync(databaseMovie);
+
             return Ok(movie);
         }
 

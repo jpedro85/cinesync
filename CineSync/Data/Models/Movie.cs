@@ -1,16 +1,15 @@
 ﻿using CineSync.Utils.Adapters;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineSync.Data.Models
 {
-    public class Movie : IMovie
+    public class Movie
     {
         public uint Id { get; set; }
 
         public int MovieId { get; set; }
- 
+
         [Required]
         public string? Title { get; set; }
 
@@ -22,13 +21,13 @@ namespace CineSync.Data.Models
 
         public ICollection<Genre> Genres { get; set; }
 
-		public byte[] PosterImage { get; set; }
+        public byte[] PosterImage { get; set; }
 
         public string? Overview { get; set; }
 
         public DateTime ReleaseDate { get; set; }
 
-        public ICollection<string>? Cast { get; set; }
+        public IList<string>? Cast { get; set; }
 
         public string TrailerKey { get; set; }
 

@@ -1,7 +1,6 @@
 using CineSync.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 
 namespace CineSync.Data
 {

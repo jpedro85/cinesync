@@ -1,4 +1,4 @@
-namespace CineSync.Controllers.Movie
+namespace CineSync.Controllers.MovieEndpoint
 {
     public class MovieSearchParameters
     {
