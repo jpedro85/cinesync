@@ -2,31 +2,59 @@ using CineSync.Utils.Logger;
 using CineSync.Utils.Logger.Enums;
 using CineSync.Utils.Adapters.ApiAdapters;
 using CineSync.Utils.Adapters;
+using CineSync.DbManagers;
+using CineSync.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
-namespace CineSync.Controllers.Movie
+namespace CineSync.Controllers.MovieEndpoint
 {
-    // TODO: Add the functionality to search first on our DB
     [Route("movie")]
     [ApiController]
     public class MovieController : ControllerBase
     {
+        private readonly MovieManager _movieManager;
         private readonly ApiService _apiService;
         private readonly ILoggerStrategy _logger;
 
-        public MovieController(ApiService apiService, ILoggerStrategy logger)
+        public MovieController(ApiService apiService, ILoggerStrategy logger, MovieManager movieManager)
         {
             _apiService = apiService;
             _logger = logger;
+            _movieManager = movieManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMovieById([FromQuery] string id)
+        public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
+            var databaseResult = _movieManager.GetByTmdbId(id);
+
+            if (databaseResult != null)
+            {
+                return Ok(databaseResult);
+            }
+
+            // In case its not on the database
             string endpoint = $"movie/{id}?append_to_response=credits,videos";
             _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            IMovie movie = await MovieAdapter.FromJson(data);
+            IMovie movie = MovieDetailsAdapter.FromJson(data);
+            var databaseMovie = new Movie()
+            {
+                MovieId = movie.MovieId,
+                Title = movie.Title,
+                PosterImage = movie.PosterImage,
+                Genres = movie.Genres,
+                Overview = movie.Overview,
+                ReleaseDate = movie.ReleaseDate,
+                Cast = (IList<string>)movie.Cast,
+                TrailerKey = movie.TrailerKey,
+                RunTime = movie.RunTime,
+                Rating = movie.Rating,
+            };
+            // Add to the Database async
+            _movieManager.AddAsync(databaseMovie);
+
             return Ok(movie);
         }
 
@@ -49,7 +77,13 @@ namespace CineSync.Controllers.Movie
 
             _logger.Log($"Fetching the query results for {parameters.Query}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            return Ok(data);
+
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new MovieConverter());
+
+            ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings);
+
+            return Ok(apiResponse);
         }
 
 

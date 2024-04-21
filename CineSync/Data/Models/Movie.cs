@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using CineSync.Utils.Adapters;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,34 +8,34 @@ namespace CineSync.Data.Models
     {
         public uint Id { get; set; }
 
-        public uint? TmdbId { get; set; }
- 
+        public int MovieId { get; set; }
+
         [Required]
         public string? Title { get; set; }
 
         [Column(TypeName = "decimal(3,1)")]
-        public float RatingCS { get; set; } = 0;
+        public float RatingCS { get; set; } = 0.0f;
 
         [Column(TypeName = "decimal(3,1)")]
-        public float RatingIMDB { get; set; } = 0;
+        public float Rating { get; set; } = 0.0f;
 
-        public string[]? Genders { get; set; }
+        public ICollection<Genre> Genres { get; set; }
 
-        public byte[]? Poster { get; set; }
+        public byte[] PosterImage { get; set; }
 
-        public string? Sumary { get; set; }
+        public string? Overview { get; set; }
 
         public DateTime ReleaseDate { get; set; }
 
-        public ICollection<String>? Cast { get; set; }
+        public IList<string>? Cast { get; set; }
 
-        public String? TrailerLink { get; set; }
+        public string TrailerKey { get; set; }
 
-        public String? Director { get; set; }
+        public string? Director { get; set; }
 
-        public String? Awards { get; set; }
+        public string? Awards { get; set; }
 
-        public float? Duration { get; set; }
+        public short RunTime { get; set; }
 
         public ICollection<Comment>? Comments { get; set; }
 
