@@ -3,6 +3,7 @@ using CineSync.Utils.Logger.Enums;
 using CineSync.Utils.Adapters.ApiAdapters;
 using CineSync.Utils.Adapters;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CineSync.Controllers.Movie
 {
@@ -20,13 +21,15 @@ namespace CineSync.Controllers.Movie
             _logger = logger;
         }
 
+        // TODO: Check our database first if there is a movie if not fetch from api and upload to the database and send the response we got
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] string id)
         {
             string endpoint = $"movie/{id}?append_to_response=credits,videos";
             _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            IMovie movie = await MovieAdapter.FromJson(data);
+            var rawResponse = JsonConvert.DeserializeObject<dynamic>(data);
+            IMovie movie = await MovieDetailsAdapter.FromJson(rawResponse);
             return Ok(movie);
         }
 
@@ -50,16 +53,12 @@ namespace CineSync.Controllers.Movie
             _logger.Log($"Fetching the query results for {parameters.Query}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
 
-			dynamic? rawResponse = JsonConvert.DeserializeObject<dynamic>( data ) ;
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new MovieConverter());
 
-            ICollection< IMovie > dataResult = new List<IMovie >();
-            foreach (var result in rawResponse.results)
-            {
-                Console.WriteLine(result);
-                dataResult.Add(await MovieAdapter.FromJson(result));
-			}
+            ApiResponse apiResponse = JsonConvert.DeserializeObject<ApiResponse>(data, settings);
 
-            return Ok(dataResult);
+            return Ok(apiResponse);
         }
 
 
