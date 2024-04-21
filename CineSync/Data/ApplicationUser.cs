@@ -19,7 +19,8 @@ namespace CineSync.Data
         public ICollection<MovieCollection>? Collections { get; set; }
 
         public ICollection<UsersNotifications>? Notifications { get; set; }
-
+        public bool Banned { get; set; }
+        public bool Blocked { get; set; }
     }
 
 }

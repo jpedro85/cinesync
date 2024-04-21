@@ -13,34 +13,34 @@ namespace CineSync.DbManagers
             DbContext = dbContext;
         }
 
-        public async Task<bool> AddAsync(TEntity entity)
+        public virtual async Task<bool> AddAsync(TEntity entity)
         {
             DbContext.Set<TEntity>().Add(entity);
             return await DbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> RemoveAsync(TEntity entity)
+        public virtual async Task<bool> RemoveAsync(TEntity entity)
         {
             DbContext.Set<TEntity>().Remove(entity);
             return await DbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<TEntity?> GetByIdAsync(uint id)
+        public virtual async Task<TEntity?> GetByIdAsync(uint id)
         {
             return await DbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity?> GetByValuesAsync(params object[] objects)
+        public virtual async Task<TEntity?> GetByValuesAsync(params object[] objects)
         {
             return await DbContext.Set<TEntity>().FindAsync(objects);
         }
 
-        public async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbContext.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        public virtual async Task<List<TEntity>> GetAllAsync()
         {
             return await DbContext.Set<TEntity>().ToListAsync();
         }

@@ -27,7 +27,9 @@ namespace CineSync.Controllers.MovieEndpoint
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
-            var databaseResult = _movieManager.GetByTmdbId(id);
+            var databaseResult = await _movieManager.GetByTmdbId(id);
+
+            Console.WriteLine(databaseResult);
 
             if (databaseResult != null)
             {

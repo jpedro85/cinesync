@@ -12,5 +12,20 @@ namespace CineSync.DbManagers
                 return result.First();
             return null;
         }
+
+        //public override async Task<bool> AddAsync(Movie movie)
+        //{
+
+        //    //foreach( Genre genre in movie.Genres )
+        //    //{
+        //    //    if (DbContext.Set<Genre>().Any(g => g.TmdbId == genre.TmdbId))
+        //    //        continue;
+
+        //    //    DbContext.Set<Genre>().Add(genre);
+        //    //}
+
+        //    DbContext.Set<Movie>().Add(movie);
+        //    return await DbContext.SaveChangesAsync() > 0;
+        //}
     }
 }

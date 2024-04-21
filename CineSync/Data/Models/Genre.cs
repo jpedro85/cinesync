@@ -10,5 +10,7 @@ namespace CineSync.Data.Models
 
 		[Required]
 		public string? Name { get; set; }
-	}
+
+        public ICollection<Movie>? Movies { get; set; }
+    }
 }

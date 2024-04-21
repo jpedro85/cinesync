@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CineSync.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240418231834_m_003")]
-    partial class m_003
+    [Migration("20240421224111_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,12 @@ namespace CineSync.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Banned")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Blocked")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -212,6 +218,24 @@ namespace CineSync.Migrations
                     b.ToTable("Discutions");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("TmdbId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genre");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.Movie", b =>
                 {
                     b.Property<uint>("Id")
@@ -227,33 +251,34 @@ namespace CineSync.Migrations
                     b.Property<string>("Director")
                         .HasColumnType("TEXT");
 
-                    b.Property<float?>("Duration")
-                        .HasColumnType("REAL");
+                    b.Property<int>("MovieId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Gender")
-                        .HasMaxLength(30)
+                    b.Property<string>("Overview")
                         .HasColumnType("TEXT");
 
-                    b.Property<byte[]>("Poster")
+                    b.Property<byte[]>("PosterImage")
+                        .IsRequired()
                         .HasColumnType("BLOB");
 
-                    b.Property<float>("RatingCS")
+                    b.Property<float>("Rating")
                         .HasColumnType("decimal(3,1)");
 
-                    b.Property<float>("RatingIMDB")
+                    b.Property<float>("RatingCS")
                         .HasColumnType("decimal(3,1)");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Sumary")
-                        .HasColumnType("TEXT");
+                    b.Property<short>("RunTime")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TrailerLink")
+                    b.Property<string>("TrailerKey")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -290,9 +315,6 @@ namespace CineSync.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<uint>("CommentId")
                         .HasColumnType("INTEGER");
 
@@ -304,8 +326,6 @@ namespace CineSync.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CommentId");
 
@@ -332,6 +352,21 @@ namespace CineSync.Migrations
                     b.HasIndex("NotificationId");
 
                     b.ToTable("UsersNotifications");
+                });
+
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.Property<int>("GenresId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("MoviesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("GenresId", "MoviesId");
+
+                    b.HasIndex("MoviesId");
+
+                    b.ToTable("GenreMovie");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -532,16 +567,12 @@ namespace CineSync.Migrations
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>
                 {
                     b.HasOne("CineSync.Data.ApplicationUser", null)
-                        .WithMany("CreatedCollections")
+                        .WithMany("Collections")
                         .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Notification", b =>
                 {
-                    b.HasOne("CineSync.Data.ApplicationUser", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("CineSync.Data.Models.Comment", "Comment")
                         .WithMany()
                         .HasForeignKey("CommentId")
@@ -554,7 +585,7 @@ namespace CineSync.Migrations
             modelBuilder.Entity("CineSync.Data.Models.UsersNotifications", b =>
                 {
                     b.HasOne("CineSync.Data.ApplicationUser", "AplicationUser")
-                        .WithMany()
+                        .WithMany("Notifications")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -568,6 +599,21 @@ namespace CineSync.Migrations
                     b.Navigation("AplicationUser");
 
                     b.Navigation("Notification");
+                });
+
+            modelBuilder.Entity("GenreMovie", b =>
+                {
+                    b.HasOne("CineSync.Data.Models.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -623,7 +669,7 @@ namespace CineSync.Migrations
 
             modelBuilder.Entity("CineSync.Data.ApplicationUser", b =>
                 {
-                    b.Navigation("CreatedCollections");
+                    b.Navigation("Collections");
 
                     b.Navigation("Notifications");
                 });
