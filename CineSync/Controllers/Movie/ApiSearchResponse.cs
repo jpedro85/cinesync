@@ -1,6 +1,6 @@
 namespace CineSync.Utils.Adapters.ApiAdapters
 {
-    public class ApiResponse
+    public class ApiSearchResponse
     {
         public List<MovieSearchAdapter> Results { get; set; }
     }

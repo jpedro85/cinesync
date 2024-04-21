@@ -19,7 +19,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
             JObject obj = JObject.Load(reader);
             var movie = new MovieSearchAdapter
             {
-                Id = (int)obj["id"],
+                MovieId = (int)obj["id"],
                 Title = (string)obj["title"],
                 PosterPath = (string)obj["poster_path"]
             };
@@ -27,7 +27,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
             if (!string.IsNullOrWhiteSpace(movie.PosterPath))
             {
                 string fullPath = imageService + movie.PosterPath;
-                var response = client.GetAsync(fullPath).Result; // Use Result for synchronous wait within async context
+                var response = client.GetAsync(fullPath).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     movie.PosterImage = response.Content.ReadAsByteArrayAsync().Result;

@@ -56,7 +56,7 @@ namespace CineSync.Controllers.Movie
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(new MovieConverter());
 
-            ApiResponse apiResponse = JsonConvert.DeserializeObject<ApiResponse>(data, settings);
+            ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings);
 
             return Ok(apiResponse);
         }
