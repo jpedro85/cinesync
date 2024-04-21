@@ -1,0 +1,140 @@
+﻿.navbar {
+    background: linear-gradient(to bottom, black 60%, rgba(0, 1, 5, 0.2));
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    vertical-align: central;
+    z-index: 999;
+    padding: 0;
+   
+
+}
+
+.navbar-left {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    height: 100%;
+    flex-wrap: wrap;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    align-content: center;
+    vertical-align: central;
+    gap: 2rem;
+}
+
+
+
+.navbar-rigth {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    padding-right: 1rem;
+    align-content: center;
+    vertical-align: central;
+    gap:2rem;
+}
+
+.navbar-title {
+    margin: 0;
+    font-size: 35px;
+    margin-right: 10px;
+    color: white;
+    text-decoration: none !important;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-item-conteiner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: fit-content;
+    height: 100% !important;
+    align-content: center;
+    justify-content: center;
+}
+
+.home-button {
+    display: flex;
+    flex-direction: row;
+    height:100%;
+    gap:0.5rem;
+}
+
+.Minilogo {
+    width: 70px;
+    height: 60px;
+}
+
+.menuButton {
+    width: 35px !important;
+    height: 35px !important;
+    fill: white;
+}
+
+    .menuButton:hover {
+        cursor: pointer;
+        fill: rgb(75, 75, 75);
+    }
+
+.login-button {
+
+    font-family: Itim;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition: 752ms;
+    transform: translateY(0);
+    align-items: center;
+    cursor: pointer;
+    margin-left: auto;
+    position: relative;
+    width: contain;
+}
+
+    .login-button:hover {
+        transition: 752ms;
+        padding: 10px 50px;
+        transform: translateY(-0px);
+        background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+        color: #000000;
+        border: solid 2px #0066cc;
+    }
+
+
+.login {
+    font-family: Itim;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition: 752ms;
+    cursor: pointer;
+    position: relative;
+    left: 35%;
+}
+
+    .login:hover {
+        padding: 10px 50px;
+        transform: translateY(-0px);
+        background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+        color: #000000;
+        border: solid 2px #0066cc;
+    }
