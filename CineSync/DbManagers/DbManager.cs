@@ -25,9 +25,9 @@ namespace CineSync.DbManagers
 			return await DbContext.SaveChangesAsync() > 0;
 		}
 
-		public async Task<TEntity?> GetByIdAsync(uint movieId)
+		public async Task<TEntity?> GetByIdAsync(uint id)
 		{
-			return await DbContext.Set<TEntity>().FindAsync(movieId);
+			return await DbContext.Set<TEntity>().FindAsync(id);
 		}
 
 		public async Task<TEntity?> GetByValuesAsync(params object[] objects)

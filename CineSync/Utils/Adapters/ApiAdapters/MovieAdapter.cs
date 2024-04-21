@@ -1,3 +1,4 @@
+using CineSync.Data.Models;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -14,19 +15,20 @@ namespace CineSync.Utils.Adapters.ApiAdapters
 
         public int MovieId => rawResponse.id;
         public byte[] PosterImage { get; private set; }
-        public ICollection<string> Genres => ((IEnumerable<dynamic>)rawResponse.genres).Select(genre => (string)genre.name).ToList();
+        public ICollection<Genre> Genres => ((IEnumerable<dynamic>)rawResponse.genres)
+                                                .Select(genre => new Genre() { Name = (string)genre.name, TmdbId = (int)genre.Id } ).ToList();
         public string Overview => rawResponse.overview;
         public DateTime ReleaseDate => DateTime.Parse((string)rawResponse.release_date);
         public ICollection<string> Cast => ((IEnumerable<dynamic>)rawResponse.credits.cast).Select(cast => (string)cast.name).ToList();
         public string TrailerKey => ((IEnumerable<dynamic>)rawResponse.videos.results).First(video => video.type == "Trailer").key;
         public short RunTime => (short)rawResponse.runtime;
-        public Half Rating => (Half)(float)rawResponse.vote_average;
+        public float Rating => (float)rawResponse.vote_average;
 
 
-        public static async Task<IMovie> FromJson(string jsonString)
+        public static async Task<IMovie> FromJson(dynamic jsonObject)
         {
-            var rawResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
-            var adapter = new MovieAdapter(rawResponse);
+           // var rawResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
+            var adapter = new MovieAdapter(jsonObject);
             await adapter.InitializeAsync();
             return adapter;
         }
@@ -34,7 +36,8 @@ namespace CineSync.Utils.Adapters.ApiAdapters
         private async Task InitializeAsync()
         {
             string endpoint = rawResponse.poster_path;
-            PosterImage = await FetchImageAsync(endpoint);
+            if(endpoint != null)
+                PosterImage = await FetchImageAsync(endpoint);
         }
 
         private static async Task<byte[]> FetchImageAsync(string endpoint)

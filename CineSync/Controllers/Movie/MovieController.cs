@@ -49,7 +49,17 @@ namespace CineSync.Controllers.Movie
 
             _logger.Log($"Fetching the query results for {parameters.Query}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            return Ok(data);
+
+			dynamic? rawResponse = JsonConvert.DeserializeObject<dynamic>( data ) ;
+
+            ICollection< IMovie > dataResult = new List<IMovie >();
+            foreach (var result in rawResponse.results)
+            {
+                Console.WriteLine(result);
+                dataResult.Add(await MovieAdapter.FromJson(result));
+			}
+
+            return Ok(dataResult);
         }
 
 
