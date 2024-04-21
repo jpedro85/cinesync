@@ -1,53 +1,54 @@
 using CineSync.Data.Models;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
 
 namespace CineSync.Utils.Adapters.ApiAdapters
 {
     public class MovieDetailsAdapter : IMovie
     {
-        private readonly dynamic _rawResponse;
+        private readonly static string _imageService = "https://image.tmdb.org/t/p/w200/";
+        public int MovieId { get; set; }
+        public string Title { get; set; }
+        public byte[] PosterImage { get; set; }
+        public ICollection<Genre> Genres { get; set; }
+        public string Overview { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public ICollection<string> Cast { get; set; }
+        public string TrailerKey { get; set; }
+        public short RunTime { get; set; }
+        public float Rating { get; set; }
 
-        private MovieDetailsAdapter(dynamic rawResponse)
+        public static MovieDetailsAdapter FromJson(string json)
         {
-            this._rawResponse = rawResponse;
-        }
+            var jObject = JObject.Parse(json);
 
-        public int MovieId => _rawResponse.id;
-        public string Title => (string)_rawResponse.title;
-        public byte[] PosterImage { get; private set; }
-        public ICollection<Genre> Genres => ((IEnumerable<dynamic>)_rawResponse.genres)
-                                                .Select(genre => new Genre() { Name = (string)genre.name, TmdbId = (int)genre.Id }).ToList();
-        public string Overview => _rawResponse.overview;
-        public DateTime ReleaseDate => DateTime.Parse((string)_rawResponse.release_date);
-        public ICollection<string> Cast => ((IEnumerable<dynamic>)_rawResponse.credits.cast).Select(cast => (string)cast.name).ToList();
-        public string TrailerKey => ((IEnumerable<dynamic>)_rawResponse.videos.results).First(video => video.type == "Trailer").key;
-        public short RunTime => (short)_rawResponse.runtime;
-        public float Rating => (float)_rawResponse.vote_average;
+            var adapter = new MovieDetailsAdapter
+            {
+                MovieId = (int)jObject["id"],
+                Title = (string)jObject["title"],
+                Overview = (string)jObject["overview"],
+                ReleaseDate = DateTime.Parse((string)jObject["release_date"]),
+                RunTime = (short)jObject["runtime"],
+                Rating = (float)jObject["vote_average"],
+                Genres = jObject["genres"].Select(j => new Genre { TmdbId = (int)j["id"], Name = (string)j["name"] }).ToList(),
+                Cast = jObject["credits"]["cast"].Take(10).Select(castObj => (string)castObj["name"]).ToList(),
+                TrailerKey = jObject["videos"]["results"].FirstOrDefault(videoObj => (bool)videoObj["official"] && (string)videoObj["site"] == "YouTube")?["key"].ToString()
+            };
 
+            string posterPath = (string)jObject["poster_path"];
+            if (!string.IsNullOrEmpty(posterPath))
+            {
+                adapter.PosterImage = FetchImageAsync(_imageService + posterPath).Result;
+            }
 
-        public static async Task<IMovie> FromJson(dynamic jsonObject)
-        {
-            // var rawResponse = JsonConvert.DeserializeObject<dynamic>(jsonString);
-            var adapter = new MovieDetailsAdapter(jsonObject);
-            await adapter.InitializeAsync();
             return adapter;
         }
 
-        private async Task InitializeAsync()
+        private static async Task<byte[]> FetchImageAsync(string url)
         {
-            Console.WriteLine((string)_rawResponse.poster_path);
-            string endpoint = (string) _rawResponse.poster_path;
-            if (endpoint != null)
-                PosterImage = await FetchImageAsync(endpoint);
-        }
-
-        private static async Task<byte[]> FetchImageAsync(string endpoint)
-        {
-            string imageService = "https://image.tmdb.org/t/p/w200/";
-            using (HttpClient client = new HttpClient())
+            using (var client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(imageService + endpoint);
+                var response = await client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadAsByteArrayAsync();

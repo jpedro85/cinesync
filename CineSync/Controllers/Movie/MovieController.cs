@@ -28,8 +28,7 @@ namespace CineSync.Controllers.Movie
             string endpoint = $"movie/{id}?append_to_response=credits,videos";
             _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            var rawResponse = JsonConvert.DeserializeObject<dynamic>(data);
-            IMovie movie = await MovieDetailsAdapter.FromJson(rawResponse);
+            MovieDetailsAdapter movie = MovieDetailsAdapter.FromJson(data);
             return Ok(movie);
         }
 
