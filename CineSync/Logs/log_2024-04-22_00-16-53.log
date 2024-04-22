@@ -1,0 +1,2 @@
+[2024-04-22_00:18:12]: [INFO] Fetching the Movie details 9502
+[2024-04-22_00:19:23]: [ERROR] Exception thrown in System.Text.Json.ThrowHelper.ThrowJsonException_SerializerCycleDetected: A possible object cycle was detected. This can either be due to a cycle or if the object depth is larger than the maximum allowed depth of 32. Consider using ReferenceHandler.Preserve on JsonSerializerOptions to support cycles. Path: $.Genres.Movies.Genres.Movies.Genres.Movies.Genres.Movies.Genres.Movies.Genres.Movies.Genres.Movies.Genres.Movies.

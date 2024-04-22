@@ -1,0 +1,4 @@
+[2024-04-22_19:54:30] [INFO] Fetching the Movie details 1011983
+[2024-04-22_19:54:31] [ERROR] Exception thrown in CineSync.Utils.Adapters.ApiAdapters.MovieDetailsAdapter+<FromJson>d__3.MoveNext: Object reference not set to an instance of an object.
+[2024-04-22_19:54:47] [INFO] Fetching the Movie details 1011985
+[2024-04-22_19:54:47] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully

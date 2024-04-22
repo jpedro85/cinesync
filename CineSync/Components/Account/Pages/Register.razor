@@ -16,11 +16,19 @@
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Register</PageTitle>
-
-<h1>Register</h1>
-
-<div class="row">
-    <div class="col-md-4">
+<div class="page">
+    <div class="navbar">
+        <div class="navbar-content">
+            <button class="menu-button">&#9776;</button>
+            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+            <h1 class="navbar-title">CineSync</h1>
+            <NavLink href="/Account/Login">
+                <button class="login-button">Login</button>
+            </NavLink>
+        </div>
+    </div>
+    <div class="main-content">
+     <div class="form-container">
         <StatusMessage Message="@Message" />
         <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
             <DataAnnotationsValidator />
@@ -42,19 +50,18 @@
                 <label for="confirm-password">Confirm Password</label>
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                <button type="submit" class="login">Register</button>
         </EditForm>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
-    </div>
-</div>
+    
+   </div>
+  </div>
+    <footer>&copy; Copyright 2024 Engenharia de Software</footer>
+ </div>
+
+
 
 @code {
+
     private IEnumerable<IdentityError>? identityErrors;
 
     [SupplyParameterFromForm]
@@ -74,10 +81,19 @@
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
         var result = await UserManager.CreateAsync(user, Input.Password);
 
-        if (!result.Succeeded)
+        if ( !result.Succeeded )
         {
             identityErrors = result.Errors;
+
+            Console.WriteLine("No creeated1", result.Errors);
             return;
+        } 
+        
+        result = await UserManager.AddToRoleAsync(user, "user");
+
+        if (!result.Succeeded)
+        {
+            await UserManager.DeleteAsync(user);
         }
 
         Logger.LogInformation("User created a new account with password.");
