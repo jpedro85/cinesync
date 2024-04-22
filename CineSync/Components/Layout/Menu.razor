@@ -7,8 +7,7 @@
         <span class="oi oi-monitor" style="color:white;" aria-hidden="true"></span>
         @if (!@IconMenuActive)
         {
-            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
-            <a class="navbar-brand" href="">CineSync</a>
+            <a class="navbar-brand" href="">Menu</a>
         }
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
@@ -18,6 +17,7 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
+        <div class="sidebar-separator"></div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span>
@@ -29,26 +29,87 @@
         </div>
         <AuthorizeView>
             <Authorized>
+                
                  <div class="nav-item px-3">
                     <NavLink class="nav-link" href="Profile">
-                        <span class="oi oi-plus" aria-hidden="true"></span>
+                        <span class="subway--admin" aria-hidden="true"></span>
                         @if (!@IconMenuActive)
                         {
                             <label>Profile</label>
                         }
                     </NavLink>
                 </div>
+                @if (!@IconMenuActive)
+                {
+                    <div class="sidebar-separator"></div>
+                    <a style="color:white;position:relative;padding-left:80px;:Itim;font-weight:500px;">Collections</a>
+                    <div class="sidebar-separator"></div>
+                }
+                else
+                {
+                    <div class="sidebar-separator-closed"></div>
+                }
                 <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="AllCollections">
+                        <span class="mdi--books" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>All Collections</label>
+                        }
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Profile">
+                        <span class="mdi--heart" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>Favorites</label>
+                        }
+                    </NavLink>
+                </div>
+                @if (!@IconMenuActive)
+                {
+                    <div class="sidebar-separator"></div>
+                    <a style="color:white;position:relative;padding-left:80px;:Itim;font-weight:500px;">Following</a>
+                    <div class="sidebar-separator"></div>
+                }
+                else
+                {
+                    <div class="sidebar-separator-closed"></div>
+                }
+                @if (!@IconMenuActive)
+                {
+                    <div class="sidebar-separator"></div>
+                    <a style="color:white;position:relative;padding-left:80px;:Itim;font-weight:500px;">Account</a>
+                    <div class="sidebar-separator"></div>
+                }
+                else
+                {
+                    <div class="sidebar-separator-closed"></div>
+                }
+                <div class="nav-item px-3">
+                <span class="material-symbols--logout-sharp" aria-hidden="true"></span>
+                @if(!IconMenuActive){
                     <form action="Account/Logout" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="ReturnUrl" value="" />
-                        <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                        <button type="submit" class="LogoutBTN" >
+                             Logout
                         </button>
                     </form>
+                }
                 </div>
             </Authorized>
             <NotAuthorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="">
+                        <span class="material-symbols--search" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>Search</label>
+                        }
+                    </NavLink>
+                </div>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Account/Login">
                     <span class="oi oi-list-rich" aria-hidden="true"></span>
