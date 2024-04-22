@@ -110,8 +110,6 @@ h2{
 }
 
     .buttonProfile:hover {
-        transition: 752ms;
-        padding: 10px 50px;
         background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
         color: #000000;
         border: solid 2px #0066cc;
