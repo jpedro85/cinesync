@@ -19,16 +19,16 @@ namespace CineSync.DbManagers
 
         public virtual async Task<bool> AddAsync(TEntity entity)
         {
-            _logger.Log($"Attemtping to save the entity {entity.GetType()} to the database",LogTypes.DEBUG);
+            _logger.Log($"Attemtping to save the entity {entity.GetType()} to the database", LogTypes.DEBUG);
             _dbContext.Set<TEntity>().Add(entity);
             bool result = await _dbContext.SaveChangesAsync() > 0;
-            _logger.Log($"Saved entity {entity.GetType()} successfully to the database",LogTypes.DEBUG);
+            _logger.Log($"Saved entity {entity.GetType()} successfully to the database", LogTypes.DEBUG);
             return result;
         }
 
         public virtual async Task<bool> RemoveAsync(TEntity entity)
         {
-            _logger.Log($"Attemtping to remove the entity {entity.ToString()} to the database",LogTypes.DEBUG);
+            _logger.Log($"Attemtping to remove the entity {entity.ToString()} to the database", LogTypes.DEBUG);
             _dbContext.Set<TEntity>().Remove(entity);
             return await _dbContext.SaveChangesAsync() > 0;
         }
@@ -51,6 +51,16 @@ namespace CineSync.DbManagers
                 query = query.Include(include);
             }
             return await query.Where(predicate).ToListAsync();
+        }
+
+        public virtual async Task<TEntity?> GetFirstByConditionAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+        {
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.FirstOrDefaultAsync(predicate);
         }
 
         public virtual async Task<List<TEntity>> GetAllAsync()

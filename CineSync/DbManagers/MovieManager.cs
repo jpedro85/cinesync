@@ -8,10 +8,7 @@ namespace CineSync.DbManagers
     {
         public async Task<Movie?> GetByTmdbId(int tmdbId)
         {
-            var result = await GetByConditionAsync(movie => movie.MovieId == tmdbId, "Genres");
-            if (result.Count() != 0)
-                return result.First();
-            return null;
+            return await GetFirstByConditionAsync(movie => movie.MovieId == tmdbId, "Genres");
         }
 
     }

@@ -38,10 +38,6 @@ namespace CineSync.Utils.Logger.Strategies
         public void Log(string message, LogTypes? type)
         {
             _logQueue.Add(message + Environment.NewLine);
-            // lock (_lock)
-            // {
-            //     File.AppendAllText(_filePath, message + Environment.NewLine);
-            // }
         }
 
         private void ProcessLogQueue()

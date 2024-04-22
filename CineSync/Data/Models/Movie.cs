@@ -28,7 +28,7 @@ namespace CineSync.Data.Models
 
         public IList<string>? Cast { get; set; }
 
-        public string TrailerKey { get; set; }
+        public string? TrailerKey { get; set; }
 
         public string? Director { get; set; }
 

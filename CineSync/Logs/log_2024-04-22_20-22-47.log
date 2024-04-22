@@ -1,0 +1,43 @@
+[2024-04-22_20:22:56] [INFO] Fetching the Movie details 1011983
+[2024-04-22_20:22:57] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:22:57] [INFO] Fetched the Movie details for 1011983 from the API, Successfully
+[2024-04-22_20:25:25] [INFO] Fetching the Movie details 1011983
+[2024-04-22_20:25:25] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:25:25] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:25:25] [INFO] Fetched the Movie details for 1011983 from the API, Successfully
+[2024-04-22_20:25:53] [INFO] Fetching the Movie details 1011983
+[2024-04-22_20:25:53] [ERROR] Exception thrown in Microsoft.Data.Sqlite.SqliteValueReader.GetString: The data is NULL at ordinal 12. This method can't be called on NULL values. Check using IsDBNull before calling.
+[2024-04-22_20:43:40] [INFO] Fetching the Movie details 1011985
+[2024-04-22_20:43:41] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:41] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:41] [INFO] Fetched the Movie details for 1011985 from the API, Successfully
+[2024-04-22_20:43:41] [INFO] Fetching the Movie details 238
+[2024-04-22_20:43:42] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:42] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:42] [INFO] Fetched the Movie details for 238 from the API, Successfully
+[2024-04-22_20:43:42] [INFO] Fetching the Movie details 9502
+[2024-04-22_20:43:42] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:42] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:42] [INFO] Fetched the Movie details for 9502 from the API, Successfully
+[2024-04-22_20:43:42] [INFO] Fetching the Movie details 278
+[2024-04-22_20:43:42] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:42] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:42] [INFO] Fetched the Movie details for 278 from the API, Successfully
+[2024-04-22_20:43:42] [INFO] Fetching the Movie details 240
+[2024-04-22_20:43:43] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:43] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:43] [INFO] Fetched the Movie details for 240 from the API, Successfully
+[2024-04-22_20:43:43] [INFO] Fetching the Movie details 424
+[2024-04-22_20:43:43] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:43] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:43] [INFO] Fetched the Movie details for 424 from the API, Successfully
+[2024-04-22_20:43:43] [INFO] Fetching the Movie details 389
+[2024-04-22_20:43:43] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:43] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:43] [INFO] Fetched the Movie details for 389 from the API, Successfully
+[2024-04-22_20:43:54] [INFO] Fetching the Movie details 1011983
+[2024-04-22_20:43:54] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_20:43:54] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_20:43:54] [INFO] Fetched the Movie details for 1011983 from the API, Successfully
+[2024-04-22_20:44:00] [INFO] Fetching the Movie details 1011983
+[2024-04-22_20:44:00] [ERROR] Exception thrown in Microsoft.Data.Sqlite.SqliteValueReader.GetString: The data is NULL at ordinal 12. This method can't be called on NULL values. Check using IsDBNull before calling.

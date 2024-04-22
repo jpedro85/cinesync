@@ -275,7 +275,6 @@ namespace CineSync.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TrailerKey")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

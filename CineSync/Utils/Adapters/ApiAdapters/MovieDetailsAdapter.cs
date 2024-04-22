@@ -16,7 +16,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
 
         public async Task<Movie> FromJson(string json)
         {
-            var jObject = JObject.Parse(json);
+            JObject jObject = JObject.Parse(json);
 
             Movie movie = new Movie
             {
@@ -27,7 +27,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
                 RunTime = (short)jObject["runtime"]!,
                 Rating = (float)jObject["vote_average"]!,
                 Cast = jObject["credits"]!["cast"]!.Take(10).Select(cast => (string)cast["name"]!).ToList(),
-                TrailerKey = jObject["videos"]!["results"]!.FirstOrDefault(video => (string)video["type"]! == "Trailer")!["key"]!.ToString()
+                // TrailerKey = jObject["videos"]!["results"]!.FirstOrDefault(video => (string)video["type"]! == "Trailer")!["key"]!.ToString()
             };
 
             // Fetches the Images asynchronously while its either saving the Genres or fetching them
@@ -37,13 +37,27 @@ namespace CineSync.Utils.Adapters.ApiAdapters
                 movie.PosterImage = FetchImageAsync(_imageService + posterPath).Result;
             }
 
+            JToken videoResults = jObject["videos"]?["results"];
+            if (videoResults != null)
+            {
+                var trailer = videoResults.FirstOrDefault(video => (string)video["type"] == "Trailer" && video["key"] != null);
+                if (trailer != null)
+                {
+                    movie.TrailerKey = trailer["key"].ToString();
+                }
+            }
 
             var genres = new List<Genre>();
-            foreach (var jGenre in jObject["genres"]!)
+            JToken jGenres = jObject["genres"];
+            if (jGenres != null)
             {
-                var genre = await EnsureGenreExists((int)jGenre["id"]!, (string)jGenre["name"]!);
-                genres.Add(genre);
+                foreach (var jGenre in jObject["genres"]!)
+                {
+                    var genre = await EnsureGenreExists((int)jGenre["id"]!, (string)jGenre["name"]!);
+                    genres.Add(genre);
+                }
             }
+
             movie.Genres = genres;
 
             return movie;
