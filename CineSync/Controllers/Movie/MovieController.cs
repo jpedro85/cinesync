@@ -1,9 +1,8 @@
+using CineSync.Data.Models;
+using CineSync.DbManagers;
 using CineSync.Utils.Logger;
 using CineSync.Utils.Logger.Enums;
 using CineSync.Utils.Adapters.ApiAdapters;
-using CineSync.Utils.Adapters;
-using CineSync.DbManagers;
-using CineSync.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -16,20 +15,20 @@ namespace CineSync.Controllers.MovieEndpoint
         private readonly MovieManager _movieManager;
         private readonly ApiService _apiService;
         private readonly ILoggerStrategy _logger;
+        private readonly MovieDetailsAdapter _movieDetailsAdapter;
 
-        public MovieController(ApiService apiService, ILoggerStrategy logger, MovieManager movieManager)
+        public MovieController(ApiService apiService, ILoggerStrategy logger, MovieManager movieManager, MovieDetailsAdapter movieDetailsAdapter)
         {
             _apiService = apiService;
             _logger = logger;
             _movieManager = movieManager;
+            _movieDetailsAdapter = movieDetailsAdapter;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
             var databaseResult = await _movieManager.GetByTmdbId(id);
-
-            Console.WriteLine(databaseResult);
 
             if (databaseResult != null)
             {
@@ -40,22 +39,9 @@ namespace CineSync.Controllers.MovieEndpoint
             string endpoint = $"movie/{id}?append_to_response=credits,videos";
             _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            IMovie movie = MovieDetailsAdapter.FromJson(data);
-            var databaseMovie = new Movie()
-            {
-                MovieId = movie.MovieId,
-                Title = movie.Title,
-                PosterImage = movie.PosterImage,
-                Genres = movie.Genres,
-                Overview = movie.Overview,
-                ReleaseDate = movie.ReleaseDate,
-                Cast = (IList<string>)movie.Cast,
-                TrailerKey = movie.TrailerKey,
-                RunTime = movie.RunTime,
-                Rating = movie.Rating,
-            };
+            Movie movie = await _movieDetailsAdapter.FromJson(data);
             // Add to the Database async
-            _movieManager.AddAsync(databaseMovie);
+            _movieManager.AddAsync(movie);
 
             return Ok(movie);
         }

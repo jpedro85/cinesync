@@ -1,50 +1,55 @@
+using CineSync.Data;
 using CineSync.Data.Models;
 using Newtonsoft.Json.Linq;
-using System.Text;
 
 namespace CineSync.Utils.Adapters.ApiAdapters
 {
-    public class MovieDetailsAdapter : IMovie
+    public class MovieDetailsAdapter
     {
         private readonly static string _imageService = "https://image.tmdb.org/t/p/w200/";
-        public int MovieId { get; set; }
-        public string Title { get; set; }
-        public byte[] PosterImage { get; set; }
-        public ICollection<Genre> Genres { get; set; }
-        public string Overview { get; set; }
-        public DateTime ReleaseDate { get; set; }
-        public ICollection<string> Cast { get; set; }
-        public string TrailerKey { get; set; }
-        public short RunTime { get; set; }
-        public float Rating { get; set; }
+        private readonly ApplicationDbContext _dbContext;
 
-        public static IMovie FromJson(string json)
+        public MovieDetailsAdapter(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<Movie> FromJson(string json)
         {
             var jObject = JObject.Parse(json);
 
-            var adapter = new MovieDetailsAdapter
+            Movie movie = new Movie
             {
-                MovieId = (int)jObject["id"],
-                Title = (string)jObject["title"],
-                Overview = (string)jObject["overview"],
-                ReleaseDate = DateTime.Parse((string)jObject["release_date"]),
-                RunTime = (short)jObject["runtime"],
-                Rating = (float)jObject["vote_average"],
-                Genres = jObject["genres"].Select(j => new Genre { TmdbId = (int)j["id"], Name = (string)j["name"] }).ToList(),
-                Cast = jObject["credits"]["cast"].Take(10).Select(castObj => (string)castObj["name"]).ToList(),
-                TrailerKey = jObject["videos"]["results"].FirstOrDefault(videoObj => (bool)videoObj["official"] && (string)videoObj["site"] == "YouTube")?["key"].ToString()
+                MovieId = (int)jObject["id"]!,
+                Title = (string)jObject["title"]!,
+                Overview = (string)jObject["overview"]!,
+                ReleaseDate = DateTime.Parse((string)jObject["release_date"]!),
+                RunTime = (short)jObject["runtime"]!,
+                Rating = (float)jObject["vote_average"]!,
+                Cast = jObject["credits"]!["cast"]!.Take(10).Select(cast => (string)cast["name"]!).ToList(),
+                TrailerKey = jObject["videos"]!["results"]!.FirstOrDefault(video => (string)video["type"]! == "Trailer")!["key"]!.ToString()
             };
 
-            string posterPath = (string)jObject["poster_path"];
+            // Fetches the Images asynchronously while its either saving the Genres or fetching them
+            string posterPath = (string)jObject["poster_path"]!;
             if (!string.IsNullOrEmpty(posterPath))
             {
-                adapter.PosterImage = FetchImageAsync(_imageService + posterPath).Result;
+                movie.PosterImage = FetchImageAsync(_imageService + posterPath).Result;
             }
 
-            return adapter;
+
+            var genres = new List<Genre>();
+            foreach (var jGenre in jObject["genres"]!)
+            {
+                var genre = await EnsureGenreExists((int)jGenre["id"]!, (string)jGenre["name"]!);
+                genres.Add(genre);
+            }
+            movie.Genres = genres;
+
+            return movie;
         }
 
-        private static async Task<byte[]> FetchImageAsync(string url)
+        private async Task<byte[]> FetchImageAsync(string url)
         {
             using (var client = new HttpClient())
             {
@@ -57,19 +62,18 @@ namespace CineSync.Utils.Adapters.ApiAdapters
             }
         }
 
-        public override string ToString()
+        private async Task<Genre> EnsureGenreExists(int tmdbId, string name)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine($"Movie ID: {MovieId}");
-            sb.AppendLine($"Overview: {Overview}");
-            sb.AppendLine($"Release Date: {ReleaseDate.ToShortDateString()}");
-            sb.AppendLine($"Run Time: {RunTime} minutes");
-            sb.AppendLine($"Genres: {string.Join(", ", Genres)}");
-            sb.AppendLine($"Cast: {string.Join(", ", Cast)}");
-            sb.AppendLine($"Trailer Key: {TrailerKey}");
-            sb.AppendLine($"Rating: {Rating}");
-
-            return sb.ToString();
+            var existingGenre = _dbContext.Set<Genre>().FirstOrDefault(g => g.TmdbId == tmdbId);
+            if (existingGenre == null)
+            {
+                var newGenre = new Genre { TmdbId = tmdbId, Name = name };
+                _dbContext.Set<Genre>().Add(newGenre);
+                await _dbContext.SaveChangesAsync();
+                return newGenre;
+            }
+            return existingGenre;
         }
+
     }
 }

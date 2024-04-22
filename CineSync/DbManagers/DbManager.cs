@@ -35,9 +35,14 @@ namespace CineSync.DbManagers
             return await DbContext.Set<TEntity>().FindAsync(objects);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            return await DbContext.Set<TEntity>().Where(predicate).ToListAsync();
+            IQueryable<TEntity> query = DbContext.Set<TEntity>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.Where(predicate).ToListAsync();
         }
 
         public virtual async Task<List<TEntity>> GetAllAsync()

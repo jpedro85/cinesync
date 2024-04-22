@@ -1,3 +1,5 @@
+using CineSync.Utils.Logger;
+using CineSync.Utils.Logger.Enums;
 using System.Net.Http.Headers;
 using System.Web;
 
@@ -12,18 +14,20 @@ namespace CineSync.Controllers
     public class ApiService
     {
         private readonly HttpClient _client;
-        private readonly string BEARER_TOKEN = Environment.GetEnvironmentVariable("BEARER_TOKEN");
+        private readonly string? BEARER_TOKEN = Environment.GetEnvironmentVariable("BEARER_TOKEN");
+        private readonly ILoggerStrategy _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiService"/> class, configuring it for communication with the TMDb API.
         /// </summary>
         /// <param name="client">The HttpClient instance to be used for making requests.</param>
-        public ApiService(HttpClient client)
+        public ApiService(HttpClient client, ILoggerStrategy logger)
         {
             _client = client;
             _client.BaseAddress = new Uri("https://api.themoviedb.org/3/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", BEARER_TOKEN);
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
+            _logger = logger;
         }
 
         /// <summary>
@@ -34,7 +38,7 @@ namespace CineSync.Controllers
         /// <remarks>
         /// This method attempts to retrieve data from the specified API endpoint. If the request fails due to an HTTP error, it logs the error to the console and returns null.
         /// </remarks>
-        public async Task<string> FetchDataAsync(string endpoint)
+        public async Task<string?> FetchDataAsync(string endpoint)
         {
             try
             {
@@ -44,8 +48,8 @@ namespace CineSync.Controllers
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("Message :{0} ", e.Message);
-                return null;
+                _logger.Log($"Message: {e.Message}", LogTypes.ERROR);
+                throw;
             }
         }
 

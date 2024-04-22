@@ -19,9 +19,9 @@ namespace CineSync.Utils.Adapters.ApiAdapters
             JObject obj = JObject.Load(reader);
             var movie = new MovieSearchAdapter
             {
-                MovieId = (int)obj["id"],
-                Title = (string)obj["title"],
-                PosterPath = (string)obj["poster_path"]
+                MovieId = (int)obj["id"]!,
+                Title = (string)obj["title"]!,
+                PosterPath = (string?)obj["poster_path"]
             };
 
             if (!string.IsNullOrWhiteSpace(movie.PosterPath))
