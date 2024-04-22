@@ -28,7 +28,7 @@ namespace CineSync.Controllers.MovieEndpoint
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
-            _logger.Log($"Fetching the Movie details {id}", LogTypes.DEBUG);
+            _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             var databaseResult = await _movieManager.GetByTmdbId(id);
 
             if (databaseResult != null)
@@ -43,7 +43,7 @@ namespace CineSync.Controllers.MovieEndpoint
             Movie movie = await _movieDetailsAdapter.FromJson(data);
             // Add to the Database async
             _movieManager.AddAsync(movie);
-            _logger.Log($"Fetched the Movie details for {id} from the API, Successfully", LogTypes.DEBUG);
+            _logger.Log($"Fetched the Movie details for {id} from the API, Successfully", LogTypes.WARN);
 
             return Ok(movie);
         }
@@ -71,6 +71,7 @@ namespace CineSync.Controllers.MovieEndpoint
             JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.Converters.Add(new MovieConverter());
             ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings)!;
+            _logger.Log($"Fetched the query results for {parameters.Query}, successfully", LogTypes.INFO);
 
             return Ok(apiResponse);
         }
@@ -87,7 +88,13 @@ namespace CineSync.Controllers.MovieEndpoint
             string endpoint = _apiService.BuildEndpoint("movie/popular", queryParams);
             _logger.Log($"Fetching the results for the popular movies query", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            return Ok(data);
+
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.Converters.Add(new MovieConverter());
+            ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings)!;
+            _logger.Log($"Fetched the results for the popular movies query successfully", LogTypes.INFO);
+
+            return Ok(apiResponse);
         }
 
         [HttpGet("upcoming")]

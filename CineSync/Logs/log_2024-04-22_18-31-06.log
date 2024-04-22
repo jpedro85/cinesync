@@ -1,0 +1,31 @@
+[2024-04-22_18:31:24]: [DEBUG] Fetching the Movie details 1011985
+[2024-04-22_18:31:25]: [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_18:31:25]: [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_18:31:25]: [DEBUG] Fetched the Movie details for 1011985 from the API, Successfully
+[2024-04-22_18:31:37]: [DEBUG] Fetching the Movie details 238
+[2024-04-22_18:31:38]: [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_18:31:38]: [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_18:31:38]: [DEBUG] Fetched the Movie details for 238 from the API, Successfully
+[2024-04-22_18:31:45]: [DEBUG] Fetching the Movie details 9502
+[2024-04-22_18:31:46]: [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_18:31:46]: [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_18:31:46]: [DEBUG] Fetched the Movie details for 9502 from the API, Successfully
+[2024-04-22_18:31:57]: [DEBUG] Fetching the Movie details 278
+[2024-04-22_18:31:57]: [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_18:31:57]: [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_18:31:57]: [DEBUG] Fetched the Movie details for 278 from the API, Successfully
+[2024-04-22_18:32:05]: [DEBUG] Fetching the Movie details 240
+[2024-04-22_18:32:05]: [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_18:32:05]: [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_18:32:05]: [DEBUG] Fetched the Movie details for 240 from the API, Successfully
+[2024-04-22_18:32:21]: [DEBUG] Fetching the Movie details 424
+[2024-04-22_18:32:21]: [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_18:32:21]: [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_18:32:21]: [DEBUG] Fetched the Movie details for 424 from the API, Successfully
+[2024-04-22_18:32:28]: [DEBUG] Fetching the Movie details 389
+[2024-04-22_18:32:29]: [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_18:32:29]: [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_18:32:29]: [DEBUG] Fetched the Movie details for 389 from the API, Successfully
+[2024-04-22_18:33:21]: [INFO] Fetching the results for the popular movies query
+[2024-04-22_18:37:55]: [INFO] Fetching the results for the popular movies query
+[2024-04-22_18:39:16]: [INFO] Fetching the results for the popular movies query
