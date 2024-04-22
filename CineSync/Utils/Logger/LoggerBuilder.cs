@@ -107,6 +107,23 @@ namespace CineSync.Utils.Logger
         }
 
         /// <summary>
+        /// Makes so that all the Text is plaintext and there is no escape sequences
+        /// This decorator prefixes log messages with the log type, indicating the severity or category of the log message.
+        /// Utilizes the <see cref="LogTypes"/> enum to tag log entries with types such as INFO, DEBUG, WARN, or ERROR.
+        /// </summary>
+        /// <returns>The same LoggerBuilder instance for chaining configuration calls.</returns>
+        public LoggerBuilder AsPlainText()
+        {
+            if (_currentLogger != null)
+            {
+                _currentLogger = new PlainText(_currentLogger);
+                byte lastElement = (byte)(_compositeLogger.Loggers.Count - 1);
+                _compositeLogger.Loggers[lastElement] = _currentLogger;
+            }
+            return this;
+        }
+
+        /// <summary>
         /// Completes the configuration and builds the composite logger containing all configured loggers and decorators.
         /// </summary>
         /// <returns>An instance of ILoggerStrategy representing the composed logger.</returns>

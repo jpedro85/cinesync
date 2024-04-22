@@ -29,9 +29,26 @@ namespace CineSync.Utils.Logger.Decorators
         /// </remarks>
         public override void Log(string message, LogTypes? type)
         {
+            string messageColor = "";
+            switch (type)
+            {
+                case LogTypes.WARN:
+                    messageColor = ColorSchemes.ORANGE;
+                    break;
+                case LogTypes.ERROR:
+                    messageColor = ColorSchemes.RED;
+                    break;
+                case LogTypes.DEBUG:
+                    messageColor = ColorSchemes.BLUE;
+                    break;
+                case LogTypes.INFO:
+                default:
+                    messageColor = ColorSchemes.GRAY;
+                    break;
+            }
             if (type.HasValue)
             {
-                string decoratedMessage = $"[{type.ToString()}] {message}";
+                string decoratedMessage = $"[{messageColor}{type.ToString()}{ColorSchemes.RESET}] {message}";
                 base.Log(decoratedMessage, type);
             }
             else

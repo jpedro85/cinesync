@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace CineSync.Controllers.MovieEndpoint
 {
+
     [Route("movie")]
     [ApiController]
     public class MovieController : ControllerBase
@@ -43,7 +44,7 @@ namespace CineSync.Controllers.MovieEndpoint
             Movie movie = await _movieDetailsAdapter.FromJson(data);
             // Add to the Database async
             _movieManager.AddAsync(movie);
-            _logger.Log($"Fetched the Movie details for {id} from the API, Successfully", LogTypes.WARN);
+            _logger.Log($"Fetched the Movie details for {id} from the API, Successfully", LogTypes.INFO);
 
             return Ok(movie);
         }
@@ -86,6 +87,7 @@ namespace CineSync.Controllers.MovieEndpoint
                 ["page"] = page ?? "1",
             };
             string endpoint = _apiService.BuildEndpoint("movie/popular", queryParams);
+
             _logger.Log($"Fetching the results for the popular movies query", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
 
@@ -106,9 +108,16 @@ namespace CineSync.Controllers.MovieEndpoint
                 ["page"] = page ?? "1",
             };
             string endpoint = _apiService.BuildEndpoint("movie/upcoming", queryParams);
+
             _logger.Log($"Fetching the results for the upcoming movies query", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            return Ok(data);
+
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.Converters.Add(new MovieConverter());
+            ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings)!;
+            _logger.Log($"Fetched the results for the upcoming movies query successfully", LogTypes.INFO);
+
+            return Ok(apiResponse);
         }
 
         [HttpGet("top-rated")]
@@ -120,9 +129,16 @@ namespace CineSync.Controllers.MovieEndpoint
                 ["page"] = page ?? "1",
             };
             string endpoint = _apiService.BuildEndpoint("movie/top_rated", queryParams);
+
             _logger.Log($"Fetching the results for the toprated movies query", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
-            return Ok(data);
+
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.Converters.Add(new MovieConverter());
+            ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings)!;
+            _logger.Log($"Fetched the results for the top-rated movies query successfully", LogTypes.INFO);
+
+            return Ok(apiResponse);
         }
 
     }
