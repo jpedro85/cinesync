@@ -13,6 +13,9 @@ namespace CineSync.Utils.Logger.Strategies
     {
         private readonly string _filePath;
         private BlockingCollection<string> _logQueue = new BlockingCollection<string>();
+        private static readonly object _lock = new object();
+        private Task _loggingTask;
+        private bool _isDisposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileLogger"/> class, setting the file path where logs will be written.
@@ -21,7 +24,7 @@ namespace CineSync.Utils.Logger.Strategies
         public FileLogger(string filePath)
         {
             _filePath = filePath;
-            Task.Run(() => ProcessLogQueue());
+            _loggingTask = Task.Run(() => ProcessLogQueue());
         }
 
         /// <summary>
@@ -35,6 +38,10 @@ namespace CineSync.Utils.Logger.Strategies
         public void Log(string message, LogTypes? type)
         {
             _logQueue.Add(message + Environment.NewLine);
+            // lock (_lock)
+            // {
+            //     File.AppendAllText(_filePath, message + Environment.NewLine);
+            // }
         }
 
         private void ProcessLogQueue()
@@ -44,7 +51,19 @@ namespace CineSync.Utils.Logger.Strategies
                 foreach (var entry in _logQueue.GetConsumingEnumerable())
                 {
                     file.Write(entry);
+                    file.Flush();
                 }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!_isDisposed)
+            {
+                _isDisposed = true;
+                _logQueue.CompleteAdding();
+                _loggingTask.Wait();
+                _logQueue.Dispose();
             }
         }
     }
