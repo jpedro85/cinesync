@@ -19,7 +19,7 @@ namespace CineSync.DbManagers
 
         public virtual async Task<bool> AddAsync(TEntity entity)
         {
-            _logger.Log($"Attemtping to save the entity {entity.GetType()} to the database", LogTypes.DEBUG);
+            _logger.Log($"Attemtping to save the entity {entity.ToString()} to the database", LogTypes.DEBUG);
             _dbContext.Set<TEntity>().Add(entity);
             bool result = await _dbContext.SaveChangesAsync() > 0;
             _logger.Log($"Saved entity {entity.GetType()} successfully to the database", LogTypes.DEBUG);
@@ -28,9 +28,12 @@ namespace CineSync.DbManagers
 
         public virtual async Task<bool> RemoveAsync(TEntity entity)
         {
-            _logger.Log($"Attemtping to remove the entity {entity.ToString()} to the database", LogTypes.DEBUG);
+            _logger.Log($"Attemtping to remove the entity {entity.GetType()} to the database", LogTypes.DEBUG);
             _dbContext.Set<TEntity>().Remove(entity);
-            return await _dbContext.SaveChangesAsync() > 0;
+
+            bool result = await _dbContext.SaveChangesAsync() > 0;
+            _logger.Log($"Attemtping to remove the entity {entity.ToString()} to the database", LogTypes.DEBUG);
+            return result;
         }
 
         public virtual async Task<TEntity?> GetByIdAsync(uint id)

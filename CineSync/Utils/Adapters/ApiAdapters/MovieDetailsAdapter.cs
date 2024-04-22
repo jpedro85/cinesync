@@ -8,6 +8,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
     {
         private readonly static string _imageService = "https://image.tmdb.org/t/p/w200/";
         private readonly ApplicationDbContext _dbContext;
+        private readonly HttpClient _client = new HttpClient();
 
         public MovieDetailsAdapter(ApplicationDbContext dbContext)
         {
@@ -27,53 +28,44 @@ namespace CineSync.Utils.Adapters.ApiAdapters
                 RunTime = (short)jObject["runtime"]!,
                 Rating = (float)jObject["vote_average"]!,
                 Cast = jObject["credits"]!["cast"]!.Take(10).Select(cast => (string)cast["name"]!).ToList(),
-                // TrailerKey = jObject["videos"]!["results"]!.FirstOrDefault(video => (string)video["type"]! == "Trailer")!["key"]!.ToString()
             };
 
             // Fetches the Images asynchronously while its either saving the Genres or fetching them
             string posterPath = (string)jObject["poster_path"]!;
             if (!string.IsNullOrEmpty(posterPath))
             {
-                movie.PosterImage = FetchImageAsync(_imageService + posterPath).Result;
+                movie.PosterImage = await FetchImageAsync(_imageService + posterPath);
             }
 
-            JToken videoResults = jObject["videos"]?["results"];
+            JToken? videoResults = jObject["videos"]?["results"];
             if (videoResults != null)
             {
-                var trailer = videoResults.FirstOrDefault(video => (string)video["type"] == "Trailer" && video["key"] != null);
-                if (trailer != null)
-                {
-                    movie.TrailerKey = trailer["key"].ToString();
-                }
+                movie.TrailerKey = videoResults?.FirstOrDefault(video => (string)video["type"] == "Trailer" && video["key"] != null)?["key"]?.ToString();
             }
 
-            var genres = new List<Genre>();
-            JToken jGenres = jObject["genres"];
+            List<Task<Genre>> genreTasks = new List<Task<Genre>>();
+            JToken? jGenres = jObject["genres"];
             if (jGenres != null)
             {
                 foreach (var jGenre in jObject["genres"]!)
                 {
-                    var genre = await EnsureGenreExists((int)jGenre["id"]!, (string)jGenre["name"]!);
-                    genres.Add(genre);
+                    genreTasks.Add(EnsureGenreExists((int)jGenre["id"]!, (string)jGenre["name"]!));
                 }
             }
 
-            movie.Genres = genres;
+            movie.Genres = await Task.WhenAll(genreTasks);
 
             return movie;
         }
 
         private async Task<byte[]> FetchImageAsync(string url)
         {
-            using (var client = new HttpClient())
+            var response = await _client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
             {
-                var response = await client.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadAsByteArrayAsync();
-                }
-                throw new Exception("Failed to download the image.");
+                return await response.Content.ReadAsByteArrayAsync();
             }
+            throw new Exception("Failed to download the image.");
         }
 
         private async Task<Genre> EnsureGenreExists(int tmdbId, string name)

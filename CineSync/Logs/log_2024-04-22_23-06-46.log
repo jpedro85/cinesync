@@ -1,0 +1,23 @@
+[2024-04-22_23:06:50] [INFO] Fetching the Movie details 1011985
+[2024-04-22_23:06:50] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully
+[2024-04-22_23:06:54] [INFO] Fetching the Movie details 1011
+[2024-04-22_23:06:55] [ERROR] Message: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_23:06:55] [ERROR] Exception thrown in System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_23:06:58] [INFO] Fetching the Movie details 101
+[2024-04-22_23:06:58] [DEBUG] Fetched the Movie details for 101 from the database, Successfully
+[2024-04-22_23:07:09] [INFO] Fetching the Movie details 985
+[2024-04-22_23:07:09] [DEBUG] Fetched the Movie details for 985 from the database, Successfully
+[2024-04-22_23:07:18] [INFO] Fetching the Movie details 9985
+[2024-04-22_23:07:18] [ERROR] Exception thrown in System.ThrowHelper.Throw: Value cannot be null. (Parameter 'factory')
+[2024-04-22_23:07:22] [INFO] Fetching the Movie details 998
+[2024-04-22_23:07:23] [ERROR] Message: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_23:07:23] [ERROR] Exception thrown in System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_23:07:25] [INFO] Fetching the Movie details 9982
+[2024-04-22_23:07:26] [ERROR] Exception thrown in System.ThrowHelper.Throw: Value cannot be null. (Parameter 'factory')
+[2024-04-22_23:07:28] [INFO] Fetching the Movie details 99822
+[2024-04-22_23:07:28] [ERROR] Exception thrown in System.ThrowHelper.Throw: Value cannot be null. (Parameter 'factory')
+[2024-04-22_23:07:35] [INFO] Fetching the Movie details 101185
+[2024-04-22_23:07:36] [ERROR] Message: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_23:07:36] [ERROR] Exception thrown in System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_23:07:39] [INFO] Fetching the Movie details 10118
+[2024-04-22_23:07:39] [ERROR] Exception thrown in System.ThrowHelper.Throw: Value cannot be null. (Parameter 'factory')

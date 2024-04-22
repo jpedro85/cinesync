@@ -1,0 +1,17 @@
+[2024-04-22_23:14:58] [INFO] Fetching the Movie details 10118
+[2024-04-22_23:14:59] [DEBUG] Attemtping to save the entity Movie: 
+  Id: 0
+  MovieId: 10118
+  Title: Material Girls
+  Genres: Comedy
+  Overview: Two wealthy sisters, both heiresses to their family's cosmetics fortune, are given a wake-up call when a scandal and ensuing investigation strip them of their wealth.
+  Release Date: 8/18/2006
+  Cast: Hilary Duff, Haylie Duff, María Conchita Alonso, Anjelica Huston, Lukas Haas, Marcus Coloma, Obba Babatundé, Henry Cho, Ty Hodges, Misti Traya
+  Trailer Key: MT_mqkj9ht4
+  Director: 
+  Awards: 
+  Run Time: 97 minutes
+  Comments: No Comments
+  Discussions: No Discussions to the database
+[2024-04-22_23:14:59] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_23:14:59] [INFO] Fetched the Movie details for 10118 from the API, Successfully

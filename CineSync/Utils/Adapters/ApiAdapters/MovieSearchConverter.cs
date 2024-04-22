@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Concurrent;
 
 namespace CineSync.Utils.Adapters.ApiAdapters
 {
@@ -8,6 +9,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
     {
         private static readonly HttpClient client = new HttpClient();
         private static readonly string imageService = "https://image.tmdb.org/t/p/w200/";
+        private static ConcurrentDictionary<string, byte[]> imageCache = new ConcurrentDictionary<string, byte[]>();
 
         public override bool CanConvert(Type objectType)
         {
@@ -27,11 +29,19 @@ namespace CineSync.Utils.Adapters.ApiAdapters
             if (!string.IsNullOrWhiteSpace(movie.PosterPath))
             {
                 string fullPath = imageService + movie.PosterPath;
-                var response = client.GetAsync(fullPath).Result;
-                if (response.IsSuccessStatusCode)
+                byte[] imageBytes;
+                // Checks if the path was already fetched on the cache if it is
+                // it will give its value to the imageBytes
+                if (!imageCache.TryGetValue(fullPath, out imageBytes))
                 {
-                    movie.PosterImage = response.Content.ReadAsByteArrayAsync().Result;
+                    var response = client.GetAsync(fullPath).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        imageBytes = response.Content.ReadAsByteArrayAsync().Result;
+                        imageCache.TryAdd(fullPath, imageBytes);
+                    }
                 }
+                movie.PosterImage = imageBytes;
             }
 
             return movie;

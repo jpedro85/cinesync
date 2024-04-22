@@ -1,0 +1,51 @@
+[2024-04-22_22:48:24] [INFO] Fetching the Movie details 1011985
+[2024-04-22_22:48:24] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully
+[2024-04-22_22:48:28] [INFO] Fetching the Movie details 10119
+[2024-04-22_22:48:29] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_22:48:29] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_22:48:29] [INFO] Fetched the Movie details for 10119 from the API, Successfully
+[2024-04-22_22:48:37] [INFO] Fetching the Movie details 1011985
+[2024-04-22_22:48:37] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully
+[2024-04-22_22:49:33] [INFO] Fetching the Movie details 1011
+[2024-04-22_22:49:34] [ERROR] Message: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_22:49:34] [ERROR] Exception thrown in System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_22:49:37] [INFO] Fetching the Movie details 10112
+[2024-04-22_22:49:38] [DEBUG] Attemtping to save the entity Movie: 
+  Id: 0
+  MovieId: 10112
+  Title: The Aristocats
+  Genres: Animation, Comedy, Family, Adventure
+  Overview: When Madame Adelaide Bonfamille leaves her fortune to Duchess and her children—Bonfamille’s beloved family of cats—the butler plots to steal the money and kidnaps the legatees, leaving them out on a country road. All seems lost until the wily Thomas O’Malley Cat and his jazz-playing alley cats come to the aristocats’ rescue.
+  Release Date: 12/24/1970
+  Cast: Phil Harris, Eva Gabor, Sterling Holloway, Scatman Crothers, Paul Winchell, Lord Tim Hudson, Vito Scotti, Thurl Ravenscroft, Dean Clark, Liz English
+  Trailer Key: h6M_OJ41NfA
+  Director: 
+  Awards: 
+  Run Time: 78 minutes
+  Comments: No Comments
+  Discussions: No Discussions to the database
+[2024-04-22_22:49:38] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_22:49:38] [INFO] Fetched the Movie details for 10112 from the API, Successfully
+[2024-04-22_22:49:59] [INFO] Fetching the Movie details 1011985
+[2024-04-22_22:49:59] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully
+[2024-04-22_23:01:57] [INFO] Fetching the Movie details 10119
+[2024-04-22_23:01:57] [DEBUG] Fetched the Movie details for 10119 from the database, Successfully
+[2024-04-22_23:02:00] [INFO] Fetching the Movie details 101198
+[2024-04-22_23:02:01] [DEBUG] Attemtping to save the entity Movie: 
+  Id: 0
+  MovieId: 101198
+  Title: That Special Summer
+  Genres: Drama
+  Overview: The year is 1984. It's summer, and the rebellious 12-year-old girl Kid wants to stay in Gothenburg, but her mother has other plans. Kid discovers that summer vacation in Finland isn't as bad as first feared. In a few hot weeks she discovers her dawning sexuality, and experience her first crush.
+  Release Date: 3/9/2007
+  Cast: Mia Saarinen, Milka Ahlroth, Kalle Ekdahl, Jonna Ekdahl, Agnes Sörensen, Jim Rautiainen, Mari Rantasila, Ralph Carlsson, Mats Blomgren, Linnea Cart-Lamy
+  Trailer Key: 
+  Director: 
+  Awards: 
+  Run Time: 90 minutes
+  Comments: No Comments
+  Discussions: No Discussions to the database
+[2024-04-22_23:02:01] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_23:02:01] [INFO] Fetched the Movie details for 101198 from the API, Successfully
+[2024-04-22_23:02:06] [INFO] Fetching the Movie details 1011985
+[2024-04-22_23:02:06] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully
