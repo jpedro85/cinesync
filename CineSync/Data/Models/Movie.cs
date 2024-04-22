@@ -1,5 +1,4 @@
-﻿using CineSync.Utils.Adapters;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineSync.Data.Models

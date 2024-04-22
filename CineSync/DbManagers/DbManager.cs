@@ -1,4 +1,6 @@
 ﻿using CineSync.Data;
+using CineSync.Utils.Logger;
+using CineSync.Utils.Logger.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -6,43 +8,54 @@ namespace CineSync.DbManagers
 {
     public class DbManager<TEntity> where TEntity : class
     {
-        protected readonly ApplicationDbContext DbContext;
+        protected readonly ApplicationDbContext _dbContext;
+        protected readonly ILoggerStrategy _logger;
 
-        public DbManager(ApplicationDbContext dbContext)
+        public DbManager(ApplicationDbContext dbContext, ILoggerStrategy logger)
         {
-            DbContext = dbContext;
+            _dbContext = dbContext;
+            _logger = logger;
         }
 
-        public async Task<bool> AddAsync(TEntity entity)
+        public virtual async Task<bool> AddAsync(TEntity entity)
         {
-            DbContext.Set<TEntity>().Add(entity);
-            return await DbContext.SaveChangesAsync() > 0;
+            _logger.Log($"Attemtping to save the entity {entity.GetType()} to the database",LogTypes.DEBUG);
+            _dbContext.Set<TEntity>().Add(entity);
+            bool result = await _dbContext.SaveChangesAsync() > 0;
+            _logger.Log($"Saved entity {entity.GetType()} successfully to the database",LogTypes.DEBUG);
+            return result;
         }
 
-        public async Task<bool> RemoveAsync(TEntity entity)
+        public virtual async Task<bool> RemoveAsync(TEntity entity)
         {
-            DbContext.Set<TEntity>().Remove(entity);
-            return await DbContext.SaveChangesAsync() > 0;
+            _logger.Log($"Attemtping to remove the entity {entity.ToString()} to the database",LogTypes.DEBUG);
+            _dbContext.Set<TEntity>().Remove(entity);
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<TEntity?> GetByIdAsync(uint id)
+        public virtual async Task<TEntity?> GetByIdAsync(uint id)
         {
-            return await DbContext.Set<TEntity>().FindAsync(id);
+            return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity?> GetByValuesAsync(params object[] objects)
+        public virtual async Task<TEntity?> GetByValuesAsync(params object[] objects)
         {
-            return await DbContext.Set<TEntity>().FindAsync(objects);
+            return await _dbContext.Set<TEntity>().FindAsync(objects);
         }
 
-        public async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            return await DbContext.Set<TEntity>().Where(predicate).ToListAsync();
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        public virtual async Task<List<TEntity>> GetAllAsync()
         {
-            return await DbContext.Set<TEntity>().ToListAsync();
+            return await _dbContext.Set<TEntity>().ToListAsync();
         }
     }
 }

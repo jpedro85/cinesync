@@ -6,6 +6,7 @@ using CineSync.Middleware;
 using CineSync.Controllers;
 using CineSync.Controllers.MovieEndpoint;
 using CineSync.Utils.Logger;
+using CineSync.Utils.Adapters.ApiAdapters;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,7 @@ namespace CineSync
             services.AddControllers();
             services.AddHttpClient<ApiService>();
             services.AddScoped<MovieController>();
+            services.AddScoped<MovieDetailsAdapter>();
         }
         private void AddLogger(IServiceCollection services)
         {
@@ -112,6 +114,11 @@ namespace CineSync
             services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
             services.AddScoped<MovieController>();
             services.AddScoped<MovieManager>();
+            // INFO: Solves the issue of supposedly loop of object when saving the parsed json to the database
+            services.AddControllers().AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                });
         }
 
         private void InitializeDb(WebApplication app)

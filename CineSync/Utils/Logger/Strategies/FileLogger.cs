@@ -1,4 +1,5 @@
 using CineSync.Utils.Logger.Enums;
+using System.Collections.Concurrent;
 
 namespace CineSync.Utils.Logger.Strategies
 {
@@ -11,7 +12,10 @@ namespace CineSync.Utils.Logger.Strategies
     public class FileLogger : ILoggerStrategy
     {
         private readonly string _filePath;
+        private BlockingCollection<string> _logQueue = new BlockingCollection<string>();
         private static readonly object _lock = new object();
+        private Task _loggingTask;
+        private bool _isDisposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileLogger"/> class, setting the file path where logs will be written.
@@ -20,6 +24,7 @@ namespace CineSync.Utils.Logger.Strategies
         public FileLogger(string filePath)
         {
             _filePath = filePath;
+            _loggingTask = Task.Run(() => ProcessLogQueue());
         }
 
         /// <summary>
@@ -32,9 +37,33 @@ namespace CineSync.Utils.Logger.Strategies
         /// </remarks>
         public void Log(string message, LogTypes? type)
         {
-            lock (_lock)
+            _logQueue.Add(message + Environment.NewLine);
+            // lock (_lock)
+            // {
+            //     File.AppendAllText(_filePath, message + Environment.NewLine);
+            // }
+        }
+
+        private void ProcessLogQueue()
+        {
+            using (StreamWriter file = new StreamWriter(_filePath, true))
             {
-                File.AppendAllTextAsync(_filePath, message + Environment.NewLine);
+                foreach (var entry in _logQueue.GetConsumingEnumerable())
+                {
+                    file.Write(entry);
+                    file.Flush();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!_isDisposed)
+            {
+                _isDisposed = true;
+                _logQueue.CompleteAdding();
+                _loggingTask.Wait();
+                _logQueue.Dispose();
             }
         }
     }

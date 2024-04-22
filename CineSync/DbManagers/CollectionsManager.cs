@@ -1,44 +1,44 @@
 ﻿using CineSync.Data;
 using CineSync.Data.Models;
-using System.Collections.ObjectModel;
+using CineSync.Utils.Logger;
 
 namespace CineSync.DbManagers
 {
-	public class CollectionsManager( ApplicationDbContext dbContext) : DbManager<MovieCollection>( dbContext)
-	{
-		public async Task AddMovieAsync( MovieCollection collection, Movie movie )
-		{
+    public class CollectionsManager(ApplicationDbContext dbContext, ILoggerStrategy logger) : DbManager<MovieCollection>(dbContext, logger)
+    {
+        public async Task AddMovieAsync(MovieCollection collection, Movie movie)
+        {
 
-			CollectionsMovies newMovie = new CollectionsMovies();
-			newMovie.MovieCollection = collection;
-			newMovie.Movie = movie;
-			newMovie.MovieId = movie.Id;
-			newMovie.MovieCollectionId = collection.Id;
+            CollectionsMovies newMovie = new CollectionsMovies();
+            newMovie.MovieCollection = collection;
+            newMovie.Movie = movie;
+            newMovie.MovieId = movie.Id;
+            newMovie.MovieCollectionId = collection.Id;
 
-			if ( collection.CollectionMovies == null )
-				collection.CollectionMovies = new List<CollectionsMovies>();
+            if (collection.CollectionMovies == null)
+                collection.CollectionMovies = new List<CollectionsMovies>();
 
-			if ( collection.CollectionMovies.Contains( newMovie ))
-			{
-				collection.CollectionMovies.Add( newMovie );
-				await DbContext.SaveChangesAsync();
-			}
-		}
+            if (collection.CollectionMovies.Contains(newMovie))
+            {
+                collection.CollectionMovies.Add(newMovie);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
 
-		public async Task RemoveMovieAsync( MovieCollection collection, Movie movie )
-		{
-			if ( collection.CollectionMovies != null )
-			{
-				foreach( var movieCollection in collection.CollectionMovies)
-				{
-					if(movieCollection.MovieId == movie.Id) 
-					{
-						collection.CollectionMovies.Remove( movieCollection );
-						await DbContext.SaveChangesAsync();
-					}
-				}
-			}
-		}
+        public async Task RemoveMovieAsync(MovieCollection collection, Movie movie)
+        {
+            if (collection.CollectionMovies != null)
+            {
+                foreach (var movieCollection in collection.CollectionMovies)
+                {
+                    if (movieCollection.MovieId == movie.Id)
+                    {
+                        collection.CollectionMovies.Remove(movieCollection);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                }
+            }
+        }
 
-	}
+    }
 }

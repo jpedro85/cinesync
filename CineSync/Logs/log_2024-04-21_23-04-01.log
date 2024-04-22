@@ -1,0 +1,1 @@
+[2024-04-21_23:04:46]: [ERROR] Exception thrown in System.Threading.Tasks.Task.ThrowIfExceptional: One or more errors occurred. (SQLite Error 1: 'no such column: m.MovieId'.)
