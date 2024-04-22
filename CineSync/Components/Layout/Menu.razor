@@ -1,9 +1,14 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿
+
+@inject NavigationManager NavigationManager
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <span class="oi oi-monitor" style="color:white;" aria-hidden="true"></span>
         @if (!@IconMenuActive)
         {
-            <a class="navbar-brand" href="">The Menu Title Here</a>
+            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+            <a class="navbar-brand" href="">CineSync</a>
         }
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
@@ -22,27 +27,50 @@
                 }
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span>
-                @if (!@IconMenuActive)
-                {
-                    <label>Counter</label>
-                }
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span>
-                @if (!@IconMenuActive)
-                {
-                    <label>Fetch data</label>
-                }
-            </NavLink>
-        </div>
+        <AuthorizeView>
+            <Authorized>
+                 <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Profile">
+                        <span class="oi oi-plus" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>Profile</label>
+                        }
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <form action="Account/Logout" method="post">
+                        <AntiforgeryToken />
+                        <input type="hidden" name="ReturnUrl" value="" />
+                        <button type="submit" class="nav-link">
+                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                        </button>
+                    </form>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Account/Login">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>
+                    @if (!@IconMenuActive)
+                    {
+                        <label>Login</label>
+                    }
+                 </NavLink>
+            </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Account/Register">
+                            <span class="oi--account-login" aria-hidden="true"></span>
+                            @if (!@IconMenuActive)
+                            {
+                                <label>Register</label>
+                            }
+                    </NavLink>
+                </div>
+               
+            </NotAuthorized>
+        </AuthorizeView>
     </nav>
-
-
 </div>
 
 <div class="bottom-row">
@@ -59,7 +87,6 @@
 </div>
 
 @code {
-    //bool to send to MainLayout for shrinking sidebar and showing/hide menu text
     private bool IconMenuActive { get; set; } = false;
 
     //EventCallback for sending bool to MainLayout
