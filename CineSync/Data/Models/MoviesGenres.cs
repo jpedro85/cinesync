@@ -3,7 +3,7 @@
 namespace CineSync.Data.Models
 {
     public class MoviesGenres
-    { 
+    {
         public int MovieId { get; set; }
 
         [Required]

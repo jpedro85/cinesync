@@ -1,4 +1,5 @@
 using CineSync.Utils.Logger.Enums;
+using System.Collections.Concurrent;
 
 namespace CineSync.Utils.Logger.Strategies
 {
@@ -11,7 +12,7 @@ namespace CineSync.Utils.Logger.Strategies
     public class FileLogger : ILoggerStrategy
     {
         private readonly string _filePath;
-        private static readonly object _lock = new object();
+        private BlockingCollection<string> _logQueue = new BlockingCollection<string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileLogger"/> class, setting the file path where logs will be written.
@@ -20,6 +21,7 @@ namespace CineSync.Utils.Logger.Strategies
         public FileLogger(string filePath)
         {
             _filePath = filePath;
+            Task.Run(() => ProcessLogQueue());
         }
 
         /// <summary>
@@ -32,9 +34,17 @@ namespace CineSync.Utils.Logger.Strategies
         /// </remarks>
         public void Log(string message, LogTypes? type)
         {
-            lock (_lock)
+            _logQueue.Add(message + Environment.NewLine);
+        }
+
+        private void ProcessLogQueue()
+        {
+            using (StreamWriter file = new StreamWriter(_filePath, true))
             {
-                File.AppendAllTextAsync(_filePath, message + Environment.NewLine);
+                foreach (var entry in _logQueue.GetConsumingEnumerable())
+                {
+                    file.Write(entry);
+                }
             }
         }
     }

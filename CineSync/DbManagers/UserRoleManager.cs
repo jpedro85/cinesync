@@ -1,36 +1,29 @@
 ﻿using CineSync.Data;
 using CineSync.Utils.Logger;
-using CineSync.Utils.Logger.Decorators;
 using CineSync.Utils.Logger.Enums;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System.Linq;
-using System.Security.Principal;
 
 namespace CineSync.DbManagers
 {
     public class UserRoleManager<TUser> : DbManager<IdentityRole> where TUser : IdentityUser
     {
         private readonly List<IdentityRole> _roles;
-        private readonly ILoggerStrategy _logger;
 
         public UserRoleManager(ApplicationDbContext dbContext, ILoggerStrategy logger)
-            : base(dbContext)
+            : base(dbContext, logger)
         {
             _roles = GetRoles();
-            _logger = logger;
         }
 
         public List<IdentityRole> GetRoles()
         {
-            return DbContext.Roles.ToList();
+            return _dbContext.Roles.ToList();
         }
 
         public async Task<ICollection<IdentityRole>> GetRolesAsync(CancellationToken cancellationToken = default)
         {
-            return await DbContext.Roles.ToListAsync(cancellationToken);
+            return await _dbContext.Roles.ToListAsync(cancellationToken);
         }
 
         public async Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken = default)
@@ -39,7 +32,7 @@ namespace CineSync.DbManagers
             {
                 if (role.Name == roleName)
                 {
-                    var userRole = await DbContext.UserRoles
+                    var userRole = await _dbContext.UserRoles
                         .Where(userRole => userRole.RoleId == role.Id && userRole.UserId == user.Id)
                         .Select(p => p)
                         .ToListAsync(cancellationToken);
@@ -60,8 +53,8 @@ namespace CineSync.DbManagers
                 {
                     if (role.Name == roleName)
                     {
-                        DbContext.UserRoles.Add(new IdentityUserRole<string>() { UserId = user.Id, RoleId = role.Id });
-                        return await DbContext.SaveChangesAsync() > 0;
+                        _dbContext.UserRoles.Add(new IdentityUserRole<string>() { UserId = user.Id, RoleId = role.Id });
+                        return await _dbContext.SaveChangesAsync() > 0;
                     }
                 }
 
@@ -74,9 +67,9 @@ namespace CineSync.DbManagers
 
         public async Task<ICollection<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken = default)
         {
-            var roles = await DbContext.Roles
+            var roles = await _dbContext.Roles
                 .Join(
-                    DbContext.UserRoles, r => r.Id, ur => ur.RoleId,
+                    _dbContext.UserRoles, r => r.Id, ur => ur.RoleId,
                     (r, ur) => new
                     {
                         RoleName = r.Name,
@@ -95,9 +88,9 @@ namespace CineSync.DbManagers
         {
             if (await IsInRoleAsync(user, roleName, cancellationToken))
             {
-                var result = await DbContext.UserRoles
+                var result = await _dbContext.UserRoles
                     .Join(
-                        DbContext.Roles, ur => ur.RoleId, r => r.Id,
+                        _dbContext.Roles, ur => ur.RoleId, r => r.Id,
                         (ur, r) => new
                         {
                             UserRoleRoleId = ur.RoleId,
@@ -111,10 +104,10 @@ namespace CineSync.DbManagers
 
                 foreach (var identityUserRole in result)
                 {
-                    DbContext.UserRoles.Remove(identityUserRole);
+                    _dbContext.UserRoles.Remove(identityUserRole);
                 }
 
-                DbContext.SaveChanges();
+                _dbContext.SaveChanges();
             }
 
             _logger.Log($" Tryed to remove Role {roleName} to a user that already has the role.", LogTypes.WARN);
@@ -122,16 +115,16 @@ namespace CineSync.DbManagers
 
         public async Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
-            var users = await DbContext.Roles
+            var users = await _dbContext.Roles
                 .Where(role => role.Name == roleName)
                 .Join(
-                    DbContext.UserRoles, role => role.Id, uRole => uRole.RoleId,
+                    _dbContext.UserRoles, role => role.Id, uRole => uRole.RoleId,
                     (role, uRole) => new
                     {
                         UserRoleUserId = uRole.UserId
                     })
                 .Join(
-                    DbContext.Users, uRole => uRole.UserRoleUserId, user => user.Id,
+                    _dbContext.Users, uRole => uRole.UserRoleUserId, user => user.Id,
                     (uRole, user) => new
                     {
                         User = user
@@ -156,7 +149,7 @@ namespace CineSync.DbManagers
                     {
                         if (role.Name == actualRoleName)
                         {
-                            var results = await DbContext.UserRoles
+                            var results = await _dbContext.UserRoles
                                 .Where(ur => ur.RoleId == role.Id && ur.UserId == user.Id)
                                 .Select(p => p)
                                 .ToListAsync();
@@ -164,9 +157,9 @@ namespace CineSync.DbManagers
                             foreach (var result in results)
                             {
                                 result.RoleId = newRole.Id;
-                                DbContext.Update(result);
+                                _dbContext.Update(result);
                             }
-                            return await DbContext.SaveChangesAsync() > 0;
+                            return await _dbContext.SaveChangesAsync() > 0;
                         }
                     }
 

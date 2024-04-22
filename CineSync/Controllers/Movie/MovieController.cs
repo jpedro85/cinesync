@@ -28,20 +28,22 @@ namespace CineSync.Controllers.MovieEndpoint
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
+            _logger.Log($"Fetching the Movie details {id}", LogTypes.DEBUG);
             var databaseResult = await _movieManager.GetByTmdbId(id);
 
             if (databaseResult != null)
             {
+                _logger.Log($"Fetched the Movie details for {id} from the database, Successfully", LogTypes.DEBUG);
                 return Ok(databaseResult);
             }
 
             // In case its not on the database
             string endpoint = $"movie/{id}?append_to_response=credits,videos";
-            _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
             Movie movie = await _movieDetailsAdapter.FromJson(data);
             // Add to the Database async
             _movieManager.AddAsync(movie);
+            _logger.Log($"Fetched the Movie details for {id} from the API, Successfully", LogTypes.DEBUG);
 
             return Ok(movie);
         }
@@ -66,10 +68,9 @@ namespace CineSync.Controllers.MovieEndpoint
             _logger.Log($"Fetching the query results for {parameters.Query}", LogTypes.INFO);
             string data = await _apiService.FetchDataAsync(endpoint);
 
-            var settings = new JsonSerializerSettings();
+            JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.Converters.Add(new MovieConverter());
-
-            ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings);
+            ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings)!;
 
             return Ok(apiResponse);
         }

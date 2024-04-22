@@ -38,7 +38,7 @@ namespace CineSync.Controllers
         /// <remarks>
         /// This method attempts to retrieve data from the specified API endpoint. If the request fails due to an HTTP error, it logs the error to the console and returns null.
         /// </remarks>
-        public async Task<string?> FetchDataAsync(string endpoint)
+        public async Task<string> FetchDataAsync(string endpoint)
         {
             try
             {
