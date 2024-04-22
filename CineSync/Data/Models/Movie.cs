@@ -40,5 +40,7 @@ namespace CineSync.Data.Models
 
         public ICollection<Discussion>? Discutions { get; set; }
 
+        public uint VoteCount { get; set; }
+
     }
 }

@@ -277,6 +277,9 @@ namespace CineSync.Migrations
                     b.Property<string>("TrailerKey")
                         .HasColumnType("TEXT");
 
+                    b.Property<uint>("VoteCount")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
