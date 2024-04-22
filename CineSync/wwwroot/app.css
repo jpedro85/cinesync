@@ -4,6 +4,7 @@ html, body {
     margin:0;
     position:relative;
     height:100%;
+    width:100%;
  
 }
 
@@ -101,85 +102,18 @@ h1:focus {
     border-color: #929292;
 }
 
-.navbar {
-    background: linear-gradient(to bottom, rgba(0, 1, 5, 10), transparent); /* Black fading background */
-    height: 10rem;
-    display: flex;
-    align-items: center;
-}
-.navbar-title {
-    margin: 0;
-    font-size: 24px;
-    display: inline-block;
-    margin-right: 10px;
-    color: white;
-    flex:1;
-}
-.navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.menu-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-}
-.Minilogo {
-    width: 50px;
-}
-.login-button {
-    font-family: Itim;
-    font-weight: 500;
-    font-size: 14px;
-    color: #ffffff;
-    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
-    padding: 10px 30px;
-    border: 2px solid #0066cc;
-    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
-    border-radius: 50px;
-    transition: 752ms;
-    transform: translateY(0);
-    align-items: center;
-    cursor: pointer;
-    margin-left: auto;
-    position: relative;
-    width:contain;
-    left: 1250px;
+a:link {
+    text-decoration: none;
 }
 
-    .login-button:hover {
-        transition: 752ms;
-        padding: 10px 50px;
-        transform: translateY(-0px);
-        background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
-        color: #000000;
-        border: solid 2px #0066cc;
-    }
-
-
-.login {
-    font-family: Itim;
-    font-weight: 500;
-    font-size: 14px;
-    color: #ffffff;
-    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
-    padding: 10px 30px;
-    border: 2px solid #0066cc;
-    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
-    border-radius: 50px;
-    transition: 752ms;
-    cursor: pointer;
-    position: relative;
-    left: 35%;
-    
+a:visited {
+    text-decoration: none;
 }
-        .login:hover {
-            padding: 10px 50px;
-            transform: translateY(-0px);
-            background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
-            color: #000000;
-            border: solid 2px #0066cc;
-        }
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}

@@ -19,4 +19,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Menus\" />
+    <Folder Include="Components\Buttons\" />
+    <Folder Include="Components\Footers\" />
+  </ItemGroup>
+
 </Project>

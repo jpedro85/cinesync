@@ -1,0 +1,57 @@
+﻿
+.NavSearchconteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    height: 60%;
+    justify-content: center;
+    vertical-align: central;
+    align-items: center;
+    padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+    border-radius: 3rem;
+    -webkit-transition: width 0.4s ease-in-out;
+    width: 150px;
+}
+
+    .NavSearchconteiner:hover {
+        box-shadow: inset 0 0 0 2px rgb(128, 128, 128);
+    }
+
+    .NavSearchconteiner.Active {
+        width: 500px;
+        box-shadow: inset 0 0 0 2px rgb(128, 128, 128);
+    }
+
+.NavSearch {
+    background-color: transparent;
+    color: white;
+    height: 2.5rem;
+    background: none;
+    outline: none;
+    border: none;
+    font-size: 20px;
+    flex-grow: 1;
+    min-width: 60px
+}
+
+    .NavSearch:focus{
+        width: 400px;
+        border-bottom: solid 2px white;
+    }
+
+    
+    .LopaConteiner {
+        width: fit-content;
+        height: fit-content;
+    }
+
+#lopa {
+    width: 1.3rem;
+    height: 1.5rem;
+    fill: white;
+}
+
+    #lopa:hover {
+        fill: rgb(128, 128, 128);
+        cursor: pointer;
+    }
