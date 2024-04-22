@@ -71,6 +71,7 @@ namespace CineSync
                     .AddTimeStamp()
                     .UseTraceDebugging()
                     .UseFileLogging($"./Logs/log_{formattedDate}.log")
+                    .AsPlainText()
                     .AddTimeStamp()
                     .AddType()
                     .Build());

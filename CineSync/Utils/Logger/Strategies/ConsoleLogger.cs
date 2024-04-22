@@ -21,7 +21,6 @@ namespace CineSync.Utils.Logger.Strategies
         public void Log(string message, LogTypes? type)
         {
             Console.WriteLine(message);
-
         }
     }
 }

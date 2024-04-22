@@ -29,7 +29,7 @@ namespace CineSync.Utils.Logger.Decorators
         public override void Log(string message, LogTypes? type)
         {
             string formattedDate = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
-            string decoratedMessage = $"[{formattedDate}]: {message}";
+            string decoratedMessage = $"[{ColorSchemes.YELLOW}{formattedDate}{ColorSchemes.RESET}] {message}";
             base.Log(decoratedMessage, type);
         }
     }
