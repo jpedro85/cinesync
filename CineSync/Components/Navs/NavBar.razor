@@ -1,7 +1,7 @@
 ﻿<div class="navbar">
     <div class="navbar-left">
        
-        <div class="navbar-item-conteiner" >
+        <div class="navbar-item-conteiner" @onclick=OnMenuClick>
             <svg class="menuButton" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 50V41.6667H50V50H0ZM0 29.1667V20.8333H50V29.1667H0ZM0 8.33333V0H50V8.33333H0Z" />
             </svg>
@@ -19,13 +19,48 @@
     </div>
     <div class="navbar-rigth">
 
-        <div class="navbar-item-conteiner">
-            <NavLink href="/Account/Login">
-                <button class="login-button">Login</button>
-            </NavLink>
-        </div>
+        @if ( User == null )
+        {
+            <div class="navbar-item-conteiner">
+                <NavLink href="/Account/Login">
+                    <button class="login-button">Login</button>
+                </NavLink>
+            </div>
+        }
+        else
+        {
+            <div class="navbar-item-conteiner ">
+                <NavLink href="@($"/Profile?id={User.Id}")">
+                    <div class="UserNameConteiner">
 
-        @if (hasSearch)
+                        <div class=" navbar-item-conteiner  userName">
+                            @User.UserName
+                        </div>
+
+                        <div class=" navbar-item-conteiner">
+
+                            @if (User.ProfileImage != null)
+                            {
+                                <img class="profileImage" src="@($"data:image/jpeg;base64,{ Convert.ToBase64String(User.ProfileImage) }")" alt="User" />
+                            }
+                            else
+                            {
+                                <img class="profileImage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png" alt="User" />
+                            }
+
+                        </div>
+                    </div>
+                 </NavLink>
+            </div>
+
+            <div class="navbar-item-conteiner" @onclick="OnclickNotification">
+                <svg class ="notificationIcon" width="30" height="36" viewBox="0 0 30 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30 28.6667V30.3334H0V28.6667L3.33333 25.3334V15.3334C3.33333 10.1667 6.71667 5.61671 11.6667 4.15004V3.66671C11.6667 2.78265 12.0179 1.93481 12.643 1.30968C13.2681 0.684563 14.1159 0.333374 15 0.333374C15.8841 0.333374 16.7319 0.684563 17.357 1.30968C17.9821 1.93481 18.3333 2.78265 18.3333 3.66671V4.15004C23.2833 5.61671 26.6667 10.1667 26.6667 15.3334V25.3334L30 28.6667ZM18.3333 32C18.3333 32.8841 17.9821 33.7319 17.357 34.3571C16.7319 34.9822 15.8841 35.3334 15 35.3334C14.1159 35.3334 13.2681 34.9822 12.643 34.3571C12.0179 33.7319 11.6667 32.8841 11.6667 32"  />
+                </svg>
+            </div>
+        }
+
+        @if (HasSearch)
         {
             <div class="navbar-item-conteiner">
                 <NavSearch></NavSearch>

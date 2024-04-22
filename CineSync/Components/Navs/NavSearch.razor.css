@@ -10,14 +10,17 @@
     padding: 1.2rem 1.2rem 1.2rem 1.2rem;
     border-radius: 3rem;
     -webkit-transition: width 0.4s ease-in-out;
-    width: 200px;
+    width: 150px;
 }
 
-.NavSearchconteinerAactive {
-    cursor: text;
-    box-shadow: inset 0 0 0 2px rgb(128, 128, 128);
-    width: 500px;
-}
+    .NavSearchconteiner:hover {
+        box-shadow: inset 0 0 0 2px rgb(128, 128, 128);
+    }
+
+    .NavSearchconteiner.Active {
+        width: 500px;
+        box-shadow: inset 0 0 0 2px rgb(128, 128, 128);
+    }
 
 .NavSearch {
     background-color: transparent;
@@ -25,36 +28,18 @@
     height: 2.5rem;
     background: none;
     outline: none;
-    border:none;
-    font-size: 20px;
-    flex-grow:1;
-    min-width:100px;
-}
-.NavSearchover {
-    width: 400px;
-    border-bottom: solid 2px white;
-}
-    /*.NavSearchHover {
-    background-color: transparent;
-    color: white;
     border: none;
-    height: 2.5rem;
-    background: none;*/
-    /*border: none;*/
-    /*outline: none;
     font-size: 20px;
-    width: 100%;
+    flex-grow: 1;
+    min-width: 60px
 }
 
-    .NavSearchHover:focus {*/
-    /* width: 100%;*/
-    /*border-bottom: solid 2px white;
+    .NavSearch:focus{
+        width: 400px;
+        border-bottom: solid 2px white;
     }
 
-    .NavSearchNormal:focus {*/
-    /*width: 100%;*/
-    /*border-bottom: solid 2px white;
-    }*/
+    
     .LopaConteiner {
         width: fit-content;
         height: fit-content;
@@ -64,8 +49,9 @@
     width: 1.3rem;
     height: 1.5rem;
     fill: white;
-    /*color: white;
-    stroke: white;
-    stroke-width: 2;
-    stroke-linecap: round;*/
 }
+
+    #lopa:hover {
+        fill: rgb(128, 128, 128);
+        cursor: pointer;
+    }

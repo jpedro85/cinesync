@@ -1,9 +1,10 @@
 ﻿@page "/"
 @using CineSync.Components.Navs
+@using CineSync.Data
 @inject NavigationManager NavigationManager
 
 <div class="MainConteiner">
-<NavBar hasSearch=true ></NavBar>
+<NavBar HasSearch=true User="@user" ></NavBar>
 
     <!-- Side menu -->
     <div class="side-menu">
@@ -64,6 +65,7 @@
 
 
 
+
 @if (showNavMenu)
 {
     <div class="sidebar">
@@ -73,6 +75,14 @@
 
 @code {
     private bool showNavMenu = false;
+
+    private ApplicationUser user;
+
+    protected override void OnInitialized()
+    {
+        user = new ApplicationUser();
+        user.UserName =  "teste";
+    }
 
     private void ToggleNavMenu()
     {
