@@ -1,17 +1,23 @@
 ﻿@inherits LayoutComponentBase
 @layout AccountLayout
-
-<h1>Manage your account</h1>
-
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <ManageNavMenu />
+<div class="page">
+    <div class="navbar">
+        <div class="navbar-content">
+            <button class="menu-button">&#9776;</button>
+            
+            <NavLink href="/">
+                <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+                <h1 class="navbar-title">CineSync</h1>
+            </NavLink>
         </div>
-        <div class="col-md-9">
-            @Body
-        </div>
+        <NavLink href="/Profile">
+        <button class="login">Back</button>
+        </NavLink>
     </div>
+    <div class="col-md-9">
+            @Body
+    </div>
+    <footer class="footer">
+        &copy; Copyright 2024 Engenharia de Software
+    </footer>
 </div>

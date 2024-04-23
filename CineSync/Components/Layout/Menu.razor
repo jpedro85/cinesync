@@ -1,92 +1,172 @@
-﻿@implements IDisposable
+﻿
 
 @inject NavigationManager NavigationManager
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">CineSync</a>
+        <span class="oi oi-monitor" style="color:white;" aria-hidden="true"></span>
+        @if (!@IconMenuActive)
+        {
+            <a class="navbar-brand" href="">Menu</a>
+        }
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
+        <div class="sidebar-separator"></div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span>
+                @if (!@IconMenuActive)
+                {
+                    <label>Home</label>
+                }
             </NavLink>
         </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="auth">
-                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
-            </NavLink>
-        </div>
-
         <AuthorizeView>
             <Authorized>
+                
+                 <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Profile">
+                        <span class="subway--admin" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>Profile</label>
+                        }
+                    </NavLink>
+                </div>
+                @if (!@IconMenuActive)
+                {
+                    <div class="sidebar-separator"></div>
+                    <a style="color:white;position:relative;padding-left:80px;:Itim;font-weight:500px;">Collections</a>
+                    <div class="sidebar-separator"></div>
+                }
+                else
+                {
+                    <div class="sidebar-separator-closed"></div>
+                }
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Manage">
-                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                    <NavLink class="nav-link" href="AllCollections">
+                        <span class="mdi--books" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>All Collections</label>
+                        }
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="Profile">
+                        <span class="mdi--heart" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>Favorites</label>
+                        }
+                    </NavLink>
+                </div>
+                @if (!@IconMenuActive)
+                {
+                    <div class="sidebar-separator"></div>
+                    <a style="color:white;position:relative;padding-left:80px;:Itim;font-weight:500px;">Following</a>
+                    <div class="sidebar-separator"></div>
+                }
+                else
+                {
+                    <div class="sidebar-separator-closed"></div>
+                }
+                @if (!@IconMenuActive)
+                {
+                    <div class="sidebar-separator"></div>
+                    <a style="color:white;position:relative;padding-left:80px;:Itim;font-weight:500px;">Account</a>
+                    <div class="sidebar-separator"></div>
+                }
+                else
+                {
+                    <div class="sidebar-separator-closed"></div>
+                }
+                <div class="nav-item px-3">
+                <span class="material-symbols--logout-sharp" aria-hidden="true"></span>
+                @if(!IconMenuActive){
                     <form action="Account/Logout" method="post">
                         <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                        <input type="hidden" name="ReturnUrl" value="" />
+                        <button type="submit" class="LogoutBTN" >
+                             Logout
                         </button>
                     </form>
+                }
                 </div>
             </Authorized>
             <NotAuthorized>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Register">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
+                    <NavLink class="nav-link" href="">
+                        <span class="material-symbols--search" aria-hidden="true"></span>
+                        @if (!@IconMenuActive)
+                        {
+                            <label>Search</label>
+                        }
                     </NavLink>
                 </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Account/Login">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>
+                    @if (!@IconMenuActive)
+                    {
+                        <label>Login</label>
+                    }
+                 </NavLink>
+            </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Login">
-                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
+                    <NavLink class="nav-link" href="Account/Register">
+                            <span class="oi--account-login" aria-hidden="true"></span>
+                            @if (!@IconMenuActive)
+                            {
+                                <label>Register</label>
+                            }
                     </NavLink>
                 </div>
+               
             </NotAuthorized>
         </AuthorizeView>
     </nav>
 </div>
 
+<div class="bottom-row">
+    <div class="icon-menu-arrow">
+        @if (!@IconMenuActive)
+        {
+            <span class="oi oi-arrow-left" style="color: white;" @onclick="ToggleIconMenu"></span>
+        }
+        else
+        {
+            <span class="oi oi-arrow-right" style="color: white;" @onclick="ToggleIconMenu"></span>
+        }
+    </div>
+</div>
+
 @code {
-    private string? currentUrl;
+    private bool IconMenuActive { get; set; } = false;
 
-    protected override void OnInitialized()
+    //EventCallback for sending bool to MainLayout
+    [Parameter]
+    public EventCallback<bool> ShowIconMenu { get; set; }
+
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
+        collapseNavMenu = !collapseNavMenu;
     }
 
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    //Method to toggle IconMenuActive bool and send bool via EventCallback
+    private async Task ToggleIconMenu()
     {
-        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
+        IconMenuActive = !IconMenuActive;
+        await ShowIconMenu.InvokeAsync(IconMenuActive);
     }
 }
-

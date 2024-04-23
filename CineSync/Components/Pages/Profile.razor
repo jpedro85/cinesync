@@ -1,0 +1,73 @@
+﻿@page "/Profile"
+<div class="page">
+<div class="navbar">
+    <div class="navbar-content">
+        <button class="menu-button">&#9776;</button>
+        <NavLink href="">
+            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+            <h1 class="navbar-title">CineSync</h1>
+        </NavLink>
+
+    
+    </div>
+</div>
+<div class="Profile">
+    <div class="Profile-sidebar">
+        <div class="Picture">
+            <img src="profilepic.jpg" class="Profile-pic">
+            <button id="Edit">
+                <svg width="25" height="25" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="25" cy="25" r="24.5" fill="currentColor" stroke="white" />
+                    <path d="M14.7358 34.2603H16.6509L28.4491 22.4452L26.5341 20.5274L14.7358 32.3425V34.2603ZM34.2969 20.4589L28.4833 14.7055L30.3984 12.7877C30.9228 12.2626 31.5671 12 32.3313 12C33.0955 12 33.7393 12.2626 34.2628 12.7877L36.1778 14.7055C36.7022 15.2306 36.9758 15.8644 36.9986 16.6068C37.0214 17.3493 36.7706 17.9826 36.2462 18.5068L34.2969 20.4589ZM32.3135 22.4795L17.8136 37H12V31.1781L26.4999 16.6575L32.3135 22.4795ZM27.4916 21.4863L26.5341 20.5274L28.4491 22.4452L27.4916 21.4863Z" fill="white" />
+                </svg>
+            </button>
+        </div>
+        <div class="Followers">
+            <span>10 following</span>
+            <span>10 followers</span>
+        </div>
+        <div class="Info">
+            <input type="text" placeholder="Username">
+            <input type="text" placeholder="Email">
+        </div>
+        <div class="Buttons">
+            <form action="Account/Logout" method="post">
+                <AntiforgeryToken />
+                    <input type="hidden" name="ReturnUrl" value="Account/Logout" />
+					<button action="Account/Logout" class="buttonProfile">
+                    <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                </button>
+            </form>
+                <NavLink href="/Account/Manage/ChangePassword">
+                    <button class="buttonProfile">Change Password</button>
+                </NavLink>
+                <NavLink href="/Account/Manage/Email">
+                    <button class="buttonProfile">Change Email</button>
+                </NavLink>
+            <button class="buttonProfile">Delete Account</button>
+        </div>
+    </div>
+    <div class="Profile-info">
+        <div class="Statistics">
+            <div class="Stats-title">
+                <h2>Statistics</h2>
+            </div>
+            <hr class="Info-line">
+            <div class="Stats">
+                <div class="User-Statistics">Watching time 0</div>
+            </div>
+        </div>
+        <div class="Collections">
+            <div class="Collection-title">
+                <h2>Collections</h2>
+            </div>
+            <hr class="Info-line">
+        </div>
+    </div>
+</div>
+    <footer>&copy; Copyright 2024 Engenharia de Software</footer>
+</div>
+
+@code {
+
+}
