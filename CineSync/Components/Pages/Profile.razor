@@ -31,7 +31,13 @@
             <input type="text" placeholder="Email">
         </div>
         <div class="Buttons">
-            <button class="buttonProfile">Log out </button>
+            <form action="Account/Logout" method="post">
+                <AntiforgeryToken />
+                    <input type="hidden" name="ReturnUrl" value="Account/Logout" />
+					<button action="Account/Logout" class="buttonProfile">
+                    <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                </button>
+            </form>
                 <NavLink href="/Account/Manage/ChangePassword">
                     <button class="buttonProfile">Change Password</button>
                 </NavLink>

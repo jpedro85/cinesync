@@ -8,16 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Components\ProfileImage.razor.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Components\Account\Pages\Manage\Email.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Components\Account\Pages\Manage\Email.razor.css" />
-    <Content Include="Components\ProfileImage.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>
