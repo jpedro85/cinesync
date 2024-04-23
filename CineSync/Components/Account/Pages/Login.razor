@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using CineSync.Data
-@using CineSync.Components.Pages
+
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
@@ -137,9 +137,5 @@
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
-    }
-    public void GoToLoginPage()
-    {
-        NavigationManager.NavigateTo("/Account/Login");
     }
 }

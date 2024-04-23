@@ -4,6 +4,7 @@
 @using CineSync.Data
 @using CineSync.Data.Models
 @inject NavigationManager NavigationManager
+@using CineSync.Components
 
 <div class="MainConteiner">
 
@@ -72,6 +73,15 @@
 
 @using System;
 @using System.IO;
+    <footer class="footer">
+        &copy; Copyright 2024 Engenharia de Software
+    </footer>
+</div>
+
+@if (showNavMenu)
+{
+    
+}
 
 @code {
 
