@@ -1,0 +1,2 @@
+[2024-04-23_13:48:23] [INFO] Fetching the Movie details 1011985
+[2024-04-23_13:48:23] [ERROR] Exception thrown in Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC: SQLite Error 1: 'no such column: m.VoteCount'.
