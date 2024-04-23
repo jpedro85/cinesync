@@ -1,0 +1,90 @@
+﻿
+.movieplace {
+    width: 300px;
+    height: fit-content;
+    background-color: black;
+    border: solid 5px rgb(0, 146, 255);
+    padding: 20px;
+    box-shadow: 0px 0px 20px 6px rgb(0 0 0);
+    margin: 25px;
+    border-radius: 25px;
+}
+
+    .movieplace:hover {
+        box-shadow: 0px 0px 25px 6px rgb(48 187 243);
+    }
+
+.PosterImage{
+    display:flex;
+    align-content:center;
+    justify-content:center;
+
+}
+
+.CsRating {
+    width: 20px;
+    height: 25px;
+}
+
+#IMDBRating {
+    width: 20px;
+    height: 25px;
+}
+
+.rating-icon {
+    align-content:center;
+    padding-top:5px;
+}
+
+#PosterImage {
+    width: 250px;
+    height: 380px;
+    border-radius:15px;
+}
+
+.movie-description {
+    display:flex;
+    flex-direction:column;
+}
+
+.rating-description {
+    display: flex;
+    flex-direction: row;
+    padding-left: 0.5rem;
+    padding-right: 0.6rem;
+    gap:10px;
+}
+
+.rating-item {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}
+
+.movie-Title-conteiner {
+    display:flex;
+    align-items:center;
+}
+
+.movie-Title {
+    color:white;
+    font-size:25px;
+    text-align:center;
+}
+
+.font-rating {
+    color: rgb(255, 156, 0);
+    font-size: 26px;
+    font-weight: 700;
+    height: 3rem;
+    align-content: end;
+}
+
+.font-rating-result {
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+    font-weight: 600;
+    height: 3rem;
+    align-content: end;
+}
+
