@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
-using CineSync.Data.Models;
+using CineSync.Utils.Adapters.ApiAdapters;
 
 namespace CineSync.Components.Movies
 {
-    public partial class MoviePlace
+    public partial class MoviePlace : ComponentBase
     {
 
         private string MoviePosterBase64 = string.Empty;
 
         [Parameter]
-        public Movie Movie { get; set; }
+        public MovieSearchAdapter? Movie { get; set; }
 
         [Parameter]
         public bool UseRatingCs { get; set; } = false;
@@ -22,7 +22,13 @@ namespace CineSync.Components.Movies
 
         protected override void OnInitialized()
         {
-            if(Movie.PosterImage != null)
+            if (Movie != null && Movie.PosterImage != null)
+                MoviePosterBase64 = Convert.ToBase64String(Movie.PosterImage);
+        }
+
+        protected override void OnParametersSet()
+        {
+            if (Movie != null && Movie.PosterImage != null && Movie.PosterImage.Length > 0)
                 MoviePosterBase64 = Convert.ToBase64String(Movie.PosterImage);
         }
     }

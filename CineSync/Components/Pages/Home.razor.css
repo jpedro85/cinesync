@@ -16,36 +16,42 @@
     background-image: url("BackgorundHome2.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size:cover;
+    background-size: cover;
 
 }
 
 .HomeMovie {
-    width:285px;
+    width: 285px;
 }
 
 .shadow {
     width: 100%;
     flex-grow: 1;
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1) 100% );
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1) 100%);
 }
 
 .searched-movies {
-    background: linear-gradient( rgb(0, 0, 0) 2%, rgba(0, 0, 0, 0.2) );
-    flex-grow: 1;
-    height:fit-content;
-    padding-left:2%;
-    padding-right:2%;
-    padding-top:1%;
-    padding-bottom:8%;
-    flex-wrap: wrap;
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
+    /* background: linear-gradient(rgb(0, 0, 0) 2%, rgba(0, 0, 0, 0.2)); */
+    /* flex-grow: 1; */
+    /* height: fit-content; */
+    /* padding-left: 2%; */
+    /* padding-right: 2%; */
+    /* padding-top: 1%; */
+    /* padding-bottom: 8%; */
+    /* flex-wrap: wrap; */
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* justify-content: center; */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    width: 100%;
+    transition: transform 0.5s ease-out;
 }
 
 #logo {
-    width:220px;
+    width: 220px;
 }
 
 .logo-container {
@@ -55,21 +61,22 @@
 }
 
 .logo-container-main {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
 .content {
     padding: 20px;
-    z-index:1;
-    gap:0.5rem;
-    padding-bottom:0;
+    z-index: 1;
+    gap: 0.5rem;
+    padding-bottom: 0;
     display: flex;
-    flex-direction: column; /* Center content vertically */
+    flex-direction: column;
+    /* Center content vertically */
     flex-grow: 1;
     align-items: center;
     padding-top: 10px;
-    padding-right:0;
-    padding-left:0;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 #search-conteiner {
@@ -80,49 +87,72 @@
     background-color: black;
     border: solid 2px white;
     overflow: clip;
-    width: 0; /* Start with width 0 */
+    width: 0;
+    /* Start with width 0 */
     animation: searchstart 3s forwards;
 }
 
 @keyframes searchstart {
     0% {
-        width:0;
+        width: 0;
     }
+
     /* Fully transparent */
     100% {
-        width:40%;
-    } 
+        width: 40%;
+    }
 }
 
 .buttonsearch {
-    background-color:white;
-    border-top-right-radius:100px;
-    width:70px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-width:70px;
+    background-color: white;
+    border-top-right-radius: 100px;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
 }
 
-    .buttonsearch:hover{
-        background-color:gray;
-        color:white;
+.buttonsearch:hover {
+    background-color: gray;
+    color: white;
 
-    }
+}
 
-    #lopa {
-        stroke: black;
-        color: black;
-        fill: black;
-    }
+#lopa {
+    stroke: black;
+    color: black;
+    fill: black;
+}
 
 .searchInput {
     background-color: black;
-    color:white;
-    outline:none;
-    border:none;
-    padding-left:20px;
-    padding-right:20px;
-    flex-grow:1;
+    color: white;
+    outline: none;
+    border: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-grow: 1;
 
+}
+
+
+.movie-item {
+    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    width: 20%; /* Adjust based on how many items you want visible at once */
+    transition: transform 0.5s ease-out;
+}
+
+.move-out {
+    transform: translateX(-100%);
+}
+
+.move-in {
+    transform: translateX(100%);
+    animation: slide-in 0.5s forwards;
+}
+
+@keyframes slide-in {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
 }

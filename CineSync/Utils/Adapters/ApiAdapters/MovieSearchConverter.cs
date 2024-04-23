@@ -8,7 +8,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
     public class MovieConverter : JsonConverter
     {
         private static readonly HttpClient client = new HttpClient();
-        private static readonly string imageService = "https://image.tmdb.org/t/p/w200/";
+        private static readonly string imageService = "https://image.tmdb.org/t/p/w300/";
         private static ConcurrentDictionary<string, byte[]> imageCache = new ConcurrentDictionary<string, byte[]>();
 
         public override bool CanConvert(Type objectType)
@@ -19,7 +19,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject obj = JObject.Load(reader);
-            var movie = new MovieSearchAdapter
+            MovieSearchAdapter movie = new MovieSearchAdapter
             {
                 MovieId = (int)obj["id"]!,
                 Title = (string)obj["title"]!,
@@ -34,7 +34,7 @@ namespace CineSync.Utils.Adapters.ApiAdapters
                 // it will give its value to the imageBytes
                 if (!imageCache.TryGetValue(fullPath, out imageBytes))
                 {
-                    var response = client.GetAsync(fullPath).Result;
+                    HttpResponseMessage response = client.GetAsync(fullPath).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         imageBytes = response.Content.ReadAsByteArrayAsync().Result;

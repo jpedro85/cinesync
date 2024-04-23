@@ -1,4 +1,6 @@
-namespace CineSync.Utils.Adapters.ApiAdapters
+using CineSync.Utils.Adapters.ApiAdapters;
+
+namespace CineSync.Controllers.MovieEndpoint
 {
     public class ApiSearchResponse
     {

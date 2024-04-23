@@ -115,6 +115,7 @@ namespace CineSync
             services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
             services.AddScoped<MovieController>();
             services.AddScoped<MovieManager>();
+            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5145") });
             // INFO: Solves the issue of supposedly loop of object when saving the parsed json to the database
             services.AddControllers().AddJsonOptions(options =>
                 {
