@@ -1,7 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @layout AccountLayout
 <div class="page">
-    <div class="row">
     <div class="navbar">
         <div class="navbar-content">
             <button class="menu-button">&#9776;</button>
@@ -10,15 +9,14 @@
                 <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
                 <h1 class="navbar-title">CineSync</h1>
             </NavLink>
-            </div>
-        <div class="col-md-3">
-            <ManageNavMenu />
         </div>
-        <div class="col-md-9">
-            @Body
-        </div>
+        <NavLink href="/Profile">
+        <button class="login">Back</button>
+        </NavLink>
     </div>
-</div>
+    <div class="col-md-9">
+            @Body
+    </div>
     <footer class="footer">
         &copy; Copyright 2024 Engenharia de Software
     </footer>
