@@ -23,9 +23,13 @@
         </div>
     </div>
     <div class="searched-movies">
-        @foreach (var movie in CurrentMovies)
-        {
-            <MoviePlace Movie="movie" UseIMDBRating="false" UseRatingCs="false" />
-        }
+        <div class="movie-carousel">
+            @foreach (var movie in CurrentMovies)
+            {
+                <div class="movie-item">
+                <MoviePlace  Movie="movie" UseIMDBRating="false" UseRatingCs="false" />
+                </div>
+            }
+        </div>
     </div>
 </div>

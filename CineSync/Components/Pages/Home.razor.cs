@@ -38,7 +38,7 @@ namespace CineSync.Components.Pages
 
         private void StartTimer()
         {
-            _timer = new System.Timers.Timer(3000);
+            _timer = new System.Timers.Timer(5000);
             _timer.Elapsed += UpdateCarousel;
             _timer.AutoReset = true;
             _timer.Enabled = true;

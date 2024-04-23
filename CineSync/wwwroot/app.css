@@ -8,7 +8,7 @@ html, body {
     position:relative;
     height:100%;
     width:100%;
- 
+    overflow: hidden;
 }
 
 a, .btn-link {
@@ -36,7 +36,7 @@ a, .btn-link {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
     max-width: 400px;
     width: 100%;
-    margin: auto; 
+    margin: auto;
     color:grey;
     outline:auto;
 }
@@ -133,7 +133,7 @@ a:active {
     cursor: pointer;
     position:absolute;
     left:90%;
-    
+
 }
         .login:hover {
             background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
@@ -166,7 +166,7 @@ a:active {
     width: 36px;
     border-bottom-right-radius: 4px;
     padding: 4px;
-   
+
 }
 
     .hide-show-btn:hover {
