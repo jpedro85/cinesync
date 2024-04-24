@@ -1,8 +1,9 @@
+using CineSync.Data;
 using System.Linq.Expressions;
 
 namespace CineSync.Core.Repository
 {
-    public interface IRepository<TEntity>
+    public interface IRepository<TEntity> where TEntity : Item
     {
         IQueryable<TEntity> GetAll();
 
