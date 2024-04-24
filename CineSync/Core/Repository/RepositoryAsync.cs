@@ -1,9 +1,7 @@
 using CineSync.Data;
-using CineSync.Core;
-using CineSync.Core.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Members.Shared.Data
+namespace CineSync.Core.Repository
 {
     public class RepositoryAsync<TEntity> : Repository<TEntity>, IRepositoryAsync<TEntity> where TEntity : Item
     {

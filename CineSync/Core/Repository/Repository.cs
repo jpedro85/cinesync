@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using CineSync.Data;
-using CineSync.Core.Repository;
-using CineSync.Core;
 using System.Linq.Expressions;
 
-namespace Members.Shared.Data
+namespace CineSync.Core.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : Item
     {
