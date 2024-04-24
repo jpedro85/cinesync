@@ -1,9 +1,7 @@
 ﻿namespace CineSync.Data.Models
 {
-    public class CommentAttachment
+    public class CommentAttachment : Item
     {
-        public uint Id { get; set; }
         public byte[]? Attachment { get; set; }
-
     }
 }

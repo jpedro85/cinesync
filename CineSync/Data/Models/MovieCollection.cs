@@ -1,13 +1,9 @@
-﻿using Microsoft.Identity.Client;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CineSync.Data.Models
 {
-    public class MovieCollection
+    public class MovieCollection : Item
     {
-        public uint Id { get; set; }
-
         [Required]
         public string? Name { get; set; }
 

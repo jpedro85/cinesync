@@ -1,12 +1,7 @@
-﻿using Azure;
-using Microsoft.Extensions.Hosting;
-
-namespace CineSync.Data.Models
+﻿namespace CineSync.Data.Models
 {
-    public class CollectionsMovies
+    public class CollectionsMovies : Item
     {
-        public uint Id { get; set; }
-
         public uint MovieId { get; set; }
 
         public uint MovieCollectionId { get; set; }
@@ -15,7 +10,7 @@ namespace CineSync.Data.Models
 
         public MovieCollection MovieCollection { get; set; } = null!;
 
-        public override bool Equals( object? obj )
+        public override bool Equals(object? obj)
         {
 
             if (obj == null || GetType() != obj.GetType())
@@ -25,11 +20,11 @@ namespace CineSync.Data.Models
 
             return Id == castObj.Id && MovieId == castObj.MovieId;
 
-		}
+        }
 
-		public override int GetHashCode()
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
