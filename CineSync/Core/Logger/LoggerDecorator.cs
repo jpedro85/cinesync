@@ -1,6 +1,6 @@
-using CineSync.Utils.Logger.Enums;
+using CineSync.Core.Logger.Enums;
 
-namespace CineSync.Utils.Logger
+namespace CineSync.Core.Logger
 {
     /// <summary>
     /// Provides a base for decorator implementations in the logging system, allowing for additional behaviors to be added to loggers dynamically.

@@ -1,6 +1,6 @@
-﻿using CineSync.Data;
-using CineSync.Utils.Logger;
-using CineSync.Utils.Logger.Enums;
+﻿using CineSync.Core.Logger;
+using CineSync.Core.Logger.Enums;
+using CineSync.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

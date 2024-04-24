@@ -1,8 +1,8 @@
+using System.Collections.Concurrent;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Concurrent;
 
-namespace CineSync.Utils.Adapters.ApiAdapters
+namespace CineSync.Core.Adapters.ApiAdapters
 {
 
     public class MovieConverter : JsonConverter

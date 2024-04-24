@@ -1,9 +1,9 @@
 using CineSync.Data;
 using CineSync.Controllers.MovieEndpoint;
-using CineSync.Utils.Adapters.ApiAdapters;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Components;
 using System.Timers;
+using CineSync.Core.Adapters.ApiAdapters;
 
 
 namespace CineSync.Components.Pages

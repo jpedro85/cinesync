@@ -1,6 +1,6 @@
-using CineSync.Utils.Logger.Enums;
+using CineSync.Core.Logger.Enums;
 
-namespace CineSync.Utils.Logger
+namespace CineSync.Core.Logger
 {
     /// <summary>
     /// Defines a contract for logging strategies used within the logging system.

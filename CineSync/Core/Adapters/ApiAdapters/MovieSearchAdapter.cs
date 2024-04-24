@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace CineSync.Utils.Adapters.ApiAdapters
+namespace CineSync.Core.Adapters.ApiAdapters
 {
     public class MovieSearchAdapter
     {

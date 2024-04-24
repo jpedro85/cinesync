@@ -1,8 +1,8 @@
+using CineSync.Core.Adapters.ApiAdapters;
+using CineSync.Core.Logger;
+using CineSync.Core.Logger.Enums;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
-using CineSync.Utils.Logger;
-using CineSync.Utils.Logger.Enums;
-using CineSync.Utils.Adapters.ApiAdapters;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

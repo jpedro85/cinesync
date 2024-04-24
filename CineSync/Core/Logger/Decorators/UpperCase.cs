@@ -1,6 +1,6 @@
-using CineSync.Utils.Logger.Enums;
+using CineSync.Core.Logger.Enums;
 
-namespace CineSync.Utils.Logger.Decorators
+namespace CineSync.Core.Logger.Decorators
 {
     /// <summary>
     /// A decorator that converts all log messages to uppercase.

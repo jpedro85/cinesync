@@ -1,4 +1,4 @@
-using CineSync.Utils.Adapters.ApiAdapters;
+using CineSync.Core.Adapters.ApiAdapters;
 
 namespace CineSync.Controllers.MovieEndpoint
 {

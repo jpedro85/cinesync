@@ -1,6 +1,6 @@
-﻿using CineSync.Data;
+﻿using CineSync.Core.Logger;
+using CineSync.Data;
 using CineSync.Data.Models;
-using CineSync.Utils.Logger;
 
 namespace CineSync.DbManagers
 {

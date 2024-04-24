@@ -1,7 +1,7 @@
-using CineSync.Utils.Logger.Enums;
 using System.Text.RegularExpressions;
+using CineSync.Core.Logger.Enums;
 
-namespace CineSync.Utils.Logger.Decorators
+namespace CineSync.Core.Logger.Decorators
 {
     public class PlainText : LoggerDecorator
     {

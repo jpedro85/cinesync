@@ -1,7 +1,7 @@
-using CineSync.Utils.Logger.Enums;
 using System.Collections.Concurrent;
+using CineSync.Core.Logger.Enums;
 
-namespace CineSync.Utils.Logger.Strategies
+namespace CineSync.Core.Logger.Strategies
 {
     /// <summary>
     /// A logging strategy that writes log messages to a specified file.

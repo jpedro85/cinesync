@@ -1,7 +1,7 @@
-using CineSync.Utils.Logger.Strategies;
-using CineSync.Utils.Logger.Decorators;
+using CineSync.Core.Logger.Decorators;
+using CineSync.Core.Logger.Strategies;
 
-namespace CineSync.Utils.Logger
+namespace CineSync.Core.Logger
 {
     // <summary>
     /// Builds a flexible logger by using a combination of different logging strategies and decorators.

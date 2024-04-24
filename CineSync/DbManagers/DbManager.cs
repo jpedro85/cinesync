@@ -1,8 +1,8 @@
 ﻿using CineSync.Data;
-using CineSync.Utils.Logger;
-using CineSync.Utils.Logger.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using CineSync.Core.Logger;
+using CineSync.Core.Logger.Enums;
 
 namespace CineSync.DbManagers
 {

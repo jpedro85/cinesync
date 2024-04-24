@@ -1,6 +1,6 @@
-using CineSync.Utils.Logger.Enums;
+using CineSync.Core.Logger.Enums;
 
-namespace CineSync.Utils.Logger
+namespace CineSync.Core.Logger
 {
     /// <summary>
     /// Represents a logger that maintains a collection of different logging strategies (loggers),

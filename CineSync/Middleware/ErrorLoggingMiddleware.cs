@@ -1,5 +1,5 @@
-using CineSync.Utils.Logger;
-using CineSync.Utils.Logger.Enums;
+using CineSync.Core.Logger;
+using CineSync.Core.Logger.Enums;
 
 namespace CineSync.Middleware
 {

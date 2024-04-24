@@ -1,6 +1,6 @@
-using CineSync.Utils.Logger.Enums;
+using CineSync.Core.Logger.Enums;
 
-namespace CineSync.Utils.Logger.Strategies
+namespace CineSync.Core.Logger.Strategies
 {
     /// <summary>
     /// A logging strategy that outputs log messages directly to the console.

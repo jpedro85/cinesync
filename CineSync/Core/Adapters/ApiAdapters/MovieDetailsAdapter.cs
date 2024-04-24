@@ -2,11 +2,11 @@ using CineSync.Data;
 using CineSync.Data.Models;
 using Newtonsoft.Json.Linq;
 
-namespace CineSync.Utils.Adapters.ApiAdapters
+namespace CineSync.Core.Adapters.ApiAdapters
 {
     public class MovieDetailsAdapter
     {
-        private readonly static string _imageService = "https://image.tmdb.org/t/p/w200/";
+        private static readonly string _imageService = "https://image.tmdb.org/t/p/w200/";
         private readonly ApplicationDbContext _dbContext;
         private readonly HttpClient _client = new HttpClient();
 

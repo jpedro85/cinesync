@@ -1,4 +1,4 @@
-namespace CineSync.Utils.Logger.Enums
+namespace CineSync.Core.Logger.Enums
 {
     /// <summary>
     /// Defines the types of logs that can be generated.
