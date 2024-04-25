@@ -4,36 +4,57 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Components;
 using System.Timers;
 using CineSync.Core.Adapters.ApiAdapters;
-
+using CineSync.Services;
+using CineSync.Components.Layout;
 
 namespace CineSync.Components.Pages
 {
     public partial class Home : ComponentBase, IDisposable
     {
+
         [Inject]
         private HttpClient _client { get; set; }
+
+        [Inject]
+        private NavBarEvents NavBarEvents { get; set; }
+
+        [Inject]
+        private LayoutService LayoutService { get; set; }
+
+        private MainLayout MainLayout { get; set; }
+
         private bool showNavMenu = false;
         private Queue<MovieSearchAdapter> movieQueue = new Queue<MovieSearchAdapter>();
+
         private List<MovieSearchAdapter> TopRatedMovies { get; set; }
+
         private System.Timers.Timer _timer;
-        public ApplicationUser User { get; set; }
+
         public List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>();
+
+        public ApplicationUser? AuthenticatedUser { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            MainLayout = LayoutService.MainLayout;
+            AuthenticatedUser = MainLayout.AuthenticatedUser;
+
             await FetchTopRatedMovies();
             InitializeQueue();
             StartTimer();
-            User = new ApplicationUser { UserName = "testuser" };
+
+            AuthenticatedUser = new ApplicationUser { UserName = "testuser" };
         }
 
         private void InitializeQueue()
         {
+
             foreach (var movie in TopRatedMovies.Take(5))
             {
                 movieQueue.Enqueue(movie);
             }
             UpdateCurrentMovies();
+
         }
 
         private void StartTimer()

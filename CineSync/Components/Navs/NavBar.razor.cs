@@ -1,10 +1,11 @@
 ﻿using CineSync.Data;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using CineSync.Services;
+
 
 namespace CineSync.Components.Navs
 {
-    public partial class NavBar
+    public partial class NavBar : ComponentBase
     {
         [Parameter]
         public bool HasSearch { get; set; } = false;
@@ -12,24 +13,8 @@ namespace CineSync.Components.Navs
         [Parameter]
         public ApplicationUser? User { get; set; }
 
-        public delegate void Change(bool status);
-        
-        private bool _isMenuOpen = false;
-        public event Change? OnMenuChange;
+        [Inject]
+        public NavBarEvents NavBarEvents { get; set; }
 
-        private bool _isNotificationOpen = false;
-        public event Change? OnNotificationChange;
-
-        private void OnclickNotification(MouseEventArgs e) 
-        {
-            _isNotificationOpen = !_isNotificationOpen;
-            OnNotificationChange?.Invoke(_isNotificationOpen);
-        }
-
-        private void OnMenuClick(MouseEventArgs e)
-        {
-            _isMenuOpen = !_isMenuOpen;
-            OnMenuChange?.Invoke(_isMenuOpen);
-        }
     }
 }
