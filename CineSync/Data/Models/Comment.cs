@@ -3,8 +3,9 @@
 namespace CineSync.Data.Models
 {
 
-    public class Comment : Item
+    public class Comment
     {
+        public uint Id { get; set; }
         [Required]
         public ApplicationUser? Autor { get; set; }
 

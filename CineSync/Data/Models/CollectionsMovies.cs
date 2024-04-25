@@ -1,7 +1,9 @@
 ﻿namespace CineSync.Data.Models
 {
-    public class CollectionsMovies : Item
+    public class CollectionsMovies 
     {
+        public uint Id { get; set; }
+ 
         public uint MovieId { get; set; }
 
         public uint MovieCollectionId { get; set; }

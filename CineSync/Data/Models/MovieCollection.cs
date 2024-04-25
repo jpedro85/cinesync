@@ -2,8 +2,10 @@
 
 namespace CineSync.Data.Models
 {
-    public class MovieCollection : Item
+    public class MovieCollection 
     {
+        public uint Id { get; set; } 
+        
         [Required]
         public string? Name { get; set; }
 

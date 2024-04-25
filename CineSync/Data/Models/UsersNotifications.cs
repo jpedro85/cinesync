@@ -2,8 +2,10 @@
 
 namespace CineSync.Data.Models
 {
-    public class UsersNotifications : Item
+    public class UsersNotifications 
     {
+        public uint Id { get; set; } 
+        
         public uint NotificationId { get; set; }
 
         [Required]

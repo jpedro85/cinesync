@@ -10,7 +10,7 @@ namespace CineSync.Core.Repository
         {
         }
 
-        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : Item
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
             return NullRepository<TEntity>.Instance;
         }

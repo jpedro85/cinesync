@@ -4,7 +4,7 @@ namespace CineSync.Core.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<TEntity> GetRepository<TEntity>() where TEntity : Item;
+        IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
 
         void Begin();
         void Commit();

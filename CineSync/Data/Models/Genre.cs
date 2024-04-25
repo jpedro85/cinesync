@@ -2,8 +2,9 @@
 
 namespace CineSync.Data.Models
 {
-    public class Genre : Item
+    public class Genre 
     {
+        public int Id { get; set; }
         public int? TmdbId { get; set; }
 
         [Required]

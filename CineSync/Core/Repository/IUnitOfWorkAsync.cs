@@ -4,8 +4,8 @@ namespace CineSync.Core.Repository
 {
     public interface IUnitOfWorkAsync : IUnitOfWork
     {
-        IRepositoryAsync<TEntity> GetRepositoryAsync<TEntity>() where TEntity : Item;
+        IRepositoryAsync<TEntity> GetRepositoryAsync<TEntity>() where TEntity : class;
 
-        Task SaveChangesAsync();
+        Task<bool> SaveChangesAsync();
     }
 }

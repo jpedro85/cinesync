@@ -10,7 +10,7 @@ namespace CineSync.Core.Repository
         {
         }
 
-        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : Item
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
             return NullRepository<TEntity>.Instance;
         }
@@ -35,14 +35,14 @@ namespace CineSync.Core.Repository
         {
         }
 
-        public IRepositoryAsync<TEntity> GetRepositoryAsync<TEntity>() where TEntity : Item
+        public IRepositoryAsync<TEntity> GetRepositoryAsync<TEntity>() where TEntity : class
         {
             return NullRepositoryAsync<TEntity>.Instance;
         }
 
-        public Task SaveChangesAsync()
+        public Task<bool> SaveChangesAsync()
         {
-            return Task.CompletedTask;
+            return Task.FromResult(false);
         }
     }
 }

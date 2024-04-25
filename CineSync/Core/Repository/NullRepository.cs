@@ -3,12 +3,22 @@ using System.Linq.Expressions;
 
 namespace CineSync.Core.Repository
 {
-    public sealed class NullRepository<T> : IRepository<T> where T : Item
+    public sealed class NullRepository<T> : IRepository<T> where T : class
     {
         public static NullRepository<T> Instance { get; } = new NullRepository<T>();
 
         private NullRepository()
         {
+        }
+
+        public IEnumerable<T> GetByCondition(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] includes)
+        {
+            return Enumerable.Empty<T>();
+        }
+
+        public T? GetFirstByCondition(Expression<Func<T, bool>> predicate, params string[] includes)
+        {
+            return null;
         }
 
         public T? Create( params object?[ ]? args )
@@ -19,6 +29,16 @@ namespace CineSync.Core.Repository
         public IQueryable<T> GetAll()
         {
             return Enumerable.Empty<T>().AsQueryable();
+        }
+
+        public T? Get(uint id)
+        {
+            return null;
+        }
+
+        public IEnumerable<T> GetByCondition(Expression<Func<T, bool>> predicate, params string[] includes)
+        {
+            return  Enumerable.Empty<T>() ;
         }
 
         public void Insert( T item )

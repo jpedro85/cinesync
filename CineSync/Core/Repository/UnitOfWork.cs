@@ -41,7 +41,7 @@ namespace CineSync.Core.Repository
 
         private IDictionary<Type, object> Repositories { get; } = new Dictionary<Type, object>();
 
-        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : Item
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
             if ( Repositories.ContainsKey( typeof( TEntity ) ) )
                 return Repositories[typeof( TEntity )] as IRepository<TEntity> ??
@@ -53,8 +53,8 @@ namespace CineSync.Core.Repository
             return repository ??
                    NullRepository<TEntity>.Instance;
         }
-
-        protected virtual IRepository<TEntity> CreateRepository<TEntity>() where TEntity : Item
+        
+        protected virtual IRepository<TEntity> CreateRepository<TEntity>() where TEntity :  class
         {
             return new Repository<TEntity>( Factory, Context );
         }

@@ -2,8 +2,10 @@
 
 namespace CineSync.Data.Models
 {
-    public class Discussion : Item
+    public class Discussion 
     {
+        public uint Id { get; set; }
+        
         [Required]
         public string? Title { get; set; }
 

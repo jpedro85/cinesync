@@ -1,18 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using CineSync.Data;
 using System.Linq.Expressions;
 
 namespace CineSync.Core.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : Item
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        public Repository( IFactory factory, DbContext context )
+        public Repository(IFactory factory, DbContext context)
         {
             Factory = factory;
             Context = context;
         }
 
-        protected IFactory  Factory { get; set; }
+        protected IFactory Factory { get; set; }
         protected DbContext Context { get; set; }
 
         public IQueryable<TEntity> GetAll()
@@ -20,14 +19,46 @@ namespace CineSync.Core.Repository
             return Context.Set<TEntity>();
         }
 
-        public TEntity? Get( int id )
+        public TEntity? Get(uint id)
         {
-            return Context.Set<TEntity>()?.FirstOrDefault( x => x.Id == id );
+            return Context.Set<TEntity>()?.Find(id);
         }
 
-        public TEntity? Create( params object?[]? args )
+        public IEnumerable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            return Factory.Create<TEntity>( args );
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return query.Where(predicate).ToList();
+        }
+
+        public IEnumerable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+
+            return query.Where(predicate).ToList();
+        }
+
+        public TEntity? GetFirstByCondition(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+        {
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            return query.FirstOrDefault(predicate);
+        }
+
+        public TEntity? Create(params object?[]? args)
+        {
+            return Factory.Create<TEntity>(args);
         }
 
         public void Insert(TEntity item)
@@ -45,22 +76,22 @@ namespace CineSync.Core.Repository
             Context.Remove(item);
         }
 
-        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, TProperty?>> expression ) where TProperty : class
+        public void Ensure<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty?>> expression) where TProperty : class
         {
-            Context.Entry( entity ).Reference( expression ).Load();
+            Context.Entry(entity).Reference(expression).Load();
         }
 
-        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression ) where TProperty : class
+        public void Ensure<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression) where TProperty : class
         {
-            Context.Entry( entity ).Collection( expression ).Load();
+            Context.Entry(entity).Collection(expression).Load();
         }
 
-        public void Ensure<TProperty>( TEntity entity, Expression<Func<TEntity, ICollection<TProperty>>> expression ) where TProperty : class
+        public void Ensure<TProperty>(TEntity entity, Expression<Func<TEntity, ICollection<TProperty>>> expression) where TProperty : class
         {
             var parameter = expression.Parameters[0];
-            var body = Expression.Convert( expression.Body, typeof( IEnumerable<TProperty> ) );
-            Context.Entry( entity ).Collection(
-                Expression.Lambda<Func<TEntity, IEnumerable<TProperty>>>( body, parameter ) ).Load();
+            var body = Expression.Convert(expression.Body, typeof(IEnumerable<TProperty>));
+            Context.Entry(entity).Collection(
+                Expression.Lambda<Func<TEntity, IEnumerable<TProperty>>>(body, parameter)).Load();
         }
     }
 }

@@ -2,8 +2,9 @@
 
 namespace CineSync.Data.Models
 {
-    public class Notification : Item
+    public class Notification 
     {
+        public uint Id { get; set; }
         [Required]
         public DateTime Date { get; set; }
 
