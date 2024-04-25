@@ -1,7 +1,7 @@
 ﻿@page "/ManageCollection"
-@using CineSync.Components.Navs
 @using CineSync.Components.Buttons
 @using CineSync.Components.Movies
+@using CineSync.Core.Adapters.ApiAdapters
 
 <div class="main-content">
     <div class="content">
@@ -38,7 +38,7 @@
         </div>
         <div class="Collection-Movies">
             <div class="movies">
-                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false/>
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false />
                 <div class="remove-movie">
                     <RemoveMovieButton/>
                 </div>
@@ -48,8 +48,6 @@
 </div>
 
 @code {
-@using CineSync.Data.Models;
-@using CineSync.Utils.Adapters.ApiAdapters;
     protected override void OnInitialized()
     {
         movie.Title = "Panda Kong Fu 4";
