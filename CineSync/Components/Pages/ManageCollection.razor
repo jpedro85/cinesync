@@ -3,8 +3,6 @@
 @using CineSync.Components.Buttons
 @using CineSync.Components.Movies
 
-<NavBar HasSearch=true User=null/>
-
 <div class="main-content">
     <div class="content">
         <div class="back-button">
@@ -39,40 +37,10 @@
             </div>
         </div>
         <div class="Collection-Movies">
-            <div class="movie">
-                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true/>
+            <div class="movies">
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false/>
                 <div class="remove-movie">
                     <RemoveMovieButton/>
-                </div>
-            </div>
-            <div class="movie">
-                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
-                <div class="remove-movie">
-                    <RemoveMovieButton />
-                </div>
-            </div>
-            <div class="movie">
-                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
-                <div class="remove-movie">
-                    <RemoveMovieButton />
-                </div>
-            </div>
-            <div class="movie">
-                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
-                <div class="remove-movie">
-                    <RemoveMovieButton />
-                </div>
-            </div>
-            <div class="movie">
-                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
-                <div class="remove-movie">
-                    <RemoveMovieButton />
-                </div>
-            </div>
-            <div class="movie">
-                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
-                <div class="remove-movie">
-                    <RemoveMovieButton />
                 </div>
             </div>
         </div>
@@ -81,14 +49,15 @@
 
 @code {
 @using CineSync.Data.Models;
+@using CineSync.Utils.Adapters.ApiAdapters;
     protected override void OnInitialized()
     {
         movie.Title = "Panda Kong Fu 4";
-        movie.Rating = 9.9f;
-        movie.RatingCS = 9.9f;
+        /*movie.Rating = 9.9f;
+        movie.RatingCS = 9.9f;*/
 
     }
-    private Movie movie= new Movie();
+    private MovieSearchAdapter movie= new MovieSearchAdapter();
 
 
 
