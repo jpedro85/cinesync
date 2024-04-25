@@ -1,17 +1,18 @@
-﻿using CineSync.Data;
+﻿using CineSync.Core.Logger;
+using CineSync.Core.Repository;
+using CineSync.Data;
 using CineSync.Data.Models;
-using CineSync.Utils.Logger;
 
 namespace CineSync.DbManagers
 {
-	public class DiscussionManager( ApplicationDbContext dbContext , ILoggerStrategy logger) : DbManager<Discussion>( dbContext, logger )
+	public class DiscussionManager( IUnitOfWorkAsync unitOfWork  , ILoggerStrategy logger) : DbManager<Discussion>( unitOfWork, logger )
 	{
 		public async Task AddCommentAsync( Discussion discussion, Comment comment )
 		{
 			if( discussion.Comments != null && !discussion.Comments.Contains( comment ) )
 			{
 				discussion.Comments.Add( comment );
-				await _dbContext.SaveChangesAsync();
+				await _unitOfWork.SaveChangesAsync();
 			}
 		}
 
@@ -20,20 +21,20 @@ namespace CineSync.DbManagers
 			if (discussion.Comments != null && discussion.Comments.Contains( comment ))
 			{
 				discussion.Comments.Remove( comment );
-				await _dbContext.SaveChangesAsync();
+				await _unitOfWork.SaveChangesAsync();
 			}
 		}
 
 		public async Task AddLikeAsync( Discussion disussion )
 		{
 			disussion.NumberOfLikes++;
-			await _dbContext.SaveChangesAsync();
+			await _unitOfWork.SaveChangesAsync();
 		}
 
 		public async Task RemoveLikeAsync( Discussion discussion )
 		{
 			discussion.NumberOfLikes = discussion.NumberOfLikes > 0 ? discussion.NumberOfLikes - 1 : discussion.NumberOfLikes;
-			await _dbContext.SaveChangesAsync();
+			await _unitOfWork.SaveChangesAsync();
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace CineSync.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
             modelBuilder.Entity("ApplicationUserApplicationUser", b =>
                 {
@@ -217,7 +217,7 @@ namespace CineSync.Migrations
 
             modelBuilder.Entity("CineSync.Data.Models.Genre", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<uint>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -355,7 +355,7 @@ namespace CineSync.Migrations
 
             modelBuilder.Entity("GenreMovie", b =>
                 {
-                    b.Property<int>("GenresId")
+                    b.Property<uint>("GenresId")
                         .HasColumnType("INTEGER");
 
                     b.Property<uint>("MoviesId")

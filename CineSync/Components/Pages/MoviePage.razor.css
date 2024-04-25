@@ -1,0 +1,234 @@
+﻿
+.page-main-Conteiner {
+    background: rgb(33, 23, 57);
+    height:100%;
+    
+}
+
+.top-content {
+    background: linear-gradient(to right, black 20%, black 40%, #011741 100%);
+    display: flex;
+    flex-direction: row;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    height: fit-content;
+    gap: 2%;
+}
+
+#PosterImage {
+    width:280px;
+    height:400px;
+}
+
+.buttonTreiler {
+    width: 40%;
+    color: rgb(0,0,0);
+    background-color: #00efff;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+
+}
+
+.movie-image-options-conteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    height:40px;
+}
+
+.button-AddToViewed {
+    display:flex;
+    color: white;
+    fill: white;
+  
+    align-items:center;
+}
+
+.itemsize {
+    width: 35px !important;
+    height: 35px !important;
+}
+
+.button-AddToFavorite {
+    display: flex;
+    color: white;
+    fill: white;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+}
+
+.button-AddToCollectionSpace {
+    padding-bottom:2px;
+}
+
+.button-AddToCollection {
+    display: flex;
+    color: white;
+    fill: white;
+    align-items: center;
+}
+
+.movie-image-options-item-rigth {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.conteiner-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.conteiner-rigth{
+    display:flex;
+
+}
+
+.movie-Title {
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    line-height: 1;
+    font-weight:900;
+    margin-bottom:2rem;
+}
+
+
+.movie-statistics {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    align-items: center;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.movie-statistics-item {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.movie-statistics-item-key {
+    font-size: 17px;
+    color: rgb(139 139 139);
+    font-weight:300;
+}
+
+.movie-statistics-item-value {
+    font-size: 17px;
+    color: rgb(255, 255, 255);
+}
+
+.movie-Plot {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    margin-bottom:1.5rem;
+}
+
+
+.movie-genres {
+    display:flex;
+    flex-direction:row;
+    gap:1rem;
+    margin-bottom:0.3rem;
+}
+
+.movie-genres-key {
+    font-size: 17px;
+    color: rgb(139 139 139);
+    font-weight: 300;
+}
+
+.movie-genres-value {
+    font-size: 17px;
+    color: rgb(255, 255, 255);
+    font-weight: 300;
+}
+
+.movie-cast {
+    display: flex;
+    flex-direction: row;
+    gap:1rem;
+    margin-bottom:3rem;
+}
+
+
+
+
+.CsRating {
+    width: 20px;
+    height: 25px;
+}
+
+#IMDBRating {
+    width: 20px;
+    height: 25px;
+}
+
+.rating-icon {
+    align-content: center;
+    padding-top: 5px;
+}
+
+#PosterImage {
+    width: 250px;
+    height: 380px;
+    border-radius: 15px;
+}
+
+.movie-description {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.rating-conteinor {
+    display:flex;
+    flex-direction:row;
+    gap:2rem;
+}
+
+.rating-item {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}
+
+.font-rating {
+    color: rgb(255, 156, 0);
+    font-size: 26px;
+    font-weight: 700;
+    height: 3rem;
+    align-content: end;
+}
+
+.font-rating-result {
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+    font-weight: 600;
+    height: 3rem;
+    align-content: end;
+}
+
+
+.ButtonRatingitem {
+    display:flex;
+    align-items:center;
+    background-color:#000dff;
+    width:fit-content;
+    color:white;
+    padding-left:10px;
+    padding-right:10px;
+    border-radius:10px;
+}

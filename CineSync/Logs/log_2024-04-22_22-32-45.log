@@ -1,0 +1,2 @@
+[2024-04-22_22:32:51] [INFO] Fetching the query results for panda
+[2024-04-22_22:32:51] [ERROR] Exception thrown in System.ThrowHelper.ThrowWrongValueTypeArgumentException: The value "System.Threading.Tasks.Task`1[System.Object]" is not of type "CineSync.Utils.Adapters.ApiAdapters.MovieSearchAdapter" and cannot be used in this generic collection. (Parameter 'value')

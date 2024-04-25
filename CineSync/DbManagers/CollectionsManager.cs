@@ -1,10 +1,11 @@
-﻿using CineSync.Data;
+﻿using CineSync.Core.Logger;
+using CineSync.Core.Repository;
+using CineSync.Data;
 using CineSync.Data.Models;
-using CineSync.Utils.Logger;
 
 namespace CineSync.DbManagers
 {
-    public class CollectionsManager(ApplicationDbContext dbContext, ILoggerStrategy logger) : DbManager<MovieCollection>(dbContext, logger)
+    public class CollectionsManager( IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger) : DbManager<MovieCollection>(unitOfWork, logger)
     {
         public async Task AddMovieAsync(MovieCollection collection, Movie movie)
         {
@@ -21,7 +22,7 @@ namespace CineSync.DbManagers
             if (collection.CollectionMovies.Contains(newMovie))
             {
                 collection.CollectionMovies.Add(newMovie);
-                await _dbContext.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
             }
         }
 
@@ -29,15 +30,17 @@ namespace CineSync.DbManagers
         {
             if (collection.CollectionMovies != null)
             {
-                foreach (var movieCollection in collection.CollectionMovies)
+                // Find the movie to remove by MovieId
+                var movieToRemove = collection.CollectionMovies.FirstOrDefault(mc => mc.MovieId == movie.Id);
+
+                // If a matching movie is found, remove it
+                if (movieToRemove != null)
                 {
-                    if (movieCollection.MovieId == movie.Id)
-                    {
-                        collection.CollectionMovies.Remove(movieCollection);
-                        await _dbContext.SaveChangesAsync();
-                    }
+                    collection.CollectionMovies.Remove(movieToRemove);
+                    await _unitOfWork.SaveChangesAsync();
                 }
             }
+ 
         }
 
     }

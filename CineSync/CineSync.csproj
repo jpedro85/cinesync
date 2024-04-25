@@ -8,21 +8,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Components\Account\Pages\Manage\Email.razor.css" />
+    <None Remove="Components\Buttons\BackButton.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Components\Account\Pages\Manage\Email.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="dotenv.net" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <ProjectReference Include="..\CineSync.Client\CineSync.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\Menus\" />
-    <Folder Include="Components\Buttons\" />
-    <Folder Include="Components\Footers\" />
   </ItemGroup>
 
 </Project>

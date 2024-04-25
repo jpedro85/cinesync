@@ -1,0 +1,22 @@
+[2024-04-22_22:21:04] [INFO] Fetching the Movie details 1011
+[2024-04-22_22:21:05] [ERROR] Message: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_22:21:05] [ERROR] Exception thrown in System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_22:21:17] [INFO] Fetching the Movie details 1010
+[2024-04-22_22:21:17] [ERROR] Message: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_22:21:17] [ERROR] Exception thrown in System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode: Response status code does not indicate success: 404 (Not Found).
+[2024-04-22_22:21:32] [INFO] Fetching the results for the popular movies query
+[2024-04-22_22:21:34] [INFO] Fetched the results for the popular movies query successfully
+[2024-04-22_22:21:40] [INFO] Fetching the Movie details 823464
+[2024-04-22_22:21:40] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_22:21:40] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_22:21:40] [INFO] Fetched the Movie details for 823464 from the API, Successfully
+[2024-04-22_22:21:49] [INFO] Fetching the Movie details 823463
+[2024-04-22_22:21:49] [DEBUG] Attemtping to save the entity CineSync.Data.Models.Movie to the database
+[2024-04-22_22:21:49] [DEBUG] Saved entity CineSync.Data.Models.Movie successfully to the database
+[2024-04-22_22:21:49] [INFO] Fetched the Movie details for 823463 from the API, Successfully
+[2024-04-22_22:21:55] [INFO] Fetching the Movie details 1011985
+[2024-04-22_22:21:55] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully
+[2024-04-22_22:24:10] [INFO] Fetching the query results for panda
+[2024-04-22_22:24:12] [INFO] Fetched the query results for panda, successfully
+[2024-04-22_22:30:25] [INFO] Fetching the Movie details 1011985
+[2024-04-22_22:30:25] [DEBUG] Fetched the Movie details for 1011985 from the database, Successfully

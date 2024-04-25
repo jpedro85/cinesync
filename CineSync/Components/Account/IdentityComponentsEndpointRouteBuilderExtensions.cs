@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using System.Text.Json;
 using CineSync.Components.Account.Pages;
 using CineSync.Components.Account.Pages.Manage;
 using CineSync.Data;
@@ -7,10 +9,8 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using System.Security.Claims;
-using System.Text.Json;
 
-namespace Microsoft.AspNetCore.Routing
+namespace CineSync.Components.Account
 {
     internal static class IdentityComponentsEndpointRouteBuilderExtensions
     {

@@ -1,0 +1,117 @@
+﻿.Profile {
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.7);
+    color:white;
+    height: 90%;
+    border-radius: 100px;
+}
+.Profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    height: 100vh;
+    color: white;
+}
+.Picture {
+    margin-top: 10px;
+    position: relative;
+}
+
+#Edit{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 0;
+    border: none;
+    height: max-content;
+    width: max-content;
+    background: transparent;
+    color: #000000;
+}
+.Followers {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.Profile-pic {
+    width: 100px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 6px;
+}
+
+.Info {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.Info input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.Buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.Buttons button {
+    margin-top: 10px;
+}
+.Profile-info{
+    width: 100%
+}
+.Statistics, .Collections {
+    margin-top: 15px;
+}
+.Stats-title, .Collection-title {
+    margin-left: 20px;
+}
+.Info-line{
+    width: 90%;
+
+}
+.User-Statistics {
+    margin-left: 30px;
+}
+hr {
+    margin-left:5px;
+    width: 100%;
+    border: none;
+    height: 5px;
+    color: black;
+}
+h2{
+    margin-bottom: 0px;
+}
+.buttonProfile {
+    font-family: Itim;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition: 752ms;
+    transform: translateY(0);
+    align-items: center;
+    cursor: pointer;
+    margin-left: auto;
+    width: 180px;
+    height:50px;
+    
+}
+
+    .buttonProfile:hover {
+        background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+        color: #000000;
+        border: solid 2px #0066cc;
+        width: 180px;
+    }

@@ -1,7 +1,7 @@
-using CineSync.Utils.Logger;
-using CineSync.Utils.Logger.Enums;
 using System.Net.Http.Headers;
 using System.Web;
+using CineSync.Core.Logger;
+using CineSync.Core.Logger.Enums;
 
 namespace CineSync.Controllers
 {

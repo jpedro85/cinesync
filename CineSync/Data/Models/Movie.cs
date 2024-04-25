@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineSync.Data.Models
 {
-    public class Movie
+    public class Movie 
     {
         public uint Id { get; set; }
 
@@ -42,5 +42,22 @@ namespace CineSync.Data.Models
 
         public uint VoteCount { get; set; }
 
+        public override string ToString()
+        {
+            return $"Movie: \n" +
+                   $"  Id: {Id}\n" +
+                   $"  MovieId: {MovieId}\n" +
+                   $"  Title: {Title}\n" +
+                   $"  Genres: {(Genres != null ? string.Join(", ", Genres.Select(g => g.Name)) : "None")}\n" +
+                   $"  Overview: {Overview}\n" +
+                   $"  Release Date: {ReleaseDate.ToShortDateString()}\n" +
+                   $"  Cast: {(Cast != null ? string.Join(", ", Cast) : "None")}\n" +
+                   $"  Trailer Key: {TrailerKey}\n" +
+                   $"  Director: {Director}\n" +
+                   $"  Awards: {Awards}\n" +
+                   $"  Run Time: {RunTime} minutes\n" +
+                   $"  Comments: {(Comments != null ? Comments.Count() + " Comments" : "No Comments")}\n" +
+                   $"  Discussions: {(Discutions != null ? Discutions.Count() + " Discussions" : "No Discussions")}";
+        }
     }
 }

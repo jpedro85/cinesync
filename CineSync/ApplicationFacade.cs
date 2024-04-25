@@ -1,15 +1,19 @@
 ﻿using CineSync.Components;
 using CineSync.Components.Account;
 using CineSync.Data;
+using CineSync.Data.Models;
 using CineSync.DbManagers;
 using CineSync.Middleware;
 using CineSync.Controllers;
 using CineSync.Controllers.MovieEndpoint;
-using CineSync.Utils.Logger;
-using CineSync.Utils.Adapters.ApiAdapters;
+using CineSync.Core;
+using CineSync.Core.Adapters.ApiAdapters;
+using CineSync.Core.Logger;
+using CineSync.Core.Repository;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CineSync.Services;
 
 namespace CineSync
 {
@@ -56,9 +60,6 @@ namespace CineSync
             services.AddScoped<IdentityRedirectManager>();
             services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
             services.AddControllers();
-            services.AddHttpClient<ApiService>();
-            services.AddScoped<MovieController>();
-            services.AddScoped<MovieDetailsAdapter>();
         }
         private void AddLogger(IServiceCollection services)
         {
@@ -112,14 +113,38 @@ namespace CineSync
 
         private void AddAdditionalServices(IServiceCollection services)
         {
+
+            var types = new[] {
+                    typeof(Movie),
+                    typeof(CollectionsMovies),
+                    typeof(MovieCollection),
+                    typeof(Genre),
+                    typeof(MoviesGenres),
+                    typeof(Discussion),
+                    typeof(Comment),
+                    typeof(CommentAttachment),
+                    typeof(Notification),
+                    typeof(UsersNotifications)
+            };
+
             services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+            services.AddHttpClient<ApiService>();
+            services.AddScoped<MovieController>();
+            services.AddScoped<MovieDetailsAdapter>();
+            services.AddSingleton<IFactory>(sp => new Factory(types));
+            services.AddScoped<IUnitOfWork, UnitOfWork<ApplicationDbContext>>();
+            services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync<ApplicationDbContext>>();
             services.AddScoped<MovieController>();
             services.AddScoped<MovieManager>();
+            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5145") });
             // INFO: Solves the issue of supposedly loop of object when saving the parsed json to the database
             services.AddControllers().AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
+
+            services.AddSingleton<NavBarEvents>();
+            services.AddSingleton<LayoutService>();
         }
 
         private void InitializeDb(WebApplication app)

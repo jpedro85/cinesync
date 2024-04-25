@@ -1,9 +1,22 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+@using CineSync.Components.Navs;
+@using CineSync.Data;
+
+<div class="page">
+
+    <NavBar  HasSearch="false" User="@AuthenticatedUser"></NavBar>
+
+    <div class="pageRow">
+
+        <div class="sidebar" >
+            <Menu />
+        </div>
+        <div class="bodyCoteiner">
+            @Body
+        </div>
+
+    </div>
+
 </div>
