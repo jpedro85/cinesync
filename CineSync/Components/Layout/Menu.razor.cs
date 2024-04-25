@@ -12,7 +12,6 @@ namespace CineSync.Components.Layout
 
         public void ChangeState( bool active)
         {
-            Console.WriteLine("A:" + active);
             if (active)
             {
                 IsActive = "Active";

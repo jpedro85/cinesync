@@ -24,10 +24,11 @@
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
+    pointer-events: auto !important;
 }
 
     .MenuMainConteiner.Active {
-        width: 25%;
+        width: 15%;
         padding-left: 10px;
         padding-right: 10px;
     }
@@ -94,13 +95,15 @@
 .sidebar-separator {
     background-color: rgb(94, 93, 93);
     height: 2px;
-    width: 100%;https://localhost:7113/Profile
+    width: 100%;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
 .separator-text {
-    display:none;
+    display: none;
+    margin-bottom: 10px;
+    margin-left:15px;
 }
 
 .separator-text.Active{

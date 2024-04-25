@@ -144,6 +144,7 @@ namespace CineSync
                 });
 
             services.AddSingleton<NavBarEvents>();
+            services.AddSingleton<LayoutService>();
         }
 
         private void InitializeDb(WebApplication app)

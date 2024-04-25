@@ -22,8 +22,6 @@ namespace CineSync.Services
         public void OnMenuClick(MouseEventArgs e)
         {
             _isMenuOpen = !_isMenuOpen;
-            bool a = OnMenuChange == null;
-            Console.WriteLine("Event %b %b" + a + ";" + _isMenuOpen);
             OnMenuChange?.Invoke(_isMenuOpen);
         }
 
