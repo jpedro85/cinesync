@@ -1,14 +1,118 @@
 
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
+.Obverlay {
+    display: flex;
+    height: 100%;
+    background: rgb(0,0,0,0);
+    transition: background-color 1s ease;
+    width: 100vw;
+    pointer-events:none;
 }
 
-.top-row {
-    height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    .Obverlay.Active {
+        background: rgb(0,0,0,0.7);
+        z-index: 997;
+        opacity: 1;
+    }
+
+.MenuMainConteiner {
+    height: 100%;
+    width: 100px;
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(0,0,0);
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-.bottom-row {
+    .MenuMainConteiner.Active {
+        width: 25%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+.menu-item-conteiner{
+    width:100%;
+   
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem !important;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+    .menu-item.Active {
+        flex-direction: row !important;
+        align-items:center;
+        justify-content:center;
+        height: 50px;
+        gap:1.5rem !important;
+    }
+
+    .menu-item:hover {
+        background-color:rgb(30, 30, 30);
+    }
+
+    .menu-item:active {
+        background-color: rgb(49, 49, 49);
+    }
+
+    .ButtonIcon {
+        width: 25px;
+        height: 25px;
+        color: white;
+    }
+
+.ButtonText{
+    color:white;
+    font-size:13px;
+    text-align:center;
+}
+
+    .ButtonText.Active {
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        height: 100%;
+        flex-wrap: wrap;
+        text-align: left;
+        flex-grow: 1;
+        height:25px;
+    }
+
+.sidebar-separator {
+    background-color: rgb(94, 93, 93);
+    height: 2px;
+    width: 100%;https://localhost:7113/Profile
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.separator-text {
+    display:none;
+}
+
+.separator-text.Active{
+    display:flex;
+    width:100%;
+    color:rgb(255, 255, 255);
+    font-size:15px;
+    text-align:left;
+}
+
+
+/*.bottom-row {
     position: absolute;
     bottom: 0;
     padding-bottom: 10px;
@@ -69,9 +173,9 @@
         display: none;
     }
 
-    .collapse {
+    .collapse {*/
         /* Never collapse the sidebar for wide screens */
-        display: block;
+        /*display: block;
     }
 }
 
@@ -198,4 +302,4 @@ label{
     height: 1px;
     background-color: #ccc;
     margin: 10px 0;
-}
+}*/

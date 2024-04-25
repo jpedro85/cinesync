@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Components;
 using System.Timers;
 using CineSync.Core.Adapters.ApiAdapters;
-
+using CineSync.Services;
 
 namespace CineSync.Components.Pages
 {
@@ -12,6 +12,10 @@ namespace CineSync.Components.Pages
     {
         [Inject]
         private HttpClient _client { get; set; }
+
+        [Inject]
+        private NavBarEvents NavBarEvents { get; set; }
+
         private bool showNavMenu = false;
         private Queue<MovieSearchAdapter> movieQueue = new Queue<MovieSearchAdapter>();
         private List<MovieSearchAdapter> TopRatedMovies { get; set; }
@@ -19,21 +23,25 @@ namespace CineSync.Components.Pages
         public ApplicationUser User { get; set; }
         public List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>();
 
+
         protected override async Task OnInitializedAsync()
         {
             await FetchTopRatedMovies();
             InitializeQueue();
             StartTimer();
             User = new ApplicationUser { UserName = "testuser" };
+
         }
 
         private void InitializeQueue()
         {
+
             foreach (var movie in TopRatedMovies.Take(5))
             {
                 movieQueue.Enqueue(movie);
             }
             UpdateCurrentMovies();
+
         }
 
         private void StartTimer()

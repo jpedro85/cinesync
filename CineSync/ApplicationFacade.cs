@@ -13,6 +13,7 @@ using CineSync.Core.Repository;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CineSync.Services;
 
 namespace CineSync
 {
@@ -141,6 +142,8 @@ namespace CineSync
                 {
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
+
+            services.AddSingleton<NavBarEvents>();
         }
 
         private void InitializeDb(WebApplication app)
