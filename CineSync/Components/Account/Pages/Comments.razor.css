@@ -4,18 +4,20 @@
 }
 body{
     min-height:100vh;
-    diplay:flex;
+    display:flex;
     justify-content:center;
     align-items:center;
-    background:white;
+    background:blue;
 }
-.container{
-    background:white;
-    padding:20px;
-    font-family:Itim;
-    width:300px;
-    box-shadow:0 0 5px #000;
+.container {
+    background: white;
+    padding: 20px;
+    font-family: Itim;
+    width: 300px;
+    box-shadow: 0 0 5px #000;
+    position: absolute;
 }
+    
 .head{
     text-transform: uppercase;
     margin-bottom:20px;
