@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Components;
 using System.Timers;
 using CineSync.Core.Adapters.ApiAdapters;
 using CineSync.Services;
-using Microsoft.AspNetCore.Components.Authorization;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using CineSync.Components.Layout;
 
 namespace CineSync.Components.Pages
