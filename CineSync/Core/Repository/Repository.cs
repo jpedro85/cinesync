@@ -3,16 +3,16 @@ using System.Linq.Expressions;
 
 namespace CineSync.Core.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity, TContext> : IRepository<TEntity> where TEntity : class where TContext : DbContext
     {
-        public Repository(IFactory factory, DbContext context)
+        public Repository(IFactory factory, TContext context)
         {
             Factory = factory;
             Context = context;
         }
 
         protected IFactory Factory { get; set; }
-        protected DbContext Context { get; set; }
+        protected TContext Context { get; set; }
 
         public IQueryable<TEntity> GetAll()
         {

@@ -1,12 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Identity;
 
 namespace CineSync.Core.Repository
 {
-    public class RepositoryAsync<TEntity> : Repository<TEntity>, IRepositoryAsync<TEntity> where TEntity : class
+    public class RepositoryAsync<TEntity, TContext> : Repository<TEntity, TContext>, IRepositoryAsync<TEntity> where TEntity : class where TContext : DbContext
     {
-        public RepositoryAsync(IFactory factory, DbContext context)
+        public RepositoryAsync(IFactory factory, TContext context)
             : base(factory, context) { }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

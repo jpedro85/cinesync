@@ -1,19 +1,19 @@
 using CineSync.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
 
 namespace CineSync.Core.Repository
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork<TContext> : IUnitOfWork, IDisposable where TContext: DbContext
     {
-        public UnitOfWork( DbContext context, IFactory factory )
+        public UnitOfWork( TContext context, IFactory factory )
         {
             Context = context;
             Factory = factory;
         }
 
         public    IFactory  Factory { get; }
-        protected DbContext Context { get; }
+        protected TContext  Context { get; }
 
         private IDbContextTransaction? Transaction { get; set; }
 
@@ -53,10 +53,10 @@ namespace CineSync.Core.Repository
             return repository ??
                    NullRepository<TEntity>.Instance;
         }
-        
+
         protected virtual IRepository<TEntity> CreateRepository<TEntity>() where TEntity :  class
         {
-            return new Repository<TEntity>( Factory, Context );
+            return new Repository<TEntity,TContext>( Factory, Context );
         }
 
         public void Dispose()
