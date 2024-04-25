@@ -1,8 +1,9 @@
+using CineSync.Core.Adapters.ApiAdapters;
+using CineSync.Core.Logger;
+using CineSync.Core.Repository;
+using CineSync.Core.Logger.Enums;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
-using CineSync.Utils.Logger;
-using CineSync.Utils.Logger.Enums;
-using CineSync.Utils.Adapters.ApiAdapters;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -17,6 +18,7 @@ namespace CineSync.Controllers.MovieEndpoint
         private readonly ApiService _apiService;
         private readonly ILoggerStrategy _logger;
         private readonly MovieDetailsAdapter _movieDetailsAdapter;
+        private readonly IUnitOfWorkAsync _unitOfWork;
 
         public MovieController(ApiService apiService, ILoggerStrategy logger, MovieManager movieManager, MovieDetailsAdapter movieDetailsAdapter)
         {

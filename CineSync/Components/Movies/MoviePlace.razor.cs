@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using CineSync.Utils.Adapters.ApiAdapters;
+﻿using CineSync.Core.Adapters.ApiAdapters;
+using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.Movies
 {
