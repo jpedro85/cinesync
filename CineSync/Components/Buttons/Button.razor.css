@@ -1,0 +1,28 @@
+﻿.button-background {
+    background: #ff0000;
+    padding-right: 20px;
+    border-radius: 50px;
+    overflow: clip;
+    width: fit-content;
+    border: solid 2px;
+    border-color: white;
+}
+
+.button-content {
+    background: #000000;
+    border-top-right-radius: 80px;
+    width: fit-content;
+    min-width: 150px;
+    padding: 5px;
+    text-align: center;
+    color: #ffffff;
+    padding-left: 20px;
+}
+
+.button-background:hover{
+    box-shadow:2px 2px #000000;
+    border-color:#000000;
+}
+.button-content:hover{
+    background:#2852f6;
+}

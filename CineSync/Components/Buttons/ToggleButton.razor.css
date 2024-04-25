@@ -1,0 +1,28 @@
+﻿.button-background {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background:#ff0000;
+    border-radius:50px;
+}
+
+.button-content-on {
+    background: #000000;
+    width: fit-content;
+    display: flex;
+    justify-content:center;
+    padding: 5px;
+    min-width: 70px;
+    border-radius: 50px;
+    color: #ffffff;
+}
+.button-content-off {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    width: fit-content;
+    min-width: 70px;
+    color: #ffffff;
+}
