@@ -24,9 +24,5 @@
 
         }
 
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

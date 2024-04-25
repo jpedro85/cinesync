@@ -46,11 +46,6 @@ namespace CineSync.Core.Repository
             return await query.Where(predicate).ToListAsync(cancellationToken);
         }
 
-        public Task<bool> GetByConditionAsync(Func<IdentityUserRole<string>, bool> predicate, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<TEntity?> GetFirstByConditionAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
             IQueryable<TEntity> query = Context.Set<TEntity>();

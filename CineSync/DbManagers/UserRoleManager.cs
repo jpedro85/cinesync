@@ -45,7 +45,6 @@ namespace CineSync.DbManagers
                 throw new ArgumentException($"Role {roleName} doesn't exist in the database.");
             }
             
-            // TODO: Check the function for other type of includes
             IEnumerable<IdentityUserRole<string>> userRoles = await _userRoleRepository.GetByConditionAsync(ur => ur.RoleId == role.Id && ur.UserId == user.Id, cancellationToken);
             return userRoles.Any();
  
@@ -77,7 +76,6 @@ namespace CineSync.DbManagers
                 throw new ArgumentException($"Role {roleName} doesn't exist in the database.");
             }
 
-            // TODO: Check the function for other type of includes
             IEnumerable<IdentityUserRole<string>> userRoles = await _userRoleRepository.GetByConditionAsync(
                 ur => ur.RoleId == role.Id && ur.UserId == user.Id, cancellationToken);
 
@@ -124,11 +122,9 @@ namespace CineSync.DbManagers
                 throw new ArgumentException($"Role {roleName} doesn't exist in the database.");
             }
             
-            // TODO: Check the function for other type of includes
             IEnumerable<IdentityUserRole<string>> userRoles = await _userRoleRepository.GetByConditionAsync(ur => ur.RoleId == role.Id, cancellationToken);
             IEnumerable<string> userIds = userRoles.Select(ur => ur.UserId).Distinct();
             
-            // TODO: Check the function for other type of includes
             IEnumerable<TUser> users = await _userRepository.GetByConditionAsync(
                 user => userIds.Contains(user.Id), cancellationToken);
             return users.ToList();
@@ -167,7 +163,6 @@ namespace CineSync.DbManagers
                 throw new ArgumentException($"Role does not exist in the database.");
             }
 
-            // TODO: Check with ricardo about this implementation
             IEnumerable<IdentityUserRole<string>> userRoles = await _userRoleRepository.GetByConditionAsync(
                 ur => ur.RoleId == actualRole.Id && ur.UserId == user.Id, cancellationToken);
 
