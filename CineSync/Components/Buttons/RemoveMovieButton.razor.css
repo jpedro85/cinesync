@@ -1,0 +1,25 @@
+﻿.main-content {
+    display:flex;
+    background-color:#000000;
+    width:fit-content;
+    height:fit-content;
+    align-content:center;
+    align-items:center;
+    justify-content:center;
+    border-radius:60%;
+    color:white;
+}
+
+    .main-content:hover {
+        background: #0a0a0a;
+        color: rgb(48 187 243);
+    }
+
+.main-content:active{
+    color:#0e38ff;
+}
+
+.svg-size {
+    height:40px;
+    width:40px;
+}

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Components\Account\Pages\Manage\Email.razor.css" />
+    <None Remove="Components\Buttons\BackButton.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
