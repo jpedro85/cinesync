@@ -12,18 +12,27 @@
         </div>
         <div class="collection-title">
             <div class="row-items">
-                Collection
+                @if (!isEditing)
+                {
+                    <div class="collection-name" @onclick="StartEditing" tabindex="0">@collectionName</div>
+                }
+                else
+                {
+                    <input type="text" class="edit-collection-input" @bind="collectionName" @onkeydown="ConfirmEdit" />
+                }
             </div>
             <div class="row-items">
-                <svg width="25" height="25" viewBox="0 0 50 49" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <rect width="50" height="48.2759" fill="url(#pattern0_26_1301)" />
-                    <defs>
-                        <pattern id="pattern0_26_1301" patternContentUnits="objectBoundingBox" width="1" height="1">
-                            <use xlink:href="#image0_26_1301" transform="matrix(0.005 0 0 0.00517857 0 -0.0178571)" />
-                        </pattern>
-                        <image id="image0_26_1301" width="200" height="200" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAHAklEQVR4Ae3duY4kNRzA4T+HREjMEyBSWI5XgAQyEmCPHAkeAZETEiHtAUQ8ABGPASIkREJcQoRcRpS6e5jdLnfbZbv9jbTqGW1Nleuzf6qaafV0hA8CBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQuAiBxyLi8Ys4EydBoJBAiuL1iPgqIn6PiL8i4seI+CIibhQ6ht0QGFLgyYi4+18UKYyr//74J5Z3hzwzgyZwpkCK4/NrorgaSfr6/TOP5dsJDCWQE8cSjEiGmmKDPVXgiYwrxxLH8iiSU9V93xACKY7PVt5WLVFcfRTJEFNtkLkCKY5Pz4xjiUUkufq271qgZBwi6XqqDS5XIMXxoNCVY4ljeXQlyZ0N23clkOK4XykOkXQ11QaTK5DiuFc5DpHkzortuxDYMg6RdDHlBpEj8OFGV44ljuXRzyQ5s2TbZgLPRMS3Imnm78ADCIhkgEkyxLYCLSN5r+2pOzqBdQItI3l13RBtRaCtQKtIvo6I9IIsHwS6F2gVyXPdyxjgxQmk13N8HBHPZ55Zi0jeyByjzQmcJbD/YqefBojktbPO1jcTyBDYj2N5cq73SNJVyweB6gLXxdF7JF9WV3EAAhHxqDh6jeS3iHjW7BGoLbAmjt4iSX8u6M3aMPZPICeOXiJJcbxl6gjUFjgljtaR/CmO2svC/pPAOXG0iiTF8bbpI1BbIL3Yae1fPFxieNjjVr8CFkftVWH//wqUjGOJpnYkKY53zB+B2gI14qgdSYrjZm0Y+ydQM45akYjDut1EYIs4SkeS4ri1iY6DTC2wZRylIklx3J561pz8JgIt4jg3km8i4s4mOg4ytUDLOM6J5KmpZ83JbyKQ4jj3LQiWRX7u4ym/At4EyUHmFOgpjiUukcy5Frs76x7jEEl3y2TOAfUch0jmXJPdnPUIcYikm+Uy10BGimOJ5IeIeHquaXK2LQRGjMOLnVqslAmPKY4JJ90prxMQxzonW00okOIo9VbLy88EtR/dVk24UFucsjhaqDvmEALiGGKaDLKFgDhaqDvmEALiGGKaDLKFwIhxpBc7+aNuLVbLZMcUx2QT7nTXC4hjvZUtJxNIcTxo9P7jpz4f4rZqskXa6nTF0UrecbsXEEf3U2SArQTE0UrecbsXEEf3U2SArQTE0UrecbsXGDUO78/R/dIaf4DiGH8OnUElgRTH/QGf53DlqLQg7HYnII6dhc8IHAiI44DDFwR2AuLYWfiMwIGAOA44fEFgJyCOnYXPCBwIjBqHd5M9mEZf1BAQRw1V+7wIgRTHvQGf53DluIjl1/dJiKPv+TG6hgLiaIjv0H0LiKPv+TG6hgLiaIjv0H0LiKPv+TG6hgKjxnGzoZlDTyIgjkkm2mnmC4gj38x3TCKQ4rg74JOAbqsmWaAtT1McLfUdu2sBcXQ9PQbXUkAcLfUdu2sBcXQ9PQbXUkAcLfUdu2uBUeO4VUj1lYj4LiK+H+jfR4XO3W5WCHww4K9yS8bx62Dnn97X5JMV82qTQgIjveApvXnN7HEIpNDCX7ubUQIpGcfLETHilWN5VyxXkLWru8B2IwQijoglDleQAos+Zxe9ByKOwzgEkrO6C2zbcyDi+H8cAimw6HN20WsgJeN4afCfOfZvrwSSs7oLbNtjICmO2wXOLe3i0uIQSKGFsXY3vQUijutvq/avIn6LtXZ1F9iup0BKx/HLgE8C7ofwsM8FUmDhr91FL4GI4/iVYwlGIGtXd4HtegikZBwvRsSlXjkEUmDB5+6idSDiWH/lEEju6i6wfctAxJEfR4rELVaBhb92F60CEcdpcQhk7coutF2LQFIcdwqN/8YEP3Mst1bLoytIocWzZjdbByKO068cAlmzogtvs2Ug4jg/DrdYhQM4trutAikdx88X+iTgcpV41KNbrGOruuD/bxGIOMpcOZZoBFIwgGO7qh1IyTheiIiZrxwCObaaK/x/zUDEUfbKIZAKARzbZa1AxFEnjhSJW6xjq9r/EyBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgACBTQT+BqVLc+d5ag5pAAAAAElFTkSuQmCC" />
-                    </defs>
-                </svg>
+                <div class="edit-collection-name" @onclick="StartEditing">
+                    <svg width="25" height="25" viewBox="0 0 50 49" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <rect width="50" height="48.2759" fill="url(#pattern0_26_1301)" />
+                        <defs>
+                            <pattern id="pattern0_26_1301" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlink:href="#image0_26_1301" transform="matrix(0.005 0 0 0.00517857 0 -0.0178571)" />
+                            </pattern>
+                            <image id="image0_26_1301" width="200" height="200" xlink:href="data:image/png;base64,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" />
+                        </defs>
+                    </svg>
+                </div>
             </div>
             <div class="toggle-button">
                 <ToggleButton/>
@@ -80,4 +89,23 @@
 
     }
     private Movie movie= new Movie();
+
+
+
+    string collectionName = "Collection";
+
+    bool isEditing = false;
+
+    void StartEditing()
+    {
+        isEditing = true;
+    }
+
+    void ConfirmEdit(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            isEditing = false;
+        }
+    }
 }
