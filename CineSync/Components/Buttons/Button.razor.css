@@ -1,5 +1,5 @@
 ﻿.button-background {
-    background: #ff0000;
+    background: #0024ff;
     padding-right: 20px;
     border-radius: 50px;
     overflow: clip;
@@ -12,7 +12,7 @@
     background: #000000;
     border-top-right-radius: 80px;
     width: fit-content;
-    min-width: 150px;
+    min-width: 100px;
     padding: 5px;
     text-align: center;
     color: #ffffff;
@@ -25,4 +25,8 @@
 }
 .button-content:hover{
     background:#2852f6;
+}
+
+.button-text {
+    pointer-events:none;
 }

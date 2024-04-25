@@ -1,6 +1,8 @@
 ﻿@page "/ManageCollection"
 @using CineSync.Components.Navs
 @using CineSync.Components.Buttons
+@using CineSync.Components.Movies
+
 <NavBar HasSearch=true User=null/>
 
 <div class="main-content">
@@ -27,12 +29,55 @@
                 <ToggleButton/>
             </div>
         </div>
-        <div class="">
-
+        <div class="Collection-Movies">
+            <div class="movie">
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true/>
+                <div class="remove-movie">
+                    <RemoveMovieButton/>
+                </div>
+            </div>
+            <div class="movie">
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
+                <div class="remove-movie">
+                    <RemoveMovieButton />
+                </div>
+            </div>
+            <div class="movie">
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
+                <div class="remove-movie">
+                    <RemoveMovieButton />
+                </div>
+            </div>
+            <div class="movie">
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
+                <div class="remove-movie">
+                    <RemoveMovieButton />
+                </div>
+            </div>
+            <div class="movie">
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
+                <div class="remove-movie">
+                    <RemoveMovieButton />
+                </div>
+            </div>
+            <div class="movie">
+                <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=true UseTitle=true />
+                <div class="remove-movie">
+                    <RemoveMovieButton />
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 @code {
+@using CineSync.Data.Models;
+    protected override void OnInitialized()
+    {
+        movie.Title = "Panda Kong Fu 4";
+        movie.Rating = 9.9f;
+        movie.RatingCS = 9.9f;
 
+    }
+    private Movie movie= new Movie();
 }

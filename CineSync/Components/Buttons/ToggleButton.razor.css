@@ -1,28 +1,72 @@
-﻿.button-background {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    background:#ff0000;
-    border-radius:50px;
+﻿* {
+    padding: 0;
+    margin: 0;
 }
 
-.button-content-on {
-    background: #000000;
-    width: fit-content;
+.main-container {
     display: flex;
-    justify-content:center;
-    padding: 5px;
-    min-width: 70px;
-    border-radius: 50px;
-    color: #ffffff;
+    flex-direction: row;
 }
-.button-content-off {
+
+.container {
+    width: 100%;
+    height: 100%;
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 5px;
-    width: fit-content;
-    min-width: 70px;
-    color: #ffffff;
+}
+
+.private-text {
+    align-content: center;
+    font-size: 10px;
+    position: relative;
+    right: 39px;
+    z-index: 999;
+    pointer-events: none;
+    color:#000000;
+}
+
+.public-text {
+    align-content: center;
+    font-size: 10px;
+    position: relative;
+    left: 36px;
+    z-index: 999;
+    pointer-events: none;
+    color: #000000;
+}
+
+.button {
+    content:'';
+    background-color: #d2d2d2;
+    width: 85px;
+    height: 40px;
+    border-radius: 200px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s;
+    margin-top:2px;
+}
+
+    .button::before {
+        position: absolute;
+        content: '';
+        background-color: #fff;
+        width: 42px;
+        height: 35px;
+        border-radius: 200px;
+        margin: 2px;
+        transition: 0.2s;
+    }
+
+input:checked + .button {
+    background-color: #0024ff;
+}
+
+input:checked + .button::before {
+    transform: translateX(39px);
+}
+
+input {
+    display: none;
 }

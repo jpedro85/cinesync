@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace CineSync.Components.Buttons
 {
-    public partial class Button
+    public partial class RemoveMovieButton
     {
-        [Parameter]
-        public string Title { get; set; } = "Back";
+
+
         public delegate void ButtonAction();
         public event ButtonAction? OnClick;
 
