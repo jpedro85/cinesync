@@ -1,26 +1,42 @@
 ﻿@page "/test"
+
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Launch demo modal
 </button>
 
+<!-- Dropdown button -->
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+    </div>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content border-white">
-            <div class="modal-header">
-                <h5 class="modal-title text-white" id="exampleModalLabel">Modal title</h5>
+            <div class="modal-header text-center">
+                <h5 class="modal-title text-yellow">
+                    <span style="font-size: 1.5em;">&#9733;</span> Big Star Modal
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body bg-dark">
                 <div class="star-rating text-center">
-                    <input type="radio" id="star5" name="rating" value="5" @onclick="() => SetRating(5)" /><label for="star5">&#9733;</label>
-                    <input type="radio" id="star4" name="rating" value="4" @onclick="() => SetRating(4)" /><label for="star4">&#9733;</label>
-                    <input type="radio" id="star3" name="rating" value="3" @onclick="() => SetRating(3)" /><label for="star3">&#9733;</label>
-                    <input type="radio" id="star2" name="rating" value="2" @onclick="() => SetRating(2)" /><label for="star2">&#9733;</label>
-                    <input type="radio" id="star1" name="rating" value="1" @onclick="() => SetRating(1)" /><label for="star1">&#9733;</label>
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <input type="radio" id="@($"star{i}")" name="rating" value="@i" @onclick="() => SetRating(i)" />
+
+                        <label for="@($"star{i}")" style="margin-right: 10px;">&#9733;</label>
+                    }
                 </div>
             </div>
             <div class="modal-footer bg-dark">
@@ -67,7 +83,8 @@
     }
 
     .modal-title {
-        color: #ffffff; /* White text */
+        color: #ffc107; /* Yellow text */
+        margin: 0 auto; /* Center the title */
     }
 
     .modal-body,
@@ -123,4 +140,3 @@
         Console.WriteLine($"Rating saved: {Rating}");
     }
 }
-
