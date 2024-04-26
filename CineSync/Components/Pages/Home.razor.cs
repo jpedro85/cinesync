@@ -26,7 +26,7 @@ namespace CineSync.Components.Pages
         private bool showNavMenu = false;
         private Queue<MovieSearchAdapter> movieQueue = new Queue<MovieSearchAdapter>();
 
-        private List<MovieSearchAdapter> TopRatedMovies { get; set; }
+        private static List<MovieSearchAdapter> TopRatedMovies { get; set; }
 
         private System.Timers.Timer _timer;
 
@@ -93,11 +93,14 @@ namespace CineSync.Components.Pages
 
         private async Task FetchTopRatedMovies()
         {
-            var response = await _client.GetAsync("/movie/top-rated"); // Adjust the URL path as needed.
-            if (response.IsSuccessStatusCode)
+            if (TopRatedMovies == null || !TopRatedMovies.Any())
             {
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                TopRatedMovies = JsonConvert.DeserializeObject<ApiSearchResponse>(jsonResponse)?.Results;
+                var response = await _client.GetAsync("/movie/top-rated"); // Adjust the URL path as needed.
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    TopRatedMovies = JsonConvert.DeserializeObject<ApiSearchResponse>(jsonResponse)?.Results;
+                }
             }
         }
 
