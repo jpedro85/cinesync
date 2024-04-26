@@ -55,7 +55,6 @@ namespace CineSync
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            services.AddCascadingAuthenticationState();
             services.AddScoped<IdentityUserAccessor>();
             services.AddScoped<IdentityRedirectManager>();
             services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
@@ -109,6 +108,7 @@ namespace CineSync
                 options.AddPolicy("RequireAdmin", policy => { policy.RequireRole("admin"); });
                 options.AddPolicy("RequireSuperAdmin", policy => { policy.RequireRole("super admin"); });
             });
+            services.AddCascadingAuthenticationState();
         }
 
         private void AddAdditionalServices(IServiceCollection services)
@@ -136,6 +136,10 @@ namespace CineSync
             services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync<ApplicationDbContext>>();
             services.AddScoped<MovieController>();
             services.AddScoped<MovieManager>();
+            services.AddScoped<UserRoleManager<ApplicationUser>>();
+            services.AddScoped<CollectionsManager>();
+            services.AddScoped<CommentManager>();
+            services.AddScoped<DiscussionManager>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5145") });
             // INFO: Solves the issue of supposedly loop of object when saving the parsed json to the database
             services.AddControllers().AddJsonOptions(options =>
@@ -145,6 +149,7 @@ namespace CineSync
 
             services.AddSingleton<NavBarEvents>();
             services.AddSingleton<LayoutService>();
+           
         }
 
         private void InitializeDb(WebApplication app)
@@ -199,7 +204,7 @@ namespace CineSync
                 .WithEntity(new IdentityRole() { Name = "user", NormalizedName = "user" })
                 .WithEntity(new IdentityRole() { Name = "moderator", NormalizedName = "moderator" })
                 .WithEntity(new IdentityRole() { Name = "admin", NormalizedName = "admin" })
-                .WithEntity(new IdentityRole() { Name = "super admin", NormalizedName = "super admin" })
+                .WithEntity(new IdentityRole() { Name = "super_admin", NormalizedName = "super_admin" })
                 .Initialize();
         }
 
