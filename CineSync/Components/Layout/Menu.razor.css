@@ -3,7 +3,7 @@
     display: flex;
     height: 100%;
     background: rgb(0,0,0,0);
-    transition: background-color 1s ease;
+    transition: background-color 0.1s ease;
     width: 100vw;
     pointer-events:none;
 }
@@ -12,6 +12,7 @@
         background: rgb(0,0,0,0.7);
         z-index: 997;
         opacity: 1;
+        pointer-events: auto;
     }
 
 .MenuMainConteiner {
@@ -28,6 +29,7 @@
 }
 
     .MenuMainConteiner.Active {
+        min-width:250px;
         width: 15%;
         padding-left: 10px;
         padding-right: 10px;
@@ -59,6 +61,7 @@
         justify-content:center;
         height: 50px;
         gap:1.5rem !important;
+        width:100%;
     }
 
     .menu-item:hover {
@@ -114,7 +117,10 @@
     text-align:left;
 }
 
-
+.profileButon {
+    border:none;
+    background-color:transparent;
+}
 /*.bottom-row {
     position: absolute;
     bottom: 0;

@@ -24,16 +24,14 @@ namespace CineSync.Components.Layout
 
         protected override async Task OnInitializedAsync()
         {
-            LayoutService.MainLayout = this;
             await CheckLoginState();
+            LayoutService.MainLayout = this;
         }
 
         private async Task CheckLoginState()
         {
             AuthenticationState authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            ClaimsPrincipal claimsPrincipal = authState.User;
-
-            AuthenticatedUser = await UserManager.GetUserAsync((ClaimsPrincipal)authState.User);
+            AuthenticatedUser = await UserManager.GetUserAsync(authState.User);
 
             Console.WriteLine($"is User {AuthenticatedUser == null}");
         }

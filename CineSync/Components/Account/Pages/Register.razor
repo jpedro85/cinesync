@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using CineSync.Data
+@using CineSync.DbManagers
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -14,51 +15,49 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject UserRoleManager<ApplicationUser> UserRoleManager
 
 <PageTitle>Register</PageTitle>
 <div class="page">
-    <div class="navbar">
-        <div class="navbar-content">
-            <button class="menu-button">&#9776;</button>
-            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
-            <h1 class="navbar-title">CineSync</h1>
-            <NavLink href="/Account/Login">
-                <button class="login-button">Login</button>
-            </NavLink>
+    
+    <div class="main-content">
+        <div class="form-container">
+            <StatusMessage Message="@Message" />
+            <EditForm id="form" Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                <DataAnnotationsValidator />
+                <h2>Create a new account.</h2>
+                <hr />
+                <ValidationSummary class="text-danger" role="alert" />
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="email">Email</label>
+                    <ValidationMessage For="() => Input.Email" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label for="password">Password</label>
+                    <ValidationMessage For="() => Input.Password" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label for="confirm-password">Confirm Password</label>
+                    <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+                </div>
+                <div class="register-conteiner">
+                    <button type="submit" class="register">Register</button>
+                </div>
+            </EditForm>
+
         </div>
     </div>
-    <div class="main-content">
-     <div class="form-container">
-        <StatusMessage Message="@Message" />
-        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
-            <DataAnnotationsValidator />
-            <h2>Create a new account.</h2>
-            <hr />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label for="email">Email</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="password">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="confirm-password">Confirm Password</label>
-                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-            </div>
-                <button type="submit" class="login">Register</button>
-        </EditForm>
-    
-   </div>
-  </div>
-    <footer>&copy; Copyright 2024 Engenharia de Software</footer>
- </div>
 
+    <div class="logo-container-main">
+        <div class="logo-container">
+            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+        </div>
+    </div>
 
+</div>
 
 @code {
 
@@ -81,19 +80,17 @@
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
         var result = await UserManager.CreateAsync(user, Input.Password);
 
-        if ( !result.Succeeded )
-        {
-            identityErrors = result.Errors;
-
-            Console.WriteLine("No creeated1", result.Errors);
-            return;
-        } 
-        
-        result = await UserManager.AddToRoleAsync(user, "user");
-
         if (!result.Succeeded)
         {
-            await UserManager.DeleteAsync(user);
+            identityErrors = result.Errors;
+            return;
+        }
+
+        if ( !await UserRoleManager.AddRoleAsync(user, "user") )
+        {
+            UserManager.DeleteAsync(user);
+            Logger.LogError("The Role was not set on register");
+            return;
         }
 
         Logger.LogInformation("User created a new account with password.");
