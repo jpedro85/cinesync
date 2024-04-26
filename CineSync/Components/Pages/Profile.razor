@@ -1,16 +1,4 @@
 ﻿@page "/Profile"
-<div class="page">
-<div class="navbar">
-    <div class="navbar-content">
-        <button class="menu-button">&#9776;</button>
-        <NavLink href="">
-            <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
-            <h1 class="navbar-title">CineSync</h1>
-        </NavLink>
-
-    
-    </div>
-</div>
 <div class="Profile">
     <div class="Profile-sidebar">
         <div class="Picture">
@@ -33,7 +21,7 @@
         <div class="Buttons">
             <form action="Account/Logout" method="post">
                 <AntiforgeryToken />
-                    <input type="hidden" name="ReturnUrl" value="Account/Logout" />
+                    <input type="hidden" name="ReturnUrl" value="" />
 					<button action="Account/Logout" class="buttonProfile">
                     <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
                 </button>
@@ -65,9 +53,4 @@
         </div>
     </div>
 </div>
-    <footer>&copy; Copyright 2024 Engenharia de Software</footer>
-</div>
-
-@code {
-
-}
+<footer>&copy; Copyright 2024 Engenharia de Software</footer>

@@ -1,0 +1,14 @@
+﻿
+@if ( PassedAuthentication )
+{
+
+    @if ( PassedRoleChecked )
+    {
+        @CustomAuthorized
+    }
+    else
+    {
+        @CustomNotAuthorized
+    }
+
+}
