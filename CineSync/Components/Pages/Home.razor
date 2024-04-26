@@ -1,5 +1,6 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+
 @using CineSync.Components.Movies;
 
 <div class="MainConteiner">
@@ -22,6 +23,7 @@
             <div class="shadow"></div>
         </div>
     </div>
+    
     <div class="searched-movies">
         <div class="movie-carousel">
             @foreach (var movie in CurrentMovies)
@@ -31,5 +33,6 @@
                 </div>
             }
         </div>
-    </div>
+    </div      
+ 
 </div>

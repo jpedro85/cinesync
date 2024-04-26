@@ -7,22 +7,22 @@ namespace CineSync.Services
     {
         public delegate void Change(bool status);
 
-        private bool _isMenuOpen = false;
+        public bool IsMenuOpen = false;
         public event Change? OnMenuChange;
 
-        private bool _isNotificationOpen = false;
+        public bool IsNotificationOpen = false;
         public event Change? OnNotificationChange;
 
         public void OnclickNotification(MouseEventArgs e)
         {
-            _isNotificationOpen = !_isNotificationOpen;
-            OnNotificationChange?.Invoke(_isNotificationOpen);
+            IsNotificationOpen = !IsNotificationOpen;
+            OnNotificationChange?.Invoke(IsNotificationOpen);
         }
 
         public void OnMenuClick(MouseEventArgs e)
         {
-            _isMenuOpen = !_isMenuOpen;
-            OnMenuChange?.Invoke(_isMenuOpen);
+            IsMenuOpen = !IsMenuOpen;
+            OnMenuChange?.Invoke(IsMenuOpen);
         }
 
 

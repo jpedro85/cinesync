@@ -23,23 +23,6 @@ a, .btn-link {
     background-size: cover;
 }
 
-.main-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.form-container {
-    background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
-    max-width: 400px;
-    width: 100%;
-    margin: auto;
-    color:grey;
-    outline:auto;
-}
 
 
 footer {
