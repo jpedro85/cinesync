@@ -137,7 +137,7 @@ namespace CineSync
             services.AddScoped<MovieController>();
             services.AddScoped<MovieManager>();
             services.AddScoped<UserRoleManager<ApplicationUser>>();
-            services.AddScoped<CollectionsManager>();
+            services.AddScoped<MovieCollectionsManager>();
             services.AddScoped<CommentManager>();
             services.AddScoped<DiscussionManager>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5145") });
