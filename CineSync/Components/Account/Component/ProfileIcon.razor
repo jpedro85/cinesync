@@ -1,0 +1,26 @@
+﻿@using CineSync.Components.Utils
+
+<div class="main-container">
+    <img src="/profilepic.jpg" class="Profile-pic" style="@GetProfileWidthStyle()">
+
+</div>
+
+@code {
+    [Parameter]
+    /*public byte[]? ProfileImg { get; set; }
+
+    private string ConvertedImg = string.Empty;
+    
+    protected override void OnInitialized()
+    {
+        ImageConverter.ConverBytesTo64(ProfileImg);
+        
+    }*/
+
+    public int ProfileWidth { get; set; } = 100;
+
+    private string GetProfileWidthStyle()
+    {
+        return $"width: {ProfileWidth}px;";
+    }
+}

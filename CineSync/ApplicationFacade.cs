@@ -1,4 +1,5 @@
-﻿using CineSync.Components.Account;
+﻿using CineSync.Components;
+using CineSync.Components.Account;
 using CineSync.Data;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
