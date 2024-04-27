@@ -1,10 +1,9 @@
-﻿using System.Collections.Immutable;
-using CineSync.Core.Logger;
+﻿using CineSync.Core.Logger;
 using CineSync.Core.Logger.Enums;
 using CineSync.Core.Repository;
-using CineSync.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 
 namespace CineSync.DbManagers
 {

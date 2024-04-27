@@ -6,20 +6,29 @@ namespace CineSync.Core.Adapters.ApiAdapters
 {
     public class MovieDetailsAdapter
     {
-        private static readonly string _imageService = "https://image.tmdb.org/t/p/w200/";
+        private static readonly string ImageServiceBaseUri = "https://image.tmdb.org/t/p/w200/";
         private readonly ApplicationDbContext _dbContext;
-        private readonly HttpClient _client = new HttpClient();
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public MovieDetailsAdapter(ApplicationDbContext dbContext)
+        public MovieDetailsAdapter(ApplicationDbContext dbContext, IHttpClientFactory httpClientFactory)
         {
             _dbContext = dbContext;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<Movie> FromJson(string json)
         {
             JObject jObject = JObject.Parse(json);
-
-            Movie movie = new Movie
+            Movie movie = ParseMovie(jObject);
+            await FetchPosterImageAsync(movie, jObject["poster_path"]?.ToString());
+            await HandleMovieGenresAsync(movie, jObject["genres"]);
+            AssignTrailerKey(movie, jObject["videos"]?["results"]);
+            return movie;
+        }
+        
+        private Movie ParseMovie(JObject jObject)
+        {
+            return new Movie
             {
                 MovieId = (int)jObject["id"]!,
                 Title = (string)jObject["title"]!,
@@ -27,40 +36,31 @@ namespace CineSync.Core.Adapters.ApiAdapters
                 ReleaseDate = DateTime.Parse((string)jObject["release_date"]!),
                 RunTime = (short)jObject["runtime"]!,
                 Rating = (float)jObject["vote_average"]!,
-                Cast = jObject["credits"]!["cast"]!.Take(10).Select(cast => (string)cast["name"]!).ToList(),
+                Cast = jObject["credits"]!["cast"]!.Take(10).Select(cast => (string)cast["name"]!).ToList()
             };
-
-            // Fetches the Images asynchronously while its either saving the Genres or fetching them
-            string posterPath = (string)jObject["poster_path"]!;
+        } 
+        
+        private async Task FetchPosterImageAsync(Movie movie, string? posterPath)
+        {
             if (!string.IsNullOrEmpty(posterPath))
             {
-                movie.PosterImage = await FetchImageAsync(_imageService + posterPath);
+                HttpClient client = _httpClientFactory.CreateClient();
+                movie.PosterImage = await FetchImageAsync(ImageServiceBaseUri + posterPath, client);
             }
-
-            JToken? videoResults = jObject["videos"]?["results"];
-            if (videoResults != null)
-            {
-                movie.TrailerKey = videoResults?.FirstOrDefault(video => (string)video["type"] == "Trailer" && video["key"] != null)?["key"]?.ToString();
-            }
-
-            List<Task<Genre>> genreTasks = new List<Task<Genre>>();
-            JToken? jGenres = jObject["genres"];
-            if (jGenres != null)
-            {
-                foreach (var jGenre in jObject["genres"]!)
-                {
-                    genreTasks.Add(EnsureGenreExists((int)jGenre["id"]!, (string)jGenre["name"]!));
-                }
-            }
-
-            movie.Genres = await Task.WhenAll(genreTasks);
-
-            return movie;
-        }
-
-        private async Task<byte[]> FetchImageAsync(string url)
+        } 
+        
+        private async Task HandleMovieGenresAsync(Movie movie, JToken? jGenres)
         {
-            var response = await _client.GetAsync(url);
+            var genreTasks = jGenres?.Select(jGenre => EnsureGenreExists((int)jGenre["id"]!, (string)jGenre["name"]!)).ToList();
+            if (genreTasks != null)
+            {
+                movie.Genres = await Task.WhenAll(genreTasks);
+            }
+        } 
+
+        private async Task<byte[]> FetchImageAsync(string url, HttpClient client)
+        {
+            var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadAsByteArrayAsync();
@@ -80,6 +80,18 @@ namespace CineSync.Core.Adapters.ApiAdapters
             }
             return existingGenre;
         }
-
+        
+        private void AssignTrailerKey(Movie movie, JToken? videoResults)
+        {
+            if (videoResults == null) return;
+            
+            // Look for the first video marked as a "Trailer"
+            var trailer = videoResults.FirstOrDefault(video => (string)video["type"]! == "Trailer" && video["key"] != null);
+        
+            if (trailer != null)
+            {
+                movie.TrailerKey = (string)trailer["key"]!;
+            }
+        }
     }
 }
