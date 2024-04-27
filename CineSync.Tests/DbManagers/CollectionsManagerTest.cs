@@ -9,8 +9,8 @@ using Moq;
 
 namespace CineSync.Tests.DbManagers;
 
-[TestSubject(typeof(MovieCollectionsManager))]
-public class MovieCollectionsManagerTest
+[TestSubject(typeof(CollectionsManager))]
+public class CollectionsManagerTest
 {
 
     [Fact]
@@ -26,7 +26,7 @@ public class MovieCollectionsManagerTest
         mockUnitOfWork.Setup(uow => uow.GetRepositoryAsync<ApplicationUser>()).Returns(mockUserRepo.Object);
         mockUnitOfWork.Setup(uow => uow.SaveChangesAsync()).ReturnsAsync(true);
 
-        var manager = new MovieCollectionsManager(mockUnitOfWork.Object, logger.Object);
+        var manager = new CollectionsManager(mockUnitOfWork.Object, logger.Object);
 
         var result = await manager.InitializeUserCollectionsAsync("user1");
 
@@ -49,7 +49,7 @@ public class MovieCollectionsManagerTest
             .ReturnsAsync((ApplicationUser)null);
         mockUnitOfWork.Setup(uow => uow.GetRepositoryAsync<ApplicationUser>()).Returns(mockUserRepo.Object);
 
-        var manager = new MovieCollectionsManager(mockUnitOfWork.Object, logger.Object);
+        var manager = new CollectionsManager(mockUnitOfWork.Object, logger.Object);
 
 
         await Assert.ThrowsAsync<Exception>(() => manager.InitializeUserCollectionsAsync("invalidUserId"));

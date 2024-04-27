@@ -26,23 +26,22 @@ namespace CineSync.Core.Adapters.ApiAdapters
                 PosterPath = (string?)obj["poster_path"]
             };
 
-            if (!string.IsNullOrWhiteSpace(movie.PosterPath))
+            if (string.IsNullOrWhiteSpace(movie.PosterPath)) return movie;
+            
+            string fullPath = imageService + movie.PosterPath;
+            byte[] imageBytes;
+            // Checks if the path was already fetched on the cache if it is
+            // it will give its value to the imageBytes
+            if (!imageCache.TryGetValue(fullPath, out imageBytes))
             {
-                string fullPath = imageService + movie.PosterPath;
-                byte[] imageBytes;
-                // Checks if the path was already fetched on the cache if it is
-                // it will give its value to the imageBytes
-                if (!imageCache.TryGetValue(fullPath, out imageBytes))
+                HttpResponseMessage response = client.GetAsync(fullPath).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    HttpResponseMessage response = client.GetAsync(fullPath).Result;
-                    if (response.IsSuccessStatusCode)
-                    {
-                        imageBytes = response.Content.ReadAsByteArrayAsync().Result;
-                        imageCache.TryAdd(fullPath, imageBytes);
-                    }
+                    imageBytes = response.Content.ReadAsByteArrayAsync().Result;
+                    imageCache.TryAdd(fullPath, imageBytes);
                 }
-                movie.PosterImage = imageBytes;
             }
+            movie.PosterImage = imageBytes;
 
             return movie;
         }
