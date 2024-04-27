@@ -9,7 +9,9 @@ using Newtonsoft.Json;
 
 namespace CineSync.Controllers.MovieEndpoint
 {
-
+    /// <summary>
+    /// Handles movie-related HTTP requests, including fetching movies by ID, searching, and retrieving lists of popular, upcoming, or top-rated movies.
+    /// </summary>
     [Route("movie")]
     [ApiController]
     public class MovieController : ControllerBase
@@ -20,6 +22,13 @@ namespace CineSync.Controllers.MovieEndpoint
         private readonly MovieDetailsAdapter _movieDetailsAdapter;
         private readonly IUnitOfWorkAsync _unitOfWork;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MovieController"/> class.
+        /// </summary>
+        /// <param name="apiService">Service for API calls.</param>
+        /// <param name="logger">Logger for logging messages.</param>
+        /// <param name="movieManager">Manager for database operations related to movies.</param>
+        /// <param name="movieDetailsAdapter">Adapter for converting JSON data to movie models.</param>
         public MovieController(ApiService apiService, ILoggerStrategy logger, MovieManager movieManager, MovieDetailsAdapter movieDetailsAdapter)
         {
             _apiService = apiService;
@@ -28,6 +37,11 @@ namespace CineSync.Controllers.MovieEndpoint
             _movieDetailsAdapter = movieDetailsAdapter;
         }
 
+        /// <summary>
+        /// Retrieves movie details by movie ID.
+        /// </summary>
+        /// <param name="id">The TMDB movie ID.</param>
+        /// <returns>An IActionResult containing the movie details.</returns>
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
@@ -51,6 +65,11 @@ namespace CineSync.Controllers.MovieEndpoint
             return Ok(movie);
         }
 
+        /// <summary>
+        /// Searches for movies based on a query string and optional filters.
+        /// </summary>
+        /// <param name="parameters">Search parameters including query string and filters like language and include_adult.</param>
+        /// <returns>An IActionResult containing the search results.</returns>
         [HttpGet("search")]
         public async Task<IActionResult> GetQueryResults([FromQuery] MovieSearchParameters parameters)
         {
@@ -80,6 +99,11 @@ namespace CineSync.Controllers.MovieEndpoint
         }
 
 
+        /// <summary>
+        /// Retrieves a list of popular movies.
+        /// </summary>
+        /// <param name="page">The page number of movie results to fetch (optional, default is 1).</param>
+        /// <returns>An IActionResult containing a list of popular movies.</returns>
         [HttpGet("popular")]
         public async Task<IActionResult> GetPopularMovies([FromQuery] string? page)
         {
@@ -101,6 +125,11 @@ namespace CineSync.Controllers.MovieEndpoint
             return Ok(apiResponse);
         }
 
+        /// <summary>
+        /// Retrieves a list of upcoming movies from the API.
+        /// </summary>
+        /// <param name="page">Optional page number for pagination; defaults to page 1 if not specified.</param>
+        /// <returns>An IActionResult containing a list of upcoming movies.</returns>
         [HttpGet("upcoming")]
         public async Task<IActionResult> GetUpcomingMovies([FromQuery] string? page)
         {
@@ -122,6 +151,11 @@ namespace CineSync.Controllers.MovieEndpoint
             return Ok(apiResponse);
         }
 
+        /// <summary>
+        /// Retrieves a list of top-rated movies from the API.
+        /// </summary>
+        /// <param name="page">Optional page number for pagination; defaults to page 1 if not specified.</param>
+        /// <returns>An IActionResult containing a list of top-rated movies, limited to the top 10 entries.</returns>
         [HttpGet("top-rated")]
         public async Task<IActionResult> GetTopRatedMovies([FromQuery] string? page)
         {
