@@ -13,18 +13,17 @@ namespace CineSync.DbManagers
         private readonly IRepositoryAsync<IdentityUserRole<string>> _userRoleRepository;
         private readonly IRepositoryAsync<TUser> _userRepository;
 
-        private Lazy<List<IdentityRole>> _lazyRoles;
+        private Lazy<IEnumerable<IdentityRole>> _lazyRoles;
 
         public UserRoleManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger)
             : base(unitOfWork, logger)
         {
             _userRoleRepository = _unitOfWork.GetRepositoryAsync<IdentityUserRole<string>>();
             _userRepository = _unitOfWork.GetRepositoryAsync<TUser>();
-            _lazyRoles = new Lazy<List<IdentityRole>>(() => _repository.GetAll().ToList());
-
+            _lazyRoles = new Lazy<IEnumerable<IdentityRole>>(() => Task.Run(async () => await _repository.GetAllAsync()).Result);
         }
 
-        public List<IdentityRole> Roles => _lazyRoles.Value;
+        public IEnumerable<IdentityRole> Roles => _lazyRoles.Value;
 
         public List<IdentityRole> GetRoles()
         {
@@ -35,14 +34,14 @@ namespace CineSync.DbManagers
         {
             return await _repository.GetAllAsync() as ICollection<IdentityRole>;
         }
-        
+
         public async Task<ICollection<string>> GetRolesOfUserAsync(TUser user, CancellationToken cancellationToken = default)
         {
             IEnumerable<IdentityUserRole<string>> roles = await _userRoleRepository.GetByConditionAsync(userRole => userRole.UserId == user.Id, cancellationToken);
             IEnumerable<string> roleIds = roles.Select(ur => ur.RoleId).Distinct();
             IEnumerable<IdentityRole> userRoles = Roles.Where(role => roleIds.Contains(role.Id));
             ImmutableList<string> userRolesNames = userRoles.Select(role => role.Name).ToImmutableList();
- 
+
             return userRolesNames;
         }
 
