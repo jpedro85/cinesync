@@ -1,5 +1,4 @@
-﻿
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+﻿<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content border-white">
             <div class="modal-header text-center">
@@ -12,19 +11,19 @@
             </div>
             <div class="modal-body bg-dark">
                 <div class="star-rating text-center">
-                    @for (int i = 1; i <= 10; i++)
+                    @for (int i = 0; i <= 10; i++)
                     {
-                        <input type="radio" id="@($"star{i}")" name="rating" value="@i"  />
-
-                        <label for="@($"star{i}")" style="margin-right: 10px;"><img src="MiniLogo.png" /></label>
+                        <input type="radio" id="@($"star{i}")" name="rating" value="@i" />
+                        <label for="@($"star{i}")" style="margin-right: 10px;">
+                            <img src="CsRating-modified.png" onmouseover="this.src='CsRating.png'" onmouseout="this.src='CsRating-modified.png'" />
+                        </label>
                     }
                 </div>
             </div>
             <div class="modal-footer bg-dark">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" >Save changes</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
-</div
-
+</div>
