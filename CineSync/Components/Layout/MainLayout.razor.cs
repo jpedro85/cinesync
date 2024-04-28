@@ -22,9 +22,11 @@ namespace CineSync.Components.Layout
 
         public ApplicationUser? AuthenticatedUser { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        private bool _hasSearch = true;
+
+		protected override async Task OnInitializedAsync()
         {
-            await CheckLoginState();
+			await CheckLoginState();
             LayoutService.MainLayout = this;
         }
 
@@ -34,6 +36,14 @@ namespace CineSync.Components.Layout
             AuthenticatedUser = await UserManager.GetUserAsync(authState.User);
 
             Console.WriteLine($"is User {AuthenticatedUser == null}");
+        }
+        public void RemoveSearchButton()
+        {
+            _hasSearch = false;
+
+            InvokeAsync(() => {
+                StateHasChanged();
+            });
         }
 
     }

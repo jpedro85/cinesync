@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CineSync.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace CineSync.Components.Navs
@@ -9,25 +10,44 @@ namespace CineSync.Components.Navs
 
         private string _currentSearch = string.Empty;
 
-        public delegate void Searchhandler(string search);
-        public delegate void openMenu();
+        [Inject]
+        public NavBarEvents NavBarEvents { get; set; }
 
-        public event Searchhandler? OnSearch;
+		protected override void OnInitialized()
+		{
+            NavBarEvents.OnSearchFromPage += updateCurrentSearch;
+		}
 
-        private void OutSearch()
+		private void OutSearch()
         {
             _searchActive = "";
         }
 
-        private void OnSearchClick(MouseEventArgs e)
+        private void OnSearchClick( MouseEventArgs e )
         {
             if (_currentSearch != string.Empty)
-                OnSearch?.Invoke(_currentSearch);
+                NavBarEvents?.OnClickSearch( _currentSearch );
         }
 
-        private void ClickInput(MouseEventArgs e)
+		private void OnSearchClick( KeyboardEventArgs e )
+		{
+			if (_currentSearch != string.Empty)
+				NavBarEvents?.OnClickSearch( _currentSearch );
+		}
+
+		private void ClickInput(MouseEventArgs e)
         {
             _searchActive = "Active";
         }
-    }
+
+        private void updateCurrentSearch(string searchActive )
+        {
+            InvokeAsync(() =>
+            {
+                _currentSearch = searchActive;
+                StateHasChanged();
+            });
+		}
+
+	}
 }

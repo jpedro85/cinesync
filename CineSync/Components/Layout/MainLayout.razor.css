@@ -7,11 +7,12 @@
 .pageRow {
     display: flex;
     flex-direction: row;
+    flex-grow:1;
 }
 
 .sidebar {
     width: 100px !important;
-    height: 100vh;
+   /* height: 100%;*/
     padding:0;
     margin:0;
     background-color:blueviolet;
@@ -23,8 +24,10 @@
 
 .bodyCoteiner{
     width:100%;
-    height:100%;
     overflow-x:hidden;
+    /*height:100%;*/
+    display:flex;
+    flex-direction:column;
 }
 
 /*.top-row {
