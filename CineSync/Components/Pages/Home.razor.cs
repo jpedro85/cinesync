@@ -45,12 +45,9 @@ namespace CineSync.Components.Pages
             MainLayout = LayoutService.MainLayout;
             MainLayout.RemoveSearchButton();
 
-            AuthenticatedUser = MainLayout.AuthenticatedUser;
-
             await FetchTopRatedMovies();
-            InitializeQueue();
-            StartTimer();
 
+            AuthenticatedUser = MainLayout.AuthenticatedUser;
             AuthenticatedUser = new ApplicationUser { UserName = "testuser" };
         }
 
@@ -59,6 +56,9 @@ namespace CineSync.Components.Pages
             if (firstRender)
             {
                 SearchButton.OnSearch += OnSearch;
+                InitializeQueue();
+                StartTimer();
+                StateHasChanged();
             }
         }
 
@@ -70,7 +70,6 @@ namespace CineSync.Components.Pages
                 movieQueue.Enqueue(movie);
             }
             UpdateCurrentMovies();
-
         }
 
         private void StartTimer()
@@ -126,9 +125,9 @@ namespace CineSync.Components.Pages
             _timer?.Dispose();
         }
 
-        public void OnSearch( string searchQuery )
+        public void OnSearch(string searchQuery)
         {
-            if ( searchQuery != string.Empty)
+            if (searchQuery != string.Empty)
                 NavigationManager.NavigateTo($"/Search/{searchQuery}");
         }
     }
