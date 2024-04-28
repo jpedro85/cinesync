@@ -6,8 +6,12 @@ namespace CineSync.Services
     public class NavBarEvents
     {
         public delegate void Change(bool status);
+		public delegate void SearchEventHandler( string query );
 
-        public bool IsMenuOpen = false;
+		public event SearchEventHandler? OnSearchFromNavBar;
+		public event SearchEventHandler? OnSearchFromPage;
+
+		public bool IsMenuOpen = false;
         public event Change? OnMenuChange;
 
         public bool IsNotificationOpen = false;
@@ -25,6 +29,15 @@ namespace CineSync.Services
             OnMenuChange?.Invoke(IsMenuOpen);
         }
 
+        public void OnClickSearch( string query )
+        {
+			OnSearchFromNavBar?.Invoke( query );
+		}
 
-    }
+        public void InvokeOnSearchFromPage(string query )
+        {
+            OnSearchFromPage?.Invoke(query);
+		}
+
+	}
 }

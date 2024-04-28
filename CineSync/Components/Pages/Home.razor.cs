@@ -6,6 +6,7 @@ using System.Timers;
 using CineSync.Core.Adapters.ApiAdapters;
 using CineSync.Services;
 using CineSync.Components.Layout;
+using CineSync.Components.Buttons;
 
 namespace CineSync.Components.Pages
 {
@@ -21,6 +22,9 @@ namespace CineSync.Components.Pages
         [Inject]
         private LayoutService LayoutService { get; set; }
 
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
         private MainLayout MainLayout { get; set; }
 
         private bool showNavMenu = false;
@@ -34,9 +38,13 @@ namespace CineSync.Components.Pages
 
         public ApplicationUser? AuthenticatedUser { get; set; }
 
+        private SearchButton SearchButton { get; set; } = new SearchButton();
+
         protected override async Task OnInitializedAsync()
         {
             MainLayout = LayoutService.MainLayout;
+            MainLayout.RemoveSearchButton();
+
             AuthenticatedUser = MainLayout.AuthenticatedUser;
 
             await FetchTopRatedMovies();
@@ -44,6 +52,14 @@ namespace CineSync.Components.Pages
             StartTimer();
 
             AuthenticatedUser = new ApplicationUser { UserName = "testuser" };
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                SearchButton.OnSearch += OnSearch;
+            }
         }
 
         private void InitializeQueue()
@@ -108,6 +124,12 @@ namespace CineSync.Components.Pages
         {
             _timer?.Stop();
             _timer?.Dispose();
+        }
+
+        public void OnSearch( string searchQuery )
+        {
+            if ( searchQuery != string.Empty)
+                NavigationManager.NavigateTo($"/Search/{searchQuery}");
         }
     }
 }

@@ -79,64 +79,6 @@
     padding-left: 0;
 }
 
-#search-conteiner {
-    display: flex;
-    flex-direction: row;
-    border-radius: 25px;
-    height: 50px;
-    background-color: black;
-    border: solid 2px white;
-    overflow: clip;
-    width: 0;
-    /* Start with width 0 */
-    animation: searchstart 3s forwards;
-}
-
-@keyframes searchstart {
-    0% {
-        width: 0;
-    }
-
-    /* Fully transparent */
-    100% {
-        width: 40%;
-    }
-}
-
-.buttonsearch {
-    background-color: white;
-    border-top-right-radius: 100px;
-    width: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 70px;
-}
-
-.buttonsearch:hover {
-    background-color: gray;
-    color: white;
-
-}
-
-#lopa {
-    stroke: black;
-    color: black;
-    fill: black;
-}
-
-.searchInput {
-    background-color: black;
-    color: white;
-    outline: none;
-    border: none;
-    padding-left: 20px;
-    padding-right: 20px;
-    flex-grow: 1;
-
-}
-
-
 .movie-carousel {
     display: flex;
     overflow: hidden;
