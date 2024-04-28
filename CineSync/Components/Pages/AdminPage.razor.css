@@ -1,0 +1,24 @@
+﻿.tabs {
+    display: flex;
+}
+
+    .tabs button {
+        background-color: #f2f2f2;
+        border: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        transition: background-color 0.3s;
+    }
+
+        .tabs button.active {
+            background-color: cornflowerblue;
+        }
+        .tabs button:hover {
+            background-color: #ccc;
+        }
+
+.tab-content {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 10px;
+}

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CineSync.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace CineSync.Components.Navs
 {
@@ -9,25 +11,38 @@ namespace CineSync.Components.Navs
 
         private string _currentSearch = string.Empty;
 
-        public delegate void Searchhandler(string search);
-        public delegate void openMenu();
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
-        public event Searchhandler? OnSearch;
+		private void OnSearchClick( MouseEventArgs e )
+        {
+            if (_currentSearch != string.Empty)
+                NavigationManager.NavigateTo($"/Search/{_currentSearch}");		
+        }
 
-        private void OutSearch()
+		private void OnSearchClick( KeyboardEventArgs e )
+		{
+			if (_currentSearch != string.Empty && e.Key == "Enter")
+				NavigationManager.NavigateTo($"/Search/{_currentSearch}");
+		}
+
+		private void ClickInput( MouseEventArgs e )
+        {
+            _searchActive = "Active";
+		}
+		private void OutSearch()
         {
             _searchActive = "";
         }
 
-        private void OnSearchClick(MouseEventArgs e)
+        private void updateCurrentSearch(string searchActive )
         {
-            if (_currentSearch != string.Empty)
-                OnSearch?.Invoke(_currentSearch);
-        }
+            InvokeAsync(() =>
+            {
+                _currentSearch = searchActive;
+                StateHasChanged();
+            });
+		}
 
-        private void ClickInput(MouseEventArgs e)
-        {
-            _searchActive = "Active";
-        }
-    }
+	}
 }

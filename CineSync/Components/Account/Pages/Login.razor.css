@@ -6,6 +6,7 @@
     flex-direction: row;
     padding: 50px;
     gap: 50px;
+    height:100%;
 }
 
 .main-content {
@@ -74,6 +75,10 @@
         border: solid 2px #0066cc;
     }*/
 
+
+.checkbox3 {
+    padding-left: 20px;
+}
 
 
 .login-btn {

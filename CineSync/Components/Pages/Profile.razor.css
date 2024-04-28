@@ -3,53 +3,56 @@
     flex-direction: row;
     background-color: rgba(0, 0, 0, 0.7);
     color:white;
-    height: 90%;
+    height: fit-content;
     border-radius: 100px;
+    padding:50px;
 }
 .Profile-sidebar {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 300px;
-    height: 100vh;
+    min-height:fit-content;
     color: white;
+    min-width:250px;
 }
-.Picture {
-    margin-top: 10px;
-    position: relative;
+.Profile-icon{
+    margin-top:40px;
+    display:flex;
+    flex-direction:row;
+    margin-left:30px;
 }
 
-#Edit{
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    padding: 0;
-    border: none;
-    height: max-content;
-    width: max-content;
-    background: transparent;
-    color: #000000;
+.Edit-image-icon {
+    background-color:#ffffff;
+    height:fit-content;
+    width:fit-content;
+    position:relative;
+    top:75px;
+    right:30px;
+    border:1px solid #000000;
+    border-radius:50%;
 }
-.Followers {
+
+.edit-image {
+    color:#000000;
+}
+
+.User-Followers {
+    display:flex;
+    flex-direction:row;
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.Profile-pic {
-    width: 100px;
-    border-radius: 50%;
-    background: #ffffff;
-    padding: 6px;
+.Following, .Followers {
+    color:white;
+    margin: 3px;
 }
-
 .Info {
+    align-content:center;
+    align-items:center;
     margin-top: 20px;
     margin-bottom: 20px;
-}
-.Info input {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
 }
 
 .Buttons {
@@ -63,32 +66,7 @@
 .Buttons button {
     margin-top: 10px;
 }
-.Profile-info{
-    width: 100%
-}
-.Statistics, .Collections {
-    margin-top: 15px;
-}
-.Stats-title, .Collection-title {
-    margin-left: 20px;
-}
-.Info-line{
-    width: 90%;
 
-}
-.User-Statistics {
-    margin-left: 30px;
-}
-hr {
-    margin-left:5px;
-    width: 100%;
-    border: none;
-    height: 5px;
-    color: black;
-}
-h2{
-    margin-bottom: 0px;
-}
 .buttonProfile {
     font-family: Itim;
     font-weight: 500;
@@ -115,3 +93,41 @@ h2{
         border: solid 2px #0066cc;
         width: 180px;
     }
+
+.Profile-info {
+    flex-grow:1;
+    overflow-x:hidden;
+}
+
+.Statistics, .Collections {
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.User-statistics {
+    margin-left:40px;
+    display:flex;
+    flex-direction:row;
+}
+.view-icon-container{
+    align-content:center;
+    align-items:center;
+}
+.view-icon {
+    margin-left: 5px;
+    color: #ffffff;
+}
+
+.Info-line{
+    height:3px;
+    margin-right:35px;
+    margin-bottom:10px;
+    background-color:#000000;
+}
+
+.Statistics-title, .Collection-title {
+    color: #ffffff;
+    font-size: 25px;
+    margin-left:10px;
+    overflow-x:hidden;
+}

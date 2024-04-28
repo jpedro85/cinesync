@@ -17,18 +17,30 @@ using CineSync.Services;
 
 namespace CineSync
 {
+    /// <summary>
+    /// Facilitates the application's startup and configuration process by encapsulating the setup of services, application components, and initializations.
+    /// </summary>
     public class ApplicationFacade
     {
         private WebApplicationBuilder builder;
 
         private string formattedDate;
 
+        /// <summary>
+        /// Initializes a new instance of the ApplicationFacade class, setting up the builder and formatted date for logging.
+        /// </summary>
+        /// <param name="builder">The WebApplicationBuilder used to configure application services and build the app.</param>
+        /// <param name="LogdateFormat">The date format string used to format the logging timestamps.</param>
         public ApplicationFacade(WebApplicationBuilder builder, string LogdateFormat)
         {
             this.builder = builder;
             formattedDate = DateTime.Now.ToString(LogdateFormat);
         }
 
+        /// <summary>
+        /// Configures the application by setting up services, building the application, and initializing the database.
+        /// </summary>
+        /// <returns>The configured WebApplication ready to be run.</returns>
         public WebApplication ConfigApplication()
         {
             ConfigureServices(builder.Services);
@@ -39,6 +51,10 @@ namespace CineSync
             return app;
         }
 
+        /// <summary>
+        /// Configures various services needed by the application.
+        /// </summary>
+        /// <param name="services">The IServiceCollection to add services to.</param>
         private void ConfigureServices(IServiceCollection services)
         {
             AddRazorComponents(services);
@@ -49,6 +65,10 @@ namespace CineSync
             AddAdditionalServices(services);
         }
 
+        /// <summary>
+        /// Adds and configures Razor component services, including server-side Blazor components and necessary scope services for identity management.
+        /// </summary>
+        /// <param name="services">The IServiceCollection to add Razor components services to.</param>
         private void AddRazorComponents(IServiceCollection services)
         {
             services.AddRazorComponents()
@@ -60,6 +80,11 @@ namespace CineSync
             services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
             services.AddControllers();
         }
+
+        /// <summary>
+        /// Configures logging services for the application, setting up multiple logging providers and formats.
+        /// </summary>
+        /// <param name="services">The IServiceCollection to add logging services to.</param>
         private void AddLogger(IServiceCollection services)
         {
             services.AddSingleton<ILoggerStrategy>(provider =>
@@ -77,6 +102,10 @@ namespace CineSync
                     .Build());
         }
 
+        /// <summary>
+        /// Configures authentication services, setting up identity management for the application.
+        /// </summary>
+        /// <param name="services">The IServiceCollection to add authentication services to.</param>
         private void AddAuthenticationServices(IServiceCollection services)
         {
             services.AddAuthentication(options =>
@@ -92,6 +121,10 @@ namespace CineSync
                 .AddDefaultTokenProviders();
         }
 
+        /// <summary>
+        /// Configures database services, including the application's DbContext and migration services.
+        /// </summary>
+        /// <param name="services">The IServiceCollection to add database services to.</param>
         private void AddDatabaseServices(IServiceCollection services)
         {
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -99,6 +132,10 @@ namespace CineSync
             services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
+        /// <summary>
+        /// Configures authorization policies for different roles within the application.
+        /// </summary>
+        /// <param name="services">The IServiceCollection to add authorization policies to.</param>
         private void AddAuthorizationPolicies(IServiceCollection services)
         {
             services.AddAuthorization(options =>
@@ -111,6 +148,10 @@ namespace CineSync
             services.AddCascadingAuthenticationState();
         }
 
+        /// <summary>
+        /// Adds additional custom and third-party services to the application.
+        /// </summary>
+        /// <param name="services">The IServiceCollection to configure.</param>
         private void AddAdditionalServices(IServiceCollection services)
         {
 
@@ -149,9 +190,13 @@ namespace CineSync
 
             services.AddSingleton<NavBarEvents>();
             services.AddSingleton<LayoutService>();
-           
+
         }
 
+        /// <summary>
+        /// Initializes the database with required roles and user data.
+        /// </summary>
+        /// <param name="app">The WebApplication instance to access services for initialization.</param>
         private void InitializeDb(WebApplication app)
         {
             var services = app.Services.CreateScope().ServiceProvider;
@@ -161,6 +206,10 @@ namespace CineSync
             InitializeDbSetRoles(dbContext);
         }
 
+        /// <summary>
+        /// Configures the application middleware and endpoints.
+        /// </summary>
+        /// <param name="app">The WebApplication to configure.</param>
         private void ConfigureApp(WebApplication app)
         {
             ConfigureHTTP(app);
@@ -183,6 +232,10 @@ namespace CineSync
             app.MapAdditionalIdentityEndpoints();
         }
 
+        /// <summary>
+        /// Configures HTTP-related settings, including debugging support and exception handling based on the application environment.
+        /// </summary>
+        /// <param name="app">The WebApplication to configure HTTP settings for.</param>
         private void ConfigureHTTP(WebApplication app)
         {
             if (app.Environment.IsDevelopment())
@@ -197,6 +250,10 @@ namespace CineSync
             }
         }
 
+        /// <summary>
+        /// Initializes predefined roles in the database.
+        /// </summary>
+        /// <param name="dbContext">The application's DbContext to interact with the database.</param>
         private void InitializeDbSetRoles(ApplicationDbContext dbContext)
         {
             var roleinitializer = new DbRolesInitializer(dbContext);
@@ -208,6 +265,10 @@ namespace CineSync
                 .Initialize();
         }
 
+        /// <summary>
+        /// Initializes predefined users in the database.
+        /// </summary>
+        /// <param name="dbContext">The application's DbContext to interact with the database.</param>
         private void InitializeDbSetUser(ApplicationDbContext dbContext)
         {
             var userInitializer = new DbUserInitializer(dbContext);

@@ -1,0 +1,21 @@
+﻿<div class="tabs">
+    <button @onclick="@(() => SelectedTab = "Complaints")" class="@(SelectedTab == "Complaints" ? "active" :"" )">Complaints</button>
+    <button @onclick="@(() => SelectedTab = "Account Status")" class="@(SelectedTab == "Account Status" ? "active" : "")">Account Status</button>
+    <button @onclick="@(() => SelectedTab = "Permissions")" class="@(SelectedTab == "Permissions" ? "active" : "")">Permissions</button>
+</div>
+
+<div class="tab-content">
+    @if (SelectedTab == "Complaints")
+    {
+        <p>This is the Complaints tab content.</p>
+    }
+    else if (SelectedTab == "Account Status")
+    {
+        <p>This is the Account Status tab content.</p>
+    }
+    else if (SelectedTab == "Permissions")
+    {
+        <p>This is the Permissions tab content.</p>
+    }
+</div>
+

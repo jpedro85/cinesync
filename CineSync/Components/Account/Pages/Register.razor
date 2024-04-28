@@ -16,6 +16,8 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 @inject UserRoleManager<ApplicationUser> UserRoleManager
+@inject CollectionsManager CollectionManager;
+@inject MovieManager MovieManager;
 
 <PageTitle>Register</PageTitle>
 <div class="page">
@@ -47,7 +49,14 @@
                     <button type="submit" class="register">Register</button>
                 </div>
             </EditForm>
-
+        <div>
+            <p>
+                <a href="Account/Login">I Already Have an Account</a>
+            </p>
+            <p>
+                <a href="Account/ForgotPassword">Forgot your password?</a>
+            </p>
+        </div>
         </div>
     </div>
 
@@ -90,6 +99,13 @@
         {
             UserManager.DeleteAsync(user);
             Logger.LogError("The Role was not set on register");
+            return;
+        }
+
+        if (!await CollectionManager.InitializeUserCollectionsAsync(user.Id))
+        {
+            UserManager.DeleteAsync(user);
+            Logger.LogError("Cannot create default collections");
             return;
         }
 

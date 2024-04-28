@@ -1,10 +1,10 @@
 ﻿@rendermode InteractiveServer
 
-<div class="NavSearchconteiner @_searchActive" >
+<div class="NavSearchconteiner @_searchActive" @onkeydown="OnSearchClick">
     <input 
         @onclick="ClickInput"
         @onfocusout="OutSearch"
-        class="NavSearch" type="text" @bind-value="@_currentSearch" placeholder="Search" />
+           class="NavSearch" type="text" @bind-value:event="oninput" @bind-value="@_currentSearch" placeholder="Search" />
 
     <div class="LopaConteiner" @onclick="OnSearchClick">
         <svg id="lopa" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -14,11 +14,15 @@
 
 <PageTitle>Manage email</PageTitle>
 
-<h3>Manage email</h3>
-<div class="content-center">
-<StatusMessage Message="@message"/>
+<div class="page">
+
+    <div class="main-content">
+        <div class="form-container">
+
+            <h1 class="text-center">Log in</h1>
 <div class="row">
     <div class="col-md-6">
+<StatusMessage Message="@message"/>
         <form @onsubmit="OnSendEmailVerificationAsync" @formname="send-verification" id="send-verification-form" method="post">
             <AntiforgeryToken />
         </form>
@@ -52,7 +56,18 @@
         </EditForm>
     </div>
 </div>
+
+
 </div>
+</div>
+<div class="logo-container-main">
+    <div class="logo-container">
+        <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+    </div>
+</div>
+</div>
+
+
 
 @code {
     private string? message;

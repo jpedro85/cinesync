@@ -6,6 +6,7 @@ using System.Timers;
 using CineSync.Core.Adapters.ApiAdapters;
 using CineSync.Services;
 using CineSync.Components.Layout;
+using CineSync.Components.Buttons;
 
 namespace CineSync.Components.Pages
 {
@@ -16,10 +17,10 @@ namespace CineSync.Components.Pages
         private HttpClient _client { get; set; }
 
         [Inject]
-        private NavBarEvents NavBarEvents { get; set; }
+        private LayoutService LayoutService { get; set; }
 
         [Inject]
-        private LayoutService LayoutService { get; set; }
+        private NavigationManager NavigationManager { get; set; }
 
         private MainLayout MainLayout { get; set; }
 
@@ -34,16 +35,28 @@ namespace CineSync.Components.Pages
 
         public ApplicationUser? AuthenticatedUser { get; set; }
 
+        private SearchButton SearchButton { get; set; } = new SearchButton();
+
         protected override async Task OnInitializedAsync()
         {
             MainLayout = LayoutService.MainLayout;
-            AuthenticatedUser = MainLayout.AuthenticatedUser;
+            MainLayout.RemoveSearchButton();
 
             await FetchTopRatedMovies();
-            InitializeQueue();
-            StartTimer();
 
+            AuthenticatedUser = MainLayout.AuthenticatedUser;
             AuthenticatedUser = new ApplicationUser { UserName = "testuser" };
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                SearchButton.OnSearch += OnSearch;
+                InitializeQueue();
+                StartTimer();
+                StateHasChanged();
+            }
         }
 
         private void InitializeQueue()
@@ -54,7 +67,6 @@ namespace CineSync.Components.Pages
                 movieQueue.Enqueue(movie);
             }
             UpdateCurrentMovies();
-
         }
 
         private void StartTimer()
@@ -108,6 +120,17 @@ namespace CineSync.Components.Pages
         {
             _timer?.Stop();
             _timer?.Dispose();
+        }
+
+        public void OnSearch(string searchQuery)
+        {
+            if (searchQuery != string.Empty)
+                NavigationManager.NavigateTo($"/Search/{searchQuery}");
+        }
+
+        private void MovieClickhandler(MovieSearchAdapter movie)
+        {
+            NavigationManager.NavigateTo($"/MovieDetails/{movie.MovieId}");
         }
     }
 }
