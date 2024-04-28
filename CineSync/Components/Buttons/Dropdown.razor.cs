@@ -6,16 +6,17 @@ namespace CineSync.Components.Buttons
 {
     public partial class Dropdown
     {
-       
+        Dropdown dropdown;
         public List<string> collections = new List<string> { "Coleção 1", "Coleção 2", "Coleção 3" };
-        public int nextCollectionNumber = 4;
+        public int i = 4;
 
      
-        private void AddNewCollection(MouseEventArgs e)
+        private void AddNewCollection()
         {
-            collections.Add("Coleção " + nextCollectionNumber);
-            nextCollectionNumber++;
+            collections.Add($"Coleção{++i}");
+            dropdown.StateHasChanged();
         }
 		
 	}
 }
+
