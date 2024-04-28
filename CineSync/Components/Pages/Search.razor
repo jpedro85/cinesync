@@ -14,37 +14,45 @@
 		<SearchButton @ref="SearchButton" SearchInput="@Query"></SearchButton>
 	</div>
 
-	@if (SearchResults.Count != 0)
-	{
-		<div class="results-container">
+	<div class="scrool-comteiner">
 
-			@foreach (MovieSearchAdapter movie in SearchResults)
-			{
-				<div @onclick="(e) => MovieClickhandler(movie)" >
-					<MoviePlace  Movie=movie UseTitle=false />
-				</div>
-			}
+		<div class="search-container-shadow"></div>
+
+		@if (SearchResults.Count != 0)
+		{
+			<div class="results-container">
+
+				@foreach (MovieSearchAdapter movie in SearchResults)
+				{
+					<div @onclick="(e) => MovieClickhandler(movie)" >
+						<MoviePlace  Movie=movie UseTitle=false />
+					</div>
+				}
 		
-		</div>
-	}
-	else
-	{
-		<div class="no-results-found-container @_isLoading">
+			</div>
+		}
+		else
+		{
+			<div class="no-results-found-container @_isLoading">
 
-			<div class="no-results-found-text">
-				<div>
-					Sorry, we could not find any results for "@_currentSearchQuery".
+				<div class="no-results-found-text">
+					<div>
+						Sorry, we could not find any results for "@_currentSearchQuery".
+					</div>
 				</div>
+
+				<div class="no-results-found-icon-container">
+					<img id="no-results-found-icon" src="SoryNotFound.png" alt="Sory imoji" />
+				</div>
+
 			</div>
 
-			<div class="no-results-found-icon-container">
-				<img id="no-results-found-icon" src="SoryNotFound.png" alt="Sory imoji" />
-			</div>
+		}
 
-		</div>
 
-	}
 
+
+	</div>
 
 	<div class="Loading-container @_isLoading">
 		<Loading />
