@@ -20,23 +20,19 @@ namespace CineSync.Components.Buttons
 
         private void SearchHandler( KeyboardEventArgs  e )
         {
-            if ( e.Key == "Enter" ) 
+            if ( e.Key == "Enter" && !string.IsNullOrEmpty(SearchInput) ) 
             {
-                Console.WriteLine("Test Enter");
+                Console.WriteLine("Test Enter Search Button");
                 OnSearch?.Invoke(SearchInput);
             }
         }
 
-        private void SearchHandler(MouseEventArgs e)
+        private void SearchHandler( MouseEventArgs e )
         {
             Console.WriteLine("Test Mouse");
-            OnSearch?.Invoke(SearchInput);
+            if( !string.IsNullOrEmpty(SearchInput) )
+                OnSearch?.Invoke(SearchInput);
         }
-		public void setSearchInput(string input)
-		{
-			SearchInput = input;
-			InvokeAsync(() =>{ StateHasChanged(); });
-
-		}
+		
 	}
 }
