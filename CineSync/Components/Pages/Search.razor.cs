@@ -18,9 +18,6 @@ namespace CineSync.Components.Pages
 		[Inject]
 		private HttpClient _client { get; set; }
 
-		//[Inject]
-		//private MainLayout MainLayout { get; set; }
-
 		[Inject]
 		private NavigationManager NavigationManager { get; set; }
 
