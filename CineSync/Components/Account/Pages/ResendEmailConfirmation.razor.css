@@ -7,26 +7,22 @@
     padding: 50px;
     gap: 50px;
 }
-
 .main-content {
     display: flex;
     justify-content: end;
     align-items: center;
     width: 50%;
 }
-
 .form-container {
     background-color: rgba(0, 0, 0, 1); /* Black color with 50% opacity */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
-
     min-width: 500px;
     color: grey;
     outline: auto;
     min-height: 300px;
 }
-
 .login-container {
     padding-bottom: 20px;
     flex-grow: 1;
@@ -34,16 +30,13 @@
     justify-content: center;
     display: flex;
 }
-
 #logo {
     width: 400px;
 }
-
 .logo-container {
     text-align: center;
     display: flex !important;
 }
-
 .logo-container-main {
     flex-grow: 1;
     margin-bottom: 10px;
@@ -52,9 +45,6 @@
     justify-content: center;
     align-content: center;
 }
-
-
-
 .text-center {
     color: white;
 }
