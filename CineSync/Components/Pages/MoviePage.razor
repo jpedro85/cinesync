@@ -81,7 +81,7 @@
 
 				<div class="movie-statistics">
 					<div class="movie-statistics-item" >
-						<div class="movie-statistics-item-key">Year:</div><div class="movie-statistics-item-value">@Movie.ReleaseDate</div>
+						<div class="movie-statistics-item-key">Release Date:</div><div class="movie-statistics-item-value">@Movie.ReleaseDate.ToString("yyyy-MM-dd")</div>
 					</div>
 					<div class="movie-statistics-item">
 						<div class="movie-statistics-item-key">Duration:</div><div class="movie-statistics-item-value">@Movie.RunTime min</div>
@@ -92,18 +92,21 @@
 					@Movie.Overview
 				</div>
 
-				<div class="movie-genres">
-					<div class="movie-genres-key">Genres:</div>
-					<div class="movie-genres-value">
-						@for (int i = 0; i < @Movie.Genres.Count() - 1; i++)
-						{
-							@($"{@Movie.Genres.ElementAt(i).Name } ,")
-						}
-						@($"{@Movie.Genres.Last().Name}")
+				@if (Movie.Genres != null && Movie.Genres.Count != 0)
+				{
+					<div class="movie-genres">
+						<div class="movie-genres-key">Genres:</div>
+						<div class="movie-genres-value">
+							@for (int i = 0; i < @Movie.Genres.Count() - 1; i++)
+							{
+								@($"{@Movie.Genres.ElementAt(i).Name} ,")
+							}
+							@($"{@Movie.Genres.Last().Name}")
+						</div>
 					</div>
-				</div>
+				}
 
-				@if(Movie.Cast != null)
+				@if (Movie.Cast != null && Movie.Cast.Count != 0)
 				{					
 					<div class="movie-cast">
 						<div class="movie-genres-key">Cast:</div>
