@@ -1,8 +1,4 @@
-.page {
-    display:flex;
-    flex-direction:column;
-    background-color:rgb(14, 91, 135);
-}
+
 
 .pageRow {
     display: flex;

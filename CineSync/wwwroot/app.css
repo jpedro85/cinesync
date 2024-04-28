@@ -18,7 +18,7 @@ a, .btn-link {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url("images.png");
+    background-image: url("BackgorundHome.png");
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -102,6 +102,7 @@ a:hover {
 
 a:active {
     text-decoration: none;
+}
 .login {
     font-family: Itim;
     font-weight: 500;
