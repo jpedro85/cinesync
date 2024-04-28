@@ -1,12 +1,12 @@
 ﻿@rendermode InteractiveServer
 
-<div class="NavSearchconteiner @_searchActive" >
+<div class="NavSearchconteiner @_searchActive" @onkeydown="OnSearchClick">
     <input 
         @onclick="ClickInput"
         @onfocusout="OutSearch"
-        class="NavSearch" type="text" @bind-value="@_currentSearch" placeholder="Search" />
+           class="NavSearch" type="text" @bind-value:event="oninput" @bind-value="@_currentSearch" placeholder="Search" />
 
-    <div class="LopaConteiner" @onclick="OnSearchClick" @onkeydown="OnSearchClick">
+    <div class="LopaConteiner" @onclick="OnSearchClick">
         <svg id="lopa" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.1258 14.567C11.4914 15.8373 9.43445 16.4366 7.37388 16.2429C5.31331 16.0491 3.40403 15.0768 2.0348 13.5241C0.665565 11.9713 -0.0606687 9.95476 0.0039727 7.88507C0.0686141 5.81538 0.919269 3.84815 2.38273 2.38394C3.84619 0.919737 5.81242 0.068649 7.88106 0.00397473C9.9497 -0.0606996 11.9652 0.665903 13.5172 2.03583C15.0692 3.40577 16.0409 5.31602 16.2346 7.37763C16.4283 9.43925 15.8293 11.4972 14.5596 13.1325L20 18.5553L18.556 20L13.136 14.567H13.1258ZM8.14303 14.2415C8.94427 14.2415 9.73767 14.0836 10.4779 13.7768C11.2182 13.47 11.8908 13.0204 12.4573 12.4535C13.0239 11.8867 13.4733 11.2137 13.7799 10.4731C14.0866 9.73245 14.2444 8.93865 14.2444 8.137C14.2444 7.33535 14.0866 6.54155 13.7799 5.80092C13.4733 5.06029 13.0239 4.38734 12.4573 3.82049C11.8908 3.25364 11.2182 2.80399 10.4779 2.49721C9.73767 2.19043 8.94427 2.03254 8.14303 2.03254C6.52485 2.03254 4.97294 2.67568 3.82872 3.82049C2.68449 4.9653 2.04167 6.51799 2.04167 8.137C2.04167 9.756 2.68449 11.3087 3.82872 12.4535C4.97294 13.5983 6.52485 14.2415 8.14303 14.2415Z" />
         </svg>
