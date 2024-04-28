@@ -1,22 +1,21 @@
-﻿<!-- Tab links -->
-<div class="tab">
-	<button class="tablinks" onclick="ActivateTab('London')">London</button>
-	<button class="tablinks" onclick="ActivateTab('Paris')">Paris</button>
-	<button class="tablinks" onclick="ActivateTab('Tokyo')">Tokyo</button>
+﻿<div class="tabs">
+    <button @onclick="@(() => SelectedTab = "Complaints")" class="@(SelectedTab == "Complaints" ? "active" :"" )">Complaints</button>
+    <button @onclick="@(() => SelectedTab = "Account Status")" class="@(SelectedTab == "Account Status" ? "active" : "")">Account Status</button>
+    <button @onclick="@(() => SelectedTab = "Permissions")" class="@(SelectedTab == "Permissions" ? "active" : "")">Permissions</button>
 </div>
 
-<!-- Tab content -->
-<div id="London" class="tabcontent">
-	<h3>London</h3>
-	<p>London is the capital city of England.</p>
+<div class="tab-content">
+    @if (SelectedTab == "Complaints")
+    {
+        <p>This is the Complaints tab content.</p>
+    }
+    else if (SelectedTab == "Account Status")
+    {
+        <p>This is the Account Status tab content.</p>
+    }
+    else if (SelectedTab == "Permissions")
+    {
+        <p>This is the Permissions tab content.</p>
+    }
 </div>
 
-<div id="Paris" class="tabcontent">
-	<h3>Paris</h3>
-	<p>Paris is the capital of France.</p>
-</div>
-
-<div id="Tokyo" class="tabcontent">
-	<h3>Tokyo</h3>
-	<p>Tokyo is the capital of Japan.</p>
-</div>
