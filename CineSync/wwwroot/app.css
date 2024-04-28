@@ -18,6 +18,7 @@ a, .btn-link {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-width:100vw;
     background-image: url("BackgorundHome.png");
     background-repeat: no-repeat;
     background-size: cover;
