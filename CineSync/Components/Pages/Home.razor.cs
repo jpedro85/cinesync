@@ -127,5 +127,10 @@ namespace CineSync.Components.Pages
             if (searchQuery != string.Empty)
                 NavigationManager.NavigateTo($"/Search/{searchQuery}");
         }
+
+        private void MovieClickhandler(MovieSearchAdapter movie)
+        {
+            NavigationManager.NavigateTo($"/MovieDetails/{movie.MovieId}");
+        }
     }
 }
