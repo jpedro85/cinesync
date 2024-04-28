@@ -8,9 +8,6 @@ namespace CineSync.Services
         public delegate void Change(bool status);
 		public delegate void SearchEventHandler( string query );
 
-		public event SearchEventHandler? OnSearchFromNavBar;
-		public event SearchEventHandler? OnSearchFromPage;
-
 		public bool IsMenuOpen = false;
         public event Change? OnMenuChange;
 
@@ -19,25 +16,16 @@ namespace CineSync.Services
 
         public void OnclickNotification(MouseEventArgs e)
         {
-            IsNotificationOpen = !IsNotificationOpen;
+			Console.WriteLine("Testing event count:" + OnNotificationChange?.GetInvocationList().Count());
+			IsNotificationOpen = !IsNotificationOpen;
             OnNotificationChange?.Invoke(IsNotificationOpen);
         }
 
         public void OnMenuClick(MouseEventArgs e)
         {
             IsMenuOpen = !IsMenuOpen;
+            Console.WriteLine("Testing event count:" + OnMenuChange?.GetInvocationList().Count());
             OnMenuChange?.Invoke(IsMenuOpen);
         }
-
-        public void OnClickSearch( string query )
-        {
-			OnSearchFromNavBar?.Invoke( query );
-		}
-
-        public void InvokeOnSearchFromPage(string query )
-        {
-            OnSearchFromPage?.Invoke(query);
-		}
-
 	}
 }

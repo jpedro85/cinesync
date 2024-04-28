@@ -1,25 +1,37 @@
 ﻿
 .main-container {
-    background: linear-gradient(rgb(0, 0, 0) 2%, rgba(0, 0, 0, 0.2));
+    background: linear-gradient(rgb(0, 0, 0) 10%, rgba(0, 0, 0, 0.2));
     min-height: 100%;
     height: 100%;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     max-height: calc(100vh - 80px);
-    flex-grow: 1;
+    flex-grow: 0;
     display: flex;
+}
+
+.search-container-shadow {
+    position:sticky;
+    top:0;
+    background: linear-gradient(rgb(0, 0, 0) 20%, rgba(0, 0, 0, 0));
+    /*box-shadow: inset 0px 0px 8px 2px rgba(0,0,0,0.3);*/
+    width: 100%;
+    height: 50px;
+    z-index: 1;
+}
+
+.scrool-comteiner{
+    overflow-y:auto;
 }
 
 .search-container {
     background-image: url("BackgorundHome2.png");
-    background-position:center;
-    background-size:cover;
-    min-height:200px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    background-position: center;
+    background-size: cover;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .results-container {
@@ -31,6 +43,7 @@
     align-items:center;
     justify-content:center;
     flex-grow:1;
+    overflow-y:auto;
 }
 
 .Loading-container {

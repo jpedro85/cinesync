@@ -17,9 +17,6 @@ namespace CineSync.Components.Pages
         private HttpClient _client { get; set; }
 
         [Inject]
-        private NavBarEvents NavBarEvents { get; set; }
-
-        [Inject]
         private LayoutService LayoutService { get; set; }
 
         [Inject]

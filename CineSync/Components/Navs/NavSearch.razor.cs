@@ -1,6 +1,7 @@
 ﻿using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace CineSync.Components.Navs
 {
@@ -11,33 +12,27 @@ namespace CineSync.Components.Navs
         private string _currentSearch = string.Empty;
 
         [Inject]
-        public NavBarEvents NavBarEvents { get; set; }
+        public NavigationManager NavigationManager { get; set; }
 
-		protected override void OnInitialized()
-		{
-            NavBarEvents.OnSearchFromPage += updateCurrentSearch;
-		}
-
-		private void OutSearch()
-        {
-            _searchActive = "";
-        }
-
-        private void OnSearchClick( MouseEventArgs e )
+		private void OnSearchClick( MouseEventArgs e )
         {
             if (_currentSearch != string.Empty)
-                NavBarEvents?.OnClickSearch( _currentSearch );
+                NavigationManager.NavigateTo($"/Search/{_currentSearch}");		
         }
 
 		private void OnSearchClick( KeyboardEventArgs e )
 		{
-			if (_currentSearch != string.Empty)
-				NavBarEvents?.OnClickSearch( _currentSearch );
+			if (_currentSearch != string.Empty && e.Key == "Enter")
+				NavigationManager.NavigateTo($"/Search/{_currentSearch}");
 		}
 
-		private void ClickInput(MouseEventArgs e)
+		private void ClickInput( MouseEventArgs e )
         {
             _searchActive = "Active";
+		}
+		private void OutSearch()
+        {
+            _searchActive = "";
         }
 
         private void updateCurrentSearch(string searchActive )

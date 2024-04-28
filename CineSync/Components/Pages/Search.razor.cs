@@ -2,6 +2,7 @@
 using CineSync.Components.Layout;
 using CineSync.Controllers.MovieEndpoint;
 using CineSync.Core.Adapters.ApiAdapters;
+using CineSync.Data;
 using CineSync.Data.Models;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -13,14 +14,19 @@ namespace CineSync.Components.Pages
 {
 	public partial class Search
 	{
+
 		[Inject]
 		private HttpClient _client { get; set; }
 
-		[Inject]
-		private NavBarEvents NavBarEvents { get; set; }
+		//[Inject]
+		//private MainLayout MainLayout { get; set; }
 
 		[Inject]
 		private NavigationManager NavigationManager { get; set; }
+
+		[Inject]
+		private LayoutService LayoutService { get; set; }
+		private MainLayout MainLayout { get; set; }
 
 		[Parameter]
 		public string Query { get; set; }
@@ -39,27 +45,28 @@ namespace CineSync.Components.Pages
 		protected override void OnInitialized()
 		{
 
-			NavBarEvents.OnSearchFromNavBar += SearchMoviesNavSearchHandler;
+            MainLayout = LayoutService.MainLayout;
+            MainLayout.RemoveSearchButton();
 
-
-			if ( ! string.IsNullOrEmpty(Query) )
-			{
-				SearchMoviesMainSearchButtonHandler( Query );
-			}
-			else
-			{
-				FecthUpcoming();
-			}
 		}
 
 		protected override void OnAfterRender(bool firstRender)
 		{
 			if (firstRender)
 			{
-				SearchButton.OnSearch += SearchMoviesMainSearchButtonHandler;
-				_currentPage = 1;
-			}
-		}
+				SearchButton.OnSearch += SearchMoviesSearchButtonHandler;
+
+				if (!string.IsNullOrEmpty(Query))
+				{
+					SearchMoviesSearchButtonHandler(Query);
+				}
+				else
+				{
+					FecthUpcoming();
+				}
+            }
+
+        }
 
 		private async Task SearchMovies (string searchQuery) 
 		{
@@ -72,21 +79,10 @@ namespace CineSync.Components.Pages
 		}
 
 
-		private async void SearchMoviesMainSearchButtonHandler( string searchQuery )
+		private async void SearchMoviesSearchButtonHandler( string searchQuery )
 		{
-			NavBarEvents.InvokeOnSearchFromPage(searchQuery);
 			await SearchMovies(searchQuery);
 			StateHasChanged();
-		}
-
-		private void SearchMoviesNavSearchHandler(string searchQuery)
-		{
-			InvokeAsync( async () =>
-			{
-				await SearchMovies( searchQuery );
-				SearchButton.setSearchInput(searchQuery);
-				StateHasChanged();
-			});
 		}
 
 		private async Task LoadNextPageMovies()

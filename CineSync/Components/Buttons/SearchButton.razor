@@ -1,4 +1,4 @@
-﻿<div id="search-conteiner">
+﻿<div id="search-conteiner" @onkeydown=SearchHandler>
     <button class="buttonsearch" @onclick="SearchHandler">
         <div id="LopaConteiner">
             <svg id="lopa" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -6,5 +6,5 @@
             </svg>
         </div>
     </button>
-    <input class="searchInput" type="text" placeholder="Search" @bind-value="@SearchInput" @onkeydown="SearchHandler"/>
+    <input class="searchInput" type="text" placeholder="Search" @bind-value:event="oninput" @bind-value="@SearchInput"/>
 </div> 
