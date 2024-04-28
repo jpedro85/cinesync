@@ -31,7 +31,7 @@ namespace CineSync.DbManagers
             List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch Later" };
             foreach (string name in collectionNames)
             {
-                user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false });
+                user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
             }
             return await _unitOfWork.SaveChangesAsync();
         }
@@ -90,7 +90,7 @@ namespace CineSync.DbManagers
         /// <exception cref="Exception">Throws if the user is not found.</exception>
         private async Task<ApplicationUser> GetUserByIdAsync(string userId)
         {
-            return await _userRepository.GetFirstByConditionAsync(user => user.Id == userId, "MovieCollection") ?? throw new Exception("User not found");
+            return await _userRepository.GetFirstByConditionAsync(user => user.Id == userId, "Collections") ?? throw new Exception("User not found");
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace CineSync.DbManagers
         /// <returns>Returns true if the movie is already in the collection, otherwise false.</returns>
         private bool IsMovieInCollection(Movie movie, MovieCollection collection)
         {
-            return collection.CollectionMovies!.Any(cm => cm.MovieId == movie.Id);
+            return collection.CollectionMovies?.Any(cm => cm.MovieId == movie.Id)??false;
         }
     }
 }
