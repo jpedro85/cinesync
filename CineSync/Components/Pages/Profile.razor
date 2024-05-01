@@ -19,7 +19,6 @@
         </div>
         <div class="Info">
             <ProfileInput Placeholder="Username"/>
-            <ProfileInput Placeholder="Email"/>
         </div>
         <div class="Buttons">
                 <NavLink href="/Account/Manage/ChangePassword">
@@ -35,7 +34,8 @@
                     <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
                 </button>
             </form>
-            <button class="buttonProfile">Delete Account</button>
+            <button class="DeleteBTN" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
+            <CineSync.Components.PopUps.DeleteACC></CineSync.Components.PopUps.DeleteACC>
         </div>
     </div>
     <div class="Profile-info">
