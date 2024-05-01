@@ -1,6 +1,6 @@
 ﻿namespace CineSync.Components.PopUps
 {
-    public class UsernameEdit
+    public partial class UsernameEdit
     {
     }
 }
