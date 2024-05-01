@@ -1,18 +1,10 @@
-﻿.page {
-    background-image: url("BackgorundHome.png");
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: row;
-    padding: 50px;
-    gap: 50px;
-    height: 100%;
-}
-
-.main-content {
+﻿.main-content {
     display: flex;
     justify-content: end;
     align-items: center;
+    position:absolute;
+    left:30%;
+    top:30%;
     width: 50%;
 }
 
@@ -21,11 +13,10 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
-
     min-width: 500px;
     color: grey;
     outline: auto;
-    min-height: 600px;
+    min-height: 300px;
 }
 
 .login-container {

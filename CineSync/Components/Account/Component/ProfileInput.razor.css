@@ -18,6 +18,8 @@
 
 .edit-email-button {
     position: relative;
-    right: 25px;
-    top: 2px;
+    right: 30px;
+    top: 1px;
+    width:30PX;
+    background: linear-gradient(90deg, #4892db 0%, #5f00cc 10%);
 }
