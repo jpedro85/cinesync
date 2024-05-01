@@ -106,7 +106,7 @@ a:active {
     transition: 752ms;
     cursor: pointer;
     position:absolute;
-    left:90%;
+    left:50%;
 
 }
         .login:hover {
