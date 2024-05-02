@@ -19,8 +19,9 @@ namespace CineSync.Components.Pages
 
 		private bool InViewed { get; set; }
 
+        private bool InFavourites { get; set; }
 
-		private string MovieTitle { get; set; }
+        private string MovieTitle { get; set; }
 
 		[Inject]
 		public ApplicationDbContext ApplicationDbContext { get; set; }
