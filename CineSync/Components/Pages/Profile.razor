@@ -1,6 +1,7 @@
 ﻿@page "/Profile"
 @using CineSync.Components.Buttons
 @using CineSync.Components.Account.Component
+@rendermode InteractiveServer
 
 <div class="Profile">
     <div class="Profile-sidebar">
@@ -18,7 +19,9 @@
             <div class="Following">Following 10</div>
         </div>
         <div class="Info">
-            <ProfileInput Placeholder="Username"/>
+            
+            <ProfileInput Placeholder="Username" />
+            <p>Username:<span style="color:white;">@newuserName</span></p>
         </div>
         <div class="Buttons">
                 <NavLink href="/Account/Manage/ChangePassword">
