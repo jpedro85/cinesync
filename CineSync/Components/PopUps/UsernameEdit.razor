@@ -12,8 +12,9 @@
             <div class="modal-body bg-dark text-white">
                 <form>
                     <div class="form-group">
+                        <p>Username:<span style="color:white;">@newUserName</span></p>
                         <label for="newUsername">New Username:</label>
-                        <input type="text" class="form-control" id="newUsername" placeholder="Enter your new username">
+                        <input type="text" class="form-control" id="newUsername" @bind="@newUserName" @bind:after="SearchAsync" placeholder="Enter your new username">
                     </div>
                 </form>
             </div>
