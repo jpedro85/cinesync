@@ -1,7 +1,7 @@
 ﻿.Profile {
     display: flex;
     flex-direction: row;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 1);
     color:white;
     height: fit-content;
     border-radius: 100px;

@@ -71,7 +71,7 @@
 .button-AddToCollection {
     display: flex;
     color: white;
-    fill: white;
+    background-color:black;
     align-items: center;
 }
 

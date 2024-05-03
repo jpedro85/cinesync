@@ -31,9 +31,18 @@
 					<div class="movie-image-options-item-rigth">
 
 						<div class="button-AddToFavorite">
-							<svg width="30" height="30" viewBox="0 0 30 30" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
-								<path d="M13.1772 27.487L13.1765 27.4863C9.30484 23.6599 6.12918 20.5168 3.91564 17.5651C1.70855 14.6221 0.5 11.9227 0.5 8.99183C0.5 4.17542 3.94523 0.5 8.25 0.5C10.6921 0.5 13.0576 1.74201 14.6072 3.70988L15 4.20873L15.3928 3.70988C16.9424 1.74201 19.3079 0.5 21.75 0.5C26.0548 0.5 29.5 4.17542 29.5 8.99183C29.5 11.9227 28.2914 14.6221 26.0844 17.5651C23.8708 20.5168 20.6952 23.6599 16.8235 27.4863L16.8228 27.487L15 29.2956L13.1772 27.487Z" fill="currentcolor" stroke="currentcolor" />
-							</svg>
+							@if (!InFavourites)
+							{
+								<svg width="30" height="30" viewBox="0 0 30 30" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
+									<path d="M13.1772 27.487L13.1765 27.4863C9.30484 23.6599 6.12918 20.5168 3.91564 17.5651C1.70855 14.6221 0.5 11.9227 0.5 8.99183C0.5 4.17542 3.94523 0.5 8.25 0.5C10.6921 0.5 13.0576 1.74201 14.6072 3.70988L15 4.20873L15.3928 3.70988C16.9424 1.74201 19.3079 0.5 21.75 0.5C26.0548 0.5 29.5 4.17542 29.5 8.99183C29.5 11.9227 28.2914 14.6221 26.0844 17.5651C23.8708 20.5168 20.6952 23.6599 16.8235 27.4863L16.8228 27.487L15 29.2956L13.1772 27.487Z" fill="currentcolor" stroke="currentcolor" />
+								</svg>
+							}
+							else
+							{
+								<svg width="64px" height="64px" viewBox="-3.2 -3.2 38.40 38.40" enable-background="new 0 0 32 32" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
+									<g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="6.4"> <g id="Home"></g> <g id="Print"></g> <g id="Mail"></g> <g id="Camera"></g> <g id="Video"></g> <g id="Film"></g> <g id="Message"></g> <g id="Telephone"></g> <g id="User"></g> <g id="File"></g> <g id="Folder"></g> <g id="Map"></g> <g id="Download"></g> <g id="Upload"></g> <g id="Video_Recorder"></g> <g id="Schedule"></g> <g id="Cart"></g> <g id="Setting"></g> <g id="Search"></g> <g id="Pencils"></g> <g id="Group"></g> <g id="Record"></g> <g id="Headphone"></g> <g id="Music_Player"></g> <g id="Sound_On"></g> <g id="Sound_Off"></g> <g id="Lock"></g> <g id="Lock_open"></g> <g id="Love"> <path d="M29.5,4.5C27.8,2.3,25.3,1,22.7,1c-2.6,0-5.1,1.3-6.7,3.5C14.4,2.3,11.9,1,9.3,1C6.7,1,4.2,2.3,2.5,4.5 c-1.9,2.6-2,6.4-0.3,9.3c0,0,0,0.1,0.1,0.1l12.9,16.6c0.2,0.3,0.5,0.4,0.8,0.4s0.6-0.1,0.8-0.4L29.7,14c0,0,0-0.1,0.1-0.1 C31.5,11,31.4,7.1,29.5,4.5z" fill="#E92662"></path> </g> <g id="Favorite"></g> <g id="Film_1_"></g> <g id="Music"></g> <g id="Puzzle"></g> <g id="Turn_Off"></g> <g id="Book"></g> <g id="Save"></g> <g id="Reload"></g> <g id="Trash"></g> <g id="Tag"></g> <g id="Link"></g> <g id="Like"></g> <g id="Bad"></g> <g id="Gallery"></g> <g id="Add"></g> <g id="Close"></g> <g id="Forward"></g> <g id="Back"></g> <g id="Buy"></g> <g id="Mac"></g> <g id="Laptop"></g> </g><g id="SVGRepo_iconCarrier"> <g id="Home"></g> <g id="Print"></g> <g id="Mail"></g> <g id="Camera"></g> <g id="Video"></g> <g id="Film"></g> <g id="Message"></g> <g id="Telephone"></g> <g id="User"></g> <g id="File"></g> <g id="Folder"></g> <g id="Map"></g> <g id="Download"></g> <g id="Upload"></g> <g id="Video_Recorder"></g> <g id="Schedule"></g> <g id="Cart"></g> <g id="Setting"></g> <g id="Search"></g> <g id="Pencils"></g> <g id="Group"></g> <g id="Record"></g> <g id="Headphone"></g> <g id="Music_Player"></g> <g id="Sound_On"></g> <g id="Sound_Off"></g> <g id="Lock"></g> <g id="Lock_open"></g> <g id="Love"> <path d="M29.5,4.5C27.8,2.3,25.3,1,22.7,1c-2.6,0-5.1,1.3-6.7,3.5C14.4,2.3,11.9,1,9.3,1C6.7,1,4.2,2.3,2.5,4.5 c-1.9,2.6-2,6.4-0.3,9.3c0,0,0,0.1,0.1,0.1l12.9,16.6c0.2,0.3,0.5,0.4,0.8,0.4s0.6-0.1,0.8-0.4L29.7,14c0,0,0-0.1,0.1-0.1 C31.5,11,31.4,7.1,29.5,4.5z" fill="#E92662"></path> </g> <g id="Favorite"></g> <g id="Film_1_"></g> <g id="Music"></g> <g id="Puzzle"></g> <g id="Turn_Off"></g> <g id="Book"></g> <g id="Save"></g> <g id="Reload"></g> <g id="Trash"></g> <g id="Tag"></g> <g id="Link"></g> <g id="Like"></g> <g id="Bad"></g> <g id="Gallery"></g> <g id="Add"></g> <g id="Close"></g> <g id="Forward"></g> <g id="Back"></g> <g id="Buy"></g> <g id="Mac"></g> <g id="Laptop"></g> </g>
+								</svg>
+							}
 						</div>
 
 						<div class="button-AddToViewed">
@@ -54,7 +63,7 @@
 							}
 						</div>
 
-						<div class="button-AddToCollection">
+						<button class="button-AddToCollection" data-toggle="modal" data-target="#AddCollection">
 							<svg class="itemsize button-AddToCollectionSpace" width="31" height="31" viewBox="0 0 31 31" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
 								<g clip-path="url(#clip0_307_2441)">
 									<path d="M21.3125 21.3125H17.4375V23.25H21.3125V27.125H23.25V23.25H27.125V21.3125H23.25V17.4375H21.3125V21.3125ZM15.0311 17.4375C16.1224 15.8052 17.7326 14.589 19.6012 13.9859C21.4697 13.3828 23.4872 13.4281 25.3268 14.1144C27.1664 14.8007 28.7205 16.0878 29.7375 17.7674C30.7544 19.447 31.1747 21.4207 30.9302 23.3689C30.6857 25.3171 29.7908 27.1257 28.3903 28.5019C26.9898 29.8781 25.1659 30.7413 23.2137 30.9517C21.2615 31.1621 19.2955 30.7075 17.6339 29.6613C15.9724 28.6152 14.7126 27.0388 14.0585 25.1875H11.625V23.25H13.6148C13.472 21.9413 13.6243 20.6172 14.0604 19.375H11.625V17.4375H15.0311ZM3.875 7.75V5.8125H7.75V7.75H3.875ZM11.625 7.75V5.8125H27.125V7.75H11.625ZM11.625 13.5625V11.625H27.125V13.5625H11.625ZM3.875 13.5625V11.625H7.75V13.5625H3.875ZM3.875 19.375V17.4375H7.75V19.375H3.875ZM3.875 25.1875V23.25H7.75V25.1875H3.875Z" fill="currentcolor" />
@@ -65,7 +74,8 @@
 									</clipPath>
 								</defs>
 							</svg>
-						</div>
+						</button>
+						<CineSync.Components.PopUps.AddCollection></CineSync.Components.PopUps.AddCollection>
 
 					</div>
 
