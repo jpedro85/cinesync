@@ -44,8 +44,6 @@ namespace CineSync.Components.Pages
 
             await FetchTopRatedMovies();
 
-            AuthenticatedUser = MainLayout.AuthenticatedUser;
-            AuthenticatedUser = new ApplicationUser { UserName = "testuser" };
         }
 
         protected override void OnAfterRender(bool firstRender)

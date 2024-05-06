@@ -21,6 +21,18 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
+        /// Retrieves the collections of movies for a specified user asynchronously.
+        /// </summary>
+        /// <param name="userId">The identifier of the user whose collections are to be retrieved.</param>
+        /// <returns>The collections of movies associated with the specified user.</returns>
+        public async Task<ICollection<MovieCollection>> GetUserCollections(string userId)
+        {
+            ApplicationUser user = await GetUserByIdAsync(userId);
+            ICollection<MovieCollection> collections = user.Collections!;
+            return collections;
+        }
+
+        /// <summary>
         /// Initializes default collections for a new user.
         /// </summary>
         /// <param name="userId">The user's identifier to whom collections will be added.</param>
@@ -33,6 +45,19 @@ namespace CineSync.DbManagers
             {
                 user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
             }
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Creates a new collection asynchronously for a user.
+        /// </summary>
+        /// <param name="userId">The identifier of the user.</param>
+        /// <param name="collectionName">The name of the new collection to create.</param>
+        /// <returns>Returns <c>true</c> if the collection is successfully created, otherwise <c>false</c>.</returns>
+        public async Task<bool> CreateNewCollectionAsync(string userId, string collectionName)
+        {
+            ApplicationUser user = await GetUserByIdAsync(userId);
+            user.Collections!.Add(new MovieCollection { Name = collectionName, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
             return await _unitOfWork.SaveChangesAsync();
         }
 
@@ -101,7 +126,7 @@ namespace CineSync.DbManagers
         /// <returns>Returns true if the movie is already in the collection, otherwise false.</returns>
         private bool IsMovieInCollection(Movie movie, MovieCollection collection)
         {
-            return collection.CollectionMovies?.Any(cm => cm.MovieId == movie.Id)??false;
+            return collection.CollectionMovies?.Any(cm => cm.MovieId == movie.Id) ?? false;
         }
     }
 }
