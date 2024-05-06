@@ -19,12 +19,11 @@
             <div class="Followers">Followers 10</div>
             <div class="Following">Following 10</div>
         </div>
-        <div class="Info">
-            
-            <ProfileInput Placeholder="Username" />
-            <p>Username:<span style="color:white;">@newuserName</span></p>
-        </div>
+
         <div class="Buttons">
+            <button class="buttonProfile" classdata-toggle="modal" data-target="#editUsernameModal">Change Username</button>
+            <CineSync.CineSync.Components.PopUps.UsernameEdit></CineSync.CineSync.Components.PopUps.UsernameEdit>
+
                 <NavLink href="/Account/Manage/ChangePassword">
                     <button class="buttonProfile">Change Password</button>
                 </NavLink>
