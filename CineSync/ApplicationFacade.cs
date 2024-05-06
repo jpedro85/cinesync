@@ -177,7 +177,6 @@ namespace CineSync
             services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync<ApplicationDbContext>>();
             services.AddScoped<MovieController>();
             services.AddScoped<MovieManager>();
-            services.AddScoped<UserManager>();
             services.AddScoped<UserRoleManager<ApplicationUser>>();
             services.AddScoped<CollectionsManager>();
             services.AddScoped<CommentManager>();
