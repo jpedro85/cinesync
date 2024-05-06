@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body bg-dark">
                 <div class="star-rating text-center">
-                    @for (int i = 0; i <= 10; i++)
+                    @for (int i = 0; i < 10; i++)
                     {
                         <input type="radio" id="@($"star{i}")" name="rating" value="@i" />
                         <label for="@($"star{i}")" style="margin-right: 10px;">
