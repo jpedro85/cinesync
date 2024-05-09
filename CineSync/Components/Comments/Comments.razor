@@ -1,8 +1,82 @@
-﻿@page "/Comments"
-<div class="containder">
-	<h3>Post Comment</h3>
-	<EditForm Model="@commentModel" OnInvalidSubmit="@addComment">
-		<InputTextArea @bind-Value="@commentModel.CommentText" />
-		<button type="submit" class="btn btn-primary">Add Comment</button>
-	</EditForm>	
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Comments</h3>
+
+<div>
+    @if (comments.Count == 0)
+    {
+        <p>No comments yet.</p>
+    }
+    else
+    {
+        @foreach (var comment in comments)
+        {
+            <div>
+                <strong>@comment.UserId</strong>: @comment.CommentText
+            </div>
+        }
+    }
+
 </div>
+
+<EditForm Model="@newComment" OnSubmit="@HandleSubmit" FormName="commentForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <InputText class="form-control" @bind-Value="@newComment.UserId" />
+        <ValidationMessage For="@(() => newComment.UserId)" />
+    </div>
+    <div class="form-group">
+        <label for="comment">Comment:</label>
+        <InputText class="form-control" @bind-Value="@newComment.CommentText" />
+        <ValidationMessage For="@(() => newComment.CommentText)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Comment</button>
+</EditForm>
+
+
+@code {
+    List<CommentModel> comments = new List<CommentModel>();
+    CommentModel newComment = new CommentModel();
+
+    async Task HandleSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+
+            AddComment();
+        }
+        else
+        {
+
+        }
+    }
+
+    void AddComment()
+    {
+        // Add the new comment to the list
+        comments.Add(new CommentModel
+            {
+                UserId = newComment.UserId,
+                CommentText = newComment.CommentText
+            });
+        Console.WriteLine(newComment.UserId);
+        Console.WriteLine(newComment.CommentText);
+
+        // Clear the new comment
+        newComment = new CommentModel();
+
+        // Debug statement to check the contents of the comments list
+        Console.WriteLine("Comments count after adding comment: " + comments.Count);
+    }
+
+
+    public class CommentModel
+    {
+        public string UserId { get; set; }
+        public string CommentText { get; set; }
+    }
+}
