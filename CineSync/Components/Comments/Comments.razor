@@ -1,23 +1,68 @@
-﻿@page "/Comments"
+﻿@page "/comments"
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Collections.Generic
+@using System
 
-<div class="containder">
-	<div class="head">
-		<h1>Post Comment</h1>
-		<div><span id="comment">0</span> Comments</div>
-		<div class=" comments"></div>
-		<div class="commentBox">
-			<img src="/logo.png" />
-			<div class="content">
-				<h2>Comment as:</h2>
-				<input type="text" class="user" value="Anonymous">
-				<div class="commentInput">
-					<input type="text" placeholder="Enter Comment" class="userComment">
-					<div class="buttons">
-						<button type="submit" disable id="publish">Publish</button>
 
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<h3>Comments</h3>
+
+@if (comments.Count == 0)
+{
+    <p>No comments yet.</p>
+}
+else
+{
+    @foreach (var comment in comments)
+    {
+        <div class="comment">
+            <p><strong>User ID:</strong> @comment.UserId</p>
+            <p><strong>Comment:</strong> @comment.CommentText</p>
+            <p><strong>Created:</strong> @comment.Created.ToString("yyyy-MM-dd HH:mm:ss")</p>
+        </div>
+    }
+}
+
+<EditForm Model="@newComment" OnValidSubmit="@HandleSubmit" formname="commentForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="userId">User ID:</label>
+        <InputText id="userId" @bind-Value="@newComment.UserId" class="form-control" />
+        <ValidationMessage For="@(() => newComment.UserId)" />
+    </div>
+
+    <div class="form-group">
+        <label for="commentText">Comment:</label>
+        <textarea id="commentText" @bind="@newComment.CommentText" class="form-control" rows="4"></textarea>
+        <ValidationMessage For="@(() => newComment.CommentText)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+@code {
+    List<Commentss> comments = new List<Commentss>();
+    Commentss newComment = new Commentss();
+
+    async Task HandleSubmit(EditContext editContext)
+    {
+        if (editContext.Validate())
+        {
+
+            AddComment();
+        }
+        else
+        {
+
+        }
+    }
+
+    void AddComment()
+    {
+        // Add the new comment to the list
+        comments.Add(newComment);
+
+        // Clear the new comment
+        newComment = new Commentss();
+    }
+}

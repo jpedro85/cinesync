@@ -1,77 +1,66 @@
-﻿*{
-    margin:0;
-    padding:0;
+﻿/* Comments Section */
+.comments-section {
+    margin-top: 2rem;
 }
-body{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:blue;
-}
-.container {
-    background: white;
-    padding: 20px;
-    font-family: Itim;
-    width: 300px;
-    box-shadow: 0 0 5px #000;
-    position: absolute;
-}
-    
-.head{
-    text-transform: uppercase;
-    margin-bottom:20px;
 
+.comment-container {
+    background-color: #1c1c1c;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
 }
-.commentBox{
-    display:flex;
-    justify-content:space-around;   
-    padding:10px;
+
+    .comment-container strong {
+        color: #fff;
+    }
+
+.comment-text {
+    color: #fff;
+    margin-top: 0.5rem;
 }
-.commentBox > img{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    margin-right: 20px;
-    object-fit:cover;
-    object-position:center;
+
+/* Form Group */
+.form-group {
+    margin-bottom: 1rem;
 }
-.content{
-    width:100%;
+
+/* Labels */
+label {
+    color: #fff;
 }
-.user{
-    border:none;
-    outline:none;
-    margin:5px 0;
-    color:#808080;
-    margin-left:20px;
+
+/* Input and Textarea */
+.input-control {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    color: #fff;
 }
-.commentInput> input{
+
+    .input-control:focus {
+        outline: none;
+        border-color: #00efff;
+    }
+
+/* Validation Error Messages */
+.validation-message {
+    color: #ff5555;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+/* Submit Button */
+.submit-button {
+    background-color: #00efff;
+    color: #000;
+    padding: 0.5rem 1rem;
     border: none;
-    padding:10px;
-    padding-left:0;
-    outline: none;
-    border-bottom:2px solid blue;
-    margin-bottom:10px;
-    width:95%;
+    border-radius: 5px;
+    cursor: pointer;
 }
-.buttons{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:#808080;
-}
-.buttons button{
-    padding:5px 10px;
-    background:lightgrey;
-    color:#808080;
-    text-transform:uppercase;
-    border:none;
-    outline:none;
-    border-radius:3px;
-    cursor:pointer;
-}
-.buttons button.abled{
-    background:blue;
-    color:#fff;
-}
+
+    .submit-button:hover {
+        background-color: #00ccff;
+    }
