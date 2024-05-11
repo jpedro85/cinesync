@@ -1,19 +1,44 @@
-﻿namespace CineSync.Components.PopUps
-{
-    public class ClassificationPop
-    {
-		public int Rating { get; set; }
+﻿using CineSync.Components.Layout;
+using CineSync.DbManagers;
+using CineSync.Services;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
-        public void SetRating(int rating)
+namespace CineSync.Components.PopUps
+{
+    public partial class Classification : ComponentBase
+    {
+        [Parameter]
+        public int MovieId { get; set; }
+
+        [Inject]
+        private MovieManager MovieManager { get; set; }
+
+        [Inject]
+        private LayoutService LayoutService { get; set; }
+
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
+
+        private MainLayout MainLayout { get; set; }
+
+        private int Rating { get; set; }
+
+        protected override void OnInitialized()
         {
-            Rating = rating;
+            MainLayout = LayoutService.MainLayout;
         }
 
-		public void SaveRating()
+        private void SetRating(ChangeEventArgs e)
         {
-            // Implement save rating logic here
-            // For demonstration purposes, we'll just print the rating to the console
-            Console.WriteLine($"Rating saved: {Rating}");
+            Rating = Convert.ToInt32(e.Value);
+        }
+
+        // TODO: Remove the reload after making the MovieDetails Component
+        private async void SaveRating()
+        {
+            await MovieManager.AddRating(Rating, MovieId, MainLayout.AuthenticatedUser.Id);
+            await JSRuntime.InvokeVoidAsync("window.location.reload");
         }
     }
 }
