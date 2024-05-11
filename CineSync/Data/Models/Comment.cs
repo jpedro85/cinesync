@@ -11,7 +11,9 @@ namespace CineSync.Data.Models
 
         public long NumberOfLikes { get; set; } = 0;
 
-        public long NumberOfDeslikes { get; set; } = 0;
+        public long NumberOfDislikes { get; set; } = 0;
+
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         [Required]
         public string? Content { get; set; }

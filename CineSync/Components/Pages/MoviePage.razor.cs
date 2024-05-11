@@ -1,6 +1,4 @@
-﻿using CineSync.Controllers.MovieEndpoint;
-using CineSync.Core.Adapters.ApiAdapters;
-using CineSync.Data;
+﻿using CineSync.Data;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using CineSync.Data.Models;

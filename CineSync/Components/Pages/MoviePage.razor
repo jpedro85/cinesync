@@ -1,8 +1,7 @@
 ﻿@page "/MovieDetails/{MovieId:int}"
-@using CineSync.Components.Navs
 @using CineSync.Components.Utils
-@using CineSync.Data.Models
 @using CineSync.Components.Comments
+@using CineSync.Components.PopUps
 
 <div class="page-main-Conteiner">
 
@@ -153,7 +152,7 @@
 
 					<div class="ButtonRatingitem-container">
 						<button class="ButtonRatingitem" data-toggle="modal" data-target="#exampleModal"> Rate Movie</button>
-						<CineSync.Components.PopUps.Classification></CineSync.Components.PopUps.Classification>
+						<Classification></Classification>
 					</div>
 
 				</div>
@@ -164,7 +163,7 @@
 
 
 		<div class="Comments-content">
-			<Comments></Comments>
+			<Comments MovieId=@MovieId></Comments>
 
 		</div>
 	}

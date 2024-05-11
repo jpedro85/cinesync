@@ -1,28 +1,50 @@
 ﻿using CineSync.Data.Models;
-using CineSync.Data;
-using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+using CineSync.Components.Layout;
+using CineSync.DbManagers;
+using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.Comments
 {
-    public partial class Commentss
+    public partial class Comments : ComponentBase
     {
-        public uint Id { get; set; }
         [Parameter]
-        public ApplicationUser? Autor { get; set; }
+        public int MovieId { get; set; }
 
-        public long NumberOfLikes { get; set; } = 0;
+        [Inject]
+        private LayoutService LayoutService { get; set; }
 
-        public long NumberOfDeslikes { get; set; } = 0;
+        [Inject]
+        private CommentManager CommentManager { get; set; }
 
-        public string? Content { get; set; }
+        private MainLayout MainLayout { get; set; }
 
-        public ICollection<CommentAttachment>? Attachements { get; set; }
+        private static ICollection<Comment> CommentsList { get; } = new List<Comment>(0);
 
+        private Comment comment = new Comment();
 
-    
+        protected override void OnInitialized()
+        {
+            MainLayout = LayoutService.MainLayout;
+        }
+
+        private async void HandleSubmit()
+        {
+            if (!string.IsNullOrWhiteSpace(comment.Content))
+            {
+                await AddComment();
+            }
+        }
+
+        private async Task AddComment()
+        {
+            comment.TimeStamp = DateTime.Now;
+
+            await CommentManager.AddComment(comment, MovieId, MainLayout.AuthenticatedUser.Id);
+
+            CommentsList.Add(comment);
+            comment = new Comment();
+            StateHasChanged();
+        }
     }
 }
