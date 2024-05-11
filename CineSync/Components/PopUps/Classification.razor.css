@@ -1,77 +1,49 @@
-﻿/* Adjustments for popcorn rating */
-.popcorn-rating {
-    font-size: 24px; /* Decreased font size */
-}
-
-    .popcorn-rating input[type="radio"] {
-        display: none;
-    }
-
-    .popcorn-rating label {
-        display: inline-block;
-        cursor: pointer;
-        color: #ccc;
-        transition: color 0.3s;
-    }
-
-    .popcorn-rating input[type="radio"]:checked ~ label {
-        color: gold;
-    }
-
-    .popcorn-rating label:hover,
-    .popcorn-rating input[type="radio"]:hover ~ label {
-        color: gold;
-    }
-
-/* Modal styles */
+﻿/* Estilos gerais para o modal */
 .modal-content {
     background-color: #343a40; /* Blackish background */
+    border: 1px solid rgba(255, 255, 255, 0.125); /* White border */
+    border-radius: 0.25rem;
+    color: #fff; /* White text color */
 }
 
 .modal-header {
+    padding: 1rem;
     border-bottom: 1px solid #ffffff; /* White border */
 }
 
 .modal-title {
-    color: #ffc107; /* Yellow text */
-    margin: 0 auto; /* Center the title */
+    margin: 0;
+    color: #ffc107; /* Yellow text color */
 }
 
-.modal-body,
+.modal-body {
+    padding: 1rem;
+}
+
 .modal-footer {
+    padding: 1rem;
     border-top: 1px solid #ffffff; /* White border */
 }
 
-.modal-footer {
-    background-color: #343a40; /* Blackish background */
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Primary button styles */
-.btn-primary {
-    background-color: #007bff; /* Blue button */
-    border-color: #007bff; /* Blue border */
-}
-
-    .btn-primary:hover {
-        background-color: #0056b3; /* Darker blue on hover */
-        border-color: #0056b3; /* Darker blue border on hover */
+    .rating-stars label {
+        font-size: 2em;
+        cursor: pointer;
+        color: #ccc;
+        transition: color 0.3s;
+        margin-right: 10px; /* Add margin between emojis */
     }
 
-    .btn-primary:focus {
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Blue focus shadow */
-    }
-
-/* Secondary button styles */
-.btn-secondary {
-    background-color: #6c757d; /* Gray button */
-    border-color: #6c757d; /* Gray border */
-}
-
-    .btn-secondary:hover {
-        background-color: #545b62; /* Darker gray on hover */
-        border-color: #545b62; /* Darker gray border on hover */
-    }
-
-    .btn-secondary:focus {
-        box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5); /* Gray focus shadow */
-    }
+        .rating-stars label:hover,
+        .rating-stars input[type="radio"]:hover ~ label,
+        .rating-stars input[type="radio"]:checked ~ label {
+            box-shadow: 0 0 10px gold; /* Add a gold glow effect */
+            border-radius: 70%;
+            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.5);
+        }
