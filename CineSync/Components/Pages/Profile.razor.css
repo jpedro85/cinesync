@@ -1,56 +1,66 @@
-﻿.Profile {
+﻿.profile-container {
+    background-image: url("BackgorundHome.png");
+    height: 100vh;
+}
+
+.Profile {
     display: flex;
     flex-direction: row;
-    background-color: rgba(0, 0, 0, 1);
-    color:white;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
     height: fit-content;
     border-radius: 100px;
-    padding:50px;
+    padding: 50px;
 }
+
 .Profile-sidebar {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 300px;
-    min-height:fit-content;
+    min-height: fit-content;
     color: white;
-    min-width:250px;
+    min-width: 250px;
 }
-.Profile-icon{
-    margin-top:40px;
-    display:flex;
-    flex-direction:row;
-    margin-left:30px;
+
+.Profile-icon {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 30px;
 }
 
 .Edit-image-icon {
-    background-color:#ffffff;
-    height:fit-content;
-    width:fit-content;
-    position:relative;
-    top:75px;
-    right:30px;
-    border:1px solid #000000;
-    border-radius:50%;
+    background-color: #ffffff;
+    height: 40px;
+    width: 40px;
+    position: relative;
+    top: 75px;
+    right: 30px;
+    border: 1px solid #000000;
+    border-radius: 50%;
 }
 
 .edit-image {
-    color:#000000;
+    color: #000000;
 }
 
 .User-Followers {
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
     margin-top: 10px;
     margin-bottom: 10px;
 }
-.Following, .Followers {
-    color:white;
+
+.Following,
+.Followers {
+    color: white;
     margin: 3px;
 }
+
 .Info {
-    align-content:center;
-    align-items:center;
+    align-content: center;
+    align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -83,9 +93,10 @@
     cursor: pointer;
     margin-left: auto;
     width: 180px;
-    height:50px;
-    
+    height: 50px;
+
 }
+
 .DeleteBTN {
     font-family: Itim;
     font-weight: 500;
@@ -104,54 +115,59 @@
     width: 180px;
     height: 50px;
 }
-    .DeleteBTN:hover {
-        background: linear-gradient(90deg, #ff9999 0%, #cc0033 100%);
-        color: #000000;
-        border: solid 2px #0066cc;
-        width: 180px;
-    }
 
-    .buttonProfile:hover {
-        background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
-        color: #000000;
-        border: solid 2px #0066cc;
-        width: 180px;
-    }
-
-.Profile-info {
-    flex-grow:1;
-    overflow-x:hidden;
+.DeleteBTN:hover {
+    background: linear-gradient(90deg, #ff9999 0%, #cc0033 100%);
+    color: #000000;
+    border: solid 2px #0066cc;
+    width: 180px;
 }
 
-.Statistics, .Collections {
+.buttonProfile:hover {
+    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+    color: #000000;
+    border: solid 2px #0066cc;
+    width: 180px;
+}
+
+.Profile-info {
+    flex-grow: 1;
+    overflow-x: hidden;
+}
+
+.Statistics,
+.Collections {
     margin-left: 10px;
     margin-top: 20px;
 }
 
 .User-statistics {
-    margin-left:40px;
-    display:flex;
-    flex-direction:row;
+    margin-left: 40px;
+    display: flex;
+    flex-direction: row;
 }
-.view-icon-container{
-    align-content:center;
-    align-items:center;
+
+.view-icon-container {
+    align-content: center;
+    align-items: center;
 }
+
 .view-icon {
     margin-left: 5px;
     color: #ffffff;
 }
 
-.Info-line{
-    height:3px;
-    margin-right:35px;
-    margin-bottom:10px;
-    background-color:#000000;
+.Info-line {
+    height: 3px;
+    margin-right: 35px;
+    margin-bottom: 10px;
+    background-color: #000000;
 }
 
-.Statistics-title, .Collection-title {
+.Statistics-title,
+.Collection-title {
     color: #ffffff;
     font-size: 25px;
-    margin-left:10px;
-    overflow-x:hidden;
+    margin-left: 10px;
+    overflow-x: hidden;
 }
