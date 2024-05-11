@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using System;
 using System.Threading.Tasks;
 
 namespace CineSync.Components.Comments
@@ -10,17 +11,25 @@ namespace CineSync.Components.Comments
         public string UserId { get; set; }
         public string CommentText { get; set; }
         public DateTime Created { get; set; }
+   
 
-        // Method to add a new comment
-        public async Task AddComment()
-        {
-            // Assuming you have a service or repository to handle data operations,
-            // you would call it here to add the new comment to your database or storage.
+        //void AddComment()
+        //{
+        //    // Add the new comment to the list
+        //    comments.Add(new Commentss
+        //    {
+        //        UserId = newComment.UserId,
+        //        CommentText = newComment.CommentText
+        //    });
+        //    Console.WriteLine(newComment.UserId);
+        //    Console.WriteLine(newComment.CommentText);
 
-            // For demonstration purposes, let's just output the comment to the console.
-            Console.WriteLine($"New comment added: {CommentText}");
-            
-                   }
+        //    // Clear the new comment
+        //    newComment = new Commentss();
+
+        //    // Debug statement to check the contents of the comments list
+        //    Console.WriteLine("Comments count after adding comment: " + comments.Count);
+        //}
 
     }
 }

@@ -1,46 +1,48 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
+﻿@page "/comments"
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Collections.Generic
+@using System
+
 
 <h3>Comments</h3>
 
-<div>
-    @if (comments.Count == 0)
+@if (comments.Count == 0)
+{
+    <p>No comments yet.</p>
+}
+else
+{
+    @foreach (var comment in comments)
     {
-        <p>No comments yet.</p>
+        <div class="comment">
+            <p><strong>User ID:</strong> @comment.UserId</p>
+            <p><strong>Comment:</strong> @comment.CommentText</p>
+            <p><strong>Created:</strong> @comment.Created.ToString("yyyy-MM-dd HH:mm:ss")</p>
+        </div>
     }
-    else
-    {
-        @foreach (var comment in comments)
-        {
-            <div>
-                <strong>@comment.UserId</strong>: @comment.CommentText
-            </div>
-        }
-    }
+}
 
-</div>
-
-<EditForm Model="@newComment" OnSubmit="@HandleSubmit" FormName="commentForm">
+<EditForm Model="@newComment" OnValidSubmit="@HandleSubmit" formname="commentForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group">
-        <label for="name">Name:</label>
-        <InputText class="form-control" @bind-Value="@newComment.UserId" />
+        <label for="userId">User ID:</label>
+        <InputText id="userId" @bind-Value="@newComment.UserId" class="form-control" />
         <ValidationMessage For="@(() => newComment.UserId)" />
     </div>
+
     <div class="form-group">
-        <label for="comment">Comment:</label>
-        <InputText class="form-control" @bind-Value="@newComment.CommentText" />
+        <label for="commentText">Comment:</label>
+        <textarea id="commentText" @bind="@newComment.CommentText" class="form-control" rows="4"></textarea>
         <ValidationMessage For="@(() => newComment.CommentText)" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Add Comment</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
-
-
 @code {
-    List<CommentModel> comments = new List<CommentModel>();
-    CommentModel newComment = new CommentModel();
+    List<Commentss> comments = new List<Commentss>();
+    Commentss newComment = new Commentss();
 
     async Task HandleSubmit(EditContext editContext)
     {
@@ -58,25 +60,9 @@
     void AddComment()
     {
         // Add the new comment to the list
-        comments.Add(new CommentModel
-            {
-                UserId = newComment.UserId,
-                CommentText = newComment.CommentText
-            });
-        Console.WriteLine(newComment.UserId);
-        Console.WriteLine(newComment.CommentText);
+        comments.Add(newComment);
 
         // Clear the new comment
-        newComment = new CommentModel();
-
-        // Debug statement to check the contents of the comments list
-        Console.WriteLine("Comments count after adding comment: " + comments.Count);
-    }
-
-
-    public class CommentModel
-    {
-        public string UserId { get; set; }
-        public string CommentText { get; set; }
+        newComment = new Commentss();
     }
 }
