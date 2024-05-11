@@ -1,19 +1,24 @@
 ﻿/* Estilos gerais para o modal */
 .modal-content {
-    background-color: #343a40; /* Blackish background */
-    border: 1px solid rgba(255, 255, 255, 0.125); /* White border */
+    background-color: #343a40;
+    /* Blackish background */
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    /* White border */
     border-radius: 0.25rem;
-    color: #fff; /* White text color */
+    color: #fff;
+    /* White text color */
 }
 
 .modal-header {
     padding: 1rem;
-    border-bottom: 1px solid #ffffff; /* White border */
+    border-bottom: 1px solid #ffffff;
+    /* White border */
 }
 
 .modal-title {
     margin: 0;
-    color: #ffc107; /* Yellow text color */
+    color: #ffc107;
+    /* Yellow text color */
 }
 
 .modal-body {
@@ -22,7 +27,8 @@
 
 .modal-footer {
     padding: 1rem;
-    border-top: 1px solid #ffffff; /* White border */
+    border-top: 1px solid #ffffff;
+    /* White border */
 }
 
 .star-rating {
@@ -32,19 +38,21 @@
     align-items: center;
 }
 
-    .star-rating label {
-        font-size: 2em;
-        cursor: pointer;
-        color: #ccc;
-        transition: color 0.3s;
-        margin-right: 10px; /* Add margin between emojis */
-    }
+.star-rating label {
+    font-size: 2em;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s;
+    margin-right: 10px;
+    /* Add margin between emojis */
+}
 
-        .star-rating label:hover,
-        .star-rating input[type="radio"]:hover ~ label,
-        .star-rating input[type="radio"]:checked ~ label {
-            color: gold; /* Change color on hover */
-            box-shadow: 0 0 10px gold; /* Add a gold glow effect */
-            border-radius: 70%;
-            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.5);
-        }
+.star-rating label:hover,
+.star-rating input[type="radio"]:hover~label,
+.star-rating input[type="radio"]:checked~label {
+    color: gold;
+    /* Change color on hover */
+    box-shadow: 0 0 10px gold, inset 0 0 10px rgba(255, 215, 0, 0.5);
+    /* Add a gold glow effect */
+    border-radius: 70%;
+}

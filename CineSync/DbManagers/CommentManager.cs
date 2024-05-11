@@ -1,7 +1,8 @@
 ﻿using CineSync.Core.Logger;
 using CineSync.Core.Repository;
-using CineSync.Data;
 using CineSync.Data.Models;
+using CineSync.Data;
+using CineSync.Core.Logger.Enums;
 
 namespace CineSync.DbManagers
 {
@@ -10,6 +11,9 @@ namespace CineSync.DbManagers
     /// </summary>
 	public class CommentManager : DbManager<Comment>
     {
+        private readonly IRepositoryAsync<Movie> _movieRepository;
+        private readonly IRepositoryAsync<ApplicationUser> _userRepository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CommentManager"/> class.
         /// </summary>
@@ -17,6 +21,34 @@ namespace CineSync.DbManagers
         /// <param name="logger">The logger for logging messages.</param>
         public CommentManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger) : base(unitOfWork, logger)
         {
+            _movieRepository = _unitOfWork.GetRepositoryAsync<Movie>();
+            _userRepository = _unitOfWork.GetRepositoryAsync<ApplicationUser>();
+        }
+
+        public async Task<bool> AddComment(Comment comment, int movieId, string userId)
+        {
+            Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
+            ApplicationUser user = await _userRepository.GetFirstByConditionAsync(user => user.Id == userId);
+
+            if (movie == null)
+            {
+                _logger.Log("Movie not found.", LogTypes.WARN);
+                return false;
+            }
+
+            if (user == null)
+            {
+                _logger.Log("Invalid userId", LogTypes.WARN);
+                return false;
+            }
+            comment.Autor = user;
+
+            if (movie.Comments == null)
+                movie.Comments = new List<Comment>();
+
+            movie.Comments.Add(comment);
+
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         /// <summary>

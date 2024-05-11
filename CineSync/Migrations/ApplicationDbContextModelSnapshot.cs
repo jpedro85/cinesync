@@ -57,6 +57,12 @@ namespace CineSync.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<uint>("FollowersCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("FollowingCount")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -149,11 +155,14 @@ namespace CineSync.Migrations
                     b.Property<uint?>("MovieId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("NumberOfDeslikes")
+                    b.Property<long>("NumberOfDislikes")
                         .HasColumnType("INTEGER");
 
                     b.Property<long>("NumberOfLikes")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -217,7 +226,7 @@ namespace CineSync.Migrations
 
             modelBuilder.Entity("CineSync.Data.Models.Genre", b =>
                 {
-                    b.Property<uint>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -355,7 +364,7 @@ namespace CineSync.Migrations
 
             modelBuilder.Entity("GenreMovie", b =>
                 {
-                    b.Property<uint>("GenresId")
+                    b.Property<int>("GenresId")
                         .HasColumnType("INTEGER");
 
                     b.Property<uint>("MoviesId")

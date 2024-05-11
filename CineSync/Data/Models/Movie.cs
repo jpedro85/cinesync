@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineSync.Data.Models
 {
-    public class Movie 
+    public class Movie
     {
         public uint Id { get; set; }
 
