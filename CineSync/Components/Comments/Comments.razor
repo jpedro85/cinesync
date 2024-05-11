@@ -4,56 +4,72 @@
 @using System
 
 
-<h3>Comments</h3>
+@using CineSync.Data.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using System.Threading.Tasks
 
-@if (comments.Count == 0)
-{
-    <p>No comments yet.</p>
-}
-else
-{
-    @foreach (var comment in comments)
+<div class="comment-section">
+    @if (Commentss != null && Commentss.Any())
     {
-        <div class="comment">
-            <p><strong>User ID:</strong> @comment.UserId</p>
-            <p><strong>Comment:</strong> @comment.CommentText</p>
-            <p><strong>Created:</strong> @comment.Created.ToString("yyyy-MM-dd HH:mm:ss")</p>
-        </div>
+        @foreach (var comment in Commentss)
+        {
+            <div class="comment">
+                <div class="comment-header">
+                    <span>@comment.Autor.UserName</span>
+                    <span>@comment.NumberOfLikes Likes</span>
+                    <span>@comment.NumberOfDeslikes Dislikes</span>
+                </div>
+                <div class="comment-content">
+                    <p>@comment.Content</p>
+                    @if (comment.Attachements != null && comment.Attachements.Any())
+                    {
+                        <div class="attachments">
+                          
+                        </div>
+                    }
+                </div>
+            </div>
+        }
     }
-}
+    else
+    {
+        <p>No comments yet.</p>
+    }
+</div>
 
-<EditForm Model="@newComment" OnValidSubmit="@HandleSubmit" formname="commentForm">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="add-comment">
+    <h4>Add a Comment</h4>
+    <EditForm Model="newComment" OnValidSubmit="HandleSubmit" FormName="commentForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <div class="form-group">
-        <label for="userId">User ID:</label>
-        <InputText id="userId" @bind-Value="@newComment.UserId" class="form-control" />
-        <ValidationMessage For="@(() => newComment.UserId)" />
-    </div>
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea id="content" @bind="newComment.Content" class="form-control" ></textarea>
+            <ValidationMessage For="@(() => newComment.Content)" />
+        </div>
 
-    <div class="form-group">
-        <label for="commentText">Comment:</label>
-        <textarea id="commentText" @bind="@newComment.CommentText" class="form-control" rows="4"></textarea>
-        <ValidationMessage For="@(() => newComment.CommentText)" />
-    </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+</div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
 @code {
-    List<Commentss> comments = new List<Commentss>();
-    Commentss newComment = new Commentss();
+    [Parameter]
+    public ICollection<Comment> Commentss { get; set; }
+
+    List<Comment> comments = new List<Comment>();
+    Comment newComment = new Comment();
 
     async Task HandleSubmit(EditContext editContext)
     {
         if (editContext.Validate())
         {
-
             AddComment();
         }
         else
         {
-
+            // Handle validation errors if needed
         }
     }
 
@@ -63,6 +79,6 @@ else
         comments.Add(newComment);
 
         // Clear the new comment
-        newComment = new Commentss();
+        newComment = new Comment();
     }
 }

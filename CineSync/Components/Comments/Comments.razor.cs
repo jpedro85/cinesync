@@ -1,35 +1,28 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using CineSync.Data.Models;
+using CineSync.Data;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace CineSync.Components.Comments
 {
     public partial class Commentss
     {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public string UserId { get; set; }
-        public string CommentText { get; set; }
-        public DateTime Created { get; set; }
-   
+        public uint Id { get; set; }
+        [Required]
+        public ApplicationUser? Autor { get; set; }
 
-        //void AddComment()
-        //{
-        //    // Add the new comment to the list
-        //    comments.Add(new Commentss
-        //    {
-        //        UserId = newComment.UserId,
-        //        CommentText = newComment.CommentText
-        //    });
-        //    Console.WriteLine(newComment.UserId);
-        //    Console.WriteLine(newComment.CommentText);
+        public long NumberOfLikes { get; set; } = 0;
 
-        //    // Clear the new comment
-        //    newComment = new Commentss();
+        public long NumberOfDeslikes { get; set; } = 0;
 
-        //    // Debug statement to check the contents of the comments list
-        //    Console.WriteLine("Comments count after adding comment: " + comments.Count);
-        //}
+        [Required]
+        public string? Content { get; set; }
 
+        public ICollection<CommentAttachment>? Attachements { get; set; }
+
+
+    
     }
 }
