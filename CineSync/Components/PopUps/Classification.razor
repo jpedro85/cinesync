@@ -3,7 +3,7 @@
         <div class="modal-content border-white">
             <div class="modal-header text-center">
                 <h5 class="modal-title text-yellow">
-                    <span style="font-size: 1.5em;">&#9733;</span> Big Star Modal
+                    <span style="font-size: 1.5em;">&#127871;</span> Rate this Movie
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -11,11 +11,10 @@
             </div>
             <div class="modal-body bg-dark">
                 <div class="star-rating text-center">
-                    @for (int i = 1; i <= 10; i++)
+                    @for (int i = 1; i < 10; i++)
                     {
-                        <input type="radio" id="@($"star{i}")" name="rating" value="@i" />
-
-                        <label for="@($"star{i}")" style="margin-right: 10px;">&#9733;</label>
+                        <input type="radio" id="@($"star{i}")" name="rating" value="@i" style="display: none;" />
+                        <label for="@($"star{i}")" style="margin-right: 10px;">&#127871;</label>
                     }
                 </div>
             </div>

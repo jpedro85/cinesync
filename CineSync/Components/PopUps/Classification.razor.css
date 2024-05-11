@@ -25,14 +25,14 @@
     border-top: 1px solid #ffffff; /* White border */
 }
 
-.rating-stars {
+.star-rating {
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
 }
 
-    .rating-stars label {
+    .star-rating label {
         font-size: 2em;
         cursor: pointer;
         color: #ccc;
@@ -40,9 +40,10 @@
         margin-right: 10px; /* Add margin between emojis */
     }
 
-        .rating-stars label:hover,
-        .rating-stars input[type="radio"]:hover ~ label,
-        .rating-stars input[type="radio"]:checked ~ label {
+        .star-rating label:hover,
+        .star-rating input[type="radio"]:hover ~ label,
+        .star-rating input[type="radio"]:checked ~ label {
+            color: gold; /* Change color on hover */
             box-shadow: 0 0 10px gold; /* Add a gold glow effect */
             border-radius: 70%;
             box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.5);
