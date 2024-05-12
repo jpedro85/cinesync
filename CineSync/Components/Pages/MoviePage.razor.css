@@ -262,7 +262,7 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: rgba(0, 51, 102, 0.7); /* Change the color to blue */
 }
 
     /* Handle on hover */
