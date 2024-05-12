@@ -24,7 +24,7 @@ namespace CineSync.Data.Models
 
         public string? Overview { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public IList<string>? Cast { get; set; }
 
@@ -50,7 +50,7 @@ namespace CineSync.Data.Models
                    $"  Title: {Title}\n" +
                    $"  Genres: {(Genres != null ? string.Join(", ", Genres.Select(g => g.Name)) : "None")}\n" +
                    $"  Overview: {Overview}\n" +
-                   $"  Release Date: {ReleaseDate.ToShortDateString()}\n" +
+                   $"  Release Date: {ReleaseDate.Value.ToShortDateString()}\n" +
                    $"  Cast: {(Cast != null ? string.Join(", ", Cast) : "None")}\n" +
                    $"  Trailer Key: {TrailerKey}\n" +
                    $"  Director: {Director}\n" +

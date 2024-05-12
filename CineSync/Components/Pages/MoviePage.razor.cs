@@ -5,7 +5,7 @@ using CineSync.Data.Models;
 
 namespace CineSync.Components.Pages
 {
-	public partial class MoviePage 
+	public partial class MoviePage
 	{
 		private string MoviePosterBase64;
 
@@ -26,9 +26,6 @@ namespace CineSync.Components.Pages
 
 		private Movie Movie { get; set; }
 
-		//[Inject]
-		//public IHttpClientBuilder HttpClientBuilder { get; set; }
-
 		protected override async Task OnInitializedAsync()
 		{
 			Movie = await GetMovieDetails();
@@ -36,7 +33,7 @@ namespace CineSync.Components.Pages
 
 		private async Task<Movie?> GetMovieDetails()
 		{
-			
+
 			HttpResponseMessage response = await _client.GetAsync($"movie?id={MovieId}");
 
 			if (response.IsSuccessStatusCode)

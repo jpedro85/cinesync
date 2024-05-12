@@ -91,7 +91,8 @@
 
 				<div class="movie-statistics">
 					<div class="movie-statistics-item" >
-						<div class="movie-statistics-item-key">Release Date:</div><div class="movie-statistics-item-value">@Movie.ReleaseDate.ToString("yyyy-MM-dd")</div>
+						<div class="movie-statistics-item-key">Release Date:</div>
+                        <div class="movie-statistics-item-value">@(Movie.ReleaseDate.HasValue ? Movie.ReleaseDate.Value.ToString("yyyy-MM-dd") : "Not Available")</div>
 					</div>
 					<div class="movie-statistics-item">
 						<div class="movie-statistics-item-key">Duration:</div><div class="movie-statistics-item-value">@Movie.RunTime min</div>

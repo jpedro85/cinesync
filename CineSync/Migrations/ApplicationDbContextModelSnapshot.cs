@@ -273,7 +273,7 @@ namespace CineSync.Migrations
                     b.Property<float>("RatingCS")
                         .HasColumnType("decimal(3,1)");
 
-                    b.Property<DateTime>("ReleaseDate")
+                    b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("TEXT");
 
                     b.Property<short>("RunTime")
