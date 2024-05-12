@@ -1,5 +1,4 @@
 ﻿@rendermode InteractiveServer
-<div class="comments" style="overflow-y: auto;">
 <div class="comment-section">
     <h4>Add a Comment</h4>
     <textarea @bind="comment.Content"></textarea>
@@ -18,8 +17,14 @@
             <div class="comment-content">
                 <p>@c.Content</p>
                 <div class="comment-actions">
-                    <button @onclick="()=>c.NumberOfLikes++" >Like</button>
-                    <button @onclick="()=>c.NumberOfDislikes++">Dislike</button>
+                    <div @onclick="()=>c.NumberOfLikes++" style="cursor: pointer;">
+                        <img src="like_icon.png" alt="Like" width="20" height="20">
+                    </div>
+
+                    <div @onclick="()=>c.NumberOfDislikes++" style="cursor: pointer;">
+                        <img src="dislike_icon.png" alt="Dislike" width="20" height="20">
+                    </div>
+
                 </div>
                 @if (c.Attachements != null && c.Attachements.Any())
                 {
@@ -30,6 +35,5 @@
             </div>
         </div>
     }
-</div>
 </div>
 
