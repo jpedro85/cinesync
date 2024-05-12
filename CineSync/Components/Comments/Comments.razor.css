@@ -1,69 +1,144 @@
-﻿.comment-section {
-    margin-bottom: 20px;
+﻿/* Style for the comment section */
+.comments-done {
+    width: 600px;
+    margin: 0 auto; /* Center horizontally */
+    margin-top: 20px;
+    background-color: #2C2F33;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px; /* Add some space between comment section and new comment section */
 }
 
+/* Style for each individual comment */
 .comment {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+    background-color: rgba(0, 51, 102, 0.7); /* Dark background color for each comment */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px; /* Add space between comments */
 }
 
+
+/* Style for the comment header */
 .comment-header {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    color: #fff;
-    font-weight: bold;
-}
-
-.comment-content p {
+    justify-content: space-evenly;
     margin-bottom: 10px;
+    color: white;
+    font-size:25px;
+    margin-bottom: 10px; /* Add margin bottom for separation */
+    background-color: rgba(0, 0, 0, 0.7); /* Darken the background */
 }
 
+    /* Style for the comment author */
+    .comment-header span:nth-child(1) {
+        font-weight: bold;
+    }
+
+/* Style for the comment content */
+.comment-content {
+    margin-bottom: 10px; /* Add margin bottom for separation */
+}
+
+    .comment-content p {
+        margin-bottom: 10px;
+        font-size:25px;
+        color:white;
+    }
+
+/* Style for attachments */
 .attachments {
     margin-top: 10px;
+    /* Add your styles for attachments here */
 }
 
-.add-comment {
-    margin-top: 20px;
+.comment-section {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    outline: auto;
+    width: 1500px; /* Adjust as needed */
+    margin: 20px auto; /* Center horizontally */
 }
-
-    .add-comment h4 {
+    .comment-section h4 {
         margin-bottom: 10px;
+        color: white;
     }
 
-    .add-comment .form-group {
-        margin-bottom: 15px;
-    }
-
-    .add-comment textarea {
+    .comment-section textarea {
         width: 100%;
         min-height: 100px;
         padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        resize: vertical; /* Allow vertical resizing */
-    }
-
-    .add-comment button[type="submit"] {
-        background-color: #007bff;
-        color: #fff;
+        margin-bottom: 10px;
         border: none;
         border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+        resize: vertical;
+        background-color: #fff;
+        color: #333;
+        font-size: 25px;
     }
 
-        .add-comment button[type="submit"]:hover {
-            background-color: #0056b3;
+    .comment-section button {
+        width: 200px;
+        height: 50px;
+        border-radius: 15px;
+        border: none;
+        Background: linear-gradient(0.25Turn, rgb(74, 186, 217) 10%, rgb(208, 6, 247));
+        color: white;
+        font-weight: 700;
+        font-size: 20px;
+        font-family: Itim;
+        box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50);
+        border: solid 2px rgb(255,255,255);
+    }
+
+        .comment-section button:hover {
+            transition: width 0.1s ease;
+            box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
+            width: 220px;
+            color: black;
         }
 
-.validation-message {
-    color: #dc3545;
-    margin-top: 5px;
+
+/* Style for the comment actions */
+.comment-actions {
+    margin-top: 10px;
 }
-p,h4, label{
-    color:white;
+
+    /* Style for the like and dislike buttons */
+    .comment-actions button {
+        width: 100px;
+        height: 50px;
+        border-radius: 15px;
+        border: none;
+        Background: linear-gradient(0.25Turn, rgb(74, 186, 217) 10%, rgb(208, 6, 247));
+        color: white;
+        font-weight: 700;
+        font-size: 20px;
+        font-family: Itim;
+        box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50);
+        border: solid 2px rgb(255,255,255);
+        margin-left:10px;
+    }
+
+        /* Style for the like and dislike buttons on hover */
+        .comment-actions button:hover {
+            transition: width 0.1s ease;
+            box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
+            color: black;
+        }
+.form-container {
+    background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    min-width:1500px;
+    color: grey;
+    outline: auto;
+    
 }
