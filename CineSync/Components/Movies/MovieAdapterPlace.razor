@@ -1,39 +1,38 @@
 ﻿<div class="movieplace" style="width:@(Width)px; max-width:@(Width)px; min-width:@(Width)px; max-height:@(Heigth)px; min-height:@(Heigth)px ">
 
 
-        @if( Movie.PosterImage != null)
-        {
+    @if (Movie.PosterImage != null)
+    {
         <div class="movie-image-conteiner">
             <div class="PosterImage Conteiner">
-                    <img id="PosterImage" src="@($"data:image/jpeg;base64,{MoviePosterBase64}")" 
-                        style=" width:@(Width - 50)px; height:@(Heigth -50)px"
-                    >
+                <img id="PosterImage" src="@($"data:image/jpeg;base64,{MoviePosterBase64}")"
+                     style=" width:@(Width - 50)px; height:@(Heigth -50)px">
 
-                    @if (UseHoverTitle)
-                    {
-                        <div class="hovertitle movie-Title-conteiner" style=" width:@(Width - 50)px; height:@(Heigth -50)px">
-                            @Movie.Title
-                        </div>
-                    }
-            </div>
-        </div>
-        }
-        else
-        {
-            <div class="NoFoundImage-container">
-
-                <div class="movie-Title-conteiner">
-                    <div class="movie-Title">
+                @if (UseHoverTitle)
+                {
+                    <div class="hovertitle movie-Title-conteiner" style=" width:@(Width - 50)px; height:@(Heigth -50)px">
                         @Movie.Title
                     </div>
-                </div>
-                <div class="NoFoundImage-container" >
-                    <img id="NoFoundImage" src="SoryNotFound.png" style="width:@(Width*0.4)px; height:@(Width*0.25)px">
-                    No imgae found.
-                </div>
-
+                }
             </div>
-        }
+        </div>
+    }
+    else
+    {
+        <div class="NoFoundImage-container">
+
+            <div class="movie-Title-conteiner">
+                <div class="movie-Title">
+                    @Movie.Title
+                </div>
+            </div>
+            <div class="NoFoundImage-container">
+                <img id="NoFoundImage" src="SoryNotFound.png" style="width:@(Width*0.4)px; height:@(Width*0.25)px">
+                No imgae found.
+            </div>
+
+        </div>
+    }
 
 
     <div class="movie-description">
@@ -42,7 +41,7 @@
         {
             <div class="rating-description">
 
-                @if(UseIMDBRating)
+                @if (UseIMDBRating)
                 {
                     <div class="rating-item">
                         <div class="font-rating">IMDB</div>

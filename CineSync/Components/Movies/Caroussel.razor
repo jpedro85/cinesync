@@ -2,7 +2,7 @@
     @foreach (var movie in CurrentMovies)
     {
     <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
-        <MoviePlace  Movie="movie" UseIMDBRating="false" UseRatingCs="false" />
+        <MovieAdapterPlace  Movie="movie"/>
     </div>
     }
 </div>

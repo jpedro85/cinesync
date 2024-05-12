@@ -1,23 +1,19 @@
-﻿using CineSync.Data.Models;
+﻿using CineSync.Core.Adapters.ApiAdapters;
 using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.Movies
 {
-    public partial class MoviePlace : ComponentBase
+    public partial class MovieAdapterPlace : ComponentBase
     {
-
         private string MoviePosterBase64 = string.Empty;
 
         [Parameter]
-        public Movie? Movie { get; set; }
+        public MovieSearchAdapter? Movie { get; set; }
 
-        [Parameter]
         public bool UseRatingCs { get; set; } = false;
 
-        [Parameter]
         public bool UseIMDBRating { get; set; } = false;
 
-        [Parameter]
         public bool UseTitle { get; set; } = false;
 
         [Parameter]
@@ -27,7 +23,7 @@ namespace CineSync.Components.Movies
         public int Heigth { get; set; } = 450;
 
         [Parameter]
-        public bool UseHoverTitle {  get; set; } = true;
+        public bool UseHoverTitle { get; set; } = true;
 
         protected override void OnInitialized()
         {
