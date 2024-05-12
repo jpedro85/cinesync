@@ -1,0 +1,8 @@
+<div class="movie-carousel">
+    @foreach (var movie in CurrentMovies)
+    {
+    <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
+        <MoviePlace  Movie="movie" UseIMDBRating="false" UseRatingCs="false" />
+    </div>
+    }
+</div>
