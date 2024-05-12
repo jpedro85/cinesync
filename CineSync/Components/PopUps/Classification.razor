@@ -16,7 +16,7 @@
                     @for (int i = 10; i >= 1; i--)
                     {
                         <input type="radio" id="@($"star{i}")" name="rating" value="@i" style="display: none;" @onchange="SetRating"/>
-                        <label for="@($"star{i}")" style="margin-right: 10px;"><img src="CsRating-modified.png"/></label>
+                        <label for="@($"star{i}")" style="margin-right: 10px;"><img style="width:30px;" src="CsRating.png"/></label>
                     }
                 </div>
             </div>
