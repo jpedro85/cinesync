@@ -1,8 +1,8 @@
-﻿
-.page-main-Conteiner {
+﻿.page-main-Conteiner {
     background: rgb(33, 23, 57);
-    height:100%;
-    
+    height: 100%;
+    overflow-y: auto !important;
+    max-height: calc(100vh - 80px);;
 }
 
 .top-content {
@@ -18,20 +18,20 @@
 }
 
 #PosterImage {
-    width:280px;
-    height:400px;
+    width: 280px;
+    height: 400px;
 }
 
 .buttonTreiler {
     width: 40%;
-    color: rgb(0,0,0);
+    color: rgb(0, 0, 0);
     background-color: #00efff;
     border-radius: 5px;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
 
 }
 
@@ -39,15 +39,15 @@
     display: flex;
     flex-direction: row;
     gap: 20px;
-    height:40px;
+    height: 40px;
 }
 
 .button-AddToViewed {
-    display:flex;
+    display: flex;
     color: white;
     fill: white;
-  
-    align-items:center;
+
+    align-items: center;
 }
 
 .itemsize {
@@ -65,13 +65,13 @@
 }
 
 .button-AddToCollectionSpace {
-    padding-bottom:2px;
+    padding-bottom: 2px;
 }
 
 .button-AddToCollection {
     display: flex;
     color: white;
-    background-color:black;
+    background-color: black;
     align-items: center;
 }
 
@@ -89,8 +89,8 @@
     gap: 20px;
 }
 
-.conteiner-rigth{
-    display:flex;
+.conteiner-rigth {
+    display: flex;
 
 }
 
@@ -98,8 +98,8 @@
     font-size: 40px;
     color: rgb(255, 255, 255);
     line-height: 1;
-    font-weight:900;
-    margin-bottom:2rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
 }
 
 
@@ -122,7 +122,7 @@
 .movie-statistics-item-key {
     font-size: 17px;
     color: rgb(139 139 139);
-    font-weight:300;
+    font-weight: 300;
 }
 
 .movie-statistics-item-value {
@@ -133,15 +133,15 @@
 .movie-Plot {
     font-size: 20px;
     color: rgb(255, 255, 255);
-    margin-bottom:1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 
 .movie-genres {
-    display:flex;
-    flex-direction:row;
-    gap:1rem;
-    margin-bottom:0.3rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 0.3rem;
 }
 
 .movie-genres-key {
@@ -159,8 +159,8 @@
 .movie-cast {
     display: flex;
     flex-direction: row;
-    gap:1rem;
-    margin-bottom:3rem;
+    gap: 1rem;
+    margin-bottom: 3rem;
 }
 
 
@@ -194,9 +194,9 @@
 
 
 .rating-conteinor {
-    display:flex;
-    flex-direction:row;
-    gap:2rem;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
 }
 
 .rating-item {
@@ -223,9 +223,9 @@
 
 
 .ButtonRatingitem-container {
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .ButtonRatingitem {
@@ -241,15 +241,16 @@
     height: 40px;
 }
 
-    .ButtonRatingitem:hover {
-        background-color:rgb(0, 83, 255);
-    }
+.ButtonRatingitem:hover {
+    background-color: rgb(0, 83, 255);
+}
 
-    .ButtonRatingitem:Active {
-        height: 45px;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
+.ButtonRatingitem:Active {
+    height: 45px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
@@ -262,12 +263,15 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 51, 102, 0.7); /* Change the color to blue */
+    background: rgba(0, 51, 102, 0.7);
+    /* Change the color to blue */
 }
 
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
-
+.Comments-content {
+    padding: 0 5% 0 5%;
+}

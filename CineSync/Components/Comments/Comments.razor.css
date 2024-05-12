@@ -1,55 +1,48 @@
-﻿/* Style for the comment section */
-.comments-done {
-    width: 600px;
-    margin: 0 auto; /* Center horizontally */
+﻿.comments-done {
+    width: 100%;
+    margin: 0 auto;
     margin-top: 20px;
     background-color: #2C2F33;
     padding: 20px;
     border-radius: 10px;
     color: white;
-    margin-bottom: 20px; /* Add some space between comment section and new comment section */
+    margin-bottom: 20px;
 }
 
-/* Style for each individual comment */
 .comment {
-    background-color: rgba(0, 51, 102, 0.7); /* Dark background color for each comment */
+    background-color: rgba(0, 51, 102, 0.7);
     padding: 15px;
     border-radius: 10px;
-    margin-bottom: 20px; /* Add space between comments */
+    margin-bottom: 20px;
 }
 
 
-/* Style for the comment header */
 .comment-header {
     display: flex;
     justify-content: space-evenly;
     margin-bottom: 10px;
     color: white;
     font-size: 25px;
-    margin-bottom: 10px; /* Add margin bottom for separation */
-    background-color: rgba(0, 40, 140, 0.7); /* Darken the background */
+    margin-bottom: 10px;
+    background-color: rgba(0, 40, 140, 0.7);
 }
 
-    /* Style for the comment author */
-    .comment-header span:nth-child(1) {
-        font-weight: bold;
-    }
+.comment-header span:nth-child(1) {
+    font-weight: bold;
+}
 
-/* Style for the comment content */
 .comment-content {
-    margin-bottom: 10px; /* Add margin bottom for separation */
+    margin-bottom: 10px;
 }
 
-    .comment-content p {
-        margin-bottom: 10px;
-        font-size:25px;
-        color:white;
-    }
+.comment-content p {
+    margin-bottom: 10px;
+    font-size: 25px;
+    color: white;
+}
 
-/* Style for attachments */
 .attachments {
     margin-top: 10px;
-    /* Add your styles for attachments here */
 }
 
 .comment-section {
@@ -62,75 +55,78 @@
     flex-direction: column;
     align-items: center;
     outline: auto;
-    width: 1500px; /* Adjust as needed */
-    margin: 20px auto; /* Center horizontally */
+    width: 100%;
+    /* Adjust as needed */
+    margin: 20px auto;
+    /* Center horizontally */
 }
-    .comment-section h4 {
-        margin-bottom: 10px;
-        color: white;
-    }
 
-    .comment-section textarea {
-        width: 100%;
-        min-height: 100px;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: none;
-        border-radius: 5px;
-        resize: vertical;
-        background-color: rgba(0, 51, 102, 0.7);
-        color: white;
-        font-size: 25px;
-    }
+.comment-section h4 {
+    margin-bottom: 10px;
+    color: white;
+}
 
-    .comment-section button {
-        width: 200px;
-        height: 50px;
-        border-radius: 15px;
-        border: none;
-        Background: linear-gradient(0.25Turn, rgb(74, 186, 217) 10%, rgb(208, 6, 247));
-        color: white;
-        font-weight: 700;
-        font-size: 20px;
-        font-family: Itim;
-        box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50);
-        border: solid 2px rgb(255,255,255);
-    }
+.comment-section textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    resize: vertical;
+    background-color: rgba(0, 51, 102, 0.7);
+    color: white;
+    font-size: 25px;
+}
 
-        .comment-section button:hover {
-            transition: width 0.1s ease;
-            box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
-            width: 220px;
-            color: black;
-        }
+.comment-section button {
+    width: 200px;
+    height: 50px;
+    border-radius: 15px;
+    border: none;
+    Background: linear-gradient(0.25Turn, rgb(74, 186, 217) 10%, rgb(208, 6, 247));
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    font-family: Itim;
+    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0, 50);
+    border: solid 2px rgb(255, 255, 255);
+}
+
+.comment-section button:hover {
+    transition: width 0.1s ease;
+    box-shadow: inset 0 0 20px 2px rgb(255, 255, 255, 50);
+    width: 220px;
+    color: black;
+}
 
 
 .comment-actions {
-    display: flex; /* Display the action icons in a row */
+    display: flex;
 }
 
-    .comment-actions > div {
-        margin-right: 10px; /* Adjust spacing between icons if needed */
-        cursor: pointer;
-        transition: transform 0.2s; /* Add a smooth transition effect */
-    }
+.comment-actions>div {
+    margin-right: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
 
-        .comment-actions > div:hover {
-            transform: scale(1.1); /* Scale up the icon on hover */
-        }
+.comment-actions>div:hover {
+    transform: scale(1.1);
+}
 
-        .comment-actions > div img {
-            width: 40px; /* Adjust icon size if needed */
-            height: 40px; /* Adjust icon size if needed */
-        }
+.comment-actions>div img {
+    width: 40px;
+    height: 40px;
+}
 
 .form-container {
-    background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
-    min-width:1500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
     color: grey;
     outline: auto;
-    
+    margin-top: 3rem;
 }
