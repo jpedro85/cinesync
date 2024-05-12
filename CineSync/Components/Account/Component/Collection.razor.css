@@ -1,17 +1,22 @@
 ﻿.collection-main-container {
-    display:flex;
-    width:100%; 
-    flex-direction:row;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    border-radius: 25px;
+    overflow:clip;
+    min-height:200px;
 }
 
 .collection-info {
-    min-width:200px;
-    display:flex;
-    flex-direction:column;
-    align-content:center;
-    align-items:center;
-    text-align:center;
-    justify-content:center;
+    display: flex;
+    min-width: 200px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: start;
+    background: #000000cc;
+    padding-top:50px;
+    padding-bottom:50px;
 }
 
 .collection-icons {
@@ -20,15 +25,35 @@
     align-content:center;
     align-items:center;
     justify-content:center;
-    margin-top:5px;
+    flex-grow:1;
 }
 
 .collection-icon-svg {
-    height:20px;
-    width:20px;
-    color:#ffffff;
-    margin-left:5px;
-    margin-right:5px;
+    height: 35px;
+    width: 35px;
+    color: #ffffff;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+    .collection-icon-svg:hover {
+        color: rgb(128, 128, 128);
+    }
+
+
+.no-results-found-icon-container {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    font-size:20px;
+    font-weight:400;
+}
+
+#no-results-found-icon {
+    width: 180px;
+    height: 100px;
 }
 
 .collection-movies {
@@ -38,8 +63,35 @@
     flex-direction: row;
     flex-grow: 1;
     overflow-x: auto;
+    position: relative;
+    z-index: 0;
+    background-color: #0c1d58a8;
+    flex-grow: 1;
+    justify-content: space-between;
 }
 
+.collection-movies-shadow-left {
+    min-width: 50px;
+    height: 100%;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: linear-gradient(to right, #000000cc, rgba(0, 0, 0, 0));
+}
+
+.collection-movies-shadow-right {
+    min-width: 50px;
+    height: 100%;
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    background: linear-gradient(to left, #000000cc, rgba(0, 0, 0, 0));
+}
+
+
+.collection-name{
+    font-size:25px;
+}
 
 *::-webkit-scrollbar {
     height: 10px;
@@ -47,27 +99,27 @@
 }
 
 *::-webkit-scrollbar-track {
-    border-radius: 7px;
-    background-color: transparent;
+    border-radius: 0px;
+    background-color: rgb(0, 0, 0);
 }
 
     *::-webkit-scrollbar-track:hover {
-        background-color: transparent;
+        background-color: rgb(0, 0, 0);
     }
 
     *::-webkit-scrollbar-track:active {
-        background-color: transparent;
+        background-color: rgb(0, 0, 0);
     }
 
 *::-webkit-scrollbar-thumb {
     border-radius: 20px;
-    background-color: #002a9d;
+    background-color: #1824ff;
 }
 
     *::-webkit-scrollbar-thumb:hover {
-        background-color: #0f49d7;
+        background-color: #1824ff;
     }
 
     *::-webkit-scrollbar-thumb:active {
-        background-color: #0f49d7;
+        background-color: #1824ff;
     }

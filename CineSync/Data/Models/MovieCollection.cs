@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CineSync.Data.Models
 {
@@ -11,6 +12,7 @@ namespace CineSync.Data.Models
 
         public bool IsPublic { get; set; } = false;
 
+        [JsonIgnore]
         public ICollection<CollectionsMovies>? CollectionMovies { get; set; }
     }
 }

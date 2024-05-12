@@ -64,8 +64,21 @@
     height: 30px;
 }
 
-.button-AddToCollectionSpace {
+/* .button-AddToCollectionSpace {
     padding-bottom: 2px;
+    .button-AddToFavorite:hover{
+        color:rgb(255 91 242);
+    }
+
+    .button-AddToFavorite:active {
+        color: rgb(255 91 242);
+    } */
+
+
+.button-AddToCollectionSpace 
+{
+    width:35px !important;
+    height:35px !important;
 }
 
 .button-AddToCollection {
@@ -73,12 +86,22 @@
     color: white;
     background-color: black;
     align-items: center;
+    border:none;
 }
+
+    .button-AddToCollection:hover
+    {
+        color:rgb(139 139 139);
+    }
+
+    .button-AddToCollection:hover {
+        color: rgb(139 139 139);
+    }
 
 .movie-image-options-item-rigth {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content:end;
     align-items: center;
     flex-grow: 1;
 }

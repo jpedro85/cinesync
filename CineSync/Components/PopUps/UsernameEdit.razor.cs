@@ -16,14 +16,15 @@ namespace CineSync.Components.PopUps
 
         private MainLayout MainLayout { get; set; }
 
-        public string newUserName = string.Empty;
+        [Parameter]
+        public string ActualUserName { get; set; } = string.Empty;
 
         public async Task SearchAsync()
         {
             MainLayout = LayoutService.MainLayout;
             ApplicationUser user = MainLayout.AuthenticatedUser;
 
-            if (await UserManager.ChangeUsernameAsync(user.Id, newUserName))
+            if (await UserManager.ChangeUsernameAsync(user.Id, ActualUserName))
             {
                 // TODO: Add the missing logic for the frontend
             }

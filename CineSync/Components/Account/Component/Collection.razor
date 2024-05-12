@@ -1,42 +1,55 @@
 ﻿@using CineSync.Components.Movies
 @using CineSync.Core.Adapters.ApiAdapters
+@using CineSync.Data.Models
 
 <div class="collection-main-container">
     <div class="collection-info">
-        <div class="collection-name">@CollectionName</div>
-        <div class="collection-icons">
-            <svg class="collection-icon-svg" viewBox="0 0 13 13" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
+        <div class="collection-name">@MovieCollection.Name</div>
+        <div class="collection-icons" >
+            <svg @onclick="GoToCollectionManager" class="collection-icon-svg" viewBox="0 0 13 13" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.5 12.5H9M12.5 12.5V9M12.5 12.5L8.5 8.5M9 0.5H12.5M12.5 0.5V4M12.5 0.5L8.5 4.5M4 0.5H0.5M0.5 0.5V4M0.5 0.5L4.5 4.5M0.5 9V12.5M0.5 12.5H4M0.5 12.5L4.5 8.5" stroke="currentcolor" />
             </svg>
-            @if (ProfileBool)
-            {   
-            <svg fill="currentcolor" class="collection-icon-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 5.5C19 7.98528 16.9853 10 14.5 10C12.0147 10 10 7.98528 10 5.5C10 3.01472 12.0147 1 14.5 1C16.9853 1 19 3.01472 19 5.5ZM15 3.5C15 3.22386 14.7761 3 14.5 3C14.2239 3 14 3.22386 14 3.5V5H12.5C12.2239 5 12 5.22386 12 5.5C12 5.77614 12.2239 6 12.5 6H14V7.5C14 7.77614 14.2239 8 14.5 8C14.7761 8 15 7.77614 15 7.5V6H16.5C16.7761 6 17 5.77614 17 5.5C17 5.22386 16.7761 5 16.5 5H15V3.5ZM15 16.5181V10.9776C15.3434 10.9466 15.6777 10.8841 16 10.793V17.5C16 17.6881 15.8945 17.8602 15.7269 17.9456C15.5593 18.0309 15.358 18.015 15.2059 17.9044L10 14.1182L4.79409 17.9044C4.64199 18.015 4.4407 18.0309 4.27311 17.9456C4.10553 17.8602 4 17.6881 4 17.5V4.5C4 3.11929 5.11929 2 6.5 2H10.2572C10.0035 2.30711 9.78261 2.64222 9.59971 3H6.5C5.67157 3 5 3.67157 5 4.5V16.5181L9.70592 13.0956C9.88124 12.9681 10.1188 12.9681 10.2941 13.0956L15 16.5181Z" fill="currentcolor" />
-            </svg>
-            }
         </div>
     </div>
+        
     <div class="collection-movies">
-        <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false />
-        <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false />
-        <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false />
-        <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false />
-        <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false />
-        <MoviePlace Movie="movie" UseIMDBRating=true UseRatingCs=false UseTitle=false />
+
+        <div class="collection-movies-shadow-left"></div>
+        @foreach (CollectionsMovies collectionsMovies in MovieCollection.CollectionMovies)
+        {
+            <div @onclick="(e) => MovieClickhandler(collectionsMovies.Movie)">
+                <MoviePlace Movie=collectionsMovies.Movie Width="250" Heigth="350"></MoviePlace>
+            </div>
+
+        }
+        @if (MovieCollection.CollectionMovies.Count() == 0)
+        {
+            <div class="no-results-found-icon-container">
+                <img id="no-results-found-icon" src="NoMovies.png" alt="Sory imoji" />
+                There is no movies in the collection.
+            </div>
+        }
+        <div class="collection-movies-shadow-right"></div>
+
     </div>
 </div>
 
 @code {
+
     [Parameter]
-    public string CollectionName { get; set; } = "Collection";
-    public bool ProfileBool { get; set; } = true;
+    public MovieCollection MovieCollection { get; set; }
 
-    protected override void OnInitialized()
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    private void MovieClickhandler(Movie movie)
     {
-        movie.Title = "Panda Kong Fu 4";
-        /*movie.Rating = 9.9f;
-        movie.RatingCS = 9.9f;*/
-
+        NavigationManager.NavigateTo($"MovieDetails/{movie.MovieId}");
     }
-    private MovieSearchAdapter movie = new MovieSearchAdapter();
+
+    private void GoToCollectionManager(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo($"ManageCollection/{MovieCollection.Name}");
+    }
+
 }

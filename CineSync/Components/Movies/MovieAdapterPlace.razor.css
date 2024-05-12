@@ -1,27 +1,26 @@
 ﻿
 .movieplace {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     height: fit-content;
     background-color: black;
     border: solid 5px rgb(0, 146, 255);
     padding: 20px;
-    box-shadow: 0px 0px 5px 4px rgb(0 0 0 / 50%);
-    margin: 10px;
+    box-shadow: 0px 0px 20px 6px rgb(0 0 0);
+    margin: 25px;
     border-radius: 25px;
-    position:relative;
+    position: relative;
 }
 
     .movieplace:hover {
-        box-shadow: 0px 0px 5px 4px rgb(48 187 243 / 50%);
+        box-shadow: 0px 0px 25px 6px rgb(48 187 243);
     }
 
-.PosterImage{
-    display:flex;
-    align-content:center;
-    justify-content:center;
-    z-index:0;
-
+.PosterImage {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    z-index: 0;
 }
 
 .CsRating {
@@ -35,28 +34,28 @@
 }
 
 .rating-icon {
-    align-content:center;
-    padding-top:5px;
+    align-content: center;
+    padding-top: 5px;
 }
 
 #PosterImage {
-  /*  width: 250px;
+    /*  width: 250px;
     height: 380px;*/
-    border-radius:15px;
-    position:relative;
+    border-radius: 15px;
+    position: relative;
 }
 
 .movie-description {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 }
 
 .rating-description {
     display: flex;
-    flex-wrap:wrap;
+    flex-direction: row;
     padding-left: 0.5rem;
     padding-right: 0.6rem;
-    gap:10px;
+    gap: 10px;
 }
 
 .rating-item {
@@ -66,15 +65,15 @@
 }
 
 .movie-Title-conteiner {
-    display:flex;
-    align-items:center;
-    position:relative;
+    display: flex;
+    align-items: center;
+    position: relative;
 }
 
 .movie-Title {
-    color:white;
-    font-size:25px;
-    text-align:center;
+    color: white;
+    font-size: 25px;
+    text-align: center;
 }
 
 .font-rating {
@@ -93,18 +92,18 @@
     align-content: end;
 }
 
-.NoFoundImage-container{
-    display:flex;
-    flex-direction:column;
-    flex-grow:1;
-    color:rgb(255,255,255);
+.NoFoundImage-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: rgb(255,255,255);
 }
 
 .NoFoundImage-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow:1;
+    flex-grow: 1;
 }
 
 #NoFoundImage {
@@ -148,8 +147,7 @@
     }
 }
 
-.hovertitle-font 
-{
+.hovertitle-font {
     color: black;
     font-weight: 700;
     font-size: 25px;
