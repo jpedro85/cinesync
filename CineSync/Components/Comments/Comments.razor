@@ -1,6 +1,12 @@
 ﻿@rendermode InteractiveServer
 
+
 <div class="comment-section">
+    <h4>Add a Comment</h4>
+    <textarea @bind="comment.Content"></textarea>
+    <button type="submit" @onclick="HandleSubmit">Comment</button>
+</div>
+<div class="form-container comments-done">
 
     @foreach (var c in CommentsList)
     {
@@ -12,6 +18,10 @@
             </div>
             <div class="comment-content">
                 <p>@c.Content</p>
+                <div class="comment-actions">
+                    <button @onclick="()=>c.NumberOfLikes++" >Like</button>
+                    <button @onclick="()=>c.NumberOfDislikes++">Dislike</button>
+                </div>
                 @if (c.Attachements != null && c.Attachements.Any())
                 {
                     <div class="attachments">
@@ -23,8 +33,3 @@
     }
 </div>
 
-<div class="add-comment">
-    <h4>Add a Comment</h4>
-    <textarea @bind="comment.Content"></textarea>
-    <button type="submit" @onclick="HandleSubmit">Comment</button>
-</div>

@@ -46,5 +46,6 @@ namespace CineSync.Components.Comments
             comment = new Comment();
             StateHasChanged();
         }
+
     }
 }
