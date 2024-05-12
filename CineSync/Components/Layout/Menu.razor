@@ -7,7 +7,7 @@
 <div @onclick="OverlayClick" class="Obverlay @IsActive" >
 
     <div class="MenuMainConteiner @IsActive">
-       
+
         <div class="menu-item-conteiner @IsActive">
             <NavLink  href="/" >
                 <div class="menu-item @IsActive">
@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="menu-item-conteiner @IsActive">
-                            <NavLink href="/Profile" >
+                            <NavLink href="/ManageCollection/Favorites" >
                                 <div class="menu-item @IsActive">
 
                                     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="menu-item-conteiner @IsActive">
-                            <NavLink href="/Profile" >
+                            <NavLink href="/ManageCollection/Watch-Later" >
                                 <div class="menu-item @IsActive">
 
                                     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +104,7 @@
                         </div>
 
                         <div class="menu-item-conteiner @IsActive">
-                            <NavLink href="/Profile" >
+                                <NavLink href="/ManageCollection/Watched" >
                                 <div class="menu-item @IsActive">
 
                                     <svg width="25" height="20" viewBox="0 0 25 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@
                         </div>
 
                         <div class="menu-item-conteiner @IsActive">
-                            <NavLink href="/Profile" >
+                            <NavLink href="/ManageCollection/Classified" >
                                 <div class="menu-item @IsActive">
 
                                     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -137,7 +137,7 @@
 
                     </CustomAuthorized>
                 </CustomAuthorizedView>
-            
+
 
                 <CustomAuthorizedView DebugName="C" CheckAuthentication=false User="@User" Roles="moderator,admin,super_admin">
                     <CustomAuthorized>
@@ -171,7 +171,7 @@
                     <div class="sidebar-separator"></div>
                     <div class="separator-text @IsActive">Acount</div>
                 </div>
-            
+
                 @* <div class="menu-item-conteiner @IsActive"> *@
 
                     <form class="menu-item-conteiner @IsActive" action="Account/Logout" method="post">
@@ -212,18 +212,18 @@
                    <CustomAuthorized>
 
                         <div class="menu-item-conteiner @IsActive following-fonteiner">
-                       
+
                         </div>
 
                    </CustomAuthorized>
                 </CustomAuthorizedView>
-            
+
             </CustomAuthorized>
              <CustomNotAuthorized>
-                 AAAAAAAAAA
+             <!-- TODO: Add not authorized -->
              </CustomNotAuthorized>
         </CustomAuthorizedView>
-             
+
     </div>
 
 </div>

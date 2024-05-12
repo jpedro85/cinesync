@@ -39,7 +39,7 @@ namespace CineSync.DbManagers
         public async Task<bool> InitializeUserCollectionsAsync(string userId)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch Later" };
+            List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch-Later" };
             foreach (string name in collectionNames)
             {
                 user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
