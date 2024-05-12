@@ -7,7 +7,8 @@ using CineSync.Core.Logger.Enums;
 namespace CineSync.DbManagers
 {
     /// <summary>
-    /// Manages database operations for comment-related actions such as adding likes, managing attachments, and editing comment content.
+    /// Manages database operations related to comments, including creating, updating,
+    /// and deleting comment data, and managing comment-related interactions like likes and attachments.
     /// </summary>
 	public class CommentManager : DbManager<Comment>
     {
@@ -15,16 +16,24 @@ namespace CineSync.DbManagers
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommentManager"/> class.
+        /// Initializes a new instance of the CommentManager class, setting up repositories for movie and user entities.
         /// </summary>
-        /// <param name="unitOfWork">The unit of work for database transactions.</param>
-        /// <param name="logger">The logger for logging messages.</param>
+        /// <param name="unitOfWork">The unit of work for handling transactional operations.</param>
+        /// <param name="logger">The logger for recording operational logs.</param>
         public CommentManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger) : base(unitOfWork, logger)
         {
             _movieRepository = _unitOfWork.GetRepositoryAsync<Movie>();
             _userRepository = _unitOfWork.GetRepositoryAsync<ApplicationUser>();
         }
 
+
+        /// <summary>
+        /// Adds a comment to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="comment">The comment entity to add.</param>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
         public async Task<bool> AddComment(Comment comment, int movieId, string userId)
         {
             Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
@@ -52,10 +61,9 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
-        /// Increments the number of likes on a comment.
+        /// Increments the number of likes on a given comment.
         /// </summary>
-        /// <param name="comment">The comment to update.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <param name="comment">The comment to be liked.</param>
         public async Task AddLikeAsync(Comment comment)
         {
             comment.NumberOfLikes++;
@@ -63,10 +71,9 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
-        /// Decrements the number of likes on a comment if greater than zero.
+        /// Decrements the number of likes on a given comment, ensuring it does not drop below zero.
         /// </summary>
-        /// <param name="comment">The comment to update.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <param name="comment">The comment from which to remove a like.</param>
         public async Task RemoveLikeAsync(Comment comment)
         {
             comment.NumberOfLikes = comment.NumberOfLikes > 0 ? comment.NumberOfLikes - 1 : comment.NumberOfLikes;
@@ -74,11 +81,10 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
-        /// Adds an attachment to a comment.
+        /// Adds an attachment to a specific comment.
         /// </summary>
-        /// <param name="comment">The comment to which the attachment is added.</param>
-        /// <param name="attachment">The attachment to add.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <param name="comment">The comment to add the attachment to.</param>
+        /// <param name="attachment">The attachment to be added.</param>
         public async Task AddAttachmentAsync(Comment comment, CommentAttachment attachment)
         {
             if (comment.Attachements != null && !comment.Attachements.Contains(attachment))
@@ -89,11 +95,10 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
-        /// Removes an attachment from a comment.
+        /// Removes an attachment from a specific comment.
         /// </summary>
-        /// <param name="comment">The comment from which the attachment is removed.</param>
+        /// <param name="comment">The comment from which the attachment will be removed.</param>
         /// <param name="attachment">The attachment to remove.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task RemoveAttachmentAsync(Comment discussion, CommentAttachment attachment)
         {
             if (discussion.Attachements != null && discussion.Attachements.Contains(attachment))
@@ -104,11 +109,10 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
-        /// Updates the content of a comment.
+        /// Updates the content of a specific comment.
         /// </summary>
         /// <param name="comment">The comment to update.</param>
-        /// <param name="content">The new content for the comment.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <param name="content">The new content to set for the comment.</param>
         public async Task EditContentAsync(Comment comment, string content)
         {
             comment.Content = content;

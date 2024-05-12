@@ -27,9 +27,8 @@ namespace CineSync.DbManagers
         /// <returns>The collections of movies associated with the specified user.</returns>
         public async Task<ICollection<MovieCollection>> GetUserCollections(string userId)
         {
-            ApplicationUser user = await GetUserByIdAsync(userId);
-            ICollection<MovieCollection> collections = user.Collections!;
-            return collections;
+            ApplicationUser user = await _userRepository.GetFirstByConditionAsync(u => u.Id == userId, "Collections.CollectionMovies.Movie");
+            return user!.Collections!;
         }
 
         /// <summary>
