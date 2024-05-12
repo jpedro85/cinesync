@@ -4,6 +4,7 @@
     {
         public uint Id { get; set; }
  
+        /*Movie.id*/
         public uint MovieId { get; set; }
 
         public uint MovieCollectionId { get; set; }

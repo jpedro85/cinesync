@@ -1,0 +1,31 @@
+.movie-carousel {
+    display: flex;
+    overflow: hidden;
+    height:fit-content;
+}
+
+.movie-item {
+    flex: 0 0 20%;
+    /* Adjust based on how many items you want visible at once */
+    opacity: 0;
+    transition: transform 1s, opacity 1s;
+    animation: slide-fade-in-out 5s infinite linear;
+    background-size: cover;
+    height:fit-content;
+    width:fit-content;
+}
+
+@keyframes slide-fade-in-out {
+
+    0%,
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    10%,
+    90% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

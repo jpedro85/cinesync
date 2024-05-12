@@ -52,7 +52,7 @@ namespace CineSync.Core.Adapters.ApiAdapters
                 MovieId = (int)jObject["id"]!,
                 Title = (string)jObject["title"]!,
                 Overview = (string)jObject["overview"]!,
-                ReleaseDate = DateTime.Parse((string)jObject["release_date"]!),
+                ReleaseDate = string.IsNullOrEmpty((string?)jObject["release_date"]) ? (DateTime?)null : DateTime.Parse((string)jObject["release_date"]),
                 RunTime = (short)jObject["runtime"]!,
                 Rating = (float)jObject["vote_average"]!,
                 Cast = jObject["credits"]!["cast"]!.Take(10).Select(cast => (string)cast["name"]!).ToList()

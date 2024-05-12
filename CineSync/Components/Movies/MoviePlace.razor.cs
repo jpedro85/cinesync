@@ -1,4 +1,4 @@
-﻿using CineSync.Core.Adapters.ApiAdapters;
+﻿using CineSync.Data.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.Movies
@@ -9,7 +9,7 @@ namespace CineSync.Components.Movies
         private string MoviePosterBase64 = string.Empty;
 
         [Parameter]
-        public MovieSearchAdapter? Movie { get; set; }
+        public Movie? Movie { get; set; }
 
         [Parameter]
         public bool UseRatingCs { get; set; } = false;
@@ -19,6 +19,15 @@ namespace CineSync.Components.Movies
 
         [Parameter]
         public bool UseTitle { get; set; } = false;
+
+        [Parameter]
+        public int Width { get; set; } = 300;
+
+        [Parameter]
+        public int Heigth { get; set; } = 450;
+
+        [Parameter]
+        public bool UseHoverTitle {  get; set; } = true;
 
         protected override void OnInitialized()
         {

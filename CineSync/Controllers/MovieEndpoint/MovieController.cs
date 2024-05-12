@@ -46,7 +46,7 @@ namespace CineSync.Controllers.MovieEndpoint
         public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
             _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
-            var databaseResult = await _movieManager.GetByTmdbId(id);
+            Movie? databaseResult = await _movieManager.GetByTmdbId(id);
 
             if (databaseResult != null)
             {

@@ -1,13 +1,13 @@
-﻿using CineSync.Controllers.MovieEndpoint;
-using CineSync.Core.Adapters.ApiAdapters;
-using CineSync.Data;
+﻿using CineSync.Data;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using CineSync.Data.Models;
+using CineSync.Components.PopUps;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace CineSync.Components.Pages
 {
-	public partial class MoviePage 
+	public partial class MoviePage
 	{
 		private string MoviePosterBase64;
 
@@ -19,25 +19,23 @@ namespace CineSync.Components.Pages
 
 		private bool InViewed { get; set; }
 
+        private bool InFavourites { get; set; }
 
-		private string MovieTitle { get; set; }
+        private string MovieTitle { get; set; }
 
 		[Inject]
 		public ApplicationDbContext ApplicationDbContext { get; set; }
 
 		private Movie Movie { get; set; }
 
-		//[Inject]
-		//public IHttpClientBuilder HttpClientBuilder { get; set; }
-
-		protected override async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
 		{
 			Movie = await GetMovieDetails();
 		}
 
 		private async Task<Movie?> GetMovieDetails()
 		{
-			
+
 			HttpResponseMessage response = await _client.GetAsync($"movie?id={MovieId}");
 
 			if (response.IsSuccessStatusCode)
@@ -48,7 +46,6 @@ namespace CineSync.Components.Pages
 			return null;
 
 		}
-
 
 	}
 }

@@ -2,7 +2,7 @@
 
 .MainConteiner {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background-color: rgb(49, 136, 220);
@@ -11,7 +11,7 @@
 
 .content-search {
     width: 100%;
-    height: 23rem !important;
+    min-height: 200px; 
     
     display: flex;
     /* flex-direction: column; */
@@ -22,6 +22,7 @@
     background-size: cover;
     align-items: center;
     justify-content: center;
+    flex-grow:1;
 }
 
 .HomeMovie {
@@ -37,12 +38,14 @@
 .searched-movies {
     background: linear-gradient(rgb(0, 0, 0) 2%, rgba(0, 0, 0, 0.2));
     flex-grow: 1;
-    height: 50%;
+    justify-content:center;
+    align-items:center;
+    height: fit-content;
+    padding-top:2%;
+    padding-bottom:2%;
     overflow: hidden;
     padding-left: 2%;
     padding-right: 2%;
-    padding-top: 1%;
-    padding-bottom: 8%;
     flex-wrap: wrap;
     display: flex;
     flex-direction: row;
@@ -77,33 +80,4 @@
     padding-top: 10px;
     padding-right: 0;
     padding-left: 0;
-}
-
-.movie-carousel {
-    display: flex;
-    overflow: hidden;
-}
-
-.movie-item {
-    flex: 0 0 20%;
-    /* Adjust based on how many items you want visible at once */
-    opacity: 0;
-    transition: transform 1s, opacity 1s;
-    animation: slide-fade-in-out 5s infinite linear;
-    background-size: cover;
-}
-
-@keyframes slide-fade-in-out {
-
-    0%,
-    100% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-
-    10%,
-    90% {
-        transform: translateX(0);
-        opacity: 1;
-    }
 }

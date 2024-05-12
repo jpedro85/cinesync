@@ -3,6 +3,7 @@ using CineSync.Core.Repository;
 using CineSync.Data.Models;
 using CineSync.Data;
 using CineSync.Core.Logger.Enums;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CineSync.DbManagers
 {
@@ -21,6 +22,17 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
+        /// Retrieves the collections of movies for a specified user asynchronously.
+        /// </summary>
+        /// <param name="userId">The identifier of the user whose collections are to be retrieved.</param>
+        /// <returns>The collections of movies associated with the specified user.</returns>
+        public async Task<ICollection<MovieCollection>> GetUserCollections(string userId)
+        {
+			ApplicationUser user = await _userRepository.GetFirstByConditionAsync(u => u.Id == userId, "Collections.CollectionMovies.Movie");
+			return user!.Collections!;
+        }
+
+        /// <summary>
         /// Initializes default collections for a new user.
         /// </summary>
         /// <param name="userId">The user's identifier to whom collections will be added.</param>
@@ -28,11 +40,24 @@ namespace CineSync.DbManagers
         public async Task<bool> InitializeUserCollectionsAsync(string userId)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch Later" };
+            List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch-Later" };
             foreach (string name in collectionNames)
             {
                 user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
             }
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Creates a new collection asynchronously for a user.
+        /// </summary>
+        /// <param name="userId">The identifier of the user.</param>
+        /// <param name="collectionName">The name of the new collection to create.</param>
+        /// <returns>Returns <c>true</c> if the collection is successfully created, otherwise <c>false</c>.</returns>
+        public async Task<bool> CreateNewCollectionAsync(string userId, string collectionName)
+        {
+            ApplicationUser user = await GetUserByIdAsync(userId);
+            user.Collections!.Add(new MovieCollection { Name = collectionName, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
             return await _unitOfWork.SaveChangesAsync();
         }
 
@@ -44,14 +69,17 @@ namespace CineSync.DbManagers
         /// <param name="movie">The movie to add to the collection.</param>
         /// <returns>Returns true if the movie is successfully added, otherwise false.</returns>
         /// <exception cref="Exception">Throws if the collection is not found.</exception>
-        public async Task<bool> AddMovieToCollectionAsync(string userId, string collectionName, Movie movie)
+        public async Task<bool> AddMovieToCollectionAsync(string userId, string collectionName, uint movieID)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
             MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
 
-            if (!IsMovieInCollection(movie, collection))
+            if (collection.CollectionMovies.IsNullOrEmpty())
+                collection.CollectionMovies = new List<CollectionsMovies>();
+
+			if (!IsMovieInCollection(movieID, collection))
             {
-                collection.CollectionMovies!.Add(new CollectionsMovies { MovieId = movie.Id, MovieCollectionId = collection.Id });
+                collection.CollectionMovies.Add(new CollectionsMovies { MovieId = movieID, MovieCollectionId = collection.Id });
                 return await _unitOfWork.SaveChangesAsync();
             }
 
@@ -67,12 +95,12 @@ namespace CineSync.DbManagers
         /// <param name="movie">The movie to remove from the collection.</param>
         /// <returns>Returns true if the movie is successfully removed, otherwise false.</returns>
         /// <exception cref="Exception">Throws if the collection is not found or the movie is not in the collection.</exception>
-        public async Task<bool> RemoveMovieFromCollectionAsync(string userId, string collectionName, Movie movie)
+        public async Task<bool> RemoveMovieFromCollectionAsync(string userId, string collectionName, uint movieId)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
             MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
 
-            CollectionsMovies? movieToRemove = collection.CollectionMovies!.FirstOrDefault(cm => cm.MovieId == movie.MovieId);
+            CollectionsMovies? movieToRemove = collection.CollectionMovies!.FirstOrDefault(cm => cm.MovieId == movieId);
             if (movieToRemove != null)
             {
                 collection.CollectionMovies!.Remove(movieToRemove);
@@ -99,9 +127,15 @@ namespace CineSync.DbManagers
         /// <param name="movie">The movie to check.</param>
         /// <param name="collection">The collection to check against.</param>
         /// <returns>Returns true if the movie is already in the collection, otherwise false.</returns>
-        private bool IsMovieInCollection(Movie movie, MovieCollection collection)
+        private bool IsMovieInCollection(uint movieId, MovieCollection collection)
         {
-            return collection.CollectionMovies?.Any(cm => cm.MovieId == movie.Id)??false;
+            return collection.CollectionMovies?.Any(cm => cm.MovieId == movieId) ?? false;
         }
-    }
+
+		public async Task<bool> IsMovieInCollection(uint movieId, uint collectionID)
+		{
+            MovieCollection collection = await _repository.GetFirstByConditionAsync( collection => collection.Id == collectionID, "CollectionMovies");
+			return collection.CollectionMovies?.Any(cm => cm.MovieId == movieId) ?? false;
+		}
+	}
 }

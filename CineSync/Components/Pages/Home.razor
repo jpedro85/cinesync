@@ -12,21 +12,14 @@
                 <img id="logo" src="logo.png" alt="CineSync Main Logo">
             </div>
 
-            <SearchButton @ref="SearchButton" ></SearchButton>
+            <SearchButton @ref="SearchButton" />
 
             <div class="shadow"></div>
         </div>
     </div>
     
     <div class="searched-movies">
-        <div class="movie-carousel">
-            @foreach (var movie in CurrentMovies)
-            {
-                <div class="movie-item" @onclick="(e) => MovieClickhandler(movie)">
-                    <MoviePlace  Movie="movie" UseIMDBRating="false" UseRatingCs="false" />
-                </div>
-            }
-        </div>
+        <Caroussel />
     </div>     
  
 </div>

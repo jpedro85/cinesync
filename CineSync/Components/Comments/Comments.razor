@@ -1,23 +1,39 @@
-﻿@page "/Comments"
-
-<div class="containder">
-	<div class="head">
-		<h1>Post Comment</h1>
-		<div><span id="comment">0</span> Comments</div>
-		<div class=" comments"></div>
-		<div class="commentBox">
-			<img src="/logo.png" />
-			<div class="content">
-				<h2>Comment as:</h2>
-				<input type="text" class="user" value="Anonymous">
-				<div class="commentInput">
-					<input type="text" placeholder="Enter Comment" class="userComment">
-					<div class="buttons">
-						<button type="submit" disable id="publish">Publish</button>
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+﻿@rendermode InteractiveServer
+<div class="comment-section">
+    <h4>Add a Comment</h4>
+    <textarea @bind="comment.Content"></textarea>
+    <button type="submit" @onclick="HandleSubmit">Comment</button>
 </div>
+<div class="form-container comments-done">
+
+    @foreach (var c in CommentsList)
+    {
+        <div class="comment">
+            <div class="comment-header">
+                <span>@c.Autor.UserName</span>
+                <span>@c.NumberOfLikes Likes</span>
+                <span>@c.NumberOfDislikes Dislikes</span>
+            </div>
+            <div class="comment-content">
+                <p>@c.Content</p>
+                <div class="comment-actions">
+                    <div @onclick="()=>c.NumberOfLikes++" style="cursor: pointer;">
+                        <img src="like_icon.png" alt="Like" width="20" height="20">
+                    </div>
+
+                    <div @onclick="()=>c.NumberOfDislikes++" style="cursor: pointer;">
+                        <img src="dislike_icon.png" alt="Dislike" width="20" height="20">
+                    </div>
+
+                </div>
+                @if (c.Attachements != null && c.Attachements.Any())
+                {
+                    <div class="attachments">
+
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+

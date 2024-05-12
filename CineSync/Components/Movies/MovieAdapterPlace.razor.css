@@ -1,0 +1,155 @@
+﻿
+.movieplace {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    background-color: black;
+    border: solid 5px rgb(0, 146, 255);
+    padding: 20px;
+    box-shadow: 0px 0px 20px 6px rgb(0 0 0);
+    margin: 25px;
+    border-radius: 25px;
+    position: relative;
+}
+
+    .movieplace:hover {
+        box-shadow: 0px 0px 25px 6px rgb(48 187 243);
+    }
+
+.PosterImage {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    z-index: 0;
+}
+
+.CsRating {
+    width: 20px;
+    height: 25px;
+}
+
+#IMDBRating {
+    width: 20px;
+    height: 25px;
+}
+
+.rating-icon {
+    align-content: center;
+    padding-top: 5px;
+}
+
+#PosterImage {
+    /*  width: 250px;
+    height: 380px;*/
+    border-radius: 15px;
+    position: relative;
+}
+
+.movie-description {
+    display: flex;
+    flex-direction: column;
+}
+
+.rating-description {
+    display: flex;
+    flex-direction: row;
+    padding-left: 0.5rem;
+    padding-right: 0.6rem;
+    gap: 10px;
+}
+
+.rating-item {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+}
+
+.movie-Title-conteiner {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.movie-Title {
+    color: white;
+    font-size: 25px;
+    text-align: center;
+}
+
+.font-rating {
+    color: rgb(255, 156, 0);
+    font-size: 26px;
+    font-weight: 700;
+    height: 3rem;
+    align-content: end;
+}
+
+.font-rating-result {
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+    font-weight: 600;
+    height: 3rem;
+    align-content: end;
+}
+
+.NoFoundImage-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    color: rgb(255,255,255);
+}
+
+.NoFoundImage-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+#NoFoundImage {
+    width: 0px;
+    height: 80px;
+}
+
+.hovertitle {
+    display: flex;
+    position: absolute;
+    opacity: 0;
+    color: transparent;
+    font-weight: 700;
+    font-size: 25px;
+    text-align: center;
+}
+
+    .hovertitle:hover {
+        color: black;
+        border-radius: 15px;
+        box-shadow: inset 0 0 20px 12px rgb(93 90 90);
+        padding: 10px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(255 255 255 / 80%);
+        animation-delay: 10s;
+        transition: background-color 0.3s ease;
+        color: red;
+        color: black;
+        animation: fadeIn 0.3s forwards;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hovertitle-font {
+    color: black;
+    font-weight: 700;
+    font-size: 25px;
+    text-align: center;
+}
