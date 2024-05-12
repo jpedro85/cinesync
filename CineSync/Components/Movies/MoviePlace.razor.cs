@@ -20,6 +20,15 @@ namespace CineSync.Components.Movies
         [Parameter]
         public bool UseTitle { get; set; } = false;
 
+        [Parameter]
+        public int Width { get; set; } = 300;
+
+        [Parameter]
+        public int Heigth { get; set; } = 450;
+
+        [Parameter]
+        public bool UseHoverTitle {  get; set; } = true;
+
         protected override void OnInitialized()
         {
             if (Movie != null && Movie.PosterImage != null)
