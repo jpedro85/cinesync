@@ -105,33 +105,25 @@
         }
 
 
-/* Style for the comment actions */
 .comment-actions {
-    margin-top: 10px;
+    display: flex; /* Display the action icons in a row */
 }
 
-    /* Style for the like and dislike buttons */
-    .comment-actions button {
-        width: 100px;
-        height: 50px;
-        border-radius: 15px;
-        border: none;
-        Background: linear-gradient(0.25Turn, rgb(74, 186, 217) 10%, rgb(208, 6, 247));
-        color: white;
-        font-weight: 700;
-        font-size: 20px;
-        font-family: Itim;
-        box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50);
-        border: solid 2px rgb(255,255,255);
-        margin-left:10px;
+    .comment-actions > div {
+        margin-right: 10px; /* Adjust spacing between icons if needed */
+        cursor: pointer;
+        transition: transform 0.2s; /* Add a smooth transition effect */
     }
 
-        /* Style for the like and dislike buttons on hover */
-        .comment-actions button:hover {
-            transition: width 0.1s ease;
-            box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
-            color: black;
+        .comment-actions > div:hover {
+            transform: scale(1.1); /* Scale up the icon on hover */
         }
+
+        .comment-actions > div img {
+            width: 40px; /* Adjust icon size if needed */
+            height: 40px; /* Adjust icon size if needed */
+        }
+
 .form-container {
     background-color: rgba(0, 0, 0, 0.5); /* Black color with 50% opacity */
     padding: 20px;
