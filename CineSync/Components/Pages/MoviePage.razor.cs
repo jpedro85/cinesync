@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using CineSync.Data.Models;
+using CineSync.Components.PopUps;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace CineSync.Components.Pages
 {
@@ -26,7 +28,7 @@ namespace CineSync.Components.Pages
 
 		private Movie Movie { get; set; }
 
-		protected override async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
 		{
 			Movie = await GetMovieDetails();
 		}
@@ -44,7 +46,6 @@ namespace CineSync.Components.Pages
 			return null;
 
 		}
-
 
 	}
 }

@@ -1,7 +1,10 @@
 ﻿@page "/Profile"
+@attribute [Authorize]
+
 @using CineSync.Components.Buttons
 @using CineSync.Components.Account.Component
 @using CineSync.Components.PopUps
+@using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveServer
 
 <div class="profile-container">

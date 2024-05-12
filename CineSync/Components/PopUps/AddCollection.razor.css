@@ -47,3 +47,68 @@
     .btn-secondary:focus {
         box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5); /* Gray focus shadow */
     }
+
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.CheckItem{
+    display:flex;
+    flex-direction:row;
+    gap:20px;
+    align-items:center;
+    color:white;
+    height:30px;
+}
+
+    .CheckIteminput{
+        display: flex;
+        width: 20px; /* Adjust the width to your preference */
+        height: 20px; /* Adjust the height to your preference */
+        background-color: #fff;
+        border: 1px solid #000; /* Adjust border properties as needed */
+        text-align: center;
+        line-height: 20px; /* Center the radio button's label */
+        border-radius:5px;
+
+    }
+
+    input[type='radio'] {
+        box-sizing: border-box;
+        appearance: none;
+        background: white;
+        outline: 2px solid #333;
+        border: 3px solid white;
+        width: 16px;
+        height: 16px;
+    }
+
+    input[type='radio']:checked {
+        background: #333;
+    }
+
+.conteinerRadio{
+    display:flex;
+    height:30px;
+    width:20px;
+    justify-content:center;
+    align-items:center;
+}
+
+.conteinerRadioLabel {
+    display: flex;
+    flex-direction:row;
+    height: 30px;
+    justify-content: start;
+    align-items:center;
+    margin:0;
+    flex-grow:1;
+
+}
+
+.newcollection{
+    margin-top:20px;
+}
