@@ -17,10 +17,21 @@
             </button>
             <AddImageProfile></AddImageProfile>
         </div>
-        <div class="User-Followers">
-            <div class="Followers">Followers 10</div>
-            <div class="Following">Following 10</div>
-        </div>
+            @if (User != null)
+            {
+                <div class="User-Followers">
+                    <div class="Followers">Followers: @User.FollowersCount</div>
+                    <div class="Following">Following: @User.FollowingCount</div>
+                </div>
+            }
+            else
+            {
+                <div class="User-Followers">
+                    <div class="Followers">Followers: 0</div>
+                    <div class="Following">Following: 0</div>
+                </div>
+            }
+
 
         <div class="Buttons">
             <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal">Change Username</button>

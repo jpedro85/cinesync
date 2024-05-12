@@ -1,5 +1,6 @@
 ﻿using CineSync.Components.PopUps;
 using Microsoft.AspNetCore.Components;
+using CineSync.Data;
 
 namespace CineSync.Components.Pages
 {
@@ -8,5 +9,7 @@ namespace CineSync.Components.Pages
     {
         
         public  UsernameEdit newuserName {  get; set; }
+
+        public ApplicationUser User { get; set; }
     }
 }
