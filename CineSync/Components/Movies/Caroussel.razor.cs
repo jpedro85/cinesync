@@ -22,7 +22,7 @@ public partial class Caroussel : ComponentBase
 
     private List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>();
 
-    private Queue<MovieSearchAdapter> movieQueue = new Queue<MovieSearchAdapter>();
+    private static Queue<MovieSearchAdapter> movieQueue = new Queue<MovieSearchAdapter>();
 
     private static ICollection<MovieSearchAdapter> AllRatedMovies { get; set; } = new List<MovieSearchAdapter>(0);
 
@@ -59,13 +59,29 @@ public partial class Caroussel : ComponentBase
         UpdateCurrentMovies();
     }
 
-    private void StartTimer()
+        private void StartTimer()
     {
+        if (_timer != null)
+        {
+            _timer.Stop();
+            _timer.Dispose();
+        }
         _timer = new System.Timers.Timer(5000);
         _timer.Elapsed += UpdateCarousel;
         _timer.AutoReset = true;
         _timer.Enabled = true;
     }
+
+    private void StopTimer()
+    {
+        if (_timer != null)
+        {
+            _timer.Stop();
+            _timer.Dispose();
+            _timer = null;
+        }
+    }
+
 
     private void UpdateCarousel(Object source, ElapsedEventArgs e)
     {
@@ -89,7 +105,7 @@ public partial class Caroussel : ComponentBase
 
     private async Task FetchTopRatedMovies()
     {
-        if (TopRatedMovies == null || !TopRatedMovies.Any())
+        if (AllRatedMovies == null || !AllRatedMovies.Any())
         {
             var response = await _client.GetAsync("/movie/top-rated"); // Adjust the URL path as needed.
             if (response.IsSuccessStatusCode)
@@ -109,7 +125,7 @@ public partial class Caroussel : ComponentBase
     public async Task UpdateDisplayMode()
     {
         var screenWidth = await JSRuntime.InvokeAsync<int>("eval", "window.innerWidth");
-        if (screenWidth >= 1700)
+        if (screenWidth >= 1900)
         {
             isCarouselActive = true;
             StartTimer();
@@ -117,8 +133,7 @@ public partial class Caroussel : ComponentBase
         else
         {
             isCarouselActive = false;
-            if (_timer != null)
-                _timer.Stop();
+	    StopTimer();
         }
         StateHasChanged();
     }
