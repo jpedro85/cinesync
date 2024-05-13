@@ -1,7 +1,8 @@
-using System.Timers;
 using CineSync.Controllers.MovieEndpoint;
 using CineSync.Core.Adapters.ApiAdapters;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System.Timers;
 using Newtonsoft.Json;
 
 namespace CineSync.Components.Movies;
@@ -12,33 +13,40 @@ public partial class Caroussel : ComponentBase
     private HttpClient _client { get; set; }
 
     [Inject]
+    private IJSRuntime JSRuntime { get; set; }
+
+    [Inject]
     private NavigationManager NavigationManager { get; set; }
 
     private System.Timers.Timer _timer;
-    
+
     private List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>();
-    
+
     private Queue<MovieSearchAdapter> movieQueue = new Queue<MovieSearchAdapter>();
-    
+
     private static List<MovieSearchAdapter> TopRatedMovies { get; set; }
 
-    
+    private bool isCarouselActive = true;
+
+    private DotNetObjectReference<Caroussel> objRef;
+
     protected override async Task OnInitializedAsync()
     {
         await FetchTopRatedMovies();
-
     }
-    
-    protected override void OnAfterRender(bool firstRender)
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             InitializeQueue();
-            StartTimer();
+            objRef = DotNetObjectReference.Create(this);
+            await JSRuntime.InvokeVoidAsync("addResizeListener", objRef);
+            await UpdateDisplayMode();
             StateHasChanged();
         }
     }
-    
+
     private void InitializeQueue()
     {
 
@@ -76,7 +84,7 @@ public partial class Caroussel : ComponentBase
     {
         CurrentMovies = movieQueue.ToList();
     }
-    
+
     private async Task FetchTopRatedMovies()
     {
         if (TopRatedMovies == null || !TopRatedMovies.Any())
@@ -90,15 +98,29 @@ public partial class Caroussel : ComponentBase
         }
     }
 
-    public void Dispose()
-    {
-        _timer?.Stop();
-        _timer?.Dispose();
-    }
-    
     private void MovieClickHandler(MovieSearchAdapter movie)
     {
         NavigationManager.NavigateTo($"/MovieDetails/{movie.MovieId}");
     }
 
+    [JSInvokable]
+    public async Task UpdateDisplayMode()
+    {
+        var screenWidth = await JSRuntime.InvokeAsync<int>("eval", "window.innerWidth");
+        if (screenWidth >= 1600)
+        {
+            isCarouselActive = true;
+        }
+        else
+        {
+            isCarouselActive = false;
+        }
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _timer?.Stop();
+        _timer?.Dispose();
+    }
 }

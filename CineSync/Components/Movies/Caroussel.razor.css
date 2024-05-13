@@ -34,6 +34,8 @@
 
     .movie-item {
         flex: 0 0 33.33%;
+        transition: none;
+        animation: none;
     }
 }
 
@@ -45,5 +47,7 @@
 
     .movie-item {
         flex: 0 0 33.33%;
+        transition: none;
+        animation: none;
     }
 }
