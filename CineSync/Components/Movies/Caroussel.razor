@@ -1,8 +1,21 @@
 <div class="movie-carousel">
-    @foreach (var movie in CurrentMovies)
+ @if (isCarouselActive)
     {
-    <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
-        <MovieAdapterPlace  Movie="movie"/>
-    </div>
+        foreach (var movie in CurrentMovies)
+        {
+            <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
+                <MovieAdapterPlace  Movie="movie"/>
+            </div>
+        }
+    }
+    else
+    {
+        foreach (var movie in AllRatedMovies)
+        {
+            <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
+                <MovieAdapterPlace  Movie="movie"/>
+            </div>
+        }
     }
 </div>
+<script src="js/site.js"></script>

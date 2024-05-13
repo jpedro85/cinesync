@@ -173,7 +173,7 @@ namespace CineSync.Controllers.MovieEndpoint
             settings.Converters.Add(new MovieConverter());
             ApiSearchResponse apiResponse = JsonConvert.DeserializeObject<ApiSearchResponse>(data, settings)!;
             _logger.Log($"Fetched the results for the top-rated movies query successfully", LogTypes.INFO);
-            apiResponse.Results = apiResponse.Results.Take(10).ToList();
+            apiResponse.Results = apiResponse.Results.ToList();
 
             return Ok(apiResponse);
         }
