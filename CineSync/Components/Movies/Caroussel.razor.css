@@ -1,18 +1,14 @@
 .movie-carousel {
     display: flex;
-    overflow: hidden;
-    height:fit-content;
+    width: 100%;
 }
 
 .movie-item {
     flex: 0 0 20%;
-    /* Adjust based on how many items you want visible at once */
-    opacity: 0;
     transition: transform 1s, opacity 1s;
     animation: slide-fade-in-out 5s infinite linear;
-    background-size: cover;
-    height:fit-content;
-    width:fit-content;
+    height: auto;
+    width: auto;
 }
 
 @keyframes slide-fade-in-out {
@@ -27,5 +23,27 @@
     90% {
         transform: translateX(0);
         opacity: 1;
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    .movie-carousel {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .movie-item {
+        flex: 0 0 33.33%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .movie-carousel {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .movie-item {
+        flex: 0 0 33.33%;
     }
 }
