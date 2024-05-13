@@ -22,9 +22,9 @@ public partial class Caroussel : ComponentBase
 
     private List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>();
 
-    private static Queue<MovieSearchAdapter> movieQueue = new Queue<MovieSearchAdapter>();
+    private Queue<MovieSearchAdapter> MovieQueue { get; } = new Queue<MovieSearchAdapter>();
 
-    private static ICollection<MovieSearchAdapter> AllRatedMovies { get; set; } = new List<MovieSearchAdapter>(0);
+    private static ICollection<MovieSearchAdapter> AllRatedMovies { get; set; }
 
     private static List<MovieSearchAdapter> TopRatedMovies { get; set; }
 
@@ -51,15 +51,18 @@ public partial class Caroussel : ComponentBase
 
     private void InitializeQueue()
     {
-        TopRatedMovies = AllRatedMovies.Take(10).ToList();
+        if (TopRatedMovies == null || !TopRatedMovies.Any())
+            TopRatedMovies = AllRatedMovies.Take(10).ToList();
+
         foreach (var movie in TopRatedMovies.Take(5))
         {
-            movieQueue.Enqueue(movie);
+            MovieQueue.Enqueue(movie);
         }
         UpdateCurrentMovies();
+
     }
 
-        private void StartTimer()
+    private void StartTimer()
     {
         if (_timer != null)
         {
@@ -87,9 +90,9 @@ public partial class Caroussel : ComponentBase
     {
         if (TopRatedMovies.Count > 5)
         {
-            movieQueue.Dequeue();
-            var nextMovieIndex = (TopRatedMovies.IndexOf(movieQueue.Last()) + 1) % TopRatedMovies.Count;
-            movieQueue.Enqueue(TopRatedMovies[nextMovieIndex]);
+            MovieQueue.Dequeue();
+            int nextMovieIndex = (TopRatedMovies.IndexOf(MovieQueue.Last()) + 1) % TopRatedMovies.Count;
+            MovieQueue.Enqueue(TopRatedMovies[nextMovieIndex]);
             InvokeAsync(() =>
             {
                 UpdateCurrentMovies();
@@ -100,7 +103,7 @@ public partial class Caroussel : ComponentBase
 
     private void UpdateCurrentMovies()
     {
-        CurrentMovies = movieQueue.ToList();
+        CurrentMovies = MovieQueue.ToList();
     }
 
     private async Task FetchTopRatedMovies()
@@ -133,7 +136,7 @@ public partial class Caroussel : ComponentBase
         else
         {
             isCarouselActive = false;
-	    StopTimer();
+            StopTimer();
         }
         StateHasChanged();
     }
