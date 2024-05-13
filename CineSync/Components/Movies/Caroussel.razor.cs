@@ -109,7 +109,7 @@ public partial class Caroussel : ComponentBase
     public async Task UpdateDisplayMode()
     {
         var screenWidth = await JSRuntime.InvokeAsync<int>("eval", "window.innerWidth");
-        if (screenWidth >= 1700)
+        if (screenWidth >= 1900)
         {
             isCarouselActive = true;
             StartTimer();
