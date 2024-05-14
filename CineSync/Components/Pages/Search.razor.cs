@@ -98,7 +98,7 @@ namespace CineSync.Components.Pages
 
 			List<MovieSearchAdapter> results = await GetMovies($"/movie/search?Query={searchQuery}&Page={page}");
 
-			if ( results.Count == 0 && page > 1)
+			if ( (results.Count == 0) && page > 1)
 			{
 				_isLastpage = true;
 			}

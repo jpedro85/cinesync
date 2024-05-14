@@ -28,7 +28,14 @@
 						<MovieAdapterPlace  Movie=movie />
 					</div>
 				}
-		
+
+				@if (!_isLastpage)
+				{
+					<div class="MoreResults-container">
+						<button class="MoreResults" @onclick="(e)=>{LoadNextPageMovies();}">More Results</button>
+					</div>
+				}
+
 			</div>
 		}
 		else

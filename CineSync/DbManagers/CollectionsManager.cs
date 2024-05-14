@@ -40,7 +40,7 @@ namespace CineSync.DbManagers
         public async Task<bool> InitializeUserCollectionsAsync(string userId)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch-Later" };
+            List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch Later" };
             foreach (string name in collectionNames)
             {
                 user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
@@ -109,6 +109,49 @@ namespace CineSync.DbManagers
 
             return false;
         }
+
+        /// <summary>
+        /// Changes the Name of a collection.
+        /// </summary>
+        /// <param name="userId">The identifier of the user to retrieve.</param>
+        /// /// <param name="newCollectionName">The newName of the Collection.</param>
+        /// <returns>True if sucessefuly</returns>
+        /// <exception cref="Exception">Throws if the user is not found.</exception>
+        public async Task<bool> ChangeCollectioName(string userId,string collectionName ,string newCollectionName)
+        {
+            ApplicationUser user = await GetUserByIdAsync(userId);
+            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
+
+            if (collection != null)
+            {
+                collection.Name = newCollectionName;
+                return await _unitOfWork.SaveChangesAsync();
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Changes the public state of a collection.
+        /// </summary>
+        /// <param name="userId">The identifier of the user to retrieve.</param>
+        /// /// <param name="newState">The nes isPublic sate of the collection.</param>
+        /// <returns>True if sucessefuly.</returns>
+        /// <exception cref="Exception">Throws if the user is not found.</exception>
+        public async Task<bool> ChangePublicSate(string userId, string collectionName, bool newState)
+        {
+            ApplicationUser user = await GetUserByIdAsync(userId);
+            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
+
+            if (collection != null)
+            {
+                collection.IsPublic = newState;
+                return await _unitOfWork.SaveChangesAsync();
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// Retrieves a user by their identifier.

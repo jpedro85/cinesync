@@ -68,6 +68,7 @@
     background-color: #0c1d58a8;
     flex-grow: 1;
     justify-content: space-between;
+    min-height: 100px; /* Set a minimum height */
 }
 
 .collection-movies-shadow-left {

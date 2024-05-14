@@ -1,12 +1,31 @@
 ﻿.main-content {
-    background: #D9D9D9;
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
+    background-image: url("BackgorundHome.png");
+    height: 100%;
+    max-height: 100%;
+    position: relative;
 }
 .content {
+    background-color: rgba(79, 79, 79, 0.2);
+    display: flex;
     flex-direction: column;
-    width:100%;
+    justify-content: flex-start;
+    padding: 20px;
+    gap: 20px;
+    height: 100%;
+    max-height: 100%;
+    z-index: 0;
+}
+
+.Subtilte {
+    color: #ffffff;
+    font-size: 25px;
+    background-color: rgb(0, 0, 0);
+    padding-left: 20px;
+    height: 80px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-radius: 10px;
 }
 
 .back-button {
@@ -39,23 +58,6 @@
     align-items: center;
 }
 
-.Collection-Movies {
-    display: flex;
-    flex-wrap: wrap;
-    background: #D9D9D9;
-}
-
-.remove-movie {
-    position:relative;
-    bottom:505px;
-    left:250px;
-    z-index:1;
-}
-
-.collection-name {
-    color:black;
-    font-size:20px;
-}
 
 .edit-collection-input {
     color: black;
@@ -67,3 +69,25 @@
     font-size: inherit;
     width: fit-content;
 }
+
+
+.EditName {
+    width: 160px;
+    height: 50px;
+    border-radius: 15px;
+    border: none;
+    Background: linear-gradient(0.25Turn, rgb(74, 186, 217) 10%, rgb(208, 6, 247));
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    font-family: Itim;
+    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50);
+    border: solid 2px rgb(255,255,255);
+}
+
+    .EditName:hover {
+        transition: width 0.1s ease;
+        box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
+        width: 170px;
+        color: black;
+    }

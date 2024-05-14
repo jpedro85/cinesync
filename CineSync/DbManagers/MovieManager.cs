@@ -37,7 +37,6 @@ namespace CineSync.DbManagers
             return await GetFirstByConditionAsync(movie => movie.MovieId == tmdbId, "Genres");
         }
 
-        // TODO: Check functionality
         public async Task AddRating(int rating, int movieId, string userId)
         {
             Movie movie = await GetByTmdbId(movieId);
@@ -67,13 +66,16 @@ namespace CineSync.DbManagers
             if (collection.CollectionMovies == null)
                 collection.CollectionMovies = new List<CollectionsMovies>();
 
-            CollectionsMovies ratedMovie = new CollectionsMovies()
+            if (!collection.CollectionMovies.Any(cm => cm.MovieId == movie.Id))
             {
-                MovieId = movie.Id,
-                MovieCollectionId = collection.Id
-            };
+                CollectionsMovies ratedMovie = new CollectionsMovies()
+                {
+                    MovieId = movie.Id,
+                    MovieCollectionId = collection.Id
+                };
 
-            collection.CollectionMovies.Add(ratedMovie);
+                collection.CollectionMovies.Add(ratedMovie);
+            }
 
             await _unitOfWork.SaveChangesAsync();
         }
