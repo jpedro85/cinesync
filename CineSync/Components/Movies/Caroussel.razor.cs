@@ -20,7 +20,7 @@ public partial class Caroussel : ComponentBase
 
     private System.Timers.Timer _timer;
 
-    private static List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>(0);
+    private List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>(0);
 
     private Queue<MovieSearchAdapter> MovieQueue { get; } = new Queue<MovieSearchAdapter>();
 
