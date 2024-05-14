@@ -1,8 +1,20 @@
-﻿<div class="main-container">
-    <div class="public-text"> Public</div>
-    <div class="container">
-        <input type="checkbox" id="check">
-        <label for="check" class="button"></label>
-    </div>
+﻿@rendermode InteractiveServer
+
+<div class="main-container">
+    <div class="public-text" > Public</div>
+    @if (InitialState)
+    {
+        <div class="container">
+            <input @onclick="(e)=>{OnMouseClick(); }" type=" checkbox" id="check">
+            <label for="check" class="button"></label>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <input @onclick="(e)=>{OnMouseClick(); }" type="checkbox" id="check" checked>
+            <label for="check" class="button"></label>
+        </div>
+    }
     <div class="private-text"> Private</div>
 </div>

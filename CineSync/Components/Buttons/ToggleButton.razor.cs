@@ -7,13 +7,20 @@ namespace CineSync.Components.Buttons
     {
         [Parameter]
         public string Title { get; set; } = "Button";
-        public bool state {  get; set; } 
-        public delegate void ButtonAction();
-        public event ButtonAction? OnChange;
 
-        private void OnMouseClick(MouseEventArgs e)
+        [Parameter]
+        public bool InitialState {  get; set; } 
+
+        public delegate void ButtonAction(bool state);
+
+        [Parameter]
+        public ButtonAction OnChange { get; set; }
+
+        private void OnMouseClick()
         {
-            OnChange?.Invoke();
+            InitialState = !InitialState;
+            if(OnChange != null)
+                OnChange(InitialState);
         }
     }
 }
