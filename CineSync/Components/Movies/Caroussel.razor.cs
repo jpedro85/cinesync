@@ -20,7 +20,7 @@ public partial class Caroussel : ComponentBase
 
     private System.Timers.Timer _timer;
 
-    private List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>();
+    private static List<MovieSearchAdapter> CurrentMovies { get; set; } = new List<MovieSearchAdapter>(0);
 
     private Queue<MovieSearchAdapter> MovieQueue { get; } = new Queue<MovieSearchAdapter>();
 
@@ -88,7 +88,7 @@ public partial class Caroussel : ComponentBase
 
     private void UpdateCarousel(Object source, ElapsedEventArgs e)
     {
-        if (TopRatedMovies.Count > 5)
+        if (AllRatedMovies.Count > 5)
         {
             MovieQueue.Dequeue();
             int nextMovieIndex = (TopRatedMovies.IndexOf(MovieQueue.Last()) + 1) % TopRatedMovies.Count;
