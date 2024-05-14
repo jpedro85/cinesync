@@ -1,4 +1,5 @@
 ﻿using CineSync.Components.Layout;
+using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -9,10 +10,16 @@ namespace CineSync.Components.PopUps
     public partial class Classification : ComponentBase
     {
         [Parameter]
-        public int MovieId { get; set; }
+        public int MovieAPIId { get; set; }
+
+        [Parameter]
+        public uint MovieId { get; set; }
 
         [Inject]
         private MovieManager MovieManager { get; set; }
+
+        [Inject]
+        private CollectionsManager CollectionsManager { get; set; }
 
         [Inject]
         private LayoutService LayoutService { get; set; }
@@ -22,6 +29,8 @@ namespace CineSync.Components.PopUps
 
         private MainLayout MainLayout { get; set; }
 
+
+        public ApplicationUser AuthenticatedUser { get; set; }
         private int Rating { get; set; }
 
         protected override void OnInitialized()
@@ -37,7 +46,7 @@ namespace CineSync.Components.PopUps
         // TODO: Remove the reload after making the MovieDetails Component
         private async void SaveRating()
         {
-            await MovieManager.AddRating(Rating, MovieId, MainLayout.AuthenticatedUser.Id);
+            await MovieManager.AddRating(Rating, MovieAPIId, MainLayout.AuthenticatedUser.Id);
             await JSRuntime.InvokeVoidAsync("window.location.reload");
         }
     }

@@ -21,16 +21,20 @@
             </div>
             <div class="comment-content">
                 <p>@c.Content</p>
-                <div class="comment-actions">
-                    <div @onclick="()=>c.NumberOfLikes++" style="cursor: pointer;">
-                        <img src="like_icon.png" alt="Like" width="20" height="20">
-                    </div>
+                <CustomAuthorizedView CheckAuthentication=true>
+                    <CustomAuthorized>
+                        <div class="comment-actions">
+                            <div @onclick="(e)=>{AddLike(c);}" style="cursor: pointer;">
+                                <img src="like_icon.png" alt="Like" width="20" height="20">
+                            </div>
 
-                    <div @onclick="()=>c.NumberOfDislikes++" style="cursor: pointer;">
-                        <img src="dislike_icon.png" alt="Dislike" width="20" height="20">
-                    </div>
+                            <div @onclick="(e)=>{AddDeslike(c);}" style="cursor: pointer;">
+                                <img src="dislike_icon.png" alt="Dislike" width="20" height="20">
+                            </div>
 
-                </div>
+                        </div>
+                    </CustomAuthorized>
+                </CustomAuthorizedView>
                 @if (c.Attachements != null && c.Attachements.Any())
                 {
                     <div class="attachments">

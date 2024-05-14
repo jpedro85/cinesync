@@ -19,13 +19,15 @@ namespace CineSync.Components.Comments
 
         private MainLayout MainLayout { get; set; }
 
-        private static ICollection<Comment> CommentsList { get; } = new List<Comment>(0);
+        private static ICollection<Comment> CommentsList { get; set; } = new List<Comment>(0);
 
         private Comment comment = new Comment();
 
-        protected override void OnInitialized()
+        protected override async void OnInitialized()
         {
             MainLayout = LayoutService.MainLayout;
+            if(MovieId != null)
+             CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
         }
 
         private async void HandleSubmit()
@@ -47,5 +49,19 @@ namespace CineSync.Components.Comments
             StateHasChanged();
         }
 
-    }
+        private async void AddLike(Comment commentAddLike)
+        {
+            Console.WriteLine("Aa");
+			await CommentManager.AddLikeAsync( commentAddLike );
+            StateHasChanged();
+        }
+
+		private async void AddDeslike(Comment commentAddDesLike)
+		{
+            Console.WriteLine("Aa");
+            await CommentManager.AddDesLikeAsync(commentAddDesLike);
+            StateHasChanged();
+		}
+
+	}
 }
