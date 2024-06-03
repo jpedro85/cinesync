@@ -2,13 +2,13 @@
 
 <div class="navbar">
     <div class="navbar-left">
-       
+
         <div class="navbar-item-conteiner" @onclick="NavBarEvents.OnMenuClick">
             <svg class="menuButton" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 50V41.6667H50V50H0ZM0 29.1667V20.8333H50V29.1667H0ZM0 8.33333V0H50V8.33333H0Z" />
             </svg>
         </div>
-        
+
         <NavLink href="/">
             <div class="home-button">
                 <div class="navbar-item-conteiner">
@@ -17,7 +17,7 @@
                 <div class="navbar-item-conteiner navbar-title">CineSync</div>
             </div>
         </NavLink>
-        
+
     </div>
     <div class="navbar-rigth">
 
@@ -41,9 +41,9 @@
 
                         <div class=" navbar-item-conteiner">
 
-                            @if (User.ProfileImage != null)
+                            @if (UserImage != null)
                             {
-                                <img class="profileImage" src="@($"data:image/jpeg;base64,{ Convert.ToBase64String(User.ProfileImage) }")" alt="User" />
+                                <img class="profileImage" src="@GetImage()" alt="User" />
                             }
                             else
                             {

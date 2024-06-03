@@ -43,7 +43,6 @@ namespace CineSync.Components.PopUps
             Rating = Convert.ToInt32(e.Value);
         }
 
-        // TODO: Remove the reload after making the MovieDetails Component
         private async void SaveRating()
         {
             await MovieManager.AddRating(Rating, MovieAPIId, MainLayout.AuthenticatedUser.Id);

@@ -1,10 +1,10 @@
-﻿using CineSync.Components.Navs;
-using CineSync.Data;
+﻿using CineSync.Data;
+using CineSync.Data.Models;
+using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace CineSync.Components.Layout
 {
@@ -24,9 +24,9 @@ namespace CineSync.Components.Layout
 
         private bool _hasSearch = true;
 
-		protected override async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
-			await CheckLoginState();
+            await CheckLoginState();
             LayoutService.MainLayout = this;
         }
 
@@ -41,7 +41,8 @@ namespace CineSync.Components.Layout
         {
             _hasSearch = false;
 
-            InvokeAsync(() => {
+            InvokeAsync(() =>
+            {
                 StateHasChanged();
             });
         }

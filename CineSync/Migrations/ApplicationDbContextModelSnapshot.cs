@@ -86,9 +86,6 @@ namespace CineSync.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<byte[]>("ProfileImage")
-                        .HasColumnType("BLOB");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
@@ -338,6 +335,32 @@ namespace CineSync.Migrations
                     b.HasIndex("CommentId");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.UserImage", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserImage");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UsersNotifications", b =>
@@ -590,6 +613,17 @@ namespace CineSync.Migrations
                     b.Navigation("Comment");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.UserImage", b =>
+                {
+                    b.HasOne("CineSync.Data.ApplicationUser", "User")
+                        .WithOne("UserImage")
+                        .HasForeignKey("CineSync.Data.Models.UserImage", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.UsersNotifications", b =>
                 {
                     b.HasOne("CineSync.Data.ApplicationUser", "AplicationUser")
@@ -680,6 +714,8 @@ namespace CineSync.Migrations
                     b.Navigation("Collections");
 
                     b.Navigation("Notifications");
+
+                    b.Navigation("UserImage");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Comment", b =>

@@ -1,6 +1,9 @@
-﻿using CineSync.Data;
-using Microsoft.AspNetCore.Components;
+﻿using CineSync.Components.Utils;
+using CineSync.Data;
+using CineSync.Data.Models;
+using CineSync.DbManagers;
 using CineSync.Services;
+using Microsoft.AspNetCore.Components;
 
 
 namespace CineSync.Components.Navs
@@ -15,6 +18,26 @@ namespace CineSync.Components.Navs
 
         [Inject]
         public NavBarEvents NavBarEvents { get; set; }
+
+        [Inject]
+        public UserImageManager UserImageManager { get; set; }
+
+        private UserImage? UserImage { get; set; }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User.Id);
+                StateHasChanged();
+            }
+        }
+
+        private string GetImage()
+        {
+            string imageBase64 = ImageConverter.ConverBytesTo64(UserImage.ImageData);
+            return imageBase64;
+        }
 
     }
 }

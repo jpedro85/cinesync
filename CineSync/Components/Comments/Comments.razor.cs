@@ -51,14 +51,12 @@ namespace CineSync.Components.Comments
 
         private async void AddLike(Comment commentAddLike)
         {
-            Console.WriteLine("Aa");
 			await CommentManager.AddLikeAsync( commentAddLike );
             StateHasChanged();
         }
 
 		private async void AddDeslike(Comment commentAddDesLike)
 		{
-            Console.WriteLine("Aa");
             await CommentManager.AddDesLikeAsync(commentAddDesLike);
             StateHasChanged();
 		}

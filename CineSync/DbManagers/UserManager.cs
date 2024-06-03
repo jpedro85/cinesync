@@ -1,6 +1,8 @@
 using CineSync.Core.Logger;
+using CineSync.Core.Logger.Enums;
 using CineSync.Core.Repository;
 using CineSync.Data;
+using CineSync.Data.Models;
 
 namespace CineSync.DbManagers
 {
@@ -46,6 +48,40 @@ namespace CineSync.DbManagers
             }
 
             user.UserName = username;
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> ChangeProfilePictureAsync(string userId, byte[] image, string contentType)
+        {
+            ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId, "UserImage");
+            if (user == null || image == null || contentType == null)
+            {
+                return false;
+            }
+
+            if (user.UserImage != null)
+            {
+                _logger.Log("There is UserImage", LogTypes.DEBUG);
+                _logger.Log("Updating the User " + userId + " profile Image", LogTypes.DEBUG);
+                user.UserImage.ImageData = image;
+                user.UserImage.ContentType = contentType;
+                _logger.Log("The User " + user.Id + " profile Image was updated ", LogTypes.DEBUG);
+            }
+            else
+            {
+                _logger.Log("There is no UserImage", LogTypes.DEBUG);
+                _logger.Log("Creating a new User Image", LogTypes.DEBUG);
+                UserImage userImage = new UserImage
+                {
+                    UserId = user.Id,
+                    ImageData = image,
+                    ContentType = contentType
+                };
+                _logger.Log("Created a new User Image", LogTypes.DEBUG);
+                user.UserImage = userImage;
+            }
+
+            _logger.Log("Saving User Image changes to the database", LogTypes.WARN);
             return await _unitOfWork.SaveChangesAsync();
         }
 

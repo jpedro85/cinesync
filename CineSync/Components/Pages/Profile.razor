@@ -14,7 +14,7 @@
         <div class="Profile-sidebar">
 
             <div class="Profile-icon">
-                <ProfileIcon ProfileWidth=100 />
+                <ProfileIcon ProfileWidth=100 ProfileImage=@UserImage />
                 <button data-toggle="modal" data-target="#editProfileModal" class="Edit-image-icon">
                     <?xml version="1.0" ?>
                     <svg class="edit-image" fill="currentcolor" height="25" viewBox="0 0 24 24" width="25" xmlns="http://www.w3.org/2000/svg">
@@ -25,7 +25,7 @@
             </div>
             <div class="User-Followers">
                 <div class="Followers">@AuthenticatedUser.UserName</div>
-            </div
+            </div>
 
             <div class="Buttons">
                 <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal">Change Username</button>

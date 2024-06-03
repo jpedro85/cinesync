@@ -5,7 +5,7 @@ namespace CineSync.Data
 {
     public class ApplicationUser : IdentityUser
     {
-        public byte[]? ProfileImage { get; set; }
+        public UserImage? UserImage { get; set; }
 
         public ICollection<ApplicationUser>? Followers { get; set; }
 

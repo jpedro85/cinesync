@@ -27,7 +27,7 @@ namespace CineSync.Components.Pages
         private bool showNavMenu = false;
 
         private System.Timers.Timer _timer;
-        
+
         private SearchButton SearchButton { get; set; } = new SearchButton();
 
         protected override async Task OnInitializedAsync()
@@ -48,12 +48,12 @@ namespace CineSync.Components.Pages
         {
             showNavMenu = !showNavMenu;
         }
-        
+
         public void OnSearch(string searchQuery)
         {
             if (searchQuery != string.Empty)
                 NavigationManager.NavigateTo($"/Search/{searchQuery}");
         }
-        
+
     }
 }
