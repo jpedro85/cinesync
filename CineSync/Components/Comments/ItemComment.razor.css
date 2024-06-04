@@ -1,0 +1,155 @@
+﻿
+.comment {
+    background: linear-gradient(to right, rgb(0, 0, 0) 60%, rgba(0, 0, 0,0.1) );
+    padding: 15px;
+    border-radius: 10px;
+}
+
+
+.comment-header {
+    display: flex;
+    color: white;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.removeFromFollowing,
+.addToFollowing {
+    width: 30px;
+    height: 30px;
+    color: white;
+    transition: transform 0.1s
+}
+
+    .removeFromFollowing:hover,
+    .addToFollowing:hover {
+        color: white;
+        color: rgb(128, 128, 128);
+        transform: scale(1.1);
+    }
+
+    .removeFromFollowing:active,
+    .addToFollowing:active {
+        color: white;
+    }
+
+.UsernameConteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    color: white;
+    font-weight: 500;
+}
+
+.commend-header-left {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.commend-header-rigth {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    color: black;
+}
+
+.commen-time-stanp {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    align-items: center;
+    color: white;
+}
+
+.user-profilepic {
+    width: 40px;
+    height: 40px;
+}
+
+hr {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+
+.likeStatusButton-conteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 17px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.likeStatusButton {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+    .likeStatusButton:hover {
+        color: rgb(128, 128, 128);
+        transform: scale(1.4);
+        transition: transform 0.2s;
+    }
+
+    .likeStatusButton:active {
+        color: rgb(0, 236, 252);
+        transform: scale(1.6);
+        transition: transform 0.2s;
+    }
+
+
+.comment-actions {
+    padding: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+
+.comment-actions-ritgh {
+    display:flex;
+    flex-grow:1;
+    justify-content:flex-end;
+    align-items:center;
+}
+
+.comment-header span:nth-child(1) {
+    font-weight: bold;
+}
+
+.comment-content {
+    padding: 20px;
+    text-justify:auto;
+    height:fit-content;
+    word-wrap:break-word;
+}
+
+    .comment-content p {
+        margin-bottom: 10px;
+        font-size: 25px;
+        color: white;
+    }
+
+.attachments {
+    margin-top: 10px;
+}
+
+.comment-options {
+    color: white;
+}
+
+    .comment-options:hover {
+        color:rgb(128, 128, 128);
+    }
+
+    .comment-options:active {
+        color: rgb(255, 255, 255);
+    }
