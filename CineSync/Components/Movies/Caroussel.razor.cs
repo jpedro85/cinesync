@@ -145,5 +145,6 @@ public partial class Caroussel : ComponentBase
     {
         _timer?.Stop();
         _timer?.Dispose();
+        objRef?.Dispose();
     }
 }

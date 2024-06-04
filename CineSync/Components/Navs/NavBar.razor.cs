@@ -28,8 +28,11 @@ namespace CineSync.Components.Navs
         {
             if (firstRender)
             {
-                UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User.Id);
-                StateHasChanged();
+                if (User != null)
+                {
+                    UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User.Id);
+                    StateHasChanged();
+                }
             }
         }
 
