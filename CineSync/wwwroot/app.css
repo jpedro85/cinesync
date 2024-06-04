@@ -1,5 +1,5 @@
 ﻿@import url('https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css');
-
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
 html, body {
     font-family: Itim, Helvetica, Arial, sans-serif;
@@ -178,7 +178,7 @@ a:active {
 
 *::-webkit-scrollbar-thumb {
     border-radius: 20px;
-    background-color: #1824ff;
+    background-color: #1824aa;
 }
 
     *::-webkit-scrollbar-thumb:hover {
