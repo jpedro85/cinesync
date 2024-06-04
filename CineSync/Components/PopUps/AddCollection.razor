@@ -1,46 +1,37 @@
-﻿@using CineSync.Data.Models;
-@rendermode InteractiveServer 
+﻿@rendermode InteractiveServer 
+@using CineSync.Data.Models;
+@using CineSync.Components.Buttons;
 
-<div class="modal fade" id="AddCollection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content border-white">
-            <div class="modal-header text-center">
-                <h5 class="modal-title text-yellow">
-                    <span style="font-size: 1.5em;">&plus; Add to colection:</span>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body bg-dark">
-                <div class="form-group">
+<PopUpLayout Id="AddCollection">
+    <Header>
+        <div class="title" >Add to colection</div>
+    </Header>
+    <Body>
+        <div class="form-group">
 
-                        @foreach (KeyValuePair<string, bool> kvp in CollectionsMovieStatus)
-                        {
-                            <div class="CheckItem">
-                               
-                                <div class="conteinerRadio">
-                                    <input type="checkbox" class="CheckIteminput"
-                                        checked="@kvp.Value"
-                                        @onchange="@( (e) => {UpdateState(@kvp.Key, (e.Value.ToString().ToLower() == "true") ); } )" 
-                                        id="@kvp.Key" name="AllCollection" >
-                                </div>
-                                
-                                <label class="conteinerRadioLabel" for="@kvp.Key">@kvp.Key</label>
-                              
-                            </div>
-                        }
-                   
-                    <div class="newcollection">
-                        <input type="text" class="form-control" id="collectionName" placeholder="New Collection name" @bind-value="@_newCollectionName">
+            @foreach (KeyValuePair<string, bool> kvp in CollectionsMovieStatus)
+            {
+                <div class="CheckItem">
+
+                    <div class="conteinerRadio">
+                        <input type="checkbox" class="CheckIteminput"
+                               checked="@kvp.Value"
+                               @onchange="@( (e) => {UpdateState(@kvp.Key, (e.Value.ToString().ToLower() == "true") ); } )"
+                               id="@kvp.Key" name="AllCollection">
                     </div>
+
+                    <label class="conteinerRadioLabel" for="@kvp.Key">@kvp.Key</label>
+
                 </div>
-            </div>
-            <div class="modal-footer bg-dark">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-               
-                <button @onclick="OnSave" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+            }
+
+            <div class="newcollection">
+                <input type="text" class="form-control" id="collectionName" placeholder="New Collection name" @bind-value="@_newCollectionName">
             </div>
         </div>
-    </div>
-</div>
+    </Body>
+    <Footer>
+        <RectButton1 Text="Save changes" OnClick="OnSave" DataDismiss="modal"> </RectButton1>
+@*         <button @onclick="OnSave" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button> *@
+    </Footer>
+</PopUpLayout>
