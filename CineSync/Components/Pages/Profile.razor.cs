@@ -12,9 +12,6 @@ namespace CineSync.Components.Pages
         [Parameter]
         public string? UserId { get; set; }
 
-        [Parameter]
-        public EventCallback OnProfileEdit { get; set; }
-
         [Inject]
         public CollectionsManager CollectionManager { get; set; }
 
@@ -23,9 +20,6 @@ namespace CineSync.Components.Pages
 
         [Inject]
         public LayoutService LayoutService { get; set; }
-
-        [Inject]
-        private ProfileEditService ProfileEditService { get; set; }
 
         public UsernameEdit newuserName { get; set; }
 
@@ -41,7 +35,6 @@ namespace CineSync.Components.Pages
             movieCollections = await CollectionManager.GetUserCollections(AuthenticatedUser.Id);
         }
 
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -49,13 +42,6 @@ namespace CineSync.Components.Pages
                 UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == AuthenticatedUser.Id);
                 StateHasChanged();
             }
-        }
-
-        private void HandleProfileEdit()
-        {
-            Console.WriteLine("Called on Profile");
-            ProfileEditService.NotifyProfileEdit();
-            StateHasChanged();
         }
 
     }

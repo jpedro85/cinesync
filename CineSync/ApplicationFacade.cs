@@ -192,7 +192,6 @@ namespace CineSync
 
             services.AddSingleton<NavBarEvents>();
             services.AddSingleton<LayoutService>();
-            services.AddScoped<ProfileEditService>();
 
         }
 

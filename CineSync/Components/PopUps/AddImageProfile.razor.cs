@@ -9,8 +9,6 @@ namespace CineSync.Components.PopUps
 {
     public partial class AddImageProfile : ComponentBase
     {
-        [Parameter]
-        public EventCallback OnImageSaved { get; set; }
 
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
@@ -23,7 +21,7 @@ namespace CineSync.Components.PopUps
 
         private const long MaxFileSize = 4 * 1024 * 1024;
 
-        public ApplicationUser AuthenticatedUser { get; set; }
+        private ApplicationUser AuthenticatedUser { get; set; }
 
         private IBrowserFile selectedFile;
 
@@ -58,7 +56,6 @@ namespace CineSync.Components.PopUps
 
         private async Task UploadProfilePic()
         {
-            Console.WriteLine(Count);
             if (selectedFile == null)
             {
                 ErrorMessage = "Please select a valid image file.";
@@ -71,9 +68,7 @@ namespace CineSync.Components.PopUps
                 await selectedFile.OpenReadStream(MaxFileSize).ReadAsync(buffer);
 
                 await SaveFileToDatabase(buffer);
-                await OnImageSaved.InvokeAsync(null);
-                await CloseModal();
-
+                await JSRuntime.InvokeVoidAsync("window.location.reload");
             }
             catch (Exception ex)
             {
@@ -88,9 +83,5 @@ namespace CineSync.Components.PopUps
             await UserManager.ChangeProfilePictureAsync(userId, fileData, contentType);
         }
 
-        private async Task CloseModal()
-        {
-            await JSRuntime.InvokeVoidAsync("closeBootstrapModal", "#editProfileModal");
-        }
     }
 }
