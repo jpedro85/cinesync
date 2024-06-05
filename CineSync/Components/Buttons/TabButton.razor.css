@@ -1,5 +1,6 @@
 ﻿.tab-item {
     display: flex;
+    font-family: Roboto ;
     flex-direction: column;
     color: rgb(128, 128, 128);
     font-size: 24px;
