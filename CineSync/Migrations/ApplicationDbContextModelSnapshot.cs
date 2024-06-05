@@ -337,6 +337,28 @@ namespace CineSync.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.UserDislikedComment", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("CommentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDislikedComments");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.UserImage", b =>
                 {
                     b.Property<uint>("Id")
@@ -361,6 +383,28 @@ namespace CineSync.Migrations
                         .IsUnique();
 
                     b.ToTable("UserImage");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.UserLikedComment", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("CommentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLikedComments");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UsersNotifications", b =>
@@ -591,7 +635,7 @@ namespace CineSync.Migrations
             modelBuilder.Entity("CineSync.Data.Models.Discussion", b =>
                 {
                     b.HasOne("CineSync.Data.Models.Movie", null)
-                        .WithMany("Discutions")
+                        .WithMany("Discussions")
                         .HasForeignKey("MovieId");
                 });
 
@@ -613,6 +657,25 @@ namespace CineSync.Migrations
                     b.Navigation("Comment");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.UserDislikedComment", b =>
+                {
+                    b.HasOne("CineSync.Data.Models.Comment", "Comment")
+                        .WithMany("DislikedByUsers")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.ApplicationUser", "User")
+                        .WithMany("DislikedComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.UserImage", b =>
                 {
                     b.HasOne("CineSync.Data.ApplicationUser", "User")
@@ -620,6 +683,25 @@ namespace CineSync.Migrations
                         .HasForeignKey("CineSync.Data.Models.UserImage", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.UserLikedComment", b =>
+                {
+                    b.HasOne("CineSync.Data.Models.Comment", "Comment")
+                        .WithMany("LikedByUsers")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.ApplicationUser", "User")
+                        .WithMany("LikedComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
 
                     b.Navigation("User");
                 });
@@ -713,6 +795,10 @@ namespace CineSync.Migrations
                 {
                     b.Navigation("Collections");
 
+                    b.Navigation("DislikedComments");
+
+                    b.Navigation("LikedComments");
+
                     b.Navigation("Notifications");
 
                     b.Navigation("UserImage");
@@ -721,6 +807,10 @@ namespace CineSync.Migrations
             modelBuilder.Entity("CineSync.Data.Models.Comment", b =>
                 {
                     b.Navigation("Attachements");
+
+                    b.Navigation("DislikedByUsers");
+
+                    b.Navigation("LikedByUsers");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Discussion", b =>
@@ -732,7 +822,7 @@ namespace CineSync.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Discutions");
+                    b.Navigation("Discussions");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>

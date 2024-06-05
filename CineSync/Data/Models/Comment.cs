@@ -6,8 +6,12 @@ namespace CineSync.Data.Models
     public class Comment
     {
         public uint Id { get; set; }
+
         [Required]
         public ApplicationUser? Autor { get; set; }
+
+        [Required]
+        public string? Content { get; set; }
 
         public long NumberOfLikes { get; set; } = 0;
 
@@ -15,10 +19,10 @@ namespace CineSync.Data.Models
 
         public DateTime TimeStamp { get; set; } = DateTime.Now;
 
-        [Required]
-        public string? Content { get; set; }
-
         public ICollection<CommentAttachment>? Attachements { get; set; }
 
+        public ICollection<UserLikedComment> LikedByUsers { get; set; }
+
+        public ICollection<UserDislikedComment> DislikedByUsers { get; set; }
     }
 }

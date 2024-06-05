@@ -38,7 +38,7 @@ namespace CineSync.Data.Models
 
         public ICollection<Comment>? Comments { get; set; }
 
-        public ICollection<Discussion>? Discutions { get; set; }
+        public ICollection<Discussion>? Discussions { get; set; }
 
         public uint VoteCount { get; set; }
 
@@ -57,7 +57,7 @@ namespace CineSync.Data.Models
                    $"  Awards: {Awards}\n" +
                    $"  Run Time: {RunTime} minutes\n" +
                    $"  Comments: {(Comments != null ? Comments.Count() + " Comments" : "No Comments")}\n" +
-                   $"  Discussions: {(Discutions != null ? Discutions.Count() + " Discussions" : "No Discussions")}";
+                   $"  Discussions: {(Discussions != null ? Discussions.Count() + " Discussions" : "No Discussions")}";
         }
     }
 }

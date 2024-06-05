@@ -24,6 +24,10 @@ namespace CineSync.Data
         public bool Banned { get; set; }
 
         public bool Blocked { get; set; }
+
+        public ICollection<UserLikedComment> LikedComments { get; set; }
+
+        public ICollection<UserDislikedComment> DislikedComments { get; set; }
     }
 
 }
