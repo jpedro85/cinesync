@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.Navs
 {
-    public partial class NavBar : ComponentBase
+    public partial class NavBar : ComponentBase, IObserver
     {
         [Parameter]
         public bool HasSearch { get; set; } = false;
@@ -22,12 +22,16 @@ namespace CineSync.Components.Navs
         [Inject]
         public UserImageManager UserImageManager { get; set; }
 
+        [Inject]
+        private ProfileEditService ProfileEditService { get; set; }
+
         private UserImage? UserImage { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
+                ProfileEditService.Subscribe(this);
                 if (User != null)
                 {
                     UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User.Id);
@@ -40,6 +44,17 @@ namespace CineSync.Components.Navs
         {
             string imageBase64 = ImageConverter.ConverBytesTo64(UserImage.ImageData);
             return imageBase64;
+        }
+
+        public void Update()
+        {
+            Console.WriteLine("ReRenderNavBar was called on the Navbar");
+            StateHasChanged();
+        }
+
+        public void Dispose()
+        {
+            ProfileEditService.Unsubscribe(this);
         }
 
     }

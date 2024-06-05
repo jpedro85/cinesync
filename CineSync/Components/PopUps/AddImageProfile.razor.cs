@@ -29,6 +29,8 @@ namespace CineSync.Components.PopUps
 
         private string ErrorMessage;
 
+        private uint Count = 0;
+
         protected override async Task OnInitializedAsync()
         {
             AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
@@ -56,6 +58,7 @@ namespace CineSync.Components.PopUps
 
         private async Task UploadProfilePic()
         {
+            Console.WriteLine(Count);
             if (selectedFile == null)
             {
                 ErrorMessage = "Please select a valid image file.";
@@ -69,6 +72,8 @@ namespace CineSync.Components.PopUps
 
                 await SaveFileToDatabase(buffer);
                 await OnImageSaved.InvokeAsync(null);
+                await CloseModal();
+
             }
             catch (Exception ex)
             {

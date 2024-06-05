@@ -1,5 +1,4 @@
 ﻿using CineSync.Data;
-using CineSync.Data.Models;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CineSync.Components.Layout
 {
-    public partial class MainLayout
+    public partial class MainLayout : LayoutComponentBase
     {
 
         [Inject]
@@ -37,6 +36,7 @@ namespace CineSync.Components.Layout
 
             Console.WriteLine($"is User {AuthenticatedUser == null}");
         }
+
         public void RemoveSearchButton()
         {
             _hasSearch = false;

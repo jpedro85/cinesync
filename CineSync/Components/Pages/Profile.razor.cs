@@ -1,14 +1,20 @@
 ﻿using CineSync.Components.PopUps;
-using Microsoft.AspNetCore.Components;
 using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Data.Models;
 using CineSync.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.Pages
 {
     public partial class Profile : ComponentBase
     {
+        [Parameter]
+        public string? UserId { get; set; }
+
+        [Parameter]
+        public EventCallback OnProfileEdit { get; set; }
+
         [Inject]
         public CollectionsManager CollectionManager { get; set; }
 
@@ -18,10 +24,10 @@ namespace CineSync.Components.Pages
         [Inject]
         public LayoutService LayoutService { get; set; }
 
-        public UsernameEdit newuserName { get; set; }
+        [Inject]
+        private ProfileEditService ProfileEditService { get; set; }
 
-        [Parameter]
-        public string? UserId {  get; set; }
+        public UsernameEdit newuserName { get; set; }
 
         public ApplicationUser AuthenticatedUser { get; set; }
 
@@ -45,10 +51,12 @@ namespace CineSync.Components.Pages
             }
         }
 
-        private void OnProfileEdit()
+        private void HandleProfileEdit()
         {
+            Console.WriteLine("Called on Profile");
+            ProfileEditService.NotifyProfileEdit();
             StateHasChanged();
         }
-    }
 
+    }
 }
