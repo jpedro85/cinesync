@@ -148,3 +148,17 @@ hr {
     .comment-options:active {
         color: rgb(255, 255, 255);
     }
+.BtnOptions {
+    background-color: transparent;
+    border: none; 
+    color: currentColor; 
+    cursor: pointer; 
+    border-radius: 5px; 
+}
+.BtnBin {
+    background-color: transparent;
+    border: none;
+    color: currentColor;
+    cursor: pointer;
+    border-radius: 5px;
+}
