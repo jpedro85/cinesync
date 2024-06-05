@@ -3,6 +3,7 @@ using CineSync.Components.Layout;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
+using CineSync.Components.Buttons;
 
 namespace CineSync.Components.Comments
 {
@@ -26,8 +27,7 @@ namespace CineSync.Components.Comments
         protected override async void OnInitialized()
         {
             MainLayout = LayoutService.MainLayout;
-            if(MovieId != null)
-             CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
+            CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
         }
 
         private async void HandleSubmit()
@@ -48,18 +48,5 @@ namespace CineSync.Components.Comments
             comment = new Comment();
             StateHasChanged();
         }
-
-        private async void AddLike(Comment commentAddLike)
-        {
-			await CommentManager.AddLikeAsync( commentAddLike );
-            StateHasChanged();
-        }
-
-		private async void AddDeslike(Comment commentAddDesLike)
-		{
-            await CommentManager.AddDesLikeAsync(commentAddDesLike);
-            StateHasChanged();
-		}
-
 	}
 }

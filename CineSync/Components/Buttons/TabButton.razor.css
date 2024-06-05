@@ -1,0 +1,27 @@
+﻿.tab-item {
+    display: flex;
+    font-family: Roboto ;
+    flex-direction: column;
+    color: rgb(128, 128, 128);
+    font-size: 24px;
+}
+
+    .tab-item:hover {
+        color: white;
+    }
+
+    .tab-item.active {
+        color: rgb(0, 255, 255);
+    }
+
+.tab-item-line {
+    background-color:white;
+    height:2px;
+    width:0;
+    transition: width 0.2s;
+}
+
+    .tab-item-line.active {
+        width: 100%;
+        transition: width 0.2s;
+    }

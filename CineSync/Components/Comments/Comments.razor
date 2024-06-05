@@ -1,5 +1,8 @@
 ﻿@rendermode InteractiveServer
 
+@using Utils;
+@using CineSync.Components.Buttons;
+
 <CustomAuthorizedView CheckAuthentication="true">
 	<CustomAuthorized>
     <div class="comment-section">
@@ -9,40 +12,18 @@
     </div>
     </CustomAuthorized>
 </CustomAuthorizedView>
-<div class="form-container comments-done">
 
-    @foreach (var c in CommentsList)
+<div class="comments-done">
+
+    @foreach (var comment in CommentsList)
     {
-        <div class="comment">
-            <div class="comment-header">
-                <span>@c.Autor.UserName</span>
-                <span>@c.NumberOfLikes Likes</span>
-                <span>@c.NumberOfDislikes Dislikes</span>
-            </div>
-            <div class="comment-content">
-                <p>@c.Content</p>
-                <CustomAuthorizedView CheckAuthentication=true>
-                    <CustomAuthorized>
-                        <div class="comment-actions">
-                            <div @onclick="(e)=>{AddLike(c);}" style="cursor: pointer;">
-                                <img src="like_icon.png" alt="Like" width="20" height="20">
-                            </div>
-
-                            <div @onclick="(e)=>{AddDeslike(c);}" style="cursor: pointer;">
-                                <img src="dislike_icon.png" alt="Dislike" width="20" height="20">
-                            </div>
-
-                        </div>
-                    </CustomAuthorized>
-                </CustomAuthorizedView>
-                @if (c.Attachements != null && c.Attachements.Any())
-                {
-                    <div class="attachments">
-
-                    </div>
-                }
-            </div>
-        </div>
+        <ItemComment Comment="comment" ></ItemComment>
     }
+
+    @if (CommentsList != null && CommentsList.Count == 0)
+    {
+        <div class="">The is no comments at this time.</div>
+    }
+
 </div>
 

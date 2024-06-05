@@ -20,6 +20,9 @@ namespace CineSync.Components.Pages
 
         public UsernameEdit newuserName { get; set; }
 
+        [Parameter]
+        public string? UserId {  get; set; }
+
         public ApplicationUser AuthenticatedUser { get; set; }
 
         private ICollection<MovieCollection>? movieCollections { get; set; }
