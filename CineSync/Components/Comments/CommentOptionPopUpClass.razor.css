@@ -1,0 +1,10 @@
+﻿#ReportModal textarea
+{
+    background-color: rgba(0, 0, 130, 0.3); 
+    color: white; 
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    border-radius: 5px; 
+    width: 100%;
+    box-sizing: border-box; 
+}
