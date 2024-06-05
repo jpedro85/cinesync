@@ -2,7 +2,9 @@
     background: rgb(33, 23, 57);
     height: 100%;
     overflow-y: auto !important;
-    max-height: calc(100vh - 80px);;
+    max-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
 }
 
 .top-content {
@@ -15,6 +17,9 @@
     padding-bottom: 3rem;
     height: fit-content;
     gap: 2%;
+    min-height:fit-content;
+    flex-grow:0;
+    flex-shrink:0;
 }
 
 #PosterImage {
@@ -274,27 +279,35 @@
     padding-right: 12px;
 }
 
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
+.tabs-conteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 15px;
+    background: linear-gradient( to top, rgba(0,0,0,1), rgba(0,0,0,0) ) 
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
+.page-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow:1;
+    min-height:fit-content;
+ 
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 51, 102, 0.7);
-    /* Change the color to blue */
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-.Comments-content {
-    padding: 0 5% 0 5%;
+.page-bottom-content {
+    padding: 20px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: rgb(1, 22, 63);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: fit-content;
+    flex-grow: 1;
 }

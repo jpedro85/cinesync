@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using CineSync.Data.Models;
+using CineSync.Components.Buttons;
 
 namespace CineSync.Components.Pages
 {
@@ -25,6 +26,9 @@ namespace CineSync.Components.Pages
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
         private Movie Movie { get; set; }
+
+        private TabButton TabButtonComments { get; set; }
+        private TabButton TabButtonDiscution { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
