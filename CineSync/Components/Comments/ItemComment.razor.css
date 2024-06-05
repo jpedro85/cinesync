@@ -52,8 +52,9 @@
 .commend-header-rigth {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
     color: black;
+    height:40px;
 }
 
 .commen-time-stanp {
@@ -148,17 +149,23 @@ hr {
     .comment-options:active {
         color: rgb(255, 255, 255);
     }
+
 .BtnOptions {
     background-color: transparent;
     border: none; 
     color: currentColor; 
     cursor: pointer; 
-    border-radius: 5px; 
+    padding:0px;
 }
 .BtnBin {
     background-color: transparent;
     border: none;
     color: currentColor;
     cursor: pointer;
-    border-radius: 5px;
+    padding:5px;
+    width:fit-content;
+    height:fit-content;
+    justify-content:center;
+    display:flex;
+    align-items:center;
 }
