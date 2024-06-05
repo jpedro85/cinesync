@@ -127,16 +127,11 @@ hr {
 
 .comment-content {
     padding: 20px;
-    text-justify:auto;
-    height:fit-content;
-    word-wrap:break-word;
+    text-justify: auto;
+    height: fit-content;
+    word-wrap: break-word;
+    font-size: 20px;
 }
-
-    .comment-content p {
-        margin-bottom: 10px;
-        font-size: 25px;
-        color: white;
-    }
 
 .attachments {
     margin-top: 10px;
