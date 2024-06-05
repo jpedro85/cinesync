@@ -128,7 +128,7 @@
 						<CustomAuthorized>
 							<div class="ButtonRatingitem-container">
 								<button class="ButtonRatingitem" data-toggle="modal" data-target="#exampleModal"> Rate Movie</button>
-								<Classification MovieAPIId=@MovieId MovieId="@Movie.Id"></Classification>
+								<Classification MovieAPIId=@MovieId MovieId="@Movie.Id" OnRatingSaved="OnRatingSaved" />
 							</div>
 						</CustomAuthorized>
 					</CustomAuthorizedView>
@@ -142,7 +142,7 @@
 		<div class="Comments-content" >
 			<Comments MovieId=@MovieId></Comments>
 		</div>
-	
+
 	}
 	else
 	{

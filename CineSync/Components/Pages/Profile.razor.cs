@@ -41,6 +41,11 @@ namespace CineSync.Components.Pages
                 StateHasChanged();
             }
         }
+
+        private void OnProfileEdit()
+        {
+            StateHasChanged();
+        }
     }
 
 }

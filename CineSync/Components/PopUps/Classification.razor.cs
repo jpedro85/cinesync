@@ -15,6 +15,9 @@ namespace CineSync.Components.PopUps
         [Parameter]
         public uint MovieId { get; set; }
 
+        [Parameter]
+        public EventCallback OnRatingSaved { get; set; }
+
         [Inject]
         private MovieManager MovieManager { get; set; }
 
@@ -29,8 +32,8 @@ namespace CineSync.Components.PopUps
 
         private MainLayout MainLayout { get; set; }
 
-
         public ApplicationUser AuthenticatedUser { get; set; }
+
         private int Rating { get; set; }
 
         protected override void OnInitialized()
@@ -46,7 +49,8 @@ namespace CineSync.Components.PopUps
         private async void SaveRating()
         {
             await MovieManager.AddRating(Rating, MovieAPIId, MainLayout.AuthenticatedUser.Id);
-            await JSRuntime.InvokeVoidAsync("window.location.reload");
+            await OnRatingSaved.InvokeAsync(null);
+            // await JSRuntime.InvokeVoidAsync("window.location.reload");
         }
     }
 }

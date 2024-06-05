@@ -9,6 +9,9 @@ namespace CineSync.Components.PopUps
 {
     public partial class AddImageProfile : ComponentBase
     {
+        [Parameter]
+        public EventCallback OnImageSaved { get; set; }
+
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
 
@@ -65,7 +68,7 @@ namespace CineSync.Components.PopUps
                 await selectedFile.OpenReadStream(MaxFileSize).ReadAsync(buffer);
 
                 await SaveFileToDatabase(buffer);
-                await JSRuntime.InvokeVoidAsync("window.location.reload");
+                await OnImageSaved.InvokeAsync(null);
             }
             catch (Exception ex)
             {
@@ -78,6 +81,11 @@ namespace CineSync.Components.PopUps
             string userId = AuthenticatedUser.Id;
             string contentType = selectedFile.ContentType;
             await UserManager.ChangeProfilePictureAsync(userId, fileData, contentType);
+        }
+
+        private async Task CloseModal()
+        {
+            await JSRuntime.InvokeVoidAsync("closeBootstrapModal", "#editProfileModal");
         }
     }
 }
