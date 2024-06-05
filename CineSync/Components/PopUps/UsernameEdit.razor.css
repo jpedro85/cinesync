@@ -1,5 +1,11 @@
 ﻿.modal-content {
-    background-color: #343a40; /* Blackish background */
+    background-color: rgba(0, 0, 139, 0.5); /* Azul escuro com 50% de opacidade */
+    color: white; /* Cor do texto em branco para contraste */
+    border: 1px solid #ccc; /* Borda cinza claro */
+    padding: 10px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    width: 100%; /* Largura total do container */
+    box-sizing: border-box; /* Inclui padding e borda na largura total */
 }
 
 .modal-header {
@@ -11,10 +17,7 @@
     margin: 0 auto; /* Center the title */
 }
 
-.modal-body,
-.modal-footer {
-    border-top: 1px solid #ffffff; /* White border */
-}
+
 
 .modal-footer {
     background-color: #343a40; /* Blackish background */
