@@ -28,9 +28,17 @@
 
 				<div class="movie-image-options-conteiner">
 
-					<div class="buttonTreiler">
-						Trailer
-					</div>
+                    <div class="buttonTreiler">
+                        @if (Movie.TrailerKey != null)
+                        {
+							<button style="all:unset;" data-toggle="modal" data-target="#trailerModal">Trailer</button>
+                             <VideoTrailer TrailerLink=@($"{_youtubeLink}{Movie.TrailerKey}") />
+                        }
+                        else
+                        {
+                            <span>No Trailer</span>
+                        }
+                    </div>
 
 					<CustomAuthorizedView CheckAuthentication=true DebugName="Buttons">
 						<CustomAuthorized>
@@ -143,23 +151,23 @@
 		</div>
 
 		<div class="page-bottom" >
-			
+
 			<div class="tabs-conteiner">
-				<TabButton 
+				<TabButton
 					Text="Comments"
 					StartActive=true
 					OnActionClick="@(() => {
 												TabButtonDiscution.deactivate();
 											})"
-					@ref=@TabButtonComments 
+					@ref=@TabButtonComments
 				/>
 
-				<TabButton 
-					Text="Discussions" 
+				<TabButton
+					Text="Discussions"
 					OnActionClick="@(() => {
 												TabButtonComments.deactivate();
 											})"
-					@ref=@TabButtonDiscution 
+					@ref=@TabButtonDiscution
 				/>
 			</div>
 
