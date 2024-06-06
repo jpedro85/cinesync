@@ -1,21 +1,22 @@
-﻿<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content border-white">
-            <div class="modal-header text-center">
-                <h5 class="modal-title text-red">
-                    <span style="font-size: 1.5em;">&#128465;</span> Delete Account
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body bg-dark text-white">
-                <p>Are you sure you want to delete your account?</p>
-            </div>
-            <div class="modal-footer bg-dark">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger">Delete Account</button>
-            </div>
+﻿@rendermode InteractiveServer
+@using CineSync.Data.Models;
+@using CineSync.Components.Buttons;
+
+<PopUpLayout Id="deleteAccountModal">
+    <Header>
+        <svg width="40" height="40" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z" fill="red" />
+        </svg>
+        <div class="title" style="color:red; font-size:30px;">Delete Account</div>
+    </Header>
+    <Body>
+        <div class="modal-body" style="font-size:20px;">
+            <p>Are you sure you want to delete your account?</p>
         </div>
-    </div>
-</div>
+    </Body>
+    <Footer>
+        <RectButton1 Text="Delete" DataDismiss="modal"> </RectButton1>
+        <RectButton1 Text="Cancel" DataDismiss="modal"> </RectButton1>
+        @*         <button @onclick="OnSave" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button> *@
+    </Footer>
+</PopUpLayout>
