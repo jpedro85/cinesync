@@ -1,13 +1,20 @@
-﻿using CineSync.DbManagers;
+﻿using CineSync.Components.Layout;
+using CineSync.Data;
+using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-using CineSync.Components.Layout;
-using CineSync.Data;
+using Microsoft.JSInterop;
 
 namespace CineSync.Components.PopUps
 {
     public partial class UsernameEdit
     {
+        [Parameter]
+        public string ActualUserName { get; set; } = string.Empty;
+
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
+
         [Inject]
         private UserManager UserManager { get; set; }
 
@@ -16,21 +23,20 @@ namespace CineSync.Components.PopUps
 
         private MainLayout MainLayout { get; set; }
 
-        [Parameter]
-        public string ActualUserName { get; set; } = string.Empty;
+        private string? ErrorMessage { get; set; } = string.Empty;
 
-        public async Task SearchAsync()
+        public async Task RenameUsername()
         {
             MainLayout = LayoutService.MainLayout;
             ApplicationUser user = MainLayout.AuthenticatedUser;
 
             if (await UserManager.ChangeUsernameAsync(user.Id, ActualUserName))
             {
-                // TODO: Add the missing logic for the frontend
+                await JSRuntime.InvokeVoidAsync("window.location.reload");
             }
             else
             {
-                // TODO: Add the missing logic for the frontend
+                ErrorMessage = "Something went wrong could not change your username";
             }
         }
 

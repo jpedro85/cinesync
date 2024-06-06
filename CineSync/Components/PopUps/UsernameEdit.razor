@@ -12,13 +12,15 @@
                 <div class="form-group">
                     <p>Username:<span style="color:white;">@ActualUserName</span></p>
                     <label for="newUsername">New Username:</label>
-                    <input type="text" class="form-control" id="newUsername" @bind="@ActualUserName" @bind:after="SearchAsync" placeholder="Enter your new username">
+                    <input type="text" class="form-control" id="newUsername" @bind="@ActualUserName" @bind:after="RenameUsername" placeholder="Enter your new username">
                 </div>
             </form>
         </div>
+        @if (ErrorMessage != string.Empty){
+            <span>@ErrorMessage</span>
+        }
     </Body>
     <Footer>
         <RectButton1 Text="Save changes"  DataDismiss="modal"> </RectButton1>
-        @*         <button @onclick="OnSave" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button> *@
     </Footer>
 </PopUpLayout>
