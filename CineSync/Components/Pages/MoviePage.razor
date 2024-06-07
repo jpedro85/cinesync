@@ -152,24 +152,9 @@
 
 		<div class="page-bottom" >
 
-			<div class="tabs-conteiner">
-				<TabButton
-					Text="Comments"
-					StartActive=true
-					OnActionClick="@(() => {
-												TabButtonDiscution.deactivate();
-											})"
-					@ref=@TabButtonComments
-				/>
-
-				<TabButton
-					Text="Discussions"
-					OnActionClick="@(() => {
-												TabButtonComments.deactivate();
-											})"
-					@ref=@TabButtonDiscution
-				/>
-			</div>
+			<TabButtonsBar ActiveTab="0" OnTabChange="OnTabChange" TabNames="@_tabNames" 
+				Background_Style="background: linear-gradient( to top, rgba(0,0,0,1), rgba(0,0,0,0) ) !important"
+			/>
 
 			<div class="page-bottom-content">
 				<Comments MovieId=@MovieId></Comments>

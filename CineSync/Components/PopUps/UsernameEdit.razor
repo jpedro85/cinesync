@@ -7,15 +7,14 @@
         <div class="title">Add to colection</div>
     </Header>
     <Body>
-        <div class="modal-body bg-dark text-white">
-            <form>
-                <div class="form-group">
-                    <p>Username:<span style="color:white;">@ActualUserName</span></p>
-                    <label for="newUsername">New Username:</label>
-                    <input type="text" class="form-control" id="newUsername" @bind="@ActualUserName" @bind:after="RenameUsername" placeholder="Enter your new username">
-                </div>
-            </form>
-        </div>
+        <form>
+            <div class="form-group">
+                <div id="actual" class="subtitle" >Actual username: <span id="actualUsername" style="color:white;">@ActualUserName</span></div>
+                
+                <label class="subtitle" for="newUsername">New Username:</label>
+                <input type="text" class="form-control" id="newUsername" @bind="@_newUserName" @bind:after="RenameUsername" placeholder="Enter your new username">
+            </div>
+        </form>
         @if (ErrorMessage != string.Empty){
             <span>@ErrorMessage</span>
         }

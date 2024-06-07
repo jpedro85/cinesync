@@ -1,5 +1,6 @@
 using CineSync.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.Metrics;
 
 namespace CineSync.Data
 {
@@ -28,6 +29,13 @@ namespace CineSync.Data
         public ICollection<UserLikedComment> LikedComments { get; set; }
 
         public ICollection<UserDislikedComment> DislikedComments { get; set; }
-    }
+    
+		public override bool Equals(object? obj)
+		{
+            return obj != null 
+                && obj.GetType() == GetType() 
+                && ((ApplicationUser)obj).Id == this.Id;
+		}
+	}
 
 }

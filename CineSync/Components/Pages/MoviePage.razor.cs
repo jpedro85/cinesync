@@ -30,9 +30,9 @@ namespace CineSync.Components.Pages
 
         private Movie Movie { get; set; }
 
-        private TabButton TabButtonComments { get; set; }
+        private string _activeTab = "Comments";
 
-        private TabButton TabButtonDiscution { get; set; }
+        private string[] _tabNames = { "Comments", "Discutions" };
 
         protected override async Task OnInitializedAsync()
         {
@@ -58,5 +58,11 @@ namespace CineSync.Components.Pages
             StateHasChanged();
         }
 
-    }
+		private void OnTabChange(string tabName)
+		{
+			_activeTab = tabName;
+			InvokeAsync(StateHasChanged);
+		}
+
+	}
 }

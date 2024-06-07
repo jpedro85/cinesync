@@ -4,6 +4,7 @@ using CineSync.DbManagers;
 using CineSync.Data.Models;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
+using CineSync.Components.Buttons;
 
 namespace CineSync.Components.Pages
 {
@@ -29,6 +30,10 @@ namespace CineSync.Components.Pages
 
         private UserImage? UserImage { get; set; }
 
+        private string _activeTab = "Collections";
+
+        private string[] _tabNames = { "Collections", "Comments", "Discutions", "Following", "Followers" };
+
         protected override async Task OnInitializedAsync()
         {
             AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
@@ -44,5 +49,15 @@ namespace CineSync.Components.Pages
             }
         }
 
+        private void OnProfileEdit()
+        {
+            StateHasChanged();
+        }
+
+        private void OnTabChange(string tabName)
+        {
+            _activeTab = tabName;
+            InvokeAsync(StateHasChanged);
+        }
     }
 }

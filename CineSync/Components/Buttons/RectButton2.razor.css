@@ -1,0 +1,24 @@
+﻿.rbutton {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: rgb(70, 70, 70);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    align-items: center;
+    cursor: pointer;
+    width: fit-content;
+    border: 2px solid rgb(100, 100, 100);
+}
+
+    .rbutton:hover {
+        color: black;
+        background-color: rgb(255, 255, 255);
+        box-shadow: inset rgb(100, 100, 100) 0px 0px 5px 3px;
+    }
+
+    .rbutton:active {
+        background-color: rgb(148, 148, 148);
+    }

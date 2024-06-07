@@ -75,18 +75,45 @@
                 </div>
 
             </div>
+            
+            <TabButtonsBar ActiveTab="0" OnTabChange="OnTabChange" TabNames="@_tabNames" 
+                Background_Style="
+                    background-color:black;
+                    border-radius:15px;
+                "
+            />
 
-            <div class="Collections">
+            <div class="tab-content"> 
 
-                <div class="PageSubtitle"> Collection</div>
+                @if (_activeTab == _tabNames[0] ) // collections
+                {
+                    <div class="Collections">
+                        <div class="Collections-colum">
+                            @foreach (var collection in movieCollections)
+                            {
 
-                <div class="Collections-colum">
-                    @foreach (var collection in movieCollections)
-                    {
+                                <Collection MovieCollection="collection" />
+                            }
+                        </div>
+                    </div>
+                }
+                else if ( _activeTab == _tabNames[1]) // comments
+                {
 
-                        <Collection MovieCollection="collection" />
-                    }
-                </div>
+                }
+                else if (_activeTab == _tabNames[1]) // discusiions
+                {
+
+                }
+                else if (_activeTab == _tabNames[1]) // Following
+                {
+
+                }
+                else if (_activeTab == _tabNames[1]) // Followers
+                {
+
+                }
+
             </div>
         </div>
     </div>

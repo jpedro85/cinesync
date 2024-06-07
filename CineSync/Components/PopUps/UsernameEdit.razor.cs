@@ -25,12 +25,14 @@ namespace CineSync.Components.PopUps
 
         private string? ErrorMessage { get; set; } = string.Empty;
 
+        private string _newUserName = "";
+        
         public async Task RenameUsername()
         {
             MainLayout = LayoutService.MainLayout;
             ApplicationUser user = MainLayout.AuthenticatedUser;
 
-            if (await UserManager.ChangeUsernameAsync(user.Id, ActualUserName))
+            if (await UserManager.ChangeUsernameAsync(user.Id, _newUserName))
             {
                 await JSRuntime.InvokeVoidAsync("window.location.reload");
             }

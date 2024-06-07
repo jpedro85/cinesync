@@ -189,3 +189,7 @@ a:active {
     *::-webkit-scrollbar-thumb:active {
         background-color: #1824ff;
     }
+
+    *::-webkit-scrollbar-corner {
+        background-color:transparent;
+    }

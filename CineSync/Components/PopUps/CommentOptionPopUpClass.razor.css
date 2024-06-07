@@ -8,3 +8,14 @@
     width: 100%;
     box-sizing: border-box; 
 }
+
+#reportReason {
+
+    font-size:20px;
+}
+
+.title {
+    font-family: 'Roboto';
+    font-size: 24px;
+    color: white;
+}
