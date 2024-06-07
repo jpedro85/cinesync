@@ -36,8 +36,17 @@ namespace CineSync.Components.Comments
         protected override async void OnInitialized()
         {
             MainLayout = LayoutService.MainLayout;
-            CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
         }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
+                StateHasChanged();
+            }
+        }
+
 
         private async Task HandleFileSelected(InputFileChangeEventArgs e)
         {
@@ -96,10 +105,12 @@ namespace CineSync.Components.Comments
 
             await CommentManager.AddComment(comment, MovieId, MainLayout.AuthenticatedUser.Id);
 
-            CommentsList.Add(comment);
+            comment = null;
             comment = new Comment();
+
             selectedFile = null;
             selectedFilePreview = null;
+
             StateHasChanged();
         }
 
