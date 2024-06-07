@@ -1,0 +1,212 @@
+﻿.Collections-container {
+    background-image: url("BackgorundHome.png");
+    min-height: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+.Profile {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(79, 79, 79, 0.2);
+    color: white;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+
+.Profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    min-height: fit-content;
+    color: white;
+    min-width: 250px;
+    background-color: rgb(0 0 0 / 71%);
+}
+
+.Profile-icon {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 30px;
+
+}
+
+.Edit-image-icon {
+    background-color: #ffffff;
+    height: 40px;
+    width: 40px;
+    position: relative;
+    top: 75px;
+    right: 30px;
+    border: 1px solid #000000;
+    border-radius: 50%;
+}
+
+.edit-image {
+    color: #000000;
+}
+
+.User-Followers {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-bottom: 0px;
+}
+
+.Following,
+.Followers {
+    color: white;
+    margin: 3px;
+}
+
+.Info {
+    align-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.Buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.Buttons button {
+    margin-top: 10px;
+}
+
+.buttonProfile {
+    font-family: Itim;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition: 752ms;
+    transform: translateY(0);
+    align-items: center;
+    cursor: pointer;
+    margin-left: auto;
+    width: 180px;
+    height: 50px;
+
+}
+
+.DeleteBTN {
+    font-family: Itim;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(90deg, #ff9999 0%, #cc0033 100%);
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 50px;
+    transition: 752ms;
+    transform: translateY(0);
+    align-items: center;
+    cursor: pointer;
+    margin-left: auto;
+    width: 180px;
+    height: 50px;
+}
+
+.DeleteBTN:hover {
+    background: linear-gradient(90deg, #ff9999 0%, #cc0033 100%);
+    color: #000000;
+    border: solid 2px #0066cc;
+    width: 180px;
+}
+
+.buttonProfile:hover {
+    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+    color: #000000;
+    border: solid 2px #0066cc;
+    width: 180px;
+}
+
+.Collections-info {
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 20px;
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Collections {
+   display:flex;
+   flex-direction:column;
+   gap:20px;
+}
+
+.Collections-colum{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.User-statistics {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: row;
+}
+
+.view-icon-container {
+    align-content: center;
+    align-items: center;
+}
+
+.view-icon {
+    margin-left: 5px;
+    color: #ffffff;
+}
+
+.Info-line {
+    height: 3px;
+
+    background-color: #000000;
+    box-shadow: 0px 4px 10px rgb(0 0 0);
+}
+
+.PageSubtitle {
+    color: #ffffff;
+    font-size: 25px;
+    overflow-x: hidden;
+    background-color:rgb(0,0,0);
+    padding-left:20px;
+    height:40px;
+    display:flex;
+    justify-content:start;
+    align-items:center;
+    border-radius:10px;
+
+}
+.Collection-title {
+    color: #ffffff;
+    font-size: 25px;
+    margin-left: 10px;
+    overflow-x: hidden;
+}
+
+
+
+.tab-content {
+    padding: 20px;
+    padding-bottom: 0;
+    flex-grow:1;
+    min-height:0px;
+    height:10px;
+    overflow-y: auto;
+}
