@@ -8,7 +8,24 @@
     <div class="comment-section">
         <h4>Add a Comment</h4>
         <textarea @bind="comment.Content"></textarea>
-        <button type="submit" @onclick="HandleSubmit">Comment</button>
+        <div class="input-container">
+            <label class="file-input-button" for="file-upload">
+                <img id="attachment" src="AttachmentIcon.png" alt="Attach" />
+            </label>
+            <InputFile id="file-upload" class="file-input" OnChange="HandleFileSelected" accept="image/*" style="display:none" />
+            <button type="submit" @onclick="HandleSubmit">Comment</button>
+        </div>
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <p class="error">@ErrorMessage</p>
+        }
+        @if (selectedFile != null)
+        {
+            <div class="selected-file">
+                Selected file: @selectedFile.Name
+                <img src="@selectedFilePreview" alt="Selected File" />
+            </div>
+        }
     </div>
     </CustomAuthorized>
 </CustomAuthorizedView>
