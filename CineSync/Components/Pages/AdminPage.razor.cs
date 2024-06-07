@@ -1,14 +1,15 @@
-﻿namespace CineSync.Components.Pages
+﻿using CineSync.Components.Buttons;
+
+namespace CineSync.Components.Pages
 {
     public partial class AdminPage
     {
-        private string SelectedTab { get; set; }= "";
-        public String Complaints = "Complaints";
-        public String AccountStatus="Account Status";
-        public String Permissions = "Permissions";
-        private void SelectTab(string tabName)
-        {
-            SelectedTab = tabName;
-        }
+        
+
+        private TabButton TabButtonPermissions{ get; set; }
+		private TabButton TabButtonComplaints { get; set; }
+		private TabButton TabButtonAccountStatus { get; set; }
+
+        private int Tab = 0;
     }
 }

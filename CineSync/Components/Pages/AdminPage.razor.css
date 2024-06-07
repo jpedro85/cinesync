@@ -1,24 +1,20 @@
-﻿.tabs {
+﻿.page-main-Conteiner {
+    background: rgb(33, 23, 57);
+    height: 100%;
+    overflow-y: auto !important;
+    max-height: calc(100vh - 80px);
     display: flex;
+    flex-direction: column;
+}
+.tabs-conteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 15px;
+    background: linear-gradient( to top, rgba(0,0,0,1), rgba(0,0,0,0) );
+    cursor:pointer;
 }
 
-    .tabs button {
-        background-color: #f2f2f2;
-        border: none;
-        cursor: pointer;
-        padding: 10px 20px;
-        transition: background-color 0.3s;
-    }
-
-        .tabs button.active {
-            background-color: cornflowerblue;
-        }
-        .tabs button:hover {
-            background-color: #ccc;
-        }
-
-.tab-content {
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-top: 10px;
+h2,p{
+    color:white;
 }
