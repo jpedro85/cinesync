@@ -1,5 +1,8 @@
 ﻿.profile-container {
     background-image: url("BackgorundHome.png");
+    min-height: 100%;
+    height: 100%;
+    max-height: 100%;
 }
 
 .Profile {
@@ -7,7 +10,9 @@
     flex-direction: row;
     background-color: rgb(79, 79, 79, 0.2);
     color: white;
-    height: fit-content;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
 }
 
 .Profile-sidebar {
@@ -26,6 +31,7 @@
     display: flex;
     flex-direction: row;
     margin-left: 30px;
+
 }
 
 .Edit-image-icon {
@@ -131,12 +137,12 @@
 .Profile-info {
     flex-grow: 1;
     overflow-x: hidden;
-    padding:20px;
-    overflow-y:auto;
-    max-height: calc(100vh - 80px);
-}
-
-.Statistics {
+    overflow-y: hidden;
+    padding: 20px;
+    height:100%;
+    max-height: 100%;
+    display:flex;
+    flex-direction:column;
 }
 
 .Collections {
@@ -202,12 +208,31 @@
     padding-left:20px;
     padding-top:10px;
     padding-bottom:10px;
+    padding-right:20px;
+
     align-items:center;
+    flex-grow:1;
+    justify-content:center;
 }
 
-.Statistics-conteine{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    padding:20px;
+.Statistics-conteine {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-evenly;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.Statistics {
+}
+
+
+.tab-content {
+    padding: 20px;
+    padding-bottom: 0;
+    flex-grow:1;
+    min-height:0px;
+    height:10px;
+    overflow-y: auto;
 }
