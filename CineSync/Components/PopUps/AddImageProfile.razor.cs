@@ -1,4 +1,5 @@
-﻿using CineSync.Data;
+﻿using CineSync.Components.Utils;
+using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -64,8 +65,7 @@ namespace CineSync.Components.PopUps
 
             try
             {
-                var buffer = new byte[selectedFile.Size];
-                await selectedFile.OpenReadStream(MaxFileSize).ReadAsync(buffer);
+                byte[] buffer = await ImageConverter.ReadImageAsBase64Async(selectedFile, MaxFileSize);
 
                 await SaveFileToDatabase(buffer);
                 await JSRuntime.InvokeVoidAsync("window.location.reload");
