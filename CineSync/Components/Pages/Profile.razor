@@ -8,8 +8,8 @@
 @rendermode InteractiveServer
 
 <div class="profile-container">
-
-    <div class="Profile">
+     <div class="Profile">
+    @if(!_visit){
 
         <div class="Profile-sidebar">
 
@@ -48,7 +48,8 @@
                 <DeleteACC></DeleteACC>
             </div>
         </div>
-
+    }
+    
 
         <div class="Profile-info">
 
@@ -99,7 +100,7 @@
                 }
                 else if ( _activeTab == _tabNames[1]) // comments
                 {
-
+                    
                 }
                 else if (_activeTab == _tabNames[1]) // discusiions
                 {
