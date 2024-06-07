@@ -1,5 +1,6 @@
-﻿@using Utils;
+﻿@using CineSync.Components.Utils;
 @using CineSync.Components.Buttons;
+@using CineSync.Data.Models
 @using CineSync.Components.PopUps;
 
 @{
@@ -14,14 +15,14 @@
         <div class="commend-header-left">
             <NavLink href="@($"/Profile/{Comment.Autor!.Id}")">
                 <div class="UsernameConteiner">
-                   @*  @if (Comment.Autor!.ProfileImage != null && Comment.Autor!.ProfileImage.Length > 0)
-                    {
-                        <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Comment.Autor!.ProfileImage))" alt="foto" />
-                    }
-                    else
-                    { *@
-                        <img class="user-profilepic"  src="NoProfilePic.png" alt="foto" />
-                   @*  } *@
+                     @if (Comment.Autor.UserImage != null )
+                     {
+                         <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Comment.Autor.UserImage.ImageData, Comment.Autor.UserImage.ContentType))" alt="UserImage" />
+                     }
+                     else
+                     {
+                        <img class="user-profilepic" src="NoProfilePic.png" alt="UserImage"/>
+                     }
                     <div>@Comment.Autor!.UserName</div>
                 </div>
             </NavLink>
@@ -82,7 +83,7 @@
             }
             else
             {
-                @( weeks = daysInDiference/7 - daysInDiference%7 == 0 ? 0 : daysInDiference%7 ) 
+                @( weeks = daysInDiference/7 - daysInDiference%7 == 0 ? 0 : daysInDiference%7 )
                 @( weeks == 1 ? "week" : "weeks" )
                 <div class="commen-time-stanp">@weeks ago</div>
             }
@@ -112,9 +113,12 @@
         <div>@Comment.Content</div>
         @if (Comment.Attachements != null && Comment.Attachements.Any())
         {
-            <div class="attachments">
-
-            </div>
+            foreach (CommentAttachment attachment in Comment.Attachements)
+            {
+                <div class="attachments">
+                    <img src="@(ImageConverter.ConverBytesTo64(attachment.Attachment))" alt="Selected File" />
+                </div>
+            }
         }
     </div>
 

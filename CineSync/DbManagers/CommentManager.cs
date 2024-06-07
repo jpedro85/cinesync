@@ -15,7 +15,6 @@ namespace CineSync.DbManagers
     {
         private readonly IRepositoryAsync<Movie> _movieRepository;
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
-        private readonly IRepositoryAsync<Comment> _commentRepository;
 
         /// <summary>
         /// Initializes a new instance of the CommentManager class, setting up repositories for movie and user entities.
@@ -26,7 +25,6 @@ namespace CineSync.DbManagers
         {
             _movieRepository = _unitOfWork.GetRepositoryAsync<Movie>();
             _userRepository = _unitOfWork.GetRepositoryAsync<ApplicationUser>();
-            _commentRepository = _unitOfWork.GetRepositoryAsync<Comment>();
         }
 
         /// <summary>
@@ -34,14 +32,14 @@ namespace CineSync.DbManagers
         /// </summary>
         /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
         /// <returns>Return the comment of a movie</returns>
-        public async Task<ICollection<Comment>> GetCommentsOfMovie(int movieId) 
+        public async Task<ICollection<Comment>> GetCommentsOfMovie(int movieId)
         {
             Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
 
             ICollection<Comment> allcomments = new List<Comment>(0);
             foreach (var item in movie.Comments)
             {
-                allcomments.Add( await _commentRepository.GetFirstByConditionAsync(c => c.Id == item.Id, "Autor") );
+                allcomments.Add(await _repository.GetFirstByConditionAsync(c => c.Id == item.Id, "Autor.UserImage", "Attachements"));
             }
 
             return movie.Comments;
@@ -90,21 +88,21 @@ namespace CineSync.DbManagers
             await _unitOfWork.SaveChangesAsync();
         }
 
-		/// <summary>
-		/// Increments the number of deslikes on a given comment.
-		/// </summary>
-		/// <param name="comment">The comment to be liked.</param>
-		public async Task AddDesLikeAsync(Comment comment)
-		{
+        /// <summary>
+        /// Increments the number of deslikes on a given comment.
+        /// </summary>
+        /// <param name="comment">The comment to be liked.</param>
+        public async Task AddDesLikeAsync(Comment comment)
+        {
             comment.NumberOfDislikes++;
-			await _unitOfWork.SaveChangesAsync();
-		}
+            await _unitOfWork.SaveChangesAsync();
+        }
 
-		/// <summary>
-		/// Decrements the number of likes on a given comment, ensuring it does not drop below zero.
-		/// </summary>
-		/// <param name="comment">The comment from which to remove a like.</param>
-		public async Task RemoveLikeAsync(Comment comment)
+        /// <summary>
+        /// Decrements the number of likes on a given comment, ensuring it does not drop below zero.
+        /// </summary>
+        /// <param name="comment">The comment from which to remove a like.</param>
+        public async Task RemoveLikeAsync(Comment comment)
         {
             comment.NumberOfLikes = comment.NumberOfLikes > 0 ? comment.NumberOfLikes - 1 : comment.NumberOfLikes;
             await _unitOfWork.SaveChangesAsync();

@@ -1,10 +1,10 @@
 ﻿.comments-done {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     color: white;
     border-radius: 10px;
-    gap:20px;
+    gap: 20px;
 }
 
 .comment-section {
@@ -27,8 +27,8 @@
 
 .comment-section textarea {
     width: 100%;
-    max-width:100%;
-    overflow-x:clip;
+    max-width: 100%;
+    overflow-x: clip;
     min-height: 100px;
     padding: 10px;
     margin-bottom: 10px;
@@ -37,7 +37,7 @@
     resize: vertical;
     background-color: rgba(0, 51, 102, 0.7);
     color: white;
-    font-size: 25px;
+    font-size: 18px;
 }
 
 .comment-section button {
@@ -71,4 +71,41 @@
     justify-content:center;
     align-items:center;
     border-radius:10px;
+}
+
+.comment-section .input-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+
+#attachment {
+    width: 30px;
+    height: 30px;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}
+
+.selected-file {
+    display: flex;
+    margin-top: 10px;
+    color: white;
+    background-color: #0f4697;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.selected-file img {
+    height: 2.5rem;
+    width: auto;
 }

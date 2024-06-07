@@ -179,6 +179,7 @@ namespace CineSync.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("Attachment")
+                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<uint?>("CommentId")

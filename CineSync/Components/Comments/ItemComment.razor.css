@@ -1,6 +1,5 @@
-﻿
-.comment {
-    background: linear-gradient(to right, rgb(0, 0, 0) 60%, rgba(0, 0, 0,0.1) );
+﻿.comment {
+    background: linear-gradient(to right, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.1));
     padding: 15px;
     border-radius: 10px;
 }
@@ -21,17 +20,17 @@
     transition: transform 0.1s
 }
 
-    .removeFromFollowing:hover,
-    .addToFollowing:hover {
-        color: white;
-        color: rgb(128, 128, 128);
-        transform: scale(1.1);
-    }
+.removeFromFollowing:hover,
+.addToFollowing:hover {
+    color: white;
+    color: rgb(128, 128, 128);
+    transform: scale(1.1);
+}
 
-    .removeFromFollowing:active,
-    .addToFollowing:active {
-        color: white;
-    }
+.removeFromFollowing:active,
+.addToFollowing:active {
+    color: white;
+}
 
 .UsernameConteiner {
     display: flex;
@@ -54,7 +53,7 @@
     flex-direction: row;
     gap: 10px;
     color: black;
-    height:40px;
+    height: 40px;
 }
 
 .commen-time-stanp {
@@ -68,6 +67,7 @@
 .user-profilepic {
     width: 40px;
     height: 40px;
+    border-radius: 50%;
 }
 
 hr {
@@ -94,17 +94,17 @@ hr {
     transition: transform 0.2s;
 }
 
-    .likeStatusButton:hover {
-        color: rgb(128, 128, 128);
-        transform: scale(1.4);
-        transition: transform 0.2s;
-    }
+.likeStatusButton:hover {
+    color: rgb(128, 128, 128);
+    transform: scale(1.4);
+    transition: transform 0.2s;
+}
 
-    .likeStatusButton:active {
-        color: rgb(0, 236, 252);
-        transform: scale(1.6);
-        transition: transform 0.2s;
-    }
+.likeStatusButton:active {
+    color: rgb(0, 236, 252);
+    transform: scale(1.6);
+    transition: transform 0.2s;
+}
 
 
 .comment-actions {
@@ -116,10 +116,10 @@ hr {
 }
 
 .comment-actions-ritgh {
-    display:flex;
-    flex-grow:1;
-    justify-content:flex-end;
-    align-items:center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .comment-header span:nth-child(1) {
@@ -142,30 +142,31 @@ hr {
     color: white;
 }
 
-    .comment-options:hover {
-        color:rgb(128, 128, 128);
-    }
+.comment-options:hover {
+    color: rgb(128, 128, 128);
+}
 
-    .comment-options:active {
-        color: rgb(255, 255, 255);
-    }
+.comment-options:active {
+    color: rgb(255, 255, 255);
+}
 
 .BtnOptions {
     background-color: transparent;
-    border: none; 
-    color: currentColor; 
-    cursor: pointer; 
-    padding:0px;
+    border: none;
+    color: currentColor;
+    cursor: pointer;
+    padding: 0px;
 }
+
 .BtnBin {
     background-color: transparent;
     border: none;
     color: currentColor;
     cursor: pointer;
-    padding:5px;
-    width:fit-content;
-    height:fit-content;
-    justify-content:center;
-    display:flex;
-    align-items:center;
+    padding: 5px;
+    width: fit-content;
+    height: fit-content;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
