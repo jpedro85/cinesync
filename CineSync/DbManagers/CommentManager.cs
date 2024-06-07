@@ -39,7 +39,7 @@ namespace CineSync.DbManagers
             ICollection<Comment> allcomments = new List<Comment>(0);
             foreach (var item in movie.Comments)
             {
-                allcomments.Add(await _repository.GetFirstByConditionAsync(c => c.Id == item.Id, "Autor", "Attachements"));
+                allcomments.Add(await _repository.GetFirstByConditionAsync(c => c.Id == item.Id, "Autor.UserImage", "Attachements"));
             }
 
             return movie.Comments;

@@ -32,7 +32,7 @@ namespace CineSync.Components.Comments
 
 		protected override void OnAfterRender(bool firstRender)
 		{
-			
+
 		}
 
 		private async void AddLike(Comment commentAddLike)
@@ -47,7 +47,7 @@ namespace CineSync.Components.Comments
             StateHasChanged();
         }
 
-        private async void Follow(string id) 
+        private async void Follow(string id)
         {
             await UserManager.Follow(_authenticatedUser.Id, id);
         }

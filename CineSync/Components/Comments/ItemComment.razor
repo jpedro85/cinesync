@@ -15,15 +15,14 @@
         <div class="commend-header-left">
             <NavLink href="@($"/Profile/{Comment.Autor!.Id}")">
                 <div class="UsernameConteiner">
-                    @* TODO: Change it to use UserImage *@
-                    @* @if (Comment.Autor!.ProfileImage != null && Comment.Autor!.ProfileImage.Length > 0) *@
-                    @* { *@
-                    @*     <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Comment.Autor!.ProfileImage))" alt="foto" /> *@
-                    @* } *@
-                    @* else *@
-                    @* { *@
-                    <img class="user-profilepic" src="NoProfilePic.png" alt="foto"/>
-                    @* } *@
+                     @if (Comment.Autor.UserImage != null )
+                     {
+                         <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Comment.Autor.UserImage.ImageData, Comment.Autor.UserImage.ContentType))" alt="UserImage" />
+                     }
+                     else
+                     {
+                        <img class="user-profilepic" src="NoProfilePic.png" alt="UserImage"/>
+                     }
                     <div>@Comment.Autor!.UserName</div>
                 </div>
             </NavLink>
