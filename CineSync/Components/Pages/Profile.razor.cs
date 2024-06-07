@@ -22,7 +22,11 @@ namespace CineSync.Components.Pages
         [Inject]
         public LayoutService LayoutService { get; set; }
 
+        [Inject]
+        public UserManager UserManager { get; set; }
+
         public UsernameEdit newuserName { get; set; }
+
 
         public ApplicationUser AuthenticatedUser { get; set; }
 
@@ -33,10 +37,25 @@ namespace CineSync.Components.Pages
         private string _activeTab = "Collections";
 
         private string[] _tabNames = { "Collections", "Comments", "Discutions", "Following", "Followers" };
+        private bool _visit = false;
+        
 
         protected override async Task OnInitializedAsync()
         {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            if (string.IsNullOrEmpty(UserId))
+            {
+                // If no UserId is provided, display the authenticated user's profile
+                AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+                movieCollections = await CollectionManager.GetUserCollections(AuthenticatedUser.Id);
+                _visit = false;
+            }
+            else
+            {
+                // Fetch the profile of the user specified by UserId
+                AuthenticatedUser = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId);
+                _visit = true;
+            }
+
             movieCollections = await CollectionManager.GetUserCollections(AuthenticatedUser.Id);
         }
 
