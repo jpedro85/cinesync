@@ -15,7 +15,6 @@ namespace CineSync.DbManagers
     {
         private readonly IRepositoryAsync<Movie> _movieRepository;
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
-        private readonly IRepositoryAsync<Comment> _commentRepository;
 
         /// <summary>
         /// Initializes a new instance of the CommentManager class, setting up repositories for movie and user entities.
@@ -26,7 +25,6 @@ namespace CineSync.DbManagers
         {
             _movieRepository = _unitOfWork.GetRepositoryAsync<Movie>();
             _userRepository = _unitOfWork.GetRepositoryAsync<ApplicationUser>();
-            _commentRepository = _unitOfWork.GetRepositoryAsync<Comment>();
         }
 
         /// <summary>
@@ -34,14 +32,14 @@ namespace CineSync.DbManagers
         /// </summary>
         /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
         /// <returns>Return the comment of a movie</returns>
-        public async Task<ICollection<Comment>> GetCommentsOfMovie(int movieId) 
+        public async Task<ICollection<Comment>> GetCommentsOfMovie(int movieId)
         {
             Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
 
             ICollection<Comment> allcomments = new List<Comment>(0);
             foreach (var item in movie.Comments)
             {
-                allcomments.Add( await _commentRepository.GetFirstByConditionAsync(c => c.Id == item.Id, "Autor") );
+                allcomments.Add( await _repository.GetFirstByConditionAsync(c => c.Id == item.Id, "Autor") );
             }
 
             return movie.Comments;
