@@ -51,7 +51,46 @@ namespace CineSync.DbManagers
             return await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> ChangeProfilePictureAsync(string userId, byte[] image, string contentType)
+		public async Task<bool> Follow(string userId, string userToFollowId)
+		{
+            if( userId == userToFollowId )
+                return false; 
+
+			ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId, "Following");
+			ApplicationUser userToFollow = await GetFirstByConditionAsync(u => u.Id == userToFollowId);
+
+			if (user == null || userToFollow == null )
+				return false;
+
+            if (user.Following == null) 
+                user.Following = new List<ApplicationUser>() { userToFollow };
+            
+            if (!user.Following.Contains(userToFollow))
+                user.Following.Add(userToFollow);
+            else
+                return false;
+
+			return await _unitOfWork.SaveChangesAsync();
+		}
+
+		public async Task<bool> UnFollow(string userId, string userToFollowId)
+		{
+            if ( userId == userToFollowId )
+                return false;
+
+			ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId);
+			ApplicationUser userToFollow = await GetFirstByConditionAsync(u => u.Id == userToFollowId);
+
+			if (user == null || userToFollow == null)
+				return false;
+
+            if (user.Following != null)
+				user.Following.Remove(userToFollow);
+
+			return await _unitOfWork.SaveChangesAsync();
+		}
+
+		public async Task<bool> ChangeProfilePictureAsync(string userId, byte[] image, string contentType)
         {
             ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId, "UserImage");
             if (user == null || image == null || contentType == null)
