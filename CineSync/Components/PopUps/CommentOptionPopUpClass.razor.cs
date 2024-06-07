@@ -1,6 +1,6 @@
 ﻿namespace CineSync.Components.Comments
 {
-	public class CommentOptionPopUp
+	public partial class CommentOptionPopUp
 	{
 	}
 }
