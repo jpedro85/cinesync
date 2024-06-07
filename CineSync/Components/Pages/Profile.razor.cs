@@ -3,11 +3,8 @@ using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Data.Models;
 using CineSync.Services;
-<<<<<<< HEAD
 using Microsoft.AspNetCore.Components;
-=======
 using CineSync.Components.Buttons;
->>>>>>> c9a0e10 (feat TabBar)
 
 namespace CineSync.Components.Pages
 {
@@ -26,9 +23,6 @@ namespace CineSync.Components.Pages
         public LayoutService LayoutService { get; set; }
 
         public UsernameEdit newuserName { get; set; }
-        
-        [Parameter]
-        public string? UserId { get; set; }
 
         public ApplicationUser AuthenticatedUser { get; set; }
 

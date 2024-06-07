@@ -12,7 +12,7 @@
                 <div id="actual" class="subtitle" >Actual username: <span id="actualUsername" style="color:white;">@ActualUserName</span></div>
                 
                 <label class="subtitle" for="newUsername">New Username:</label>
-                <input type="text" class="form-control" id="newUsername" @bind="@_newUserName" @bind:after="SearchAsync" placeholder="Enter your new username">
+                <input type="text" class="form-control" id="newUsername" @bind="@_newUserName" @bind:after="RenameUsername" placeholder="Enter your new username">
             </div>
         </form>
         @if (ErrorMessage != string.Empty){
