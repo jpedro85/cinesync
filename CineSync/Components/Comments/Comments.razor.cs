@@ -84,6 +84,16 @@ namespace CineSync.Components.Comments
         {
             comment.TimeStamp = DateTime.Now;
 
+            if (selectedFile != null)
+            {
+                comment.Attachements = new List<CommentAttachment>(0);
+                CommentAttachment attachment = new CommentAttachment()
+                {
+                    Attachment = await ImageConverter.ReadImageAsBase64Async(selectedFile, MaxFileSize),
+                };
+                comment.Attachements.Add(attachment);
+            }
+
             await CommentManager.AddComment(comment, MovieId, MainLayout.AuthenticatedUser.Id);
 
             CommentsList.Add(comment);
@@ -93,9 +103,5 @@ namespace CineSync.Components.Comments
             StateHasChanged();
         }
 
-        private bool IsGif(IBrowserFile file)
-        {
-            return file.ContentType.Equals("image/gif", StringComparison.OrdinalIgnoreCase);
-        }
     }
 }
