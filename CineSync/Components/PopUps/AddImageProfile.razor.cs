@@ -10,6 +10,8 @@ namespace CineSync.Components.PopUps
 {
     public partial class AddImageProfile : ComponentBase
     {
+        [Parameter]
+        public EventCallback OnImageChange { get; set; }
 
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
@@ -25,6 +27,8 @@ namespace CineSync.Components.PopUps
         private ApplicationUser AuthenticatedUser { get; set; }
 
         private IBrowserFile selectedFile;
+
+        private PopUpLayout PopUpLayout;
 
         private string ErrorMessage;
 
@@ -68,7 +72,9 @@ namespace CineSync.Components.PopUps
                 byte[] buffer = await ImageConverter.ReadImageAsBase64Async(selectedFile, MaxFileSize);
 
                 await SaveFileToDatabase(buffer);
-                await JSRuntime.InvokeVoidAsync("window.location.reload");
+                await OnImageChange.InvokeAsync();
+                PopUpLayout.Close();
+
             }
             catch (Exception ex)
             {

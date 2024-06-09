@@ -1,4 +1,5 @@
-﻿using CineSync.Data;
+﻿using CineSync.Components.Navs;
+using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -18,6 +19,9 @@ namespace CineSync.Components.Layout
 
         [Inject]
         public LayoutService LayoutService { get; set; }
+
+        [Inject]
+        public NavBarEvents NavBarEvents { get; set; }
 
         public ApplicationUser? AuthenticatedUser { get; set; }
 
@@ -45,6 +49,11 @@ namespace CineSync.Components.Layout
             {
                 StateHasChanged();
             });
+        }
+
+        public async Task TriggerNavBarReRender()
+        {
+            await NavBarEvents.RequestNavBarReRender();
         }
 
     }

@@ -2,7 +2,7 @@
 @using CineSync.Data.Models;
 @using CineSync.Components.Buttons;
 
-<PopUpLayout Id="editUsernameModal">
+<PopUpLayout @ref=PopUpLayout Id="editUsernameModal">
     <Header>
         <div class="title">Add to colection</div>
     </Header>
@@ -10,7 +10,7 @@
         <form>
             <div class="form-group">
                 <div id="actual" class="subtitle" >Actual username: <span id="actualUsername" style="color:white;">@ActualUserName</span></div>
-                
+
                 <label class="subtitle" for="newUsername">New Username:</label>
                 <input type="text" class="form-control" id="newUsername" @bind="@_newUserName" @bind:after="RenameUsername" placeholder="Enter your new username">
             </div>

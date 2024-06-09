@@ -12,6 +12,9 @@ namespace CineSync.Components.PopUps
         [Parameter]
         public string ActualUserName { get; set; } = string.Empty;
 
+        [Parameter]
+        public EventCallback OnUsernameChange { get; set; }
+
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
 
@@ -21,20 +24,27 @@ namespace CineSync.Components.PopUps
         [Inject]
         private LayoutService LayoutService { get; set; }
 
-        private MainLayout MainLayout { get; set; }
+        private PopUpLayout PopUpLayout;
+
+        private ApplicationUser User { get; set; }
 
         private string? ErrorMessage { get; set; } = string.Empty;
 
         private string _newUserName = "";
-        
+
+        protected override async Task OnInitializedAsync()
+        {
+            User = LayoutService.MainLayout.AuthenticatedUser;
+        }
+
         public async Task RenameUsername()
         {
-            MainLayout = LayoutService.MainLayout;
-            ApplicationUser user = MainLayout.AuthenticatedUser;
+            ErrorMessage = string.Empty;
 
-            if (await UserManager.ChangeUsernameAsync(user.Id, _newUserName))
+            if (await UserManager.ChangeUsernameAsync(User.Id, _newUserName))
             {
-                await JSRuntime.InvokeVoidAsync("window.location.reload");
+                await OnUsernameChange.InvokeAsync();
+                PopUpLayout.Close();
             }
             else
             {

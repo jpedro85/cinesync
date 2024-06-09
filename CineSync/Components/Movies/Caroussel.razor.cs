@@ -24,9 +24,9 @@ public partial class Caroussel : ComponentBase
 
     private Queue<MovieSearchAdapter> MovieQueue { get; } = new Queue<MovieSearchAdapter>();
 
-    private static ICollection<MovieSearchAdapter> AllRatedMovies { get; set; }
+    private ICollection<MovieSearchAdapter> AllRatedMovies { get; set; }
 
-    private static List<MovieSearchAdapter> TopRatedMovies { get; set; }
+    private List<MovieSearchAdapter> TopRatedMovies { get; set; }
 
     private bool isCarouselActive = true;
 
@@ -34,13 +34,13 @@ public partial class Caroussel : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await FetchTopRatedMovies();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            await FetchTopRatedMovies();
             InitializeQueue();
             objRef = DotNetObjectReference.Create(this);
             await JSRuntime.InvokeVoidAsync("addResizeListener", objRef);
