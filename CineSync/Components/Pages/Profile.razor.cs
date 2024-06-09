@@ -4,7 +4,6 @@ using CineSync.DbManagers;
 using CineSync.Data.Models;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-using CineSync.Components.Buttons;
 
 namespace CineSync.Components.Pages
 {
@@ -27,7 +26,6 @@ namespace CineSync.Components.Pages
 
         public UsernameEdit newuserName { get; set; }
 
-
         public ApplicationUser AuthenticatedUser { get; set; }
 
         private ICollection<MovieCollection>? movieCollections { get; set; }
@@ -38,25 +36,22 @@ namespace CineSync.Components.Pages
 
         private string[] _tabNames = { "Collections", "Comments", "Discutions", "Following", "Followers" };
         private bool _visit = false;
-        
+
 
         protected override async Task OnInitializedAsync()
         {
             if (string.IsNullOrEmpty(UserId))
             {
-                // If no UserId is provided, display the authenticated user's profile
                 AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
                 movieCollections = await CollectionManager.GetUserCollections(AuthenticatedUser.Id);
                 _visit = false;
             }
             else
             {
-                // Fetch the profile of the user specified by UserId
                 AuthenticatedUser = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId);
                 _visit = true;
             }
 
-            movieCollections = await CollectionManager.GetUserCollections(AuthenticatedUser.Id);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -68,9 +63,11 @@ namespace CineSync.Components.Pages
             }
         }
 
-        private void OnProfileEdit()
+        private async void OnProfileEdit()
         {
+            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
             StateHasChanged();
+            await LayoutService.MainLayout.TriggerNavBarReRender();
         }
 
         private void OnTabChange(string tabName)

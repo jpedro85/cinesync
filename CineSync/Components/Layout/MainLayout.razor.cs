@@ -19,7 +19,12 @@ namespace CineSync.Components.Layout
         [Inject]
         public LayoutService LayoutService { get; set; }
 
+        [Inject]
+        public NavBarEvents NavBarEvents { get; set; }
+
         public ApplicationUser? AuthenticatedUser { get; set; }
+
+        private string UserId { get; set; }
 
         private bool _hasSearch = true;
 
@@ -45,6 +50,11 @@ namespace CineSync.Components.Layout
             {
                 StateHasChanged();
             });
+        }
+
+        public async Task TriggerNavBarReRender()
+        {
+            await NavBarEvents.RequestNavBarReRender();
         }
 
     }

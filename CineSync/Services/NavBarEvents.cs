@@ -13,6 +13,8 @@ namespace CineSync.Services
         public bool IsNotificationOpen = false;
         public event Change? OnNotificationChange;
 
+        public event Func<Task> OnRequestNavBarReRender;
+
         public void OnclickNotification(MouseEventArgs e)
         {
             Console.WriteLine("Testing event count:" + OnNotificationChange?.GetInvocationList().Count());
@@ -25,6 +27,18 @@ namespace CineSync.Services
             IsMenuOpen = !IsMenuOpen;
             Console.WriteLine("Testing event count:" + OnMenuChange?.GetInvocationList().Count());
             OnMenuChange?.Invoke(IsMenuOpen);
+        }
+
+        public async Task RequestNavBarReRender()
+        {
+            if (OnRequestNavBarReRender != null)
+            {
+                await OnRequestNavBarReRender.Invoke();
+            }
+            else
+            {
+                Console.WriteLine("[ERROR] The ReRender function was not subscribed properly");
+            }
         }
 
     }

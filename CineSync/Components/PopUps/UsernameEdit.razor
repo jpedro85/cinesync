@@ -1,25 +1,25 @@
 ﻿@rendermode InteractiveServer
-@using CineSync.Data.Models;
-@using CineSync.Components.Buttons;
 
-<PopUpLayout Id="editUsernameModal">
+<PopUpLayout @ref=PopUpLayout Id="editUsernameModal">
     <Header>
-        <div class="title">Add to colection</div>
+        <div class="title">Edit Username</div>
     </Header>
     <Body>
-        <form>
+        <div class="modal-body">
             <div class="form-group">
-                <div id="actual" class="subtitle" >Actual username: <span id="actualUsername" style="color:white;">@ActualUserName</span></div>
-                
-                <label class="subtitle" for="newUsername">New Username:</label>
-                <input type="text" class="form-control" id="newUsername" @bind="@_newUserName" @bind:after="RenameUsername" placeholder="Enter your new username">
+                <div id="actual" class="subtitle" >
+                    Current Username: <span id="actualUsername" style="color:white;">@AuthenticatedUser</span>
+                </div>
+                <span class="subtitle" >New Username:</span>
+                <InputText @bind-Value="_newUserName" class="form-control" placeholder="Enter new username" @oninput="HandleInputChange" />
             </div>
-        </form>
-        @if (ErrorMessage != string.Empty){
-            <span>@ErrorMessage</span>
-        }
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <span style="color:red;">@ErrorMessage</span>
+            }
+        </div>
     </Body>
     <Footer>
-        <RectButton1 Text="Save changes"  DataDismiss="modal"> </RectButton1>
+        <button type="button" class="btn btn-primary" @onclick="RenameUsername" >SaveChanges</button>
     </Footer>
 </PopUpLayout>
