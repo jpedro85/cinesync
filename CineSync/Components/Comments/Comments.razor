@@ -12,18 +12,18 @@
             <label class="file-input-button" for="file-upload">
                 <img id="attachment" src="AttachmentIcon.png" alt="Attach" />
             </label>
-            <InputFile id="file-upload" class="file-input" OnChange="HandleFileSelected" accept="image/*" style="display:none" />
+            <InputFile id="file-upload" class="file-input" OnChange="HandleFileSelected" multiple accept="image/*" style="display:none" />
             <button type="submit" @onclick="HandleSubmit">Comment</button>
         </div>
-        @if (!string.IsNullOrEmpty(ErrorMessage))
+        @foreach ( string ErrorMessage in ErrorMessages)
         {
             <p class="error">@ErrorMessage</p>
         }
-        @if (selectedFile != null)
+        @foreach ( var kvp in selectedFilesWithPreviews )
         {
             <div class="selected-file">
-                Selected file: @selectedFile.Name
-                <img src="@selectedFilePreview" alt="Selected File" />
+                Selected file: @kvp.Key.Name
+                <img src="@( ImageConverter.ConverBytesTo64( kvp.Value ) )" alt="@kvp.Key.Name" />
             </div>
         }
     </div>

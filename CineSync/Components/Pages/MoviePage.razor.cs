@@ -36,8 +36,18 @@ namespace CineSync.Components.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Movie = await GetMovieDetails();
         }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                Movie = await GetMovieDetails();
+                StateHasChanged();
+            }
+        }
+
+
 
         private async Task<Movie?> GetMovieDetails()
         {
@@ -58,11 +68,11 @@ namespace CineSync.Components.Pages
             StateHasChanged();
         }
 
-		private void OnTabChange(string tabName)
-		{
-			_activeTab = tabName;
-			InvokeAsync(StateHasChanged);
-		}
+        private void OnTabChange(string tabName)
+        {
+            _activeTab = tabName;
+            InvokeAsync(StateHasChanged);
+        }
 
-	}
+    }
 }
