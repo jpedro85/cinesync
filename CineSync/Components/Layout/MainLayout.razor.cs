@@ -1,5 +1,4 @@
-﻿using CineSync.Components.Navs;
-using CineSync.Data;
+﻿using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -24,6 +23,8 @@ namespace CineSync.Components.Layout
         public NavBarEvents NavBarEvents { get; set; }
 
         public ApplicationUser? AuthenticatedUser { get; set; }
+
+        private string UserId { get; set; }
 
         private bool _hasSearch = true;
 

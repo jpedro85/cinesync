@@ -5,7 +5,6 @@ using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 
-
 namespace CineSync.Components.Navs
 {
     public partial class NavBar : ComponentBase, IDisposable
@@ -13,14 +12,16 @@ namespace CineSync.Components.Navs
         [Parameter]
         public bool HasSearch { get; set; } = false;
 
-        [Parameter]
-        public ApplicationUser? User { get; set; }
+        [Inject]
+        public UserImageManager UserImageManager { get; set; }
+
+        [Inject]
+        public LayoutService LayoutService { get; set; }
 
         [Inject]
         public NavBarEvents NavBarEvents { get; set; }
 
-        [Inject]
-        public UserImageManager UserImageManager { get; set; }
+        public ApplicationUser? User { get; set; }
 
         private UserImage? UserImage { get; set; }
 
@@ -31,6 +32,7 @@ namespace CineSync.Components.Navs
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            User = LayoutService.MainLayout.AuthenticatedUser;
             if (firstRender)
             {
                 if (User != null)

@@ -1,5 +1,4 @@
-﻿using CineSync.Components.Layout;
-using CineSync.Data;
+﻿using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -7,11 +6,8 @@ using Microsoft.JSInterop;
 
 namespace CineSync.Components.PopUps
 {
-    public partial class UsernameEdit
+    public partial class UsernameEdit : ComponentBase
     {
-        [Parameter]
-        public string ActualUserName { get; set; } = string.Empty;
-
         [Parameter]
         public EventCallback OnUsernameChange { get; set; }
 
@@ -26,7 +22,7 @@ namespace CineSync.Components.PopUps
 
         private PopUpLayout PopUpLayout;
 
-        private ApplicationUser User { get; set; }
+        private ApplicationUser AuthenticatedUser { get; set; }
 
         private string? ErrorMessage { get; set; } = string.Empty;
 
@@ -34,15 +30,28 @@ namespace CineSync.Components.PopUps
 
         protected override async Task OnInitializedAsync()
         {
-            User = LayoutService.MainLayout.AuthenticatedUser;
+            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
         }
 
-        public async Task RenameUsername()
+        private void HandleInputChange(ChangeEventArgs e)
+        {
+            _newUserName = e.Value?.ToString() ?? string.Empty;
+            ErrorMessage = string.Empty;
+        }
+
+        private async Task RenameUsername()
         {
             ErrorMessage = string.Empty;
 
-            if (await UserManager.ChangeUsernameAsync(User.Id, _newUserName))
+            if (string.IsNullOrWhiteSpace(_newUserName))
             {
+                ErrorMessage = "Username cannot be empty.";
+                return;
+            }
+
+            if (await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName))
+            {
+                LayoutService.MainLayout.AuthenticatedUser.UserName = _newUserName;
                 await OnUsernameChange.InvokeAsync();
                 PopUpLayout.Close();
             }
@@ -50,7 +59,9 @@ namespace CineSync.Components.PopUps
             {
                 ErrorMessage = "Something went wrong could not change your username";
             }
+
         }
 
     }
+
 }

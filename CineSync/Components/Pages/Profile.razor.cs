@@ -65,6 +65,7 @@ namespace CineSync.Components.Pages
 
         private async void OnProfileEdit()
         {
+            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
             StateHasChanged();
             await LayoutService.MainLayout.TriggerNavBarReRender();
         }
