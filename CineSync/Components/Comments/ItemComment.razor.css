@@ -138,6 +138,11 @@ hr {
     margin-top: 10px;
 }
 
+.attachments > img {
+    max-width: 300px;
+    height: auto;
+}
+
 .comment-options {
     color: white;
 }
