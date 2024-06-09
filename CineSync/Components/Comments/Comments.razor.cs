@@ -5,10 +5,11 @@ using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Collections.Concurrent;
 
 namespace CineSync.Components.Comments
 {
-    public partial class Comments : ComponentBase
+    public partial class Comments : ComponentBase, IDisposable
     {
         [Parameter]
         public int MovieId { get; set; }
@@ -19,6 +20,7 @@ namespace CineSync.Components.Comments
         [Inject]
         private CommentManager CommentManager { get; set; }
 
+        // Maxsize is 4MB
         private const long MaxFileSize = 4 * 1024 * 1024;
 
         private ICollection<Comment> CommentsList { get; set; } = new List<Comment>(0);
@@ -27,13 +29,11 @@ namespace CineSync.Components.Comments
 
         private Comment comment = new Comment();
 
-        private IBrowserFile selectedFile;
+        private ConcurrentDictionary<IBrowserFile, byte[]> selectedFilesWithPreviews = new ConcurrentDictionary<IBrowserFile, byte[]>();
 
-        private string selectedFilePreview;
+        private ConcurrentBag<string> ErrorMessages = new ConcurrentBag<string>();
 
-        private string ErrorMessage;
-
-        protected override async void OnInitialized()
+        protected override void OnInitialized()
         {
             MainLayout = LayoutService.MainLayout;
         }
@@ -50,34 +50,40 @@ namespace CineSync.Components.Comments
 
         private async Task HandleFileSelected(InputFileChangeEventArgs e)
         {
-            selectedFile = e.File;
-            ErrorMessage = string.Empty;
+            ErrorMessages.Clear();
 
-            if (selectedFile == null) return;
+            IEnumerable<Task>? tasks = e.GetMultipleFiles(e.FileCount).Select(async attachment =>
+                       {
+                           string fileType = attachment.ContentType;
 
-            var fileType = selectedFile.ContentType;
-            if (selectedFile.Size > MaxFileSize)
+                           if (attachment.Size > MaxFileSize)
+                           {
+                               ErrorMessages.Add($"File {attachment.Name} size exceeds the limit of {MaxFileSize / (1024 * 1024)} MB. Please select a smaller file.");
+                           }
+                           else if (!fileType.StartsWith("image/"))
+                           {
+                               ErrorMessages.Add($"{attachment.Name} has invalid file type. Please select an image.");
+                           }
+                           else
+                           {
+                               await ProcessFile(attachment, fileType);
+                           }
+                       });
+
+            await Task.WhenAll(tasks);
+
+        }
+
+        private async Task ProcessFile(IBrowserFile attchment, string fileType)
+        {
+            try
             {
-                ErrorMessage = $"File size exceeds the limit of {MaxFileSize / (1024 * 1024)} MB. Please select a smaller file.";
-                selectedFile = null;
+                byte[] buffer = await ImageConverter.ReadImageAsBase64Async(attchment, MaxFileSize);
+                selectedFilesWithPreviews[attchment] = buffer;
             }
-            else if (!fileType.StartsWith("image/"))
+            catch (Exception ex)
             {
-                ErrorMessage = "Invalid file type. Please select an image.";
-                selectedFile = null;
-            }
-            else
-            {
-                try
-                {
-                    byte[] buffer = await ImageConverter.ReadImageAsBase64Async(selectedFile, MaxFileSize);
-                    selectedFilePreview = $"data:{fileType};base64,{Convert.ToBase64String(buffer)}";
-                }
-                catch (Exception ex)
-                {
-                    ErrorMessage = $"An error occurred while reading the file: {ex.Message}";
-                    selectedFile = null;
-                }
+                ErrorMessages.Add($"An error occurred while reading the file {attchment.Name}: {ex.Message}");
             }
         }
 
@@ -92,26 +98,44 @@ namespace CineSync.Components.Comments
         private async Task AddComment()
         {
             comment.TimeStamp = DateTime.Now;
+            comment.Attachements = new List<CommentAttachment>();
 
-            if (selectedFile != null)
+            foreach (var kvp in selectedFilesWithPreviews)
             {
-                comment.Attachements = new List<CommentAttachment>(0);
-                CommentAttachment attachment = new CommentAttachment()
+                var attachment = new CommentAttachment()
                 {
-                    Attachment = await ImageConverter.ReadImageAsBase64Async(selectedFile, MaxFileSize),
+                    Attachment = kvp.Value,
                 };
                 comment.Attachements.Add(attachment);
             }
 
             await CommentManager.AddComment(comment, MovieId, MainLayout.AuthenticatedUser.Id);
 
-            comment = null;
             comment = new Comment();
-
-            selectedFile = null;
-            selectedFilePreview = null;
+            selectedFilesWithPreviews.Clear();
 
             StateHasChanged();
+        }
+
+        public void Dispose()
+        {
+
+            if (selectedFilesWithPreviews != null)
+            {
+                foreach (var key in selectedFilesWithPreviews.Keys.ToList())
+                {
+                    selectedFilesWithPreviews.TryRemove(key, out _);
+                }
+            }
+
+            if (ErrorMessages != null)
+            {
+                while (!ErrorMessages.IsEmpty)
+                {
+                    ErrorMessages.TryTake(out _);
+                }
+            }
+
         }
 
     }
