@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 
 @using CineSync.Components.Utils
+@using CineSync.Components.Utils.Authorization
 @using CineSync.Components.Comments
 @using CineSync.Components.PopUps
 @using CineSync.Components.Buttons
@@ -40,8 +41,8 @@
                         }
                     </div>
 
-					<CustomAuthorizedView CheckAuthentication=true DebugName="Buttons">
-						<CustomAuthorized>
+					<RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"})">
+						<PassOneCheck>
 
 						<div class="movie-image-options-item-rigth">
 								<button class="button-AddToCollection" data-toggle="modal" data-target="#AddCollection">
@@ -60,8 +61,8 @@
 
 						</div>
 
-						</CustomAuthorized>
-					</CustomAuthorizedView>
+						</PassOneCheck>
+					</RoleCkeck>
 
 				</div>
 
@@ -135,14 +136,14 @@
 						</div>
 					</div>
 
-					<CustomAuthorizedView CheckAuthentication=true>
-						<CustomAuthorized>
+					<RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"})">
+						<PassOneCheck>
 							<div class="ButtonRatingitem-container">
 								<button class="ButtonRatingitem" data-toggle="modal" data-target="#RateModel"> Rate Movie</button>
 								<Classification MovieAPIId=@MovieId MovieId="@Movie.Id" OnRatingSaved="OnRatingSaved" />
 							</div>
-						</CustomAuthorized>
-					</CustomAuthorizedView>
+						</PassOneCheck>
+					</RoleCkeck>
 
 				</div>
 
@@ -157,7 +158,7 @@
 			/>
 
 			<div class="page-bottom-content">
-				<Comments MovieId=@MovieId></Comments>
+				<Comments MovieId=@MovieId LikedComments="@_likedComents" DislikedComments="@_dislikedComents"></Comments>
 			</div>
 
 		</div>

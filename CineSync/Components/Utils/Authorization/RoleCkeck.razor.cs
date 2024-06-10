@@ -15,7 +15,10 @@ namespace CineSync.Components.Utils.Authorization
 		private LayoutService LayoutService { get; set; }
 
 		[Parameter]
-		public RenderFragment PassCheck {  get; set; }
+		public RenderFragment PassAllChecks {  get; set; }
+
+		[Parameter]
+		public RenderFragment PassOneCheck { get; set; }
 
 		[Parameter]
 		public RenderFragment NotPassCheck { get; set; }
@@ -41,6 +44,16 @@ namespace CineSync.Components.Utils.Authorization
 			foreach (var role in Roles) 
 			{
 				hasRoles = hasRoles && AuthenticatedUserRoles.Contains(role);
+			}
+			return hasRoles;
+		}
+
+		private bool HasOneRole()
+		{
+			bool hasRoles = false;
+			foreach (var role in Roles)
+			{
+				hasRoles = hasRoles || AuthenticatedUserRoles.Contains(role);
 			}
 			return hasRoles;
 		}

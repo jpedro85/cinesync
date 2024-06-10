@@ -65,11 +65,11 @@
                     </div>
 
                     <div class="User-item">
-                        Following: @(AuthenticatedUser.Following == null? 0 : AuthenticatedUser.Followers)
+                        Following: @AuthenticatedUser.FollowingCount
                     </div>
 
                     <div class="User-item">
-                        Followers: @(AuthenticatedUser.Followers == null? 0 : AuthenticatedUser.Followers)
+                        Followers: @AuthenticatedUser.FollowersCount
                     </div>
                 </div>
 

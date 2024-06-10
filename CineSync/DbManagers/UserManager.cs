@@ -57,20 +57,29 @@ namespace CineSync.DbManagers
                 return false; 
 
 			ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId, "Following");
-			ApplicationUser userToFollow = await GetFirstByConditionAsync(u => u.Id == userToFollowId);
+			ApplicationUser userToFollow = await GetFirstByConditionAsync(u => u.Id == userToFollowId, "Followers");
 
 			if (user == null || userToFollow == null )
 				return false;
 
             if (user.Following == null) 
-                user.Following = new List<ApplicationUser>() { userToFollow };
-            
-            if (!user.Following.Contains(userToFollow))
+                user.Following = new List<ApplicationUser>();
+
+            if (userToFollow.Followers == null)
+                userToFollow.Followers = new List<ApplicationUser>();
+
+            if (!user.Following.Contains(userToFollow)) 
+            { 
                 user.Following.Add(userToFollow);
+                user.FollowingCount = (uint)user.Following.Count;
+
+                userToFollow.Followers.Add(user);
+                userToFollow.FollowersCount = (uint)userToFollow.Followers.Count;
+            }
             else
                 return false;
 
-			return await _unitOfWork.SaveChangesAsync();
+            return await _unitOfWork.SaveChangesAsync();
 		}
 
 		public async Task<bool> UnFollow(string userId, string userToFollowId)
@@ -78,16 +87,25 @@ namespace CineSync.DbManagers
             if ( userId == userToFollowId )
                 return false;
 
-			ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId);
-			ApplicationUser userToFollow = await GetFirstByConditionAsync(u => u.Id == userToFollowId);
+			ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId, "Following");
+			ApplicationUser userToFollow = await GetFirstByConditionAsync(u => u.Id == userToFollowId, "Followers");
 
 			if (user == null || userToFollow == null)
 				return false;
 
-            if (user.Following != null)
+            if (user.Following != null) 
+            { 
 				user.Following.Remove(userToFollow);
+                user.FollowingCount = (uint)user.Following.Count;
+            }
 
-			return await _unitOfWork.SaveChangesAsync();
+            if (userToFollow.Followers != null)
+            {
+                userToFollow.Followers.Remove(user);
+                userToFollow.FollowersCount = (uint)userToFollow.Followers.Count;
+            }
+
+            return await _unitOfWork.SaveChangesAsync();
 		}
 
 		public async Task<bool> ChangeProfilePictureAsync(string userId, byte[] image, string contentType)

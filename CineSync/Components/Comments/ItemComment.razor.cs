@@ -4,6 +4,7 @@ using CineSync.DbManagers;
 using CineSync.Services;
 using CineSync.Data;
 using CineSync.Components.PopUps;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace CineSync.Components.Comments
 {
@@ -12,7 +13,7 @@ namespace CineSync.Components.Comments
 		[Inject]
 		private UserManager UserManager { get; set; }
 
-		[Inject]
+        [Inject]
         private CommentManager CommentManager { get; set; }
 
 		[Inject]
@@ -21,41 +22,111 @@ namespace CineSync.Components.Comments
 		[Parameter]
         public Comment Comment { get; set; }
 
-		private ApplicationUser _authenticatedUser;
+        [Parameter]
+        public bool Liked { get; set; } = false;
+		[Parameter]
 
-		private ErrorPopUp _errorPopUp;
+        public bool DisLiked { get; set; } = false;
+		private bool _Liked {  get; set; }
+		private bool _Disliked { get; set; }
+
+		public delegate void Action();
+
+        [Parameter]
+        public Action OnRemove { get; set; } = () => { };
+
+
+        private ApplicationUser _authenticatedUser;
+        private ICollection<string> _userRoles;
 
 		protected override void OnInitialized()
 		{
 			_authenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
-		}
-
-		protected override void OnAfterRender(bool firstRender)
-		{
+            _userRoles = LayoutService.MainLayout.UserRoles;
+            _Liked = Liked;
+            _Disliked = DisLiked;
 
 		}
 
 		private async void AddLike(Comment commentAddLike)
         {
-            await CommentManager.AddLikeAsync(commentAddLike);
+            if (_Disliked)
+            {
+                await CommentManager.RemoveDesLikeAsync(commentAddLike, _authenticatedUser.Id);
+                _Disliked = false;
+            }    
+
+            if (_Liked) 
+            {
+                await CommentManager.RemoveLikeAsync(commentAddLike, _authenticatedUser.Id);
+                _Liked = false;
+            }
+            else 
+            {
+                await CommentManager.AddLikeAsync(commentAddLike, _authenticatedUser.Id);
+                _Liked = true;
+            }
+
+            Console.WriteLine( _Liked + ":" + _Disliked);
+
             StateHasChanged();
         }
 
         private async void AddDeslike(Comment commentAddDesLike)
         {
-            await CommentManager.AddDesLikeAsync(commentAddDesLike);
+            if (_Liked)
+            {
+                await CommentManager.RemoveLikeAsync(commentAddDesLike, _authenticatedUser.Id);
+                _Liked = false;
+            }
+
+            if (_Disliked)
+            {
+                await CommentManager.RemoveDesLikeAsync(commentAddDesLike, _authenticatedUser.Id);
+                _Disliked = false;
+            }
+            else
+            {
+                await CommentManager.AddDesLikeAsync(commentAddDesLike, _authenticatedUser.Id);
+                _Disliked = true;
+            }
+
+            Console.WriteLine(_Liked + ":" + _Disliked);
+
             StateHasChanged();
         }
 
         private async void Follow(string id)
         {
-            await UserManager.Follow(_authenticatedUser.Id, id);
+            if( await UserManager.Follow(_authenticatedUser.Id, id) )
+            {
+                if (_authenticatedUser.Following == null)
+                    _authenticatedUser.Following = new List<ApplicationUser>();
+
+                _authenticatedUser.Following.Add(Comment.Autor!);
+
+                StateHasChanged();
+            }
         }
 
 		private async void UnFollow(string id)
 		{
-			await UserManager.UnFollow(_authenticatedUser.Id, id);
-		}
+            if ( await UserManager.UnFollow(_authenticatedUser.Id, id) )
+            {
+                if (_authenticatedUser.Following == null)
+                    _authenticatedUser.Following = new List<ApplicationUser>();
+                
+                _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Comment.Autor!.Id).ToList();
 
-	}
+
+                StateHasChanged();
+            }
+        }
+
+        private async void Remove()
+        {
+            await CommentManager.RemoveAsync(Comment);
+            OnRemove();
+        }
+    }
 }

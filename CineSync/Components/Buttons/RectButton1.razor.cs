@@ -13,6 +13,9 @@ namespace CineSync.Components.Buttons
         [Parameter]
         public Action OnClick {  get; set; } = () => { };
 
+        [Parameter]
+        public string Style { get; set; } = "";
+
         public delegate void Action() ;
     }
 }

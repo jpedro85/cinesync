@@ -1,6 +1,10 @@
 ﻿@if (HasAllRoles())
 {
-	@PassCheck
+	@PassAllChecks
+}
+else if (HasOneRole())
+{
+	@PassOneCheck;
 }
 else
 {

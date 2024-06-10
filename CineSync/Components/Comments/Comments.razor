@@ -1,10 +1,12 @@
 ﻿@rendermode InteractiveServer
 
-@using Utils;
+@using CineSync.Components.Utils;
+@using CineSync.Components.Utils.Authorization;
 @using CineSync.Components.Buttons;
+@using CineSync.Data.Models;
 
-<CustomAuthorizedView CheckAuthentication="true">
-	<CustomAuthorized>
+<RoleCkeck AuthenticatedUserRoles="@AuthenticatedUserRoles" Roles="@( new string[] { "user","moderador","admin","super_admin" } )">
+	<PassOneCheck>
     <div class="comment-section">
         <h4>Add a Comment</h4>
         <textarea @bind="comment.Content"></textarea>
@@ -27,14 +29,20 @@
             </div>
         }
     </div>
-    </CustomAuthorized>
-</CustomAuthorizedView>
+    </PassOneCheck>
+</RoleCkeck>
 
 <div class="comments-done">
 
     @foreach (var comment in CommentsList)
     {
-        <ItemComment Comment="comment" ></ItemComment>
+        Comment localComment = comment;
+        <ItemComment 
+            Comment="localComment" 
+            OnRemove="() => { CommentsList.Remove(localComment); InvokeAsync(StateHasChanged); }"
+            Liked="@( LikedComments.Any( uLike => uLike.CommentId == localComment.Id ) )"
+            DisLiked="@( DislikedComments.Any( uDisLike => uDisLike.CommentId == localComment.Id ) )">
+        </ItemComment>
     }
 
     @if (CommentsList != null && CommentsList.Count == 0)
