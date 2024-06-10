@@ -1,0 +1,27 @@
+﻿@rendermode InteractiveServer
+@using CineSync.Data.Models;
+@using CineSync.Components.Buttons;
+@using CineSync.Components.PopUps
+
+<PopUpLayout Id="ReportModal">
+    <Header>
+        <svg width="40" height="40" viewBox="0 0 42 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M27.5275 5.125H14.4725L5.25 14.1279V26.8721L14.4725 35.875H27.5275L36.75 26.8721V14.1279L27.5275 5.125ZM33.25 25.4542L26.075 32.4583H15.925L8.75 25.4542V15.5458L15.925 8.54167H26.075L33.25 15.5458V25.4542Z" fill="red" />
+            <path d="M21 29.0417C21.9665 29.0417 22.75 28.2768 22.75 27.3333C22.75 26.3898 21.9665 25.625 21 25.625C20.0335 25.625 19.25 26.3898 19.25 27.3333C19.25 28.2768 20.0335 29.0417 21 29.0417Z" fill="red" />
+            <path d="M19.25 11.958H22.75V23.9163H19.25V11.958Z" fill="red" />
+        </svg>
+        <div class="title">Report Comment</div>
+    </Header>
+    <Body>
+        <div>
+            <label for="reportReason" style="color:white;">Reason for reporting:</label>
+            <textarea id="reportReason" name="reportReason" rows="4" cols="34" placeholder="Enter the reason here..."></textarea>
+        </div>
+    </Body>
+    <Footer>
+        <RectButton2 Text="Cancel" DataDismiss="modal"> </RectButton2>
+        <RectButton1 Text="Report" DataDismiss="modal"> </RectButton1>
+    </Footer>
+</PopUpLayout>
+
+

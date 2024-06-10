@@ -1,38 +1,67 @@
-﻿using CineSync.DbManagers;
+﻿using CineSync.Data;
+using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-using CineSync.Components.Layout;
-using CineSync.Data;
+using Microsoft.JSInterop;
 
 namespace CineSync.Components.PopUps
 {
-    public partial class UsernameEdit
+    public partial class UsernameEdit : ComponentBase
     {
+        [Parameter]
+        public EventCallback OnUsernameChange { get; set; }
+
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
+
         [Inject]
         private UserManager UserManager { get; set; }
 
         [Inject]
         private LayoutService LayoutService { get; set; }
 
-        private MainLayout MainLayout { get; set; }
+        private PopUpLayout PopUpLayout;
 
-        [Parameter]
-        public string ActualUserName { get; set; } = string.Empty;
+        private ApplicationUser AuthenticatedUser { get; set; }
 
-        public async Task SearchAsync()
+        private string? ErrorMessage { get; set; } = string.Empty;
+
+        private string _newUserName = "";
+
+        protected override async Task OnInitializedAsync()
         {
-            MainLayout = LayoutService.MainLayout;
-            ApplicationUser user = MainLayout.AuthenticatedUser;
+            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+        }
 
-            if (await UserManager.ChangeUsernameAsync(user.Id, ActualUserName))
+        private void HandleInputChange(ChangeEventArgs e)
+        {
+            _newUserName = e.Value?.ToString() ?? string.Empty;
+            ErrorMessage = string.Empty;
+        }
+
+        private async Task RenameUsername()
+        {
+            ErrorMessage = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(_newUserName))
             {
-                // TODO: Add the missing logic for the frontend
+                ErrorMessage = "Username cannot be empty.";
+                return;
+            }
+
+            if (await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName))
+            {
+                LayoutService.MainLayout.AuthenticatedUser.UserName = _newUserName;
+                await OnUsernameChange.InvokeAsync();
+                PopUpLayout.Close();
             }
             else
             {
-                // TODO: Add the missing logic for the frontend
+                ErrorMessage = "Something went wrong could not change your username";
             }
+
         }
 
     }
+
 }

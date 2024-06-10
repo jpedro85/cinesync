@@ -2,10 +2,9 @@
 using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace CineSync.Components
+namespace CineSync.Components.Utils.Authorization
 {
     public partial class CustomAuthorizedView
     {

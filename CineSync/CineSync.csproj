@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <Folder Include="Components\Account\Component\" />
-    <Folder Include="Components\Utils\" />
   </ItemGroup>
 
 </Project>

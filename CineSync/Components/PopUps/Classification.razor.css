@@ -56,3 +56,14 @@
     /* Add a gold glow effect */
     border-radius: 70%;
 }
+
+.titleImage{
+    width:30px;
+    height:40px;
+}
+
+.title {
+    font-family: 'Roboto';
+    font-size: 24px;
+    color: white;
+}

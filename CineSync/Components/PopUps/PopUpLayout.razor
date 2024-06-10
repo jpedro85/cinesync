@@ -1,0 +1,40 @@
+﻿@rendermode InteractiveServer
+
+<div class="modal fade" id="@Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content border-white">
+            <div class="modal-header text-center">
+                
+                <div class="header-left">
+                    @Header
+                </div>
+
+                <div class="header-rigth">
+                    <button type="button" class="buttonClose" data-dismiss="modal" aria-label="Close">
+                        <svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.8753 0L12.4989 9.375L3.12472 0L0 3.125L9.37417 12.5L0 21.875L3.12472 25L12.4989 15.625L21.8753 25L25 21.875L15.6258 12.5L25 3.125L21.8753 0Z" fill="currentcolor" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                @Body
+            </div>
+            <div class="modal-footer">
+                @Footer
+            </div>
+
+        </div>
+    </div>
+    <script>
+        window.showModal = (id) => {
+            $('#' + id).modal('show');
+        };
+
+        window.hideModal = (id) => {
+            $('#' + id).modal('hide');
+        };
+    </script>
+</div>

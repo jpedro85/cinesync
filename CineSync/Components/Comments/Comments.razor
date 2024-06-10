@@ -1,48 +1,54 @@
 ﻿@rendermode InteractiveServer
 
-<CustomAuthorizedView CheckAuthentication="true">
-	<CustomAuthorized>
+@using CineSync.Components.Utils;
+@using CineSync.Components.Utils.Authorization;
+@using CineSync.Components.Buttons;
+@using CineSync.Data.Models;
+
+<RoleCkeck AuthenticatedUserRoles="@AuthenticatedUserRoles" Roles="@( new string[] { "user","moderador","admin","super_admin" } )">
+	<PassOneCheck>
     <div class="comment-section">
         <h4>Add a Comment</h4>
         <textarea @bind="comment.Content"></textarea>
-        <button type="submit" @onclick="HandleSubmit">Comment</button>
-    </div>
-    </CustomAuthorized>
-</CustomAuthorizedView>
-<div class="form-container comments-done">
-
-    @foreach (var c in CommentsList)
-    {
-        <div class="comment">
-            <div class="comment-header">
-                <span>@c.Autor.UserName</span>
-                <span>@c.NumberOfLikes Likes</span>
-                <span>@c.NumberOfDislikes Dislikes</span>
-            </div>
-            <div class="comment-content">
-                <p>@c.Content</p>
-                <CustomAuthorizedView CheckAuthentication=true>
-                    <CustomAuthorized>
-                        <div class="comment-actions">
-                            <div @onclick="(e)=>{AddLike(c);}" style="cursor: pointer;">
-                                <img src="like_icon.png" alt="Like" width="20" height="20">
-                            </div>
-
-                            <div @onclick="(e)=>{AddDeslike(c);}" style="cursor: pointer;">
-                                <img src="dislike_icon.png" alt="Dislike" width="20" height="20">
-                            </div>
-
-                        </div>
-                    </CustomAuthorized>
-                </CustomAuthorizedView>
-                @if (c.Attachements != null && c.Attachements.Any())
-                {
-                    <div class="attachments">
-
-                    </div>
-                }
-            </div>
+        <div class="input-container">
+            <label class="file-input-button" for="file-upload">
+                <img id="attachment" src="AttachmentIcon.png" alt="Attach" />
+            </label>
+            <InputFile id="file-upload" class="file-input" OnChange="HandleFileSelected" multiple accept="image/*" style="display:none" />
+            <button type="submit" @onclick="HandleSubmit">Comment</button>
         </div>
+        @foreach ( string ErrorMessage in ErrorMessages)
+        {
+            <p class="error">@ErrorMessage</p>
+        }
+        @foreach ( var kvp in selectedFilesWithPreviews )
+        {
+            <div class="selected-file">
+                Selected file: @kvp.Key.Name
+                <img src="@( ImageConverter.ConverBytesTo64( kvp.Value ) )" alt="@kvp.Key.Name" />
+            </div>
+        }
+    </div>
+    </PassOneCheck>
+</RoleCkeck>
+
+<div class="comments-done">
+
+    @foreach (var comment in CommentsList)
+    {
+        Comment localComment = comment;
+        <ItemComment 
+            Comment="localComment" 
+            OnRemove="() => { CommentsList.Remove(localComment); InvokeAsync(StateHasChanged); }"
+            Liked="@( LikedComments.Any( uLike => uLike.CommentId == localComment.Id ) )"
+            DisLiked="@( DislikedComments.Any( uDisLike => uDisLike.CommentId == localComment.Id ) )">
+        </ItemComment>
     }
+
+    @if (CommentsList != null && CommentsList.Count == 0)
+    {
+        <div class="nocomments">There is no comments at this time.</div>
+    }
+
 </div>
 

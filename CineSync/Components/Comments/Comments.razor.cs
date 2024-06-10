@@ -1,33 +1,99 @@
 ﻿using CineSync.Data.Models;
 using CineSync.Components.Layout;
+using CineSync.Components.Utils;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using System.Collections.Concurrent;
 
 namespace CineSync.Components.Comments
 {
-    public partial class Comments : ComponentBase
+    public partial class Comments : ComponentBase, IDisposable
     {
-        [Parameter]
-        public int MovieId { get; set; }
-
         [Inject]
         private LayoutService LayoutService { get; set; }
 
         [Inject]
         private CommentManager CommentManager { get; set; }
 
+        [Parameter]
+        public int MovieId { get; set; }
+
+        [Parameter]
+        public ICollection<UserLikedComment> LikedComments { get; set; }
+
+        [Parameter]
+        public ICollection<UserDislikedComment> DislikedComments { get; set; }
+
+        // Maxsize is 4MB
+        private const long MaxFileSize = 4 * 1024 * 1024;
+
+        private ICollection<Comment> CommentsList { get; set; } = new List<Comment>(0);
+
         private MainLayout MainLayout { get; set; }
 
-        private static ICollection<Comment> CommentsList { get; set; } = new List<Comment>(0);
-
         private Comment comment = new Comment();
+
+        private ConcurrentDictionary<IBrowserFile, byte[]> selectedFilesWithPreviews = new ConcurrentDictionary<IBrowserFile, byte[]>();
+
+        private ConcurrentBag<string> ErrorMessages = new ConcurrentBag<string>();
+
+        private ICollection<string> AuthenticatedUserRoles { get; set; } = [];
 
         protected override async void OnInitialized()
         {
             MainLayout = LayoutService.MainLayout;
-            if(MovieId != null)
-             CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
+            AuthenticatedUserRoles = LayoutService.MainLayout.UserRoles;
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
+                StateHasChanged();
+            }
+        }
+
+
+        private async Task HandleFileSelected(InputFileChangeEventArgs e)
+        {
+            ErrorMessages.Clear();
+
+            IEnumerable<Task>? tasks = e.GetMultipleFiles(e.FileCount).Select(async attachment =>
+                       {
+                           string fileType = attachment.ContentType;
+
+                           if (attachment.Size > MaxFileSize)
+                           {
+                               ErrorMessages.Add($"File {attachment.Name} size exceeds the limit of {MaxFileSize / (1024 * 1024)} MB. Please select a smaller file.");
+                           }
+                           else if (!fileType.StartsWith("image/"))
+                           {
+                               ErrorMessages.Add($"{attachment.Name} has invalid file type. Please select an image.");
+                           }
+                           else
+                           {
+                               await ProcessFile(attachment, fileType);
+                           }
+                       });
+
+            await Task.WhenAll(tasks);
+
+        }
+
+        private async Task ProcessFile(IBrowserFile attchment, string fileType)
+        {
+            try
+            {
+                byte[] buffer = await ImageConverter.ReadImageAsBase64Async(attchment, MaxFileSize);
+                selectedFilesWithPreviews[attchment] = buffer;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.Add($"An error occurred while reading the file {attchment.Name}: {ex.Message}");
+            }
         }
 
         private async void HandleSubmit()
@@ -41,27 +107,45 @@ namespace CineSync.Components.Comments
         private async Task AddComment()
         {
             comment.TimeStamp = DateTime.Now;
+            comment.Attachements = new List<CommentAttachment>();
+
+            foreach (var kvp in selectedFilesWithPreviews)
+            {
+                var attachment = new CommentAttachment()
+                {
+                    Attachment = kvp.Value,
+                };
+                comment.Attachements.Add(attachment);
+            }
 
             await CommentManager.AddComment(comment, MovieId, MainLayout.AuthenticatedUser.Id);
 
-            CommentsList.Add(comment);
             comment = new Comment();
+            selectedFilesWithPreviews.Clear();
+
             StateHasChanged();
         }
 
-        private async void AddLike(Comment commentAddLike)
+        public void Dispose()
         {
-            Console.WriteLine("Aa");
-			await CommentManager.AddLikeAsync( commentAddLike );
-            StateHasChanged();
+
+            if (selectedFilesWithPreviews != null)
+            {
+                foreach (var key in selectedFilesWithPreviews.Keys.ToList())
+                {
+                    selectedFilesWithPreviews.TryRemove(key, out _);
+                }
+            }
+
+            if (ErrorMessages != null)
+            {
+                while (!ErrorMessages.IsEmpty)
+                {
+                    ErrorMessages.TryTake(out _);
+                }
+            }
+
         }
 
-		private async void AddDeslike(Comment commentAddDesLike)
-		{
-            Console.WriteLine("Aa");
-            await CommentManager.AddDesLikeAsync(commentAddDesLike);
-            StateHasChanged();
-		}
-
-	}
+    }
 }

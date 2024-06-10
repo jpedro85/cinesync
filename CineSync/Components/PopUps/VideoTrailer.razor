@@ -1,0 +1,17 @@
+@rendermode InteractiveServer
+@using CineSync.Data.Models;
+@using CineSync.Components.Buttons;
+
+<PopUpLayout Id="trailerModal">
+    <Header>
+        <div class="title">Watch Trailer</div>
+    </Header>
+    <Body>
+        <div class="modal-body">
+            <iframe id="trailerVideo" src="@TrailerLink" width="800" height="400" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </Body>
+    <Footer>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </Footer>
+</PopUpLayout>

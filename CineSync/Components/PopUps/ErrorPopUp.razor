@@ -1,0 +1,19 @@
+﻿@rendermode InteractiveServer
+@using CineSync.Components.Buttons;
+
+<PopUpLayout @ref="@(_layout)" Id="ErrorPopUp">
+    <Header>
+        <div class="title">
+            Ups! Error ocorred.
+        </div>
+    </Header>
+    <Body>
+       <div class="Error">
+           <img style="width:130px; height:110px;" src="SoryNotFound.png" />
+           <div>@Error asdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div>
+       </div>
+    </Body>
+    <Footer>
+        <RectButton1 Text="Ok" DataDismiss="modal"> </RectButton1>
+    </Footer>
+</PopUpLayout>

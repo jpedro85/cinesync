@@ -1,27 +1,25 @@
-﻿<div class="modal fade" id="editUsernameModal" tabindex="-1" role="dialog" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content border-white">
-            <div class="modal-header text-center">
-                <h5 class="modal-title text-blue">
-                    <span style="font-size: 1.5em;">&#9998;</span> Edit Username
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+﻿@rendermode InteractiveServer
+
+<PopUpLayout @ref=PopUpLayout Id="editUsernameModal">
+    <Header>
+        <div class="title">Edit Username</div>
+    </Header>
+    <Body>
+        <div class="modal-body">
+            <div class="form-group">
+                <div id="actual" class="subtitle" >
+                    Current Username: <span id="actualUsername" style="color:white;">@AuthenticatedUser</span>
+                </div>
+                <span class="subtitle" >New Username:</span>
+                <InputText @bind-Value="_newUserName" class="form-control" placeholder="Enter new username" @oninput="HandleInputChange" />
             </div>
-            <div class="modal-body bg-dark text-white">
-                <form>
-                    <div class="form-group">
-                        <p>Username:<span style="color:white;">@ActualUserName</span></p>
-                        <label for="newUsername">New Username:</label>
-                        <input type="text" class="form-control" id="newUsername" @bind="@ActualUserName" @bind:after="SearchAsync" placeholder="Enter your new username">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer bg-dark">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" data-dismiss="modal" >Save Changes</button>
-            </div>
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <span style="color:red;">@ErrorMessage</span>
+            }
         </div>
-    </div>
-</div>
+    </Body>
+    <Footer>
+        <button type="button" class="btn btn-primary" @onclick="RenameUsername" >SaveChanges</button>
+    </Footer>
+</PopUpLayout>

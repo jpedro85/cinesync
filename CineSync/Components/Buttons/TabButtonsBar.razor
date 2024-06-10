@@ -1,0 +1,36 @@
+﻿
+<div class="tabs-conteiner" style="@Background_Style">
+
+    @for (int i = 0; i < TabNames.Length; i++ )
+    {
+        int indice = i;
+        @if (i == ActiveTab)
+        {
+            <TabButton Text="@TabNames[indice]"
+            StartActive=true
+            OnActionClick="@(() => 
+                        { 
+                            Console.WriteLine(_activeTab);
+                            TabButtons[_activeTab].deactivate();
+                            _activeTab=indice;
+                            OnTabChange( TabNames[indice] );
+                        }
+                        )"
+                       @ref=@(TabButtons[indice]) />
+        }
+        else
+        {
+            <TabButton Text="@TabNames[indice]"
+            StartActive=false
+            OnActionClick="@(() => 
+                        { 
+                            Console.WriteLine(_activeTab);
+                            TabButtons[_activeTab].deactivate();
+                            _activeTab=indice;
+                            OnTabChange( TabNames[indice] );
+                        })"
+                       @ref=@(TabButtons[indice]) />
+        }
+    }
+
+</div>

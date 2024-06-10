@@ -18,6 +18,10 @@ namespace CineSync.Data
 
         public DbSet<Notification> Notifications { get; set; }
 
+        public DbSet<UserLikedComment> UserLikedComments { get; set; }
+
+        public DbSet<UserDislikedComment> UserDislikedComments { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

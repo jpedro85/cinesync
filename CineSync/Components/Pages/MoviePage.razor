@@ -1,7 +1,12 @@
 ﻿@page "/MovieDetails/{MovieId:int}"
+@rendermode InteractiveServer
+
 @using CineSync.Components.Utils
+@using CineSync.Components.Utils.Authorization
 @using CineSync.Components.Comments
 @using CineSync.Components.PopUps
+@using CineSync.Components.Buttons
+
 
 <div class="page-main-Conteiner">
 
@@ -24,16 +29,23 @@
 
 				<div class="movie-image-options-conteiner">
 
-					<div class="buttonTreiler">
-						Trailer
-					</div>
+                    <div class="buttonTreiler">
+                        @if (Movie.TrailerKey != null)
+                        {
+							<button style="all:unset;" data-toggle="modal" data-target="#trailerModal">Trailer</button>
+                             <VideoTrailer TrailerLink=@($"{_youtubeLink}{Movie.TrailerKey}") />
+                        }
+                        else
+                        {
+                            <span>No Trailer</span>
+                        }
+                    </div>
 
-					<CustomAuthorizedView CheckAuthentication=true DebugName="Buttons">
-						<CustomAuthorized>
+					<RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"})">
+						<PassOneCheck>
 
 						<div class="movie-image-options-item-rigth">
-
-							<button class="button-AddToCollection" data-toggle="modal" data-target="#AddCollection">
+								<button class="button-AddToCollection" data-toggle="modal" data-target="#AddCollection">
 								<svg class="itemsize button-AddToCollectionSpace" width="31" height="31" viewBox="0 0 31 31" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
 									<g clip-path="url(#clip0_307_2441)">
 										<path d="M21.3125 21.3125H17.4375V23.25H21.3125V27.125H23.25V23.25H27.125V21.3125H23.25V17.4375H21.3125V21.3125ZM15.0311 17.4375C16.1224 15.8052 17.7326 14.589 19.6012 13.9859C21.4697 13.3828 23.4872 13.4281 25.3268 14.1144C27.1664 14.8007 28.7205 16.0878 29.7375 17.7674C30.7544 19.447 31.1747 21.4207 30.9302 23.3689C30.6857 25.3171 29.7908 27.1257 28.3903 28.5019C26.9898 29.8781 25.1659 30.7413 23.2137 30.9517C21.2615 31.1621 19.2955 30.7075 17.6339 29.6613C15.9724 28.6152 14.7126 27.0388 14.0585 25.1875H11.625V23.25H13.6148C13.472 21.9413 13.6243 20.6172 14.0604 19.375H11.625V17.4375H15.0311ZM3.875 7.75V5.8125H7.75V7.75H3.875ZM11.625 7.75V5.8125H27.125V7.75H11.625ZM11.625 13.5625V11.625H27.125V13.5625H11.625ZM3.875 13.5625V11.625H7.75V13.5625H3.875ZM3.875 19.375V17.4375H7.75V19.375H3.875ZM3.875 25.1875V23.25H7.75V25.1875H3.875Z" fill="currentcolor" />
@@ -49,8 +61,8 @@
 
 						</div>
 
-						</CustomAuthorized>
-					</CustomAuthorizedView>
+						</PassOneCheck>
+					</RoleCkeck>
 
 				</div>
 
@@ -124,14 +136,14 @@
 						</div>
 					</div>
 
-					<CustomAuthorizedView CheckAuthentication=true>
-						<CustomAuthorized>
+					<RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"})">
+						<PassOneCheck>
 							<div class="ButtonRatingitem-container">
-								<button class="ButtonRatingitem" data-toggle="modal" data-target="#exampleModal"> Rate Movie</button>
-								<Classification MovieAPIId=@MovieId MovieId="@Movie.Id"></Classification>
+								<button class="ButtonRatingitem" data-toggle="modal" data-target="#RateModel"> Rate Movie</button>
+								<Classification MovieAPIId=@MovieId MovieId="@Movie.Id" OnRatingSaved="OnRatingSaved" />
 							</div>
-						</CustomAuthorized>
-					</CustomAuthorizedView>
+						</PassOneCheck>
+					</RoleCkeck>
 
 				</div>
 
@@ -139,10 +151,18 @@
 
 		</div>
 
-		<div class="Comments-content" >
-			<Comments MovieId=@MovieId></Comments>
+		<div class="page-bottom" >
+
+			<TabButtonsBar ActiveTab="0" OnTabChange="OnTabChange" TabNames="@_tabNames" 
+				Background_Style="background: linear-gradient( to top, rgba(0,0,0,1), rgba(0,0,0,0) ) !important"
+			/>
+
+			<div class="page-bottom-content">
+				<Comments MovieId=@MovieId LikedComments="@_likedComents" DislikedComments="@_dislikedComents"></Comments>
+			</div>
+
 		</div>
-	
+
 	}
 	else
 	{

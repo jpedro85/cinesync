@@ -1,0 +1,8 @@
+﻿<div class="tab-item @_active"
+    @onclick="(e) => { OnClick(); }"
+    @onmouseenter="(e) => { OnMove(true); }" 
+    @onmouseleave="(e) => { OnMove(false); }"
+>
+    <div>@Text</div>
+    <div class="tab-item-line @_Animation @_active"></div>
+</div>

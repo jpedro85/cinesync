@@ -1,14 +1,13 @@
-﻿using CineSync.Components.Navs;
-using CineSync.Data;
+﻿using CineSync.Data;
+using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace CineSync.Components.Layout
 {
-    public partial class MainLayout
+    public partial class MainLayout : LayoutComponentBase
     {
 
         [Inject]
@@ -18,32 +17,63 @@ namespace CineSync.Components.Layout
         public UserManager<ApplicationUser> UserManager { get; set; }
 
         [Inject]
+        public UserManager DbUserManager { get; set; }
+
+		[Inject]
+		public UserRoleManager<ApplicationUser> DbUserRoleManager { get; set; }
+
+		[Inject]
         public LayoutService LayoutService { get; set; }
+
+        [Inject]
+        public NavBarEvents NavBarEvents { get; set; }
 
         public ApplicationUser? AuthenticatedUser { get; set; }
 
+        private string UserId { get; set; }
+
+        public ICollection<string> UserRoles { get; set; } = new List<string>();
+        
         private bool _hasSearch = true;
 
-		protected override async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
-			await CheckLoginState();
+            await CheckLoginState();
+            await GetUserRoles();
             LayoutService.MainLayout = this;
         }
 
         private async Task CheckLoginState()
         {
-            AuthenticationState authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            AuthenticatedUser = await UserManager.GetUserAsync(authState.User);
+            AuthenticationState authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();   
+            string? userId = UserManager.GetUserId(authState.User);
 
-            Console.WriteLine($"is User {AuthenticatedUser == null}");
-        }
-        public void RemoveSearchButton()
+			Console.WriteLine($"is User {userId == null}");
+            if(userId != null)
+                AuthenticatedUser = await DbUserManager.GetFirstByConditionAsync(u => u.Id == userId, "Following", "Followers");
+			Console.WriteLine($"{AuthenticatedUser?.Following?.Count},{AuthenticatedUser?.Followers?.Count}");
+
+		}
+
+        private async Task GetUserRoles() 
+        {
+            if(AuthenticatedUser != null)
+                UserRoles = await DbUserRoleManager.GetRolesOfUserAsync(AuthenticatedUser) ;
+		}
+
+		public void RemoveSearchButton()
         {
             _hasSearch = false;
 
-            InvokeAsync(() => {
+            InvokeAsync(() =>
+            {
                 StateHasChanged();
             });
+        }
+
+        public async Task TriggerNavBarReRender()
+        {
+            await NavBarEvents.RequestNavBarReRender();
         }
 
     }
