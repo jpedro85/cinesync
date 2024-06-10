@@ -94,26 +94,35 @@ hr {
     transition: transform 0.2s;
 }
 
-.likeStatusButton:hover {
-    color: rgb(128, 128, 128);
-    transform: scale(1.4);
-    transition: transform 0.2s;
-}
+    .likeStatusButton:hover {
+        color: rgb(128, 128, 128) !important;
+        transform: scale(1.4);
+        transition: transform 0.2s;
+    }
 
-.likeStatusButton:active {
-    color: rgb(0, 236, 252);
-    transform: scale(1.6);
-    transition: transform 0.2s;
-}
+    .likeStatusButton:active {
+        color: rgb(0, 236, 252);
+        transform: scale(1.6);
+        transition: transform 0.2s;
+    }
+
+    .likeStatusButton.active 
+    {
+        color: rgb(0, 236, 252);
+    }
+
+    .likeStatusButton.active {
+        color: rgb(0, 211, 225);
+    }
 
 
-.comment-actions {
-    padding: 5px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-}
+    .comment-actions {
+        padding: 5px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+    }
 
 .comment-actions-ritgh {
     display: flex;

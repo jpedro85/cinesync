@@ -1,0 +1,12 @@
+﻿@if (HasAllRoles())
+{
+	@PassAllChecks
+}
+else if (HasOneRole())
+{
+	@PassOneCheck;
+}
+else
+{
+	@NotPassCheck
+}

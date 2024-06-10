@@ -22,8 +22,10 @@ namespace CineSync.Components.Layout
         [Parameter]
         public ApplicationUser? User { get; set; }
 
-        private string IsActive { get; set; } = string.Empty;
+        [Parameter]
+        public ICollection<string> UserRoles { get; set; }
 
+        private string IsActive { get; set; } = string.Empty;
 
         public void OverlayClick( MouseEventArgs e)
         {
@@ -58,7 +60,7 @@ namespace CineSync.Components.Layout
 
         protected override void OnInitialized()
         {
-            NavBarEvents.OnMenuChange += this.ChangeState;
+			NavBarEvents.OnMenuChange += this.ChangeState;
         }
 
     }

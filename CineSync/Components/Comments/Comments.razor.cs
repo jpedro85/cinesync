@@ -11,14 +11,20 @@ namespace CineSync.Components.Comments
 {
     public partial class Comments : ComponentBase, IDisposable
     {
-        [Parameter]
-        public int MovieId { get; set; }
-
         [Inject]
         private LayoutService LayoutService { get; set; }
 
         [Inject]
         private CommentManager CommentManager { get; set; }
+
+        [Parameter]
+        public int MovieId { get; set; }
+
+        [Parameter]
+        public ICollection<UserLikedComment> LikedComments { get; set; }
+
+        [Parameter]
+        public ICollection<UserDislikedComment> DislikedComments { get; set; }
 
         // Maxsize is 4MB
         private const long MaxFileSize = 4 * 1024 * 1024;
@@ -33,9 +39,12 @@ namespace CineSync.Components.Comments
 
         private ConcurrentBag<string> ErrorMessages = new ConcurrentBag<string>();
 
-        protected override void OnInitialized()
+        private ICollection<string> AuthenticatedUserRoles { get; set; } = [];
+
+        protected override async void OnInitialized()
         {
             MainLayout = LayoutService.MainLayout;
+            AuthenticatedUserRoles = LayoutService.MainLayout.UserRoles;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

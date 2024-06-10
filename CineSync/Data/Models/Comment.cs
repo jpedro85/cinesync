@@ -7,6 +7,8 @@ namespace CineSync.Data.Models
     {
         public uint Id { get; set; }
 
+        public uint MovieId { get; set; }
+
         [Required]
         public ApplicationUser? Autor { get; set; }
 

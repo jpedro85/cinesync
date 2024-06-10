@@ -1,7 +1,7 @@
 ﻿@rendermode InteractiveServer
 
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Components.Authorization
+@using CineSync.Components.Utils.Authorization;
 @using CineSync.Data
 
 <div @onclick="OverlayClick" class="Obverlay @IsActive" >
@@ -25,11 +25,11 @@
             </NavLink>
         </div>
 
-        <CustomAuthorizedView CheckAuthentication=true DebugName="A">
-            <CustomAuthorized>
+        <RoleCkeck AuthenticatedUserRoles="@UserRoles" Roles="@( new string[] {"user"} )">
+            <PassAllChecks>
 
-                <CustomAuthorizedView DebugName="B" CheckAuthentication=false User="@User" Roles="user,moderator,admin,super_admin">
-                    <CustomAuthorized>
+                <RoleCkeck AuthenticatedUserRoles="@UserRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
+                    <PassOneCheck>
 
                         <div class="menu-item-conteiner @IsActive">
                             <NavLink href="/Profile" >
@@ -135,12 +135,12 @@
                             </NavLink>
                         </div>
 
-                    </CustomAuthorized>
-                </CustomAuthorizedView>
+                    </PassOneCheck>
+                </RoleCkeck>
 
 
-                <CustomAuthorizedView DebugName="C" CheckAuthentication=false User="@User" Roles="moderator,admin,super_admin">
-                    <CustomAuthorized>
+                <RoleCkeck AuthenticatedUserRoles="@UserRoles" Roles="@( new string[] {"moderator","admin","super_admin"} )">
+                    <PassOneCheck>
 
                         <div class="menu-item-conteiner">
                             <div class="sidebar-separator"></div>
@@ -164,8 +164,8 @@
                             </NavLink>
                         </div>
 
-                    </CustomAuthorized>
-                </CustomAuthorizedView>
+                    </PassOneCheck>
+                </RoleCkeck>
 
 
                 @if (User?.Following != null && User?.Following.Count > 0)
@@ -215,8 +215,8 @@
                     </div>
                 </form>
 
-            </CustomAuthorized>
-        </CustomAuthorizedView>
+            </PassAllChecks>
+        </RoleCkeck>
 
     </div>
 

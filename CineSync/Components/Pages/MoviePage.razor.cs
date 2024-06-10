@@ -3,26 +3,36 @@ using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using CineSync.Data.Models;
 using CineSync.Components.Buttons;
+using CineSync.Services;
+using CineSync.DbManagers;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace CineSync.Components.Pages
 {
     public partial class MoviePage : ComponentBase
     {
 
-        [Parameter]
-        public int MovieId { get; set; }
+		[Inject]
+		private HttpClient _client { get; set; }
 
-        [Inject]
-        private HttpClient _client { get; set; }
+		[Inject]
+        private LayoutService LayoutService { get; set; }
 
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
 
-        private bool InViewed { get; set; }
+        [Inject]
+        public DbManager<UserLikedComment> DbUserLikedComment { get; set; }
 
-        private bool InFavourites { get; set; }
+        [Inject]
+        public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
 
-        private string MovieTitle { get; set; }
+        [Inject]
+        private UserManager DbUserManager { get; set; }
+
+        [Parameter]
+        public int MovieId { get; set; }
 
         private readonly string _youtubeLink = "https://www.youtube.com/embed/";
 
@@ -34,19 +44,43 @@ namespace CineSync.Components.Pages
 
         private string[] _tabNames = { "Comments", "Discutions" };
 
+        private ICollection<string> _userRoles;
+
+        private ICollection<UserLikedComment> _likedComents = new List<UserLikedComment>();
+
+        private ICollection<UserDislikedComment> _dislikedComents = new List<UserDislikedComment>();
+
+        private ApplicationUser _authenticatedUser;
+
         protected override async Task OnInitializedAsync()
         {
+            _userRoles = LayoutService.MainLayout.UserRoles;
+            _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            Movie = await GetMovieDetails();
+            GetUserStatusComments();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
-            {
-                Movie = await GetMovieDetails();
-                StateHasChanged();
-            }
         }
 
+        private void GetUserStatusComments() 
+        {
+            if(Movie != null && _authenticatedUser != null) 
+            {
+                _likedComents =  DbUserLikedComment.GetByConditionAsync(
+                            likedComment =>  
+                            likedComment.Comment.MovieId == Movie.Id && 
+                            likedComment.UserId == _authenticatedUser.Id 
+                            ).Result.ToList();
+
+                _dislikedComents =  DbUserDislikedComment.GetByConditionAsync(
+                            likedComment =>
+                            likedComment.Comment.MovieId == Movie.Id &&
+                            likedComment.UserId == _authenticatedUser.Id
+                            ).Result.ToList();
+            }
+        }
 
 
         private async Task<Movie?> GetMovieDetails()
