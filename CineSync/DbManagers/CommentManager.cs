@@ -17,7 +17,7 @@ namespace CineSync.DbManagers
     {
         private readonly IRepositoryAsync<Movie> _movieRepository;
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
-        
+
 
         /// <summary>
         /// Initializes a new instance of the CommentManager class, setting up repositories for movie and user entities.
@@ -96,8 +96,8 @@ namespace CineSync.DbManagers
             if (user.LikedComments == null)
                 user.LikedComments = new List<UserLikedComment>();
 
-            user.LikedComments.Add( 
-                    new UserLikedComment() 
+            user.LikedComments.Add(
+                    new UserLikedComment()
                     {
                         Comment = comment,
                         User = user,
@@ -173,33 +173,49 @@ namespace CineSync.DbManagers
 
             return await _unitOfWork.SaveChangesAsync();
         }
-        
+
+        // NOTE: Need to check if it actually searches the Attachment as its not a database object
         /// <summary>
         /// Adds an attachment to a specific comment.
         /// </summary>
         /// <param name="comment">The comment to add the attachment to.</param>
         /// <param name="attachment">The attachment to be added.</param>
-        public async Task AddAttachmentAsync(Comment comment, CommentAttachment attachment)
+        public async Task<bool> AddAttachmentAsync(Comment comment, CommentAttachment attachment)
         {
-            if (comment.Attachements != null && !comment.Attachements.Contains(attachment))
+            Comment Comment = await _repository.GetFirstByConditionAsync(c => c.Id == comment.Id, "Attachements");
+
+            if (Comment == null || Comment.Attachements == null)
+                return false;
+
+            if (Comment.Attachements != null && !Comment.Attachements.Contains(attachment))
             {
                 comment.Attachements.Add(attachment);
-                await _unitOfWork.SaveChangesAsync();
+                return await _unitOfWork.SaveChangesAsync();
             }
+
+            return true;
         }
 
+        // NOTE: Need to check if it actually searches the Attachment as its not a database object
         /// <summary>
         /// Removes an attachment from a specific comment.
         /// </summary>
         /// <param name="comment">The comment from which the attachment will be removed.</param>
         /// <param name="attachment">The attachment to remove.</param>
-        public async Task RemoveAttachmentAsync(Comment discussion, CommentAttachment attachment)
+        public async Task<bool> RemoveAttachmentAsync(Comment comment, CommentAttachment attachment)
         {
-            if (discussion.Attachements != null && discussion.Attachements.Contains(attachment))
+            Comment Comment = await _repository.GetFirstByConditionAsync(c => c.Id == comment.Id, "Attachements");
+
+            if (Comment == null || Comment.Attachements == null)
+                return false;
+
+            if (Comment.Attachements != null && !Comment.Attachements.Contains(attachment))
             {
-                discussion.Attachements.Remove(attachment);
-                await _unitOfWork.SaveChangesAsync();
+                comment.Attachements.Remove(attachment);
+                return await _unitOfWork.SaveChangesAsync();
             }
+
+            return true;
         }
 
         /// <summary>

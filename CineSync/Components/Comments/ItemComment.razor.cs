@@ -8,14 +8,8 @@ namespace CineSync.Components.Comments
 {
     public partial class ItemComment : ComponentBase
     {
-        [Inject]
-        private UserManager UserManager { get; set; }
-
-        [Inject]
-        private CommentManager CommentManager { get; set; }
-
-        [Inject]
-        private LayoutService LayoutService { get; set; }
+        [Parameter]
+        public EventCallback OnRemove { get; set; }
 
         [Parameter]
         public Comment Comment { get; set; }
@@ -26,15 +20,23 @@ namespace CineSync.Components.Comments
         [Parameter]
         public bool DisLiked { get; set; } = false;
 
+        [Inject]
+        private UserManager UserManager { get; set; }
+
+        [Inject]
+        private CommentManager CommentManager { get; set; }
+
+        [Inject]
+        private LayoutService LayoutService { get; set; }
+
         private bool _Liked { get; set; }
+
         private bool _Disliked { get; set; }
 
-        public delegate void Action();
-
-        [Parameter]
-        public Action OnRemove { get; set; } = () => { };
+        private Comment _commentToRemove;
 
         private ApplicationUser _authenticatedUser;
+
         private ICollection<string> _userRoles;
 
         protected override void OnInitialized()
@@ -43,7 +45,6 @@ namespace CineSync.Components.Comments
             _userRoles = LayoutService.MainLayout.UserRoles;
             _Liked = Liked;
             _Disliked = DisLiked;
-
         }
 
         private async void AddLike(Comment commentAddLike)
@@ -123,13 +124,14 @@ namespace CineSync.Components.Comments
         private async void RemoveComment()
         {
             await CommentManager.RemoveAsync(Comment);
-            OnRemove();
+            await OnRemove.InvokeAsync();
         }
 
-        private async void RemoveAttachment(Comment comment, CommentAttachment attachment)
+        private async void RemoveAttachment()
         {
-            await CommentManager.RemoveAttachmentAsync(comment, attachment);
-            OnRemove();
+            Console.WriteLine("Removing attachment with id " + Comment.Id);
+            Console.WriteLine("Comment Content: " + Comment.Content);
+            await OnRemove.InvokeAsync();
         }
 
     }

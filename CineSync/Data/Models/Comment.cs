@@ -26,5 +26,21 @@ namespace CineSync.Data.Models
         public ICollection<UserLikedComment> LikedByUsers { get; set; }
 
         public ICollection<UserDislikedComment> DislikedByUsers { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+
+            if (obj == null || !(obj is Comment))
+            {
+                return false;
+            }
+
+            return ((Comment)obj).Id == this.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }

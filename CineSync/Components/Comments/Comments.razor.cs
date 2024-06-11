@@ -126,6 +126,12 @@ namespace CineSync.Components.Comments
             StateHasChanged();
         }
 
+        private async void RemoveAttachment(IBrowserFile key)
+        {
+            selectedFilesWithPreviews.TryRemove(key, out _);
+            await InvokeAsync(StateHasChanged);
+        }
+
         public void Dispose()
         {
 
