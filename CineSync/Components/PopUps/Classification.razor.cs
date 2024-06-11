@@ -27,9 +27,6 @@ namespace CineSync.Components.PopUps
         [Inject]
         private LayoutService LayoutService { get; set; }
 
-        [Inject]
-        private IJSRuntime JSRuntime { get; set; }
-
         private MainLayout MainLayout { get; set; }
 
         public ApplicationUser AuthenticatedUser { get; set; }
@@ -49,8 +46,7 @@ namespace CineSync.Components.PopUps
         private async void SaveRating()
         {
             await MovieManager.AddRating(Rating, MovieAPIId, MainLayout.AuthenticatedUser.Id);
-            await OnRatingSaved.InvokeAsync(null);
-            // await JSRuntime.InvokeVoidAsync("window.location.reload");
+            await OnRatingSaved.InvokeAsync();
         }
     }
 }

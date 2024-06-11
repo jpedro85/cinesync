@@ -2,16 +2,16 @@
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using CineSync.Data.Models;
-using CineSync.Components.Buttons;
 using CineSync.Services;
 using CineSync.DbManagers;
-using Microsoft.AspNetCore.Identity;
-using System.Linq;
 
 namespace CineSync.Components.Pages
 {
     public partial class MoviePage : ComponentBase
     {
+
+        [Parameter]
+        public int MovieId { get; set; }
 
 		[Inject]
 		private HttpClient _client { get; set; }
@@ -29,10 +29,10 @@ namespace CineSync.Components.Pages
         public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
 
         [Inject]
-        private UserManager DbUserManager { get; set; }
+        private UserManager UserManager { get; set; }
 
-        [Parameter]
-        public int MovieId { get; set; }
+        [Inject]
+        private MovieManager MovieManager { get; set; }
 
         private readonly string _youtubeLink = "https://www.youtube.com/embed/";
 
@@ -64,14 +64,14 @@ namespace CineSync.Components.Pages
         {
         }
 
-        private void GetUserStatusComments() 
+        private void GetUserStatusComments()
         {
-            if(Movie != null && _authenticatedUser != null) 
+            if(Movie != null && _authenticatedUser != null)
             {
                 _likedComents =  DbUserLikedComment.GetByConditionAsync(
-                            likedComment =>  
-                            likedComment.Comment.MovieId == Movie.Id && 
-                            likedComment.UserId == _authenticatedUser.Id 
+                            likedComment =>
+                            likedComment.Comment.MovieId == Movie.Id &&
+                            likedComment.UserId == _authenticatedUser.Id
                             ).Result.ToList();
 
                 _dislikedComents =  DbUserDislikedComment.GetByConditionAsync(
@@ -85,21 +85,23 @@ namespace CineSync.Components.Pages
 
         private async Task<Movie?> GetMovieDetails()
         {
+            Movie = await MovieManager.GetByTmdbId(MovieId);
+            if (Movie != null)
+            {
+                return Movie;
+            }
 
             HttpResponseMessage response = await _client.GetAsync($"movie?id={MovieId}");
-
             if (response.IsSuccessStatusCode)
             {
-                string jsonResponse = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Movie>(jsonResponse);
+                return await MovieManager.GetByTmdbId(MovieId);
             }
             return null;
-
         }
 
         private void OnRatingSaved()
         {
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         private void OnTabChange(string tabName)

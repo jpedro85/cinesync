@@ -33,7 +33,6 @@ namespace CineSync.DbManagers
         /// <returns>A task that represents the asynchronous operation. The task result contains the Movie entity if found, otherwise null.</returns>
         public async Task<Movie?> GetByTmdbId(int tmdbId)
         {
-            // Attempts to find the first movie that matches the given TMDB ID, including its associated genres.
             return await GetFirstByConditionAsync(movie => movie.MovieId == tmdbId, "Genres");
         }
 
