@@ -1,6 +1,12 @@
 ﻿@using CineSync.Components.Movies
 @using CineSync.Core.Adapters.ApiAdapters
 @using CineSync.Data.Models
+@using CineSync.Components.PopUps;
+@using CineSync.Data;
+@using CineSync.Data.Models;
+@using CineSync.DbManagers;
+@using CineSync.Services;
+@using Microsoft.AspNetCore.Components;
 
 <div class="collection-main-container">
     <div class="collection-info">
@@ -9,6 +15,10 @@
             <svg @onclick="GoToCollectionManager" class="collection-icon-svg" viewBox="0 0 13 13" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.5 12.5H9M12.5 12.5V9M12.5 12.5L8.5 8.5M9 0.5H12.5M12.5 0.5V4M12.5 0.5L8.5 4.5M4 0.5H0.5M0.5 0.5V4M0.5 0.5L4.5 4.5M0.5 9V12.5M0.5 12.5H4M0.5 12.5L4.5 8.5" stroke="currentcolor" />
             </svg>
+            @if (MovieCollection.Id >= 5)
+            {
+                <button>dads</button>   
+            }
         </div>
     </div>
         
@@ -28,9 +38,9 @@
                 <img id="no-results-found-icon" src="NoMovies.png" alt="Sory imoji" />
                 There is no movies in the collection.
             </div>
+                @MovieCollection.CollectionMovies.Count()
         }
         <div class="collection-movies-shadow-right"></div>
-
     </div>
 </div>
 
@@ -41,6 +51,9 @@
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
+
+    private ICollection<MovieCollection>? movieCollections { get; set; }
+    
 
     private void MovieClickhandler(Movie movie)
     {
