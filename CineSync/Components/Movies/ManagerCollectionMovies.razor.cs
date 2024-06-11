@@ -24,6 +24,7 @@ namespace CineSync.Components.Movies
 
         private async void RemoveMovieFromCollection(CollectionsMovies collectionsMovies)
         {
+
             await CollectionsManager.RemoveMovieFromCollectionAsync(AuthenticatedUser.Id, collectionsMovies.MovieCollection.Name, collectionsMovies.Movie.Id);
             AllMovies.Remove(collectionsMovies);
             StateHasChanged();

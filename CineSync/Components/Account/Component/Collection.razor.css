@@ -125,6 +125,7 @@
         background-color: #1824ff;
     }
 .remove-collection {
-    position: relative;
-    left: 70%;
+    display:flex;
+    position: absolute;
+    left: 80%;
 }

@@ -8,31 +8,31 @@
 @using CineSync.Services;
 @using Microsoft.AspNetCore.Components;
 @using CineSync.Components.Buttons
+@inject ILogger<Collection> Logger
 
 <div class="collection-main-container">
     <div class="collection-info">
         <div class="collection-name">@MovieCollection.Name</div>
-        <div class="collection-icons" >
+        <div class="collection-icons">
             <svg @onclick="GoToCollectionManager" class="collection-icon-svg" viewBox="0 0 13 13" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.5 12.5H9M12.5 12.5V9M12.5 12.5L8.5 8.5M9 0.5H12.5M12.5 0.5V4M12.5 0.5L8.5 4.5M4 0.5H0.5M0.5 0.5V4M0.5 0.5L4.5 4.5M0.5 9V12.5M0.5 12.5H4M0.5 12.5L4.5 8.5" stroke="currentcolor" />
             </svg>
         </div>
     </div>
-        
+
     <div class="collection-movies">
         <div class="collection-movies-shadow-left"></div>
         @if (!movies.Contains(MovieCollection.Name))
-            {
-                <div class="remove-collection">
-                    <RectButton1 Text="Remove"></RectButton1>
-                </div> 
-            }
+        {
+            <div class="remove-collection">
+                <RectButton1 Text="Remove" OnClick="RemoveCollection"></RectButton1>
+            </div>
+        }
         @foreach (CollectionsMovies collectionsMovies in MovieCollection.CollectionMovies)
         {
             <div @onclick="(e) => MovieClickhandler(collectionsMovies.Movie)">
                 <MoviePlace Movie=collectionsMovies.Movie Width="250" Heigth="350"></MoviePlace>
             </div>
-
         }
         @if (MovieCollection.CollectionMovies.Count() == 0)
         {
@@ -40,25 +40,28 @@
                 <img id="no-results-found-icon" src="NoMovies.png" alt="Sory imoji" />
                 There is no movies in the collection.
             </div>
-                @MovieCollection.CollectionMovies.Count()
+            @MovieCollection.CollectionMovies.Count()
         }
         <div class="collection-movies-shadow-right"></div>
     </div>
 </div>
 
 @code {
-
     [Parameter]
     public MovieCollection MovieCollection { get; set; }
+
+    [Parameter]
+    public ApplicationUser? AuthenticatedUser { get; set; }
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
+    [Inject]
+    public CollectionsManager CollectionsManager { get; set; }
+
     private ICollection<MovieCollection>? movieCollections { get; set; }
 
-    private ICollection <string> movies =new string [] { "Favorites", "Watched", "Classified", "Watch Later" };
-
-
+    private ICollection<string> movies = new string[] { "Favorites", "Watched", "Classified", "Watch Later" };
 
     private void MovieClickhandler(Movie movie)
     {
@@ -67,7 +70,30 @@
 
     private void GoToCollectionManager(MouseEventArgs e)
     {
-        NavigationManager.NavigateTo($"ManageCollection/{MovieCollection.Name!.Replace(" ","_")}");
+        NavigationManager.NavigateTo($"ManageCollection/{MovieCollection.Name!.Replace(" ", "_")}");
     }
+    private async void RemoveCollection()
+    {
+        // Log para verificar os valores
+        Logger.LogInformation($"AuthenticatedUser is {(AuthenticatedUser == null ? "null" : "not null")}");
+        Logger.LogInformation($"CollectionsManager is {(CollectionsManager == null ? "null" : "not null")}");
 
+        // Verificar se AuthenticatedUser e CollectionsManager não são null
+        if (AuthenticatedUser == null || CollectionsManager == null)
+        {
+            throw new InvalidOperationException("AuthenticatedUser or CollectionsManager is not set.");
+        }
+
+        // Chame o método apropriado para remover a coleção
+        await CollectionsManager.RemoveCollectionAsync(AuthenticatedUser.Id, MovieCollection.Name);
+
+        // Opcionalmente, remova a coleção da lista de coleções, se aplicável
+        movieCollections?.Remove(MovieCollection);
+
+        // Atualize a interface
+        StateHasChanged();
+
+        // Navegue para outra página ou atualize a página atual
+        NavigationManager.NavigateTo("/Collections");
+    }
 }
