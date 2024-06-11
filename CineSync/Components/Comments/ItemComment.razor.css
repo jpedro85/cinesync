@@ -94,35 +94,34 @@ hr {
     transition: transform 0.2s;
 }
 
-    .likeStatusButton:hover {
-        color: rgb(128, 128, 128) !important;
-        transform: scale(1.4);
-        transition: transform 0.2s;
-    }
+.likeStatusButton:hover {
+    color: rgb(128, 128, 128) !important;
+    transform: scale(1.4);
+    transition: transform 0.2s;
+}
 
-    .likeStatusButton:active {
-        color: rgb(0, 236, 252);
-        transform: scale(1.6);
-        transition: transform 0.2s;
-    }
+.likeStatusButton:active {
+    color: rgb(0, 236, 252);
+    transform: scale(1.6);
+    transition: transform 0.2s;
+}
 
-    .likeStatusButton.active 
-    {
-        color: rgb(0, 236, 252);
-    }
+.likeStatusButton.active {
+    color: rgb(0, 236, 252);
+}
 
-    .likeStatusButton.active {
-        color: rgb(0, 211, 225);
-    }
+.likeStatusButton.active {
+    color: rgb(0, 211, 225);
+}
 
 
-    .comment-actions {
-        padding: 5px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 20px;
-    }
+.comment-actions {
+    padding: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
 
 .comment-actions-ritgh {
     display: flex;
@@ -145,11 +144,44 @@ hr {
 
 .attachments {
     margin-top: 10px;
+    width: fit-content;
+    position: relative;
 }
 
-.attachments > img {
+.attachments>img {
     max-width: 300px;
     height: auto;
+    display: block;
+}
+
+.hover-button {
+    position: absolute;
+    top: 0%;
+    left: 100%;
+    transform: translate(-50%, -50%);
+    display: none;
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+}
+
+.svg-size {
+    height: 25px;
+    width: 25px;
+}
+
+.attachments:hover .hover-button {
+    display: flex;
+    background: #0a0a0a;
+}
+
+.hover-button:hover {
+    color: rgb(48 187 243);
 }
 
 .comment-options {
