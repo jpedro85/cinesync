@@ -127,10 +127,12 @@ namespace CineSync.Components.Comments
             await OnRemove.InvokeAsync();
         }
 
+        // WARN: May be Implemented in a later date
         private async void RemoveAttachment()
         {
             Console.WriteLine("Removing attachment with id " + Comment.Id);
             Console.WriteLine("Comment Content: " + Comment.Content);
+            // await CommentManager.RemoveAttachmentAsync(comment, attachment);
             await OnRemove.InvokeAsync();
         }
 
