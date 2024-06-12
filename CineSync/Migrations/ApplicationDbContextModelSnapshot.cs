@@ -149,7 +149,7 @@ namespace CineSync.Migrations
                     b.Property<uint?>("DiscussionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("MovieId")
+                    b.Property<uint>("MovieId")
                         .HasColumnType("INTEGER");
 
                     b.Property<long>("NumberOfDislikes")
@@ -621,7 +621,9 @@ namespace CineSync.Migrations
 
                     b.HasOne("CineSync.Data.Models.Movie", null)
                         .WithMany("Comments")
-                        .HasForeignKey("MovieId");
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Autor");
                 });
