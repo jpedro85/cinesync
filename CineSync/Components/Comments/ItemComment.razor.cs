@@ -11,8 +11,14 @@ namespace CineSync.Components.Comments
 {
     public partial class ItemComment : ComponentBase
     {
-        [Parameter]
-        public EventCallback OnChange { get; set; }
+        [Inject]
+        private UserManager UserManager { get; set; }
+
+        [Inject]
+        private CommentManager CommentManager { get; set; }
+
+        [Inject]
+        private LayoutService LayoutService { get; set; }
 
         [Parameter]
         public Comment Comment { get; set; }
@@ -39,20 +45,8 @@ namespace CineSync.Components.Comments
         [Parameter]
         public LikeStatusChange OnlikeChange { get; set; } = (s) => { };
 
-        [Inject]
-        private UserManager UserManager { get; set; }
-
-        [Inject]
-        private CommentManager CommentManager { get; set; }
-
-        [Inject]
-        private LayoutService LayoutService { get; set; }
-
-        private bool _Liked { get; set; }
-
-        private bool _Disliked { get; set; }
-
-        private Comment _commentToRemove;
+        [Parameter]
+        public EventCallback OnChange { get; set; }
 
         private ApplicationUser _authenticatedUser;
 
@@ -123,9 +117,9 @@ namespace CineSync.Components.Comments
 
                 _authenticatedUser.Following.Add(Comment.Autor!);
 
-                await OnChange.InvokeAsync();
                 StateHasChanged();
                 LayoutService.MainLayout.TriggerMenuReRender();
+                await OnChange.InvokeAsync();
             }
         }
 
@@ -138,9 +132,9 @@ namespace CineSync.Components.Comments
 
                 _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Comment.Autor!.Id).ToList();
 
-                await OnChange.InvokeAsync();
                 StateHasChanged();
                 LayoutService.MainLayout.TriggerMenuReRender();
+                await OnChange.InvokeAsync();
             }
         }
 
