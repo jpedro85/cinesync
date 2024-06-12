@@ -36,6 +36,7 @@ namespace CineSync.Components.Comments
         private Comment comment = new Comment();
 
         private ConcurrentDictionary<IBrowserFile, byte[]> selectedFilesWithPreviews = new ConcurrentDictionary<IBrowserFile, byte[]>();
+        private ConcurrentDictionary<int, IBrowserFile> fileHashCodes = new ConcurrentDictionary<int, IBrowserFile>();
 
         private ConcurrentBag<string> ErrorMessages = new ConcurrentBag<string>();
 
@@ -83,16 +84,17 @@ namespace CineSync.Components.Comments
 
         }
 
-        private async Task ProcessFile(IBrowserFile attchment, string fileType)
+        private async Task ProcessFile(IBrowserFile attachment, string fileType)
         {
             try
             {
-                byte[] buffer = await ImageConverter.ReadImageAsBase64Async(attchment, MaxFileSize);
-                selectedFilesWithPreviews[attchment] = buffer;
+                byte[] buffer = await ImageConverter.ReadImageAsBase64Async(attachment, MaxFileSize);
+                selectedFilesWithPreviews[attachment] = buffer;
+                fileHashCodes[attachment.GetHashCode()] = attachment;
             }
             catch (Exception ex)
             {
-                ErrorMessages.Add($"An error occurred while reading the file {attchment.Name}: {ex.Message}");
+                ErrorMessages.Add($"An error occurred while reading the file {attachment.Name}: {ex.Message}");
             }
         }
 
@@ -124,6 +126,21 @@ namespace CineSync.Components.Comments
             selectedFilesWithPreviews.Clear();
 
             StateHasChanged();
+        }
+
+        private async void RemoveAttachment(int key)
+        {
+            int keyHashCode = key.GetHashCode();
+            // IBrowserFile fileToRemove = selectedFilesWithPreviews.Keys.FirstOrDefault(file => file.GetHashCode() == key.GetHashCode());
+
+            // if (fileToRemove != null)
+            if (fileHashCodes.TryGetValue(keyHashCode, out var fileToRemove))
+            {
+                selectedFilesWithPreviews.TryRemove(fileToRemove, out _);
+                fileHashCodes.TryRemove(keyHashCode, out _);
+            }
+
+            await InvokeAsync(StateHasChanged);
         }
 
         public void Dispose()

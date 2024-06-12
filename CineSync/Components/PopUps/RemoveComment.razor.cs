@@ -1,14 +1,30 @@
 ﻿using CineSync.Data.Models;
-using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components;
+
 
 namespace CineSync.Components.PopUps
 {
-    public partial class RemoveComment
+    public partial class RemoveComment : ComponentBase
     {
-        public delegate void CallbackAction();
+        [Parameter]
+        public Comment Comment { get; set; }
 
         [Parameter]
-        public Action Callback { get; set; } = () => { };
+        public EventCallback OnRemove { get; set; }
+
+        private PopUpLayout PopUpLayout { get; set; }
+
+        private string Id { get; set; } = "RemoveCommentModal_";
+
+        protected override void OnInitialized()
+        {
+            Id += Comment.Id;
+        }
+
+
+        private async void ExecuteRemoveComment()
+        {
+            await OnRemove.InvokeAsync();
+        }
     }
 }
