@@ -14,6 +14,11 @@ namespace CineSync.Components.PopUps
         [Inject]
         private LayoutService LayoutService { get; set; }
 
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
+        private string ErrorMessage { get; set; } = string.Empty;
+
         private ApplicationUser AuthenticatedUser { get; set; }
 
         protected override void OnInitialized()
@@ -23,7 +28,16 @@ namespace CineSync.Components.PopUps
 
         private async void DeleteAccount()
         {
-            Console.WriteLine(await UserManager.DeleteAccountAsync(AuthenticatedUser.Id));
+            ErrorMessage = string.Empty;
+            if (await UserManager.DeleteAccountAsync(AuthenticatedUser.Id))
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                ErrorMessage = "It seems an error occurred while deleting your account";
+            }
+            StateHasChanged();
         }
 
     }

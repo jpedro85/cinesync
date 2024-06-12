@@ -46,7 +46,7 @@
     {
         <ItemComment
             Comment="@comment"
-            OnRemove="() => { InvokeAsync(StateHasChanged); }"
+            OnChange="() => { InvokeAsync(StateHasChanged); }"
             Liked="@( LikedComments.Any( uLike => uLike.CommentId == comment.Id ) )"
             DisLiked="@( DislikedComments.Any( uDisLike => uDisLike.CommentId == comment.Id ) )">
         </ItemComment>

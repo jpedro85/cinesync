@@ -9,7 +9,7 @@ namespace CineSync.Components.Comments
     public partial class ItemComment : ComponentBase
     {
         [Parameter]
-        public EventCallback OnRemove { get; set; }
+        public EventCallback OnChange { get; set; }
 
         [Parameter]
         public Comment Comment { get; set; }
@@ -104,7 +104,7 @@ namespace CineSync.Components.Comments
 
                 _authenticatedUser.Following.Add(Comment.Autor!);
 
-                StateHasChanged();
+                await OnChange.InvokeAsync();
             }
         }
 
@@ -117,14 +117,14 @@ namespace CineSync.Components.Comments
 
                 _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Comment.Autor!.Id).ToList();
 
-                StateHasChanged();
+                await OnChange.InvokeAsync();
             }
         }
 
         private async void RemoveComment()
         {
             await CommentManager.RemoveAsync(Comment);
-            await OnRemove.InvokeAsync();
+            await OnChange.InvokeAsync();
         }
 
         // WARN: May be Implemented in a later date
@@ -133,7 +133,7 @@ namespace CineSync.Components.Comments
             Console.WriteLine("Removing attachment with id " + Comment.Id);
             Console.WriteLine("Comment Content: " + Comment.Content);
             // await CommentManager.RemoveAttachmentAsync(comment, attachment);
-            await OnRemove.InvokeAsync();
+            await OnChange.InvokeAsync();
         }
 
     }

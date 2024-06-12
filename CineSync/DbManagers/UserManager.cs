@@ -168,8 +168,7 @@ namespace CineSync.DbManagers
             };
 
             await Task.WhenAll(updateTasks);
-            await RemoveAsync(user);
-            return await _unitOfWork.SaveChangesAsync();
+            return await RemoveAsync(user);
         }
 
 
