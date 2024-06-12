@@ -26,6 +26,9 @@ namespace CineSync.Components.Layout
         public LayoutService LayoutService { get; set; }
 
         [Inject]
+        public MenuService MenuService { get; set; }
+
+        [Inject]
         public NavBarEvents NavBarEvents { get; set; }
 
         public ApplicationUser? AuthenticatedUser { get; set; }
@@ -50,8 +53,8 @@ namespace CineSync.Components.Layout
 
 			Console.WriteLine($"is User {userId == null}");
             if(userId != null)
-                AuthenticatedUser = await DbUserManager.GetFirstByConditionAsync(u => u.Id == userId, "Following", "Followers");
-			Console.WriteLine($"{AuthenticatedUser?.Following?.Count},{AuthenticatedUser?.Followers?.Count}");
+                AuthenticatedUser = await DbUserManager.GetFirstByConditionAsync(u => u.Id == userId, "Following", "Followers" );
+            Console.WriteLine($"BrawserUser {AuthenticatedUser?.Following?.Count},{AuthenticatedUser?.Followers?.Count}");
 
 		}
 
@@ -74,6 +77,11 @@ namespace CineSync.Components.Layout
         public async Task TriggerNavBarReRender()
         {
             await NavBarEvents.RequestNavBarReRender();
+        }
+
+        public void TriggerMenuReRender()
+        {
+            MenuService.RequestMenuReRender();
         }
 
     }

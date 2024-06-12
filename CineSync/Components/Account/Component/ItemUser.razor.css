@@ -1,0 +1,24 @@
+﻿.user-container
+{
+    display:flex;
+    flex-direction:row;
+    height:fit-content !important;
+    width:100%;
+    gap:10px;
+    justify-content:flex-start;
+    align-items:center;
+}
+
+.user-image {
+    width: 25px;
+    height: 25px;
+    border-radius:50%;
+}
+
+.userName {
+    color:white;
+}
+
+    .userName.Short {
+        display: none;
+    }

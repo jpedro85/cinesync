@@ -11,23 +11,36 @@ namespace CineSync.Components.Layout
     public partial class Menu : ComponentBase
     {
         [Inject]
+        private LayoutService LayoutService { get; set; }
+
+        [Inject]
         private NavBarEvents NavBarEvents { get; set; }
+
+        [Inject]
+        private MenuService MenuService { get; set; }
 
         [Inject]
         private SignInManager<ApplicationUser> SignInManager { get; set; }
 
-        [Inject]
-        private NavigationManager NavManager { get; set; }
-
-        [Parameter]
-        public ApplicationUser? User { get; set; }
+        public ApplicationUser? AuthenticatedUser { get; set; }
 
         [Parameter]
         public ICollection<string> UserRoles { get; set; }
 
+        private const int MAX_NOT_OPEN_ALLOWED_FOLLOWING_USERS = 4;
+        private const int MAX_OPEN_ALLOWED_FOLLOWING_USERS = 8;
+        private bool _showAll = false;
+
         private string IsActive { get; set; } = string.Empty;
 
-        public void OverlayClick( MouseEventArgs e)
+        protected override void OnInitialized()
+        {
+            MenuService.OnRequestMenuReRender += ReRender;
+            NavBarEvents.OnMenuChange += this.ChangeState;
+            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+        }
+
+        public void CloseMenu( MouseEventArgs e)
         {
             IsActive = "";
 
@@ -37,7 +50,6 @@ namespace CineSync.Components.Layout
             {
                 StateHasChanged();
             });
-
         }
 
         public void ChangeState( bool active)
@@ -58,10 +70,18 @@ namespace CineSync.Components.Layout
 
         }
 
-        protected override void OnInitialized()
+        private void OnClickShowAll(MouseEventArgs e) 
         {
-			NavBarEvents.OnMenuChange += this.ChangeState;
+            _showAll = !_showAll;
+            IsActive = "Active";
+            Console.WriteLine($"IsActive: {IsActive}");
+            StateHasChanged();
         }
 
+        private Task ReRender() 
+        {
+            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            return InvokeAsync(StateHasChanged);
+        }
     }
 }

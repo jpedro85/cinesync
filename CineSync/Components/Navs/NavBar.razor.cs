@@ -25,7 +25,7 @@ namespace CineSync.Components.Navs
 
         private UserImage? UserImage { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             NavBarEvents.OnRequestNavBarReRender += ReRender;
         }
