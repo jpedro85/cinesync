@@ -4,6 +4,7 @@
     flex-direction: column;
     color: rgb(128, 128, 128);
     font-size: 24px;
+    cursor:pointer;
 }
 
     .tab-item:hover {
