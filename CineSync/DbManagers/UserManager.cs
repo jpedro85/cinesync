@@ -148,7 +148,7 @@ namespace CineSync.DbManagers
         public async Task<bool> DeleteAccountAsync(string userId)
         {
             _logger.Log("Fetching the User and the ghostUser", LogTypes.DEBUG);
-            var userTask = GetFirstByConditionAsync(u => u.Id == userId, "Collections");
+            var userTask = GetFirstByConditionAsync(u => u.Id == userId, "Collections", "Followers", "Following");
             var ghostUserTask = GetFirstByConditionAsync(u => u.Id == "0");
             await Task.WhenAll(userTask, ghostUserTask);
 
@@ -159,27 +159,68 @@ namespace CineSync.DbManagers
                 return false;
             }
 
+            var updateTasks = new List<Task>
+            {
+                UpdateUserCommentsAsync(user, ghostUser),
+                UpdateUserCollectionsAsync(user, ghostUser),
+                UpdateUserFollowersAsync(user),
+                UpdateUserFollowingsAsync(user)
+            };
+
+            await Task.WhenAll(updateTasks);
+            await RemoveAsync(user);
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+
+        private async Task UpdateUserCommentsAsync(ApplicationUser user, ApplicationUser ghostUser)
+        {
             _logger.Log("Fetching the User's comments", LogTypes.DEBUG);
             IEnumerable<Comment> comments = await _commentRepository.GetByConditionAsync(c => c.Autor.Id == user.Id);
             if (comments.Any())
             {
                 _logger.Log("Changing the comments author to a ghostUser", LogTypes.DEBUG);
                 Parallel.ForEach(comments, comment =>
-                        {
-                            comment.Autor = ghostUser;
-                        });
+                {
+                    comment.Autor = ghostUser;
+                });
             }
-
-            _logger.Log("Changing the collections author to a ghostUser", LogTypes.DEBUG);
-            foreach (var collection in user.Collections)
-            {
-                collection.ApplicationUser = ghostUser;
-            }
-
-            await RemoveAsync(user);
-
-            return await _unitOfWork.SaveChangesAsync();
         }
 
+        private async Task UpdateUserCollectionsAsync(ApplicationUser user, ApplicationUser ghostUser)
+        {
+            await Task.Run(() =>
+            {
+                _logger.Log("Changing the collections author to a ghostUser", LogTypes.DEBUG);
+                foreach (var collection in user.Collections)
+                {
+                    collection.ApplicationUser = ghostUser;
+                }
+            });
+        }
+
+        private async Task UpdateUserFollowersAsync(ApplicationUser user)
+        {
+            await Task.Run(() =>
+            {
+                _logger.Log("Updating followers counts", LogTypes.DEBUG);
+                foreach (var follower in user.Followers)
+                {
+                    follower.FollowingCount -= 1;
+                }
+            });
+        }
+
+        private async Task UpdateUserFollowingsAsync(ApplicationUser user)
+        {
+            await Task.Run(() =>
+            {
+                _logger.Log("Updating following counts", LogTypes.DEBUG);
+                foreach (var following in user.Following)
+                {
+                    following.FollowersCount -= 1;
+                }
+            });
+        }
     }
 }
