@@ -36,6 +36,7 @@ namespace CineSync.Components.Comments
         private Comment comment = new Comment();
 
         private ConcurrentDictionary<IBrowserFile, byte[]> selectedFilesWithPreviews = new ConcurrentDictionary<IBrowserFile, byte[]>();
+
         private ConcurrentDictionary<int, IBrowserFile> fileHashCodes = new ConcurrentDictionary<int, IBrowserFile>();
 
         private ConcurrentBag<string> ErrorMessages = new ConcurrentBag<string>();
