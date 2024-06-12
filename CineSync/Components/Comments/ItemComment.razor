@@ -8,7 +8,6 @@
 @{
     DateTime today = DateTime.Now;
     int daysInDiference = 0;
-    int monthsInDiference = 0;
     int weeks = 0;
     int years = 0;
 }
@@ -34,7 +33,7 @@
             <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"} )">
                 <PassOneCheck>
 
-                    @if(_authenticatedUser.Id != Comment.Autor.Id)
+                    @if (_authenticatedUser.Id != Comment.Autor.Id && AllowFollow)
                     {
                         @if (_authenticatedUser.Following == null || !_authenticatedUser.Following.Any(user => user.Equals(Comment.Autor)) )
                         {
@@ -115,17 +114,20 @@
                         </div>
                     }
 
-                    <div class="comment-options">
-                        <button class="BtnOptions" data-toggle="modal" data-target="#ReportModal">
-                            <svg width="40" height="40" viewBox="0 0 42 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M27.5275 5.125H14.4725L5.25 14.1279V26.8721L14.4725 35.875H27.5275L36.75 26.8721V14.1279L27.5275 5.125ZM33.25 25.4542L26.075 32.4583H15.925L8.75 25.4542V15.5458L15.925 8.54167H26.075L33.25 15.5458V25.4542Z" fill="currentcolor"/>
-                            <path d="M21 29.0417C21.9665 29.0417 22.75 28.2768 22.75 27.3333C22.75 26.3898 21.9665 25.625 21 25.625C20.0335 25.625 19.25 26.3898 19.25 27.3333C19.25 28.2768 20.0335 29.0417 21 29.0417Z" fill="currentcolor"/>
-                            <path d="M19.25 11.958H22.75V23.9163H19.25V11.958Z" fill="currentcolor"/>
-                        </svg>
-                       </button>
-                       <CommentOptionPopUpClass></CommentOptionPopUpClass>
+                    @if (_authenticatedUser.Id != Comment.Autor.Id)
+                    {
+                        <div class="comment-options">
+                            <button class="BtnOptions" data-toggle="modal" data-target="#ReportModal">
+                                <svg width="40" height="40" viewBox="0 0 42 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M27.5275 5.125H14.4725L5.25 14.1279V26.8721L14.4725 35.875H27.5275L36.75 26.8721V14.1279L27.5275 5.125ZM33.25 25.4542L26.075 32.4583H15.925L8.75 25.4542V15.5458L15.925 8.54167H26.075L33.25 15.5458V25.4542Z" fill="currentcolor"/>
+                                <path d="M21 29.0417C21.9665 29.0417 22.75 28.2768 22.75 27.3333C22.75 26.3898 21.9665 25.625 21 25.625C20.0335 25.625 19.25 26.3898 19.25 27.3333C19.25 28.2768 20.0335 29.0417 21 29.0417Z" fill="currentcolor"/>
+                                <path d="M19.25 11.958H22.75V23.9163H19.25V11.958Z" fill="currentcolor"/>
+                            </svg>
+                           </button>
+                           <CommentOptionPopUpClass></CommentOptionPopUpClass>
 
-                    </div>
+                        </div>
+                    }
 
                 </PassOneCheck>
             </RoleCkeck>

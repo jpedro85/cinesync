@@ -1,0 +1,17 @@
+﻿@using CineSync.Components.Utils
+
+<div class="user-container">
+
+    @if (_image != null)
+    {
+        <img style="@Style" class="user-image @(Short ? "Short" : "" )" src="@(ImageConverter.ConverBytesTo64(_image.ImageData, _image.ContentType))" alt="UserImage" />
+    }
+    else
+    {
+        <img style="@Style" class="user-image @(Short ? "Short" : "" )" src="NoProfilePic.png" alt="UserImage"/>
+    }
+    <div class="userName @(Short ? "Short" : "" )">
+        @User.UserName
+	</div>
+
+</div>

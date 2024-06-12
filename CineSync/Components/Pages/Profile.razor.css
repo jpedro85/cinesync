@@ -1,4 +1,16 @@
-﻿.profile-container {
+﻿.error{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:rgba(0,0,0,0.5);
+    border-radius:25px;
+    width:100%;
+    height:100%;
+    font-size:30px;
+    color:white;
+}
+
+.profile-container {
     background-image: url("BackgorundHome.png");
     min-height: 100%;
     height: 100%;
@@ -27,11 +39,21 @@
 }
 
 .Profile-icon {
-    margin-top: 40px;
+    
     display: flex;
     flex-direction: row;
-    margin-left: 30px;
+    justify-content:center;
+    margin-top:40px;
+}
 
+.button-Conteiner {
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 1;
+    right:40px;
+    width:0px;
 }
 
 .Edit-image-icon {
@@ -39,11 +61,26 @@
     height: 40px;
     width: 40px;
     position: relative;
-    top: 75px;
-    right: 30px;
+    bottom: 0;
     border: 1px solid #000000;
     border-radius: 50%;
+    color: black;
+    fill: black;
+    z-index: 1;
 }
+
+    .Edit-image-icon:hover {
+        background-color: rgb(30,30,30);
+        color: white;
+        fill:white;
+        border: 1px solid white;
+    }
+
+    .Edit-image-icon:active {
+        background-color: rgb(49,49,49);
+        color: white;
+        border: 1px solid white;
+    }
 
 .edit-image {
     color: #000000;
@@ -75,33 +112,52 @@
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    width:100%;
+    padding-left:40px;
+    padding-right:40px;
+    gap:10px;
 }
 
-.Buttons button {
-    margin-top: 10px;
+.buttonComteiner {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
 }
 
 .buttonProfile {
-    font-family: Itim;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-family: itim;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 18px;
     color: #ffffff;
     background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
-    padding: 10px 30px;
-    border: 2px solid #0066cc;
     box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border: 2px solid #0066cc;
     border-radius: 50px;
-    transition: 752ms;
-    transform: translateY(0);
-    align-items: center;
     cursor: pointer;
-    margin-left: auto;
-    width: 180px;
+    min-height: fit-content;
     height: 50px;
+    flex-grow: 1;
+    width: 200px;
+    transition: width 500ms;
+}
 
+.removeFromFollowing,
+.addToFollowing {
+    width: 25px;
+    height: 25px;
 }
 
 .DeleteBTN {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     font-family: Itim;
     font-weight: 500;
     font-size: 14px;
@@ -111,28 +167,32 @@
     border: 2px solid #0066cc;
     box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
     border-radius: 50px;
-    transition: 752ms;
-    transform: translateY(0);
+    transition: width 500ms;
     align-items: center;
     cursor: pointer;
-    margin-left: auto;
-    width: 180px;
+    width: 200px;
     height: 50px;
+    margin-top: 20px;
 }
 
-.DeleteBTN:hover {
-    background: linear-gradient(90deg, #ff9999 0%, #cc0033 100%);
-    color: #000000;
-    border: solid 2px #0066cc;
-    width: 180px;
-}
 
-.buttonProfile:hover {
-    background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
-    color: #000000;
-    border: solid 2px #0066cc;
-    width: 180px;
-}
+    .DeleteBTN:hover {
+        background: linear-gradient(90deg, #ff9999 0%, #cc0033 100%);
+        border: 4px solid #0066cc;
+        color: #000000;
+        border: solid 2px #0066cc;
+        width: 220px;
+        transition: width 752ms;
+    }
+
+    .buttonProfile:hover {
+        background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);
+        border: 4px solid #0066cc;
+        color: #000000;
+        border: solid 2px #0066cc;
+        width: 220px;
+        transition: width 752ms;
+    }
 
 .Profile-info {
     flex-grow: 1;
@@ -184,15 +244,39 @@
     color: #ffffff;
     font-size: 25px;
     overflow-x: hidden;
-    background-color:rgb(0,0,0);
-    padding-left:20px;
-    height:40px;
-    display:flex;
-    justify-content:start;
-    align-items:center;
-    border-radius:10px;
+    background-color: rgb(0,0,0);
+    padding-left: 20px;
+    height: 40px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.noFound {
+    color: #ffffff;
+    font-size: 25px;
+    background-color: rgba(0,0,0,0.8);
+    padding: 10px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    overflow:clip;
+    height:fit-content;
 
 }
+
+.Loading-container {
+    display:flex;
+    flex-direction:column;
+    flex-grow:1;
+    justify-content:center;
+    align-items:center;
+    height:100%;
+}
+
 .Collection-title {
     color: #ffffff;
     font-size: 25px;
@@ -235,4 +319,58 @@
     min-height:0px;
     height:10px;
     overflow-y: auto;
+}
+
+@media (max-width: 600px ) {
+    .user-list {
+        grid-template-columns: repeat(1, 100%);
+    }
+}
+
+/* Large screens */
+@media (min-width: 600px) and (max-width: 1100px) {
+    .user-list {
+        grid-template-columns: repeat(2, 50%);
+    }
+}
+
+@media (min-width: 1100px) {
+    .user-list {
+        grid-template-columns: repeat(3, 30%);
+    }
+}
+
+.user-list {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-auto-rows:auto;
+    /* flex-direction:row;
+    flex-wrap:wrap;*/
+    justify-content:space-evenly;
+    gap: 10px;
+}
+
+.user-item {
+    background: linear-gradient(to right, rgb(0,0,0,1) 70%, rgba(0,0,0,0.3) 100%);
+    min-width: fit-content;
+  /*  flex-grow: 1;
+    width:25%;*/
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    font-size:20px;
+    color:white !important;
+}
+
+    .user-item:hover {
+        background: linear-gradient(to right, rgb(49,49,49,1) 70%, rgba(49,49,49,0.3) 100%);
+        color: black !important;
+    }
+
+    .user-item:active {
+        background: linear-gradient(to right, rgb(59,59,59,1) 70%, rgba(59,59,59,0.3) 100%);
+        color: black !important;
+    }
+
+.user-item:active {
 }

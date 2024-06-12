@@ -3,23 +3,14 @@ using CineSync.Data.Models;
 using CineSync.DbManagers;
 using CineSync.Services;
 using CineSync.Data;
+using CineSync.Components.PopUps;
+using Microsoft.AspNetCore.Components.Web;
+using CineSync.Components.Layout;
 
 namespace CineSync.Components.Comments
 {
     public partial class ItemComment : ComponentBase
     {
-        [Parameter]
-        public EventCallback OnChange { get; set; }
-
-        [Parameter]
-        public Comment Comment { get; set; }
-
-        [Parameter]
-        public bool Liked { get; set; } = false;
-
-        [Parameter]
-        public bool DisLiked { get; set; } = false;
-
         [Inject]
         private UserManager UserManager { get; set; }
 
@@ -29,31 +20,54 @@ namespace CineSync.Components.Comments
         [Inject]
         private LayoutService LayoutService { get; set; }
 
-        private bool _Liked { get; set; }
+        [Parameter]
+        public Comment Comment { get; set; }
 
-        private bool _Disliked { get; set; }
+        [Parameter]
+        public bool Liked { get; set; } = false;
 
-        private Comment _commentToRemove;
+		[Parameter]
+        public bool DisLiked { get; set; } = false;
+
+        [Parameter]
+        public bool AllowFollow { get; set; } = true;
+
+        private bool _Liked {  get; set; }
+		private bool _Disliked { get; set; }
+
+		public delegate void Action();
+        public delegate void LikeStatusChange(bool newStatus);
+
+        [Parameter]
+        public Action OnRemove { get; set; } = () => { };
+        [Parameter]
+        public LikeStatusChange OnDislikeChange { get; set; } = (s) => { };
+        [Parameter]
+        public LikeStatusChange OnlikeChange { get; set; } = (s) => { };
+
+        [Parameter]
+        public EventCallback OnChange { get; set; }
 
         private ApplicationUser _authenticatedUser;
 
         private ICollection<string> _userRoles;
 
-        protected override void OnInitialized()
-        {
+		protected override void OnInitialized()
+		{
             _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
             _userRoles = LayoutService.MainLayout.UserRoles;
             _Liked = Liked;
             _Disliked = DisLiked;
-        }
+		}
 
-        private async void AddLike(Comment commentAddLike)
+		private async void AddLike(Comment commentAddLike)
         {
             if (_Disliked)
             {
                 await CommentManager.RemoveDesLikeAsync(commentAddLike, _authenticatedUser.Id);
                 _Disliked = false;
-            }
+                OnDislikeChange(_Disliked);
+            }    
 
             if (_Liked)
             {
@@ -66,8 +80,7 @@ namespace CineSync.Components.Comments
                 _Liked = true;
             }
 
-            Console.WriteLine(_Liked + ":" + _Disliked);
-
+            OnlikeChange(_Liked);
             StateHasChanged();
         }
 
@@ -77,6 +90,7 @@ namespace CineSync.Components.Comments
             {
                 await CommentManager.RemoveLikeAsync(commentAddDesLike, _authenticatedUser.Id);
                 _Liked = false;
+                OnlikeChange(_Liked);
             }
 
             if (_Disliked)
@@ -90,8 +104,7 @@ namespace CineSync.Components.Comments
                 _Disliked = true;
             }
 
-            Console.WriteLine(_Liked + ":" + _Disliked);
-
+            OnDislikeChange(_Disliked);
             StateHasChanged();
         }
 
@@ -104,6 +117,8 @@ namespace CineSync.Components.Comments
 
                 _authenticatedUser.Following.Add(Comment.Autor!);
 
+                StateHasChanged();
+                LayoutService.MainLayout.TriggerMenuReRender();
                 await OnChange.InvokeAsync();
             }
         }
@@ -117,6 +132,8 @@ namespace CineSync.Components.Comments
 
                 _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Comment.Autor!.Id).ToList();
 
+                StateHasChanged();
+                LayoutService.MainLayout.TriggerMenuReRender();
                 await OnChange.InvokeAsync();
             }
         }

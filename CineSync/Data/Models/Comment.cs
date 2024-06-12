@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CineSync.Components.Comments;
+using System.ComponentModel.DataAnnotations;
 
 namespace CineSync.Data.Models
 {
@@ -10,7 +11,7 @@ namespace CineSync.Data.Models
         public uint MovieId { get; set; }
 
         [Required]
-        public ApplicationUser? Autor { get; set; }
+        public ApplicationUser Autor { get; set; }
 
         [Required]
         public string? Content { get; set; }

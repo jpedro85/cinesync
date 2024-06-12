@@ -180,6 +180,9 @@ namespace CineSync
             services.AddScoped<UserManager>();
             services.AddScoped<DbManager<UserLikedComment>>();
             services.AddScoped<DbManager<UserDislikedComment>>();
+            services.AddScoped<DbManager<UserImage>>();
+            services.AddScoped<DbManager<Comment>>();
+            services.AddScoped<DbManager<Discussion>>();
             services.AddScoped<UserImageManager>();
             services.AddScoped<UserRoleManager<ApplicationUser>>();
             services.AddScoped<CollectionsManager>();
@@ -194,6 +197,7 @@ namespace CineSync
 
             services.AddSingleton<NavBarEvents>();
             services.AddSingleton<LayoutService>();
+            services.AddSingleton<MenuService>();
 
         }
 
