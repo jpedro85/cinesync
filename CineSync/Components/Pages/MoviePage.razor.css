@@ -17,9 +17,9 @@
     padding-bottom: 3rem;
     height: fit-content;
     gap: 2%;
-    min-height:fit-content;
-    flex-grow:0;
-    flex-shrink:0;
+    min-height: fit-content;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 #PosterImage {
@@ -69,21 +69,9 @@
     height: 30px;
 }
 
-/* .button-AddToCollectionSpace {
-    padding-bottom: 2px;
-    .button-AddToFavorite:hover{
-        color:rgb(255 91 242);
-    }
-
-    .button-AddToFavorite:active {
-        color: rgb(255 91 242);
-    } */
-
-
-.button-AddToCollectionSpace 
-{
-    width:35px !important;
-    height:35px !important;
+.button-AddToCollectionSpace {
+    width: 35px !important;
+    height: 35px !important;
 }
 
 .button-AddToCollection {
@@ -91,22 +79,21 @@
     color: white;
     background-color: black;
     align-items: center;
-    border:none;
+    border: none;
 }
 
-    .button-AddToCollection:hover
-    {
-        color:rgb(139 139 139);
-    }
+.button-AddToCollection:hover {
+    color: rgb(139 139 139);
+}
 
-    .button-AddToCollection:hover {
-        color: rgb(139 139 139);
-    }
+.button-AddToCollection:hover {
+    color: rgb(139 139 139);
+}
 
 .movie-image-options-item-rigth {
     display: flex;
     flex-direction: row;
-    justify-content:end;
+    justify-content: end;
     align-items: center;
     flex-grow: 1;
 }
@@ -190,9 +177,6 @@
     gap: 1rem;
     margin-bottom: 3rem;
 }
-
-
-
 
 .CsRating {
     width: 20px;
@@ -279,15 +263,27 @@
     padding-right: 12px;
 }
 
-
+.Rated {
+    display: flex;
+    align-items: center;
+    background-color: #202bff;
+    width: fit-content;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    border: none;
+    height: 40px;
+    box-shadow: inset 0 0 20px 2px #000000;
+}
 
 .page-bottom {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex-grow:1;
-    min-height:fit-content;
- 
+    flex-grow: 1;
+    min-height: fit-content;
+
 }
 
 .page-bottom-content {

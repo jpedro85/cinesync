@@ -1,6 +1,5 @@
 ﻿using CineSync.Data;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 using CineSync.Data.Models;
 using CineSync.Services;
 using CineSync.DbManagers;
@@ -13,14 +12,17 @@ namespace CineSync.Components.Pages
         [Parameter]
         public int MovieId { get; set; }
 
-		[Inject]
-		private HttpClient _client { get; set; }
+        [Inject]
+        private HttpClient _client { get; set; }
 
-		[Inject]
+        [Inject]
         private LayoutService LayoutService { get; set; }
 
         [Inject]
         public ApplicationDbContext ApplicationDbContext { get; set; }
+
+        [Inject]
+        public CollectionsManager CollectionsManager { get; set; }
 
         [Inject]
         public DbManager<UserLikedComment> DbUserLikedComment { get; set; }
@@ -52,29 +54,45 @@ namespace CineSync.Components.Pages
 
         private ApplicationUser _authenticatedUser;
 
+        private bool _hasRatedMovie = false;
+
         protected override async Task OnInitializedAsync()
         {
             _userRoles = LayoutService.MainLayout.UserRoles;
             _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
             Movie = await GetMovieDetails();
             GetUserStatusComments();
+            if (_authenticatedUser != null)
+            {
+                _hasRatedMovie = await HasUserRatedMovieAsync();
+            }
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
         }
 
+        private async Task<bool> HasUserRatedMovieAsync()
+        {
+            string ratedMoviesCollectionName = "Classified";
+            var ratedMovies = await CollectionsManager.GetFirstByConditionAsync(
+                mc => mc.ApplicationUser == _authenticatedUser && mc.Name == ratedMoviesCollectionName,
+                "CollectionMovies"
+            );
+            return ratedMovies!.CollectionMovies?.Any(cm => cm.MovieId == Movie.Id) ?? false;
+        }
+
         private void GetUserStatusComments()
         {
-            if(Movie != null && _authenticatedUser != null)
+            if (Movie != null && _authenticatedUser != null)
             {
-                _likedComents =  DbUserLikedComment.GetByConditionAsync(
+                _likedComents = DbUserLikedComment.GetByConditionAsync(
                             likedComment =>
                             likedComment.Comment.MovieId == Movie.Id &&
                             likedComment.UserId == _authenticatedUser.Id
                             ).Result.ToList();
 
-                _dislikedComents =  DbUserDislikedComment.GetByConditionAsync(
+                _dislikedComents = DbUserDislikedComment.GetByConditionAsync(
                             likedComment =>
                             likedComment.Comment.MovieId == Movie.Id &&
                             likedComment.UserId == _authenticatedUser.Id
@@ -101,6 +119,7 @@ namespace CineSync.Components.Pages
 
         private void OnRatingSaved()
         {
+            _hasRatedMovie = true;
             InvokeAsync(StateHasChanged);
         }
 
