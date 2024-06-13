@@ -182,7 +182,7 @@ namespace CineSync.Migrations
                         .IsRequired()
                         .HasColumnType("BLOB");
 
-                    b.Property<uint?>("CommentId")
+                    b.Property<uint>("CommentId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -198,7 +198,7 @@ namespace CineSync.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Autor")
+                    b.Property<string>("AutorId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -216,6 +216,8 @@ namespace CineSync.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AutorId");
 
                     b.HasIndex("MovieId");
 
@@ -630,23 +632,37 @@ namespace CineSync.Migrations
 
             modelBuilder.Entity("CineSync.Data.Models.CommentAttachment", b =>
                 {
-                    b.HasOne("CineSync.Data.Models.Comment", null)
+                    b.HasOne("CineSync.Data.Models.Comment", "Comment")
                         .WithMany("Attachements")
-                        .HasForeignKey("CommentId");
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Discussion", b =>
                 {
+                    b.HasOne("CineSync.Data.ApplicationUser", "Autor")
+                        .WithMany()
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CineSync.Data.Models.Movie", null)
                         .WithMany("Discussions")
                         .HasForeignKey("MovieId");
+
+                    b.Navigation("Autor");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>
                 {
-                    b.HasOne("CineSync.Data.ApplicationUser", null)
+                    b.HasOne("CineSync.Data.ApplicationUser", "ApplicationUser")
                         .WithMany("Collections")
                         .HasForeignKey("ApplicationUserId");
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Notification", b =>
