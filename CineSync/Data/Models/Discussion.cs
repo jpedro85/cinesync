@@ -7,10 +7,10 @@ namespace CineSync.Data.Models
         public uint Id { get; set; }
         
         [Required]
-        public string? Title { get; set; }
+        public string Title { get; set; }
 
         [Required]
-        public string? Autor { get; set; }
+        public ApplicationUser Autor { get; set; }
 
         public long NumberOfLikes { get; set; } = 0;
 
