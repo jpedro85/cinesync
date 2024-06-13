@@ -52,6 +52,10 @@ namespace CineSync.Components.Navs
         public async Task ReRender()
         {
             Console.WriteLine("Was called");
+            if (UserImage == null)
+            {
+                UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User.Id);
+            }
             await InvokeAsync(StateHasChanged);
         }
 

@@ -35,7 +35,7 @@
                 <div class="User-Followers">
                     <div class="Followers">@User.UserName</div>
                 </div>
-                
+
                 <div class="Buttons">
 
                     @if(!_visit ){
@@ -44,7 +44,7 @@
                         <UsernameEdit OnUsernameChange=OnProfileEdit />
 
                         <NavLink href="/Account/Manage/ChangePassword">
-                            <button class="buttonProfile">Change Password</button
+                            <button class="buttonProfile">Change Password</button>
                         </NavLink>
 
 
@@ -113,7 +113,7 @@
             }
             else
             {
-                
+
                 <div class="Statistics">
                     <div class="PageSubtitle">Statistics</div>
                     <div class="Statistics-conteine">
@@ -167,7 +167,7 @@
                                         <Collection MovieCollection="collection" />
                                     }
                                 </div>
-                            </div>   
+                            </div>
                         }
 
                     }
@@ -192,7 +192,7 @@
                                 <div class="Collections-colum">
                                     @foreach (var comment in _comments)
                                     {
-                                        <ItemComment 
+                                        <ItemComment
                                             Comment="comment"
                                             AllowFollow="false"
                                             OnlikeChange="(nState) => {UpdateLiked(nState,comment); }"
@@ -203,7 +203,7 @@
                                     }
                                 </div>
                             </div>
-                        } 
+                        }
                     }
                     else if (_activeTab == _tabNames[2]) // discusiions
                     {
@@ -224,7 +224,7 @@
                                     string srcHref = (user.Id == AuthenticatedUser.Id) ? "" : "/" + user.Id;
                                     <NavLink href="@($"/Profile{srcHref}")">
                                         <div class="user-item">
-                                            <ItemUser 
+                                            <ItemUser
                                                 User="@user"
                                                 Style="@( "width: 35px; height: 35px; border-radius:50%;")">
                                             </ItemUser>
@@ -251,13 +251,13 @@
                                     string srcHref = (user.Id == AuthenticatedUser.Id) ? "" : "/" + user.Id;
                                     <NavLink href="@($"/Profile{srcHref}")">
                                         <div class="user-item">
-                                            <ItemUser 
+                                            <ItemUser
                                                 User="@user"
                                                 Style="@( "width: 35px; height: 35px; border-radius:50%;")">
                                             </ItemUser>
                                         </div>
                                     </NavLink>
-                                    
+
                                 }
                            </div>
                         }

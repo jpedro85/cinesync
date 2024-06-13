@@ -1,4 +1,6 @@
-﻿using CineSync.Components.PopUps;
+﻿using CineSync.Core;
+using CineSync.Components.PopUps;
+using CineSync.Components.Account.Component;
 using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Data.Models;
@@ -42,7 +44,10 @@ namespace CineSync.Components.Pages
         public UsernameEdit newuserName { get; set; }
 
         public ApplicationUser? User { get; set; }
+
         public ApplicationUser AuthenticatedUser { get; set; }
+
+        public UserImage? UserImage { get; set; }
 
         private ICollection<MovieCollection>? _movieCollections = null;
 
@@ -54,15 +59,13 @@ namespace CineSync.Components.Pages
 
         private ICollection<Discussion>? _discussions = null;
 
-        private UserImage? UserImage { get; set; }
-
         private string _activeTab = "Collections";
 
         private string[] _tabNames = { "Collections", "Comments", "Discussions", "Following", "Followers" };
+
         private bool _visit = false;
+
         private bool _invalid = false;
-
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -79,11 +82,12 @@ namespace CineSync.Components.Pages
                 User = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId, "Following", "Followers");
                 Console.WriteLine($"User{User?.Following?.Count},{User?.Followers?.Count}");
 
-                if (User == null) 
+                if (User == null)
                 {
                     _invalid = true;
                     return;
-                }else
+                }
+                else
                 {
                     _visit = true;
                 }
@@ -96,10 +100,11 @@ namespace CineSync.Components.Pages
         {
             if (firstRender && !_invalid)
             {
-                UpdateUserImage();
+                FetchUserImage();
             }
         }
-        private async void UpdateUserImage()
+
+        private async void FetchUserImage()
         {
             UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User!.Id);
             StateHasChanged();
@@ -107,12 +112,16 @@ namespace CineSync.Components.Pages
 
         private async void OnProfileEdit()
         {
+            if (UserImage == null)
+            {
+                FetchUserImage();
+            }
             AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
             StateHasChanged();
             await LayoutService.MainLayout.TriggerNavBarReRender();
         }
 
-        private void UpdateMovieCollections() 
+        private void UpdateMovieCollections()
         {
             _movieCollections = CollectionManager.GetUserCollections(User!.Id).Result;
             StateHasChanged();
@@ -120,7 +129,7 @@ namespace CineSync.Components.Pages
 
         private void UpdateComments()
         {
-            _comments = DbCommentManage.GetByConditionAsync( comment => comment.Autor.Id == User.Id)
+            _comments = DbCommentManage.GetByConditionAsync(comment => comment.Autor.Id == User.Id)
                        .Result
                        .ToList();
 
@@ -149,7 +158,7 @@ namespace CineSync.Components.Pages
             //TODO:Finish
         }
 
-        private void UpdateLiked(bool newStatus, Comment comment) 
+        private void UpdateLiked(bool newStatus, Comment comment)
         {
 
             if (!newStatus && _likedComents.Any(u => u.Comment.Id == comment.Id))
@@ -173,11 +182,11 @@ namespace CineSync.Components.Pages
         private void UpdateDisliked(bool newStatus, Comment comment)
         {
 
-            if (!newStatus && _dislikedComents.Any(u => u.Comment.Id == comment.Id)) 
+            if (!newStatus && _dislikedComents.Any(u => u.Comment.Id == comment.Id))
             {
                 _dislikedComents = _dislikedComents.Where(uLike => uLike.CommentId != comment.Id).ToList();
             }
-            else if( newStatus && !_dislikedComents.Any(u => u.Comment.Id == comment.Id)) 
+            else if (newStatus && !_dislikedComents.Any(u => u.Comment.Id == comment.Id))
             {
                 UserDislikedComment newDislike = new UserDislikedComment();
                 newDislike.UserId = AuthenticatedUser.Id;
@@ -217,7 +226,7 @@ namespace CineSync.Components.Pages
 
                 StateHasChanged();
                 LayoutService.MainLayout.TriggerMenuReRender();
-               
+
             }
         }
 
@@ -227,5 +236,6 @@ namespace CineSync.Components.Pages
             _activeTab = tabName;
             InvokeAsync(StateHasChanged);
         }
+
     }
 }

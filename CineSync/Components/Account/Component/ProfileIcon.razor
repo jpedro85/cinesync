@@ -1,5 +1,4 @@
 ﻿@using CineSync.Components.Utils
-@using CineSync.Data.Models
 
 <div class="main-container">
     @if ( ProfileImage == null ) {
@@ -9,20 +8,3 @@
         <img src="@(ImageConverter.ConverBytesTo64(ProfileImage.ImageData))" class="Profile-pic" style="@GetProfileWidthStyle()">
     }
 </div>
-
-@code
-{
-
-    [Parameter]
-    public int ProfileWidth { get; set; } = 100;
-
-    [Parameter]
-    public UserImage ProfileImage { get; set; }
-
-
-    private string GetProfileWidthStyle()
-    {
-        return $"width: {ProfileWidth}px; height: {ProfileWidth}px;";
-    }
-
-}
