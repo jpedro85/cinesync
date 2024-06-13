@@ -194,6 +194,7 @@
                                     {
                                         <ItemComment
                                             Comment="comment"
+                                            OnChange="() => { _comments.Remove(comment); InvokeAsync(StateHasChanged); }"
                                             AllowFollow="false"
                                             OnlikeChange="(nState) => {UpdateLiked(nState,comment); }"
                                             OnDislikeChange="(nState) => {UpdateDisliked(nState,comment); }"

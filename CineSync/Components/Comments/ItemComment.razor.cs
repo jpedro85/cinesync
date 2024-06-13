@@ -11,6 +11,28 @@ namespace CineSync.Components.Comments
 {
     public partial class ItemComment : ComponentBase
     {
+
+        [Parameter]
+        public Comment Comment { get; set; }
+
+        [Parameter]
+        public bool Liked { get; set; } = false;
+
+        [Parameter]
+        public bool DisLiked { get; set; } = false;
+
+        [Parameter]
+        public bool AllowFollow { get; set; } = true;
+
+        [Parameter]
+        public LikeStatusChange OnDislikeChange { get; set; } = (s) => { };
+
+        [Parameter]
+        public LikeStatusChange OnlikeChange { get; set; } = (s) => { };
+
+        [Parameter]
+        public EventCallback OnChange { get; set; }
+
         [Inject]
         private UserManager UserManager { get; set; }
 
@@ -20,54 +42,34 @@ namespace CineSync.Components.Comments
         [Inject]
         private LayoutService LayoutService { get; set; }
 
-        [Parameter]
-        public Comment Comment { get; set; }
+        public delegate void Action();
 
-        [Parameter]
-        public bool Liked { get; set; } = false;
-
-		[Parameter]
-        public bool DisLiked { get; set; } = false;
-
-        [Parameter]
-        public bool AllowFollow { get; set; } = true;
-
-        private bool _Liked {  get; set; }
-		private bool _Disliked { get; set; }
-
-		public delegate void Action();
         public delegate void LikeStatusChange(bool newStatus);
 
-        [Parameter]
-        public Action OnRemove { get; set; } = () => { };
-        [Parameter]
-        public LikeStatusChange OnDislikeChange { get; set; } = (s) => { };
-        [Parameter]
-        public LikeStatusChange OnlikeChange { get; set; } = (s) => { };
+        private bool _Liked { get; set; }
 
-        [Parameter]
-        public EventCallback OnChange { get; set; }
+        private bool _Disliked { get; set; }
 
         private ApplicationUser _authenticatedUser;
 
         private ICollection<string> _userRoles;
 
-		protected override void OnInitialized()
-		{
+        protected override void OnInitialized()
+        {
             _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
             _userRoles = LayoutService.MainLayout.UserRoles;
             _Liked = Liked;
             _Disliked = DisLiked;
-		}
+        }
 
-		private async void AddLike(Comment commentAddLike)
+        private async void AddLike(Comment commentAddLike)
         {
             if (_Disliked)
             {
                 await CommentManager.RemoveDesLikeAsync(commentAddLike, _authenticatedUser.Id);
                 _Disliked = false;
                 OnDislikeChange(_Disliked);
-            }    
+            }
 
             if (_Liked)
             {
