@@ -29,8 +29,8 @@ namespace CineSync.DbManagers
         /// <returns>The collections of movies associated with the specified user.</returns>
         public async Task<ICollection<MovieCollection>> GetUserCollections(string userId)
         {
-			ApplicationUser user = await _userRepository.GetFirstByConditionAsync(u => u.Id == userId, "Collections.CollectionMovies.Movie");
-			return user!.Collections!;
+            ApplicationUser user = await _userRepository.GetFirstByConditionAsync(u => u.Id == userId, "Collections.CollectionMovies.Movie");
+            return user!.Collections!;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace CineSync.DbManagers
             if (collection.CollectionMovies.IsNullOrEmpty())
                 collection.CollectionMovies = new List<CollectionsMovies>();
 
-			if (!IsMovieInCollection(movieID, collection))
+            if (!IsMovieInCollection(movieID, collection))
             {
                 collection.CollectionMovies.Add(new CollectionsMovies { MovieId = movieID, MovieCollectionId = collection.Id });
                 return await _unitOfWork.SaveChangesAsync();
@@ -110,26 +110,25 @@ namespace CineSync.DbManagers
 
             return false;
         }
+
         /// <summary>
         /// Removes a specified collection for a user.
         /// </summary>
         /// <param name="userId">The identifier of the user.</param>
-        /// <param name="collectionName">The name of the collection to remove.</param>
+        /// <param name="collectionId">The Id of the collection to remove.</param>
         /// <returns>Returns true if the collection is successfully removed, otherwise false.</returns>
         /// <exception cref="Exception">Throws if the collection is not found.</exception>
-        public async Task<bool> RemoveCollectionAsync(string userId, string collectionName)
+        public async Task<bool> RemoveCollectionAsync(string userId, uint collectionId)
         {
-            // Obter o usuário pelo ID
             ApplicationUser user = await GetUserByIdAsync(userId);
+            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Id == collectionId);
 
-            // Encontrar a coleção pelo nome
-            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName)
-                                         ?? throw new Exception("Collection not found");
-
-            // Remover a coleção da lista de coleções do usuário
+            if (collection == null)
+            {
+                return false;
+            }
             user.Collections.Remove(collection);
 
-            // Salvar mudanças
             return await _unitOfWork.SaveChangesAsync();
         }
 
@@ -141,7 +140,7 @@ namespace CineSync.DbManagers
         /// /// <param name="newCollectionName">The newName of the Collection.</param>
         /// <returns>True if sucessefuly</returns>
         /// <exception cref="Exception">Throws if the user is not found.</exception>
-        public async Task<bool> ChangeCollectioName(string userId,string collectionName ,string newCollectionName)
+        public async Task<bool> ChangeCollectioName(string userId, string collectionName, string newCollectionName)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
             MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
@@ -199,10 +198,10 @@ namespace CineSync.DbManagers
             return collection.CollectionMovies?.Any(cm => cm.MovieId == movieId) ?? false;
         }
 
-		public async Task<bool> IsMovieInCollection(uint movieId, uint collectionID)
-		{
-            MovieCollection collection = await _repository.GetFirstByConditionAsync( collection => collection.Id == collectionID, "CollectionMovies");
-			return collection.CollectionMovies?.Any(cm => cm.MovieId == movieId) ?? false;
-		}
-	}
+        public async Task<bool> IsMovieInCollection(uint movieId, uint collectionID)
+        {
+            MovieCollection collection = await _repository.GetFirstByConditionAsync(collection => collection.Id == collectionID, "CollectionMovies");
+            return collection.CollectionMovies?.Any(cm => cm.MovieId == movieId) ?? false;
+        }
+    }
 }
