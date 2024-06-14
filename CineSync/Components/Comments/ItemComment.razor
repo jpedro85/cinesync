@@ -10,12 +10,14 @@
     int daysInDiference = 0;
     int weeks = 0;
     int years = 0;
+    string ghostUserId = "0";
 }
 
 <div class="comment">
     <div class="comment-header">
 
         <div class="commend-header-left">
+        @if (Comment.Autor.Id != ghostUserId ){
             <NavLink href="@($"/Profile/{Comment.Autor!.Id}")">
                 <div class="UsernameConteiner">
                      @if (Comment.Autor.UserImage != null )
@@ -69,6 +71,21 @@
 
                 </PassOneCheck>
             </RoleCkeck>
+        }
+        else{
+                <div class="UsernameConteiner">
+                     @if (Comment.Autor.UserImage != null )
+                     {
+                         <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Comment.Autor.UserImage.ImageData, Comment.Autor.UserImage.ContentType))" alt="UserImage" />
+                     }
+                     else
+                     {
+                        <img class="user-profilepic" src="NoProfilePic.png" alt="UserImage"/>
+                     }
+                    <div>@Comment.Autor!.UserName</div>
+                </div>
+        }
+
 
         </div>
 
