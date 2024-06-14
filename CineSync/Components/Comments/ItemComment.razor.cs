@@ -39,6 +39,7 @@ namespace CineSync.Components.Comments
         [Inject]
         private CommentManager CommentManager { get; set; }
 
+
         [Inject]
         private LayoutService LayoutService { get; set; }
 
@@ -142,7 +143,6 @@ namespace CineSync.Components.Comments
 
         private async void RemoveComment()
         {
-            await CommentManager.RemoveAsync(Comment);
             await OnChange.InvokeAsync();
         }
 

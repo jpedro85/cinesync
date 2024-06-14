@@ -4,7 +4,6 @@ using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.ObjectModel;
 
 namespace CineSync.Components.PopUps
 {
@@ -55,15 +54,15 @@ namespace CineSync.Components.PopUps
             return dic;
         }
 
-        public void UpdateState(string key,bool isCheecked) 
+        public void UpdateState(string key,bool isCheecked)
         {
             CollectionsMovieStatus[key] = isCheecked;
-            
+
             if(!edited.Contains(key))
                 edited.Add(key);
         }
 
-        public async void OnSave() 
+        public async void OnSave()
         {
             if (!_newCollectionName.IsNullOrEmpty())
             {

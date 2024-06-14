@@ -14,6 +14,9 @@ namespace CineSync.Components.Account.Component
         [Parameter]
         public ApplicationUser? AuthenticatedUser { get; set; }
 
+        [Parameter]
+        public EventCallback OnRemove { get; set; }
+
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
@@ -31,9 +34,5 @@ namespace CineSync.Components.Account.Component
             NavigationManager.NavigateTo($"ManageCollection/{MovieCollection.Name!.Replace(" ", "_")}");
         }
 
-        private async void RemoveCollection()
-        {
-            await InvokeAsync(StateHasChanged);
-        }
     }
 }

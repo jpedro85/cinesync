@@ -2,9 +2,9 @@
 @using CineSync.Data.Models;
 @using CineSync.Components.Buttons;
 
-<PopUpLayout Id="NewCollection">
+<PopUpLayout @ref=PopUpLayout Id="NewCollection">
     <Header>
-        <div class="title">Add to colection</div>
+        <div class="title">New Colection</div>
     </Header>
     <Body>
         <div class="form-group">
@@ -12,9 +12,13 @@
                 <input type="text" class="form-control" id="collectionName" placeholder="New Collection name" @bind-value="@_newCollectionName">
             </div>
         </div>
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="text-danger">@ErrorMessage</div>
+        }
     </Body>
     <Footer>
-        <RectButton1 Text="Save changes" OnClick="OnSave" DataDismiss="modal"> </RectButton1>
-        @*         <button @onclick="OnSave" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button> *@
+        <RectButton1 Text="Save changes" OnClick="OnSave" DataDismiss="modal" />
+        <button class="btn btn-secundary" data-dismiss="modal">Cancel</button>
     </Footer>
 </PopUpLayout>

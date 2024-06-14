@@ -11,6 +11,10 @@
     <Body>
         <div>
             <label style="color:white;">Are you sure you want to remove this collection?</label>
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="text-danger">@ErrorMessage</div>
+            }
         </div>
     </Body>
     <Footer>

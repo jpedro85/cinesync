@@ -1,4 +1,4 @@
-﻿@page "/CollectionsExplorer/{UserId?}"
+﻿@page "/CollectionsExplorer"
 @attribute [Authorize]
 
 @using CineSync.Components.Buttons
@@ -9,26 +9,23 @@
 
 <div class="Collections-container">
 <div class="Profile">
-
-
-
     <div class="Collections-info">
             <div class="PageSubtitle">Collections
                 <div class="ButtonNewCollection">
                     <RectButton1   DataToggle="modal" DataTarget="#NewCollection" Text="New Collection" ></RectButton1>
                 </div>
-                <NewCollection/>
+                <NewCollection OnNewCollection="OnCollectionsEdit" />
             </div>
             <div class="tab-content">
-                    <div class="Collections">
-                        <div class="Collections-colum">
-                            @foreach (var collection in movieCollections)
-                            {
-                           
-                                <Collection MovieCollection="collection" />
-                            }
-                        </div>
+                <div class="Collections">
+                    <div class="Collections-colum">
+                        @foreach (var collection in movieCollections)
+                        {
+
+                            <Collection OnRemove="OnCollectionsEdit" MovieCollection="collection" />
+                        }
                     </div>
+                </div>
             </div>
         </div>
     </div>

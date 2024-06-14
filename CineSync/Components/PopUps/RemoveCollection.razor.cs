@@ -25,6 +25,8 @@ namespace CineSync.Components.PopUps
 
         private ApplicationUser AuthenticatedUser { get; set; }
 
+        private string ErrorMessage = string.Empty;
+
         protected override void OnInitialized()
         {
             AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
@@ -33,8 +35,15 @@ namespace CineSync.Components.PopUps
 
         private async void ExecuteRemoveCollection()
         {
-            await CollectionsManager.RemoveCollectionAsync(AuthenticatedUser.Id, Collection.Id);
-            await OnRemove.InvokeAsync();
+            Console.WriteLine("Remove Collection: " + Collection.Id);
+            if (await CollectionsManager.RemoveCollectionAsync(AuthenticatedUser.Id, Collection.Id))
+            {
+                await OnRemove.InvokeAsync();
+            }
+            else
+            {
+                ErrorMessage = "Something occured an we were unable to remove the Collection.";
+            }
         }
     }
 }
