@@ -1,280 +1,223 @@
 ﻿@rendermode InteractiveServer
 
-@using Microsoft.AspNetCore.Identity;
-@using CineSync.Components.Utils.Authorization;
-@using CineSync.Components.Account.Component;
-@using CineSync.Data;
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@using CineSync.Data
 
+<div @onclick="OverlayClick" class="Obverlay @IsActive" >
 
-<div class="menu-container">
-    <div>
+    <div class="MenuMainConteiner @IsActive">
 
-        <div class="MenuMainConteiner @IsActive">
+        <div class="menu-item-conteiner @IsActive">
+            <NavLink  href="/" >
+                <div class="menu-item @IsActive">
 
-            <div class="menu-item-conteiner @IsActive">
-                <NavLink href="/" @onclick="CloseMenu">
-                    <div class="menu-item @IsActive">
-
-                        <div class="ButtonIcon">
-                            <svg viewBox="0 0 30 30" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 30V10L15 0L30 10V30H18.75V18.3333H11.25V30H0Z" fill="currentcolor" />
-                            </svg>
-                        </div>
-                        <div class="ButtonText @IsActive">
-                            Home
-                        </div>
-
+                    <div class="ButtonIcon">
+                        <svg viewBox="0 0 30 30" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 30V10L15 0L30 10V30H18.75V18.3333H11.25V30H0Z" fill="currentcolor" />
+                        </svg>
                     </div>
-                </NavLink>
-            </div>
+                    <div class="ButtonText @IsActive">
+                        Home
+                    </div>
 
-            <RoleCkeck AuthenticatedUserRoles="@UserRoles" Roles="@( new string[] {"user"} )">
-                <PassAllChecks>
+                </div>
+            </NavLink>
+        </div>
 
-                    <RoleCkeck AuthenticatedUserRoles="@UserRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
-                        <PassOneCheck>
+        <CustomAuthorizedView CheckAuthentication=true DebugName="A">
+            <CustomAuthorized>
 
-                            <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/Profile" @onclick="CloseMenu">
-                                    <div class="menu-item @IsActive">
+                <CustomAuthorizedView DebugName="B" CheckAuthentication=false User="@User" Roles="user,moderator,admin,super_admin">
+                    <CustomAuthorized>
 
-                                        <div class="ButtonIcon">
-                                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 0C1.83696 0 1.20107 0.32924 0.732233 0.915291C0.263392 1.50134 0 2.2962 0 3.125V21.875C0 22.7038 0.263392 23.4987 0.732233 24.0847C1.20107 24.6708 1.83696 25 2.5 25H22.5C23.163 25 23.7989 24.6708 24.2678 24.0847C24.7366 23.4987 25 22.7038 25 21.875V3.125C25 2.2962 24.7366 1.50134 24.2678 0.915291C23.7989 0.32924 23.163 0 22.5 0H2.5ZM15 7.8125C15 7.3981 15.1317 7.00067 15.3661 6.70765C15.6005 6.41462 15.9185 6.25 16.25 6.25H20C20.3315 6.25 20.6495 6.41462 20.8839 6.70765C21.1183 7.00067 21.25 7.3981 21.25 7.8125C21.25 8.2269 21.1183 8.62433 20.8839 8.91735C20.6495 9.21038 20.3315 9.375 20 9.375H16.25C15.9185 9.375 15.6005 9.21038 15.3661 8.91735C15.1317 8.62433 15 8.2269 15 7.8125ZM15 12.5C15 12.0856 15.1317 11.6882 15.3661 11.3951C15.6005 11.1021 15.9185 10.9375 16.25 10.9375H20C20.3315 10.9375 20.6495 11.1021 20.8839 11.3951C21.1183 11.6882 21.25 12.0856 21.25 12.5C21.25 12.9144 21.1183 13.3118 20.8839 13.6049C20.6495 13.8979 20.3315 14.0625 20 14.0625H16.25C15.9185 14.0625 15.6005 13.8979 15.3661 13.6049C15.1317 13.3118 15 12.9144 15 12.5ZM15 17.1875C15 16.7731 15.1317 16.3757 15.3661 16.0826C15.6005 15.7896 15.9185 15.625 16.25 15.625H20C20.3315 15.625 20.6495 15.7896 20.8839 16.0826C21.1183 16.3757 21.25 16.7731 21.25 17.1875C21.25 17.6019 21.1183 17.9993 20.8839 18.2924C20.6495 18.5854 20.3315 18.75 20 18.75H16.25C15.9185 18.75 15.6005 18.5854 15.3661 18.2924C15.1317 17.9993 15 17.6019 15 17.1875ZM5 9.375C5 8.1318 5.39509 6.93951 6.09835 6.06044C6.80161 5.18136 7.75544 4.6875 8.75 4.6875C9.74456 4.6875 10.6984 5.18136 11.4017 6.06044C12.1049 6.93951 12.5 8.1318 12.5 9.375C12.5 10.6182 12.1049 11.8105 11.4017 12.6896C10.6984 13.5686 9.74456 14.0625 8.75 14.0625C7.75544 14.0625 6.80161 13.5686 6.09835 12.6896C5.39509 11.8105 5 10.6182 5 9.375ZM7.4275 15.625C6.64029 15.6247 5.87295 15.934 5.23422 16.5092C4.59549 17.0843 4.11777 17.8962 3.86875 18.8297L3.81375 19.0375L3.80875 19.0562C3.75625 19.2531 3.74 19.3172 3.75625 19.3609C3.76375 19.3813 3.78125 19.3969 3.80375 19.4219C3.84375 19.4609 3.90375 19.5219 3.98625 19.6641C4.10207 19.8648 4.25437 20.0282 4.43062 20.141C4.60687 20.2537 4.80202 20.3125 5 20.3125H12.5C12.698 20.3125 12.8931 20.2537 13.0694 20.141C13.2456 20.0282 13.3979 19.8648 13.5138 19.6641C13.5643 19.5722 13.6259 19.4905 13.6962 19.4219C13.72 19.3969 13.735 19.3813 13.7437 19.3594C13.7612 19.3172 13.7437 19.2531 13.6912 19.0562L13.6863 19.0375L13.6312 18.8297C13.3823 17.8965 12.9048 17.0848 12.2663 16.5096C11.6278 15.9345 10.8607 15.625 10.0737 15.625H7.4275Z" fill="white" />
-                                            </svg>
-                                        </div>
-                                        <div class="ButtonText @IsActive">
-                                            Profile
-                                        </div>
+                        <div class="menu-item-conteiner @IsActive">
+                            <NavLink href="/Profile" >
+                                <div class="menu-item @IsActive">
 
-                                    </div>
-                                </NavLink>
-                            </div>
-
-                            <div class="menu-item-conteiner">
-                                <div class="sidebar-separator"></div>
-                                <div class="separator-text @IsActive">Collections</div>
-                            </div>
-
-                            <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/Profile" @onclick="CloseMenu">
-                                    <div class="menu-item @IsActive">
-
-                                        <div class="ButtonIcon">
-                                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15.2105 0.537602C16.2201 1.08157 16.9809 1.99414 17.3343 3.08515L17.9474 5.3577H11.0115L10.7758 5.36366H10.7591C9.62042 5.42813 8.54956 5.92596 7.76631 6.75499C6.98306 7.58403 6.54683 8.68138 6.54713 9.82186V18.7502L6.55308 18.9859V19.0026C6.57134 19.2994 6.61618 19.5871 6.68761 19.8656C5.97717 19.8518 5.28036 19.6681 4.65541 19.3299C3.64531 18.7862 2.88406 17.8736 2.53036 16.7824L0.154105 7.93263C-0.143328 6.83173 -0.00696814 5.65867 0.535067 4.65534C1.07883 3.6453 1.99148 2.88409 3.08275 2.5304L11.933 0.15309C13.0339 -0.143283 14.2065 -0.00608386 15.2093 0.536412M11.0199 6.54815L10.8175 6.5541C9.98428 6.60357 9.20144 6.96939 8.62899 7.57677C8.05653 8.18416 7.73769 8.98724 7.73764 9.82186V18.7418L7.74359 18.9442C7.79306 19.7774 8.1589 20.5602 8.76632 21.1326C9.37374 21.705 10.1769 22.0238 11.0115 22.0239H11.5854C10.7687 20.4564 10.5133 18.6566 10.8617 16.9239C11.21 15.1911 12.1411 13.6298 13.5 12.4996C14.859 11.3695 16.5639 10.7386 18.3312 10.7118C20.0985 10.6851 21.8217 11.2642 23.2142 12.3527V9.83019L23.2083 9.62782C23.1588 8.79467 22.793 8.01187 22.1856 7.43945C21.5781 6.86702 20.775 6.5482 19.9403 6.54815H11.0199ZM25 18.4526C25 16.7161 24.3101 15.0507 23.0822 13.8228C21.8542 12.595 20.1888 11.9051 18.4522 11.9051C16.7156 11.9051 15.0502 12.595 13.8222 13.8228C12.5943 15.0507 11.9044 16.7161 11.9044 18.4526C11.9044 20.1891 12.5943 21.8544 13.8222 23.0823C15.0502 24.3102 16.7156 25 18.4522 25C20.1888 25 21.8542 24.3102 23.0822 23.0823C24.3101 21.8544 25 20.1891 25 18.4526ZM18.3451 14.2944L18.4522 14.286L18.5594 14.2955C18.6783 14.3173 18.7878 14.3747 18.8733 14.4602C18.9588 14.5457 19.0162 14.6552 19.0379 14.7741L19.0475 14.8812V17.8573L22.0297 17.8585L22.1368 17.8681C22.2558 17.8898 22.3653 17.9472 22.4508 18.0327C22.5363 18.1182 22.5937 18.2277 22.6154 18.3466L22.6249 18.4538L22.6154 18.5609C22.5936 18.68 22.536 18.7896 22.4503 18.8751C22.3646 18.9606 22.2548 19.0179 22.1356 19.0395L22.0285 19.049H19.0487V22.0287L19.0391 22.1358C19.0174 22.2547 18.96 22.3642 18.8745 22.4497C18.789 22.5352 18.6795 22.5926 18.5605 22.6144L18.4534 22.6239L18.3463 22.6144C18.2273 22.5926 18.1178 22.5352 18.0323 22.4497C17.9468 22.3642 17.8894 22.2547 17.8677 22.1358L17.8581 22.0287V19.0478H14.8783L14.7712 19.0383C14.6522 19.0165 14.5427 18.9591 14.4572 18.8736C14.3717 18.7881 14.3143 18.6786 14.2926 18.5597L14.283 18.4526L14.2926 18.3454C14.3143 18.2265 14.3717 18.117 14.4572 18.0315C14.5427 17.946 14.6522 17.8886 14.7712 17.8669L14.8783 17.8573H17.857V14.8812L17.8665 14.7741C17.888 14.655 17.9453 14.5452 18.0308 14.4595C18.1163 14.3738 18.226 14.3162 18.3451 14.2944Z" fill="white" />
-                                            </svg>
-                                        </div>
-                                        <div class="ButtonText @IsActive">
-                                            Collections
-                                        </div>
-
-                                    </div>
-                                </NavLink>
-                            </div>
-
-                            <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Favorites" @onclick="CloseMenu">
-                                    <div class="menu-item @IsActive">
-
+                                    <div class="ButtonIcon">
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12.5 25L10.6875 23.2016C4.25 16.8392 0 12.6294 0 7.49319C0 3.28338 3.025 0 6.875 0C9.05 0 11.1375 1.10354 12.5 2.83379C13.8625 1.10354 15.95 0 18.125 0C21.975 0 25 3.28338 25 7.49319C25 12.6294 20.75 16.8392 14.3125 23.2016L12.5 25Z" fill="white" />
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 0C1.83696 0 1.20107 0.32924 0.732233 0.915291C0.263392 1.50134 0 2.2962 0 3.125V21.875C0 22.7038 0.263392 23.4987 0.732233 24.0847C1.20107 24.6708 1.83696 25 2.5 25H22.5C23.163 25 23.7989 24.6708 24.2678 24.0847C24.7366 23.4987 25 22.7038 25 21.875V3.125C25 2.2962 24.7366 1.50134 24.2678 0.915291C23.7989 0.32924 23.163 0 22.5 0H2.5ZM15 7.8125C15 7.3981 15.1317 7.00067 15.3661 6.70765C15.6005 6.41462 15.9185 6.25 16.25 6.25H20C20.3315 6.25 20.6495 6.41462 20.8839 6.70765C21.1183 7.00067 21.25 7.3981 21.25 7.8125C21.25 8.2269 21.1183 8.62433 20.8839 8.91735C20.6495 9.21038 20.3315 9.375 20 9.375H16.25C15.9185 9.375 15.6005 9.21038 15.3661 8.91735C15.1317 8.62433 15 8.2269 15 7.8125ZM15 12.5C15 12.0856 15.1317 11.6882 15.3661 11.3951C15.6005 11.1021 15.9185 10.9375 16.25 10.9375H20C20.3315 10.9375 20.6495 11.1021 20.8839 11.3951C21.1183 11.6882 21.25 12.0856 21.25 12.5C21.25 12.9144 21.1183 13.3118 20.8839 13.6049C20.6495 13.8979 20.3315 14.0625 20 14.0625H16.25C15.9185 14.0625 15.6005 13.8979 15.3661 13.6049C15.1317 13.3118 15 12.9144 15 12.5ZM15 17.1875C15 16.7731 15.1317 16.3757 15.3661 16.0826C15.6005 15.7896 15.9185 15.625 16.25 15.625H20C20.3315 15.625 20.6495 15.7896 20.8839 16.0826C21.1183 16.3757 21.25 16.7731 21.25 17.1875C21.25 17.6019 21.1183 17.9993 20.8839 18.2924C20.6495 18.5854 20.3315 18.75 20 18.75H16.25C15.9185 18.75 15.6005 18.5854 15.3661 18.2924C15.1317 17.9993 15 17.6019 15 17.1875ZM5 9.375C5 8.1318 5.39509 6.93951 6.09835 6.06044C6.80161 5.18136 7.75544 4.6875 8.75 4.6875C9.74456 4.6875 10.6984 5.18136 11.4017 6.06044C12.1049 6.93951 12.5 8.1318 12.5 9.375C12.5 10.6182 12.1049 11.8105 11.4017 12.6896C10.6984 13.5686 9.74456 14.0625 8.75 14.0625C7.75544 14.0625 6.80161 13.5686 6.09835 12.6896C5.39509 11.8105 5 10.6182 5 9.375ZM7.4275 15.625C6.64029 15.6247 5.87295 15.934 5.23422 16.5092C4.59549 17.0843 4.11777 17.8962 3.86875 18.8297L3.81375 19.0375L3.80875 19.0562C3.75625 19.2531 3.74 19.3172 3.75625 19.3609C3.76375 19.3813 3.78125 19.3969 3.80375 19.4219C3.84375 19.4609 3.90375 19.5219 3.98625 19.6641C4.10207 19.8648 4.25437 20.0282 4.43062 20.141C4.60687 20.2537 4.80202 20.3125 5 20.3125H12.5C12.698 20.3125 12.8931 20.2537 13.0694 20.141C13.2456 20.0282 13.3979 19.8648 13.5138 19.6641C13.5643 19.5722 13.6259 19.4905 13.6962 19.4219C13.72 19.3969 13.735 19.3813 13.7437 19.3594C13.7612 19.3172 13.7437 19.2531 13.6912 19.0562L13.6863 19.0375L13.6312 18.8297C13.3823 17.8965 12.9048 17.0848 12.2663 16.5096C11.6278 15.9345 10.8607 15.625 10.0737 15.625H7.4275Z" fill="white" />
                                         </svg>
-
-                                        <div class="ButtonText @IsActive">
-                                            Favorites
-                                        </div>
-
                                     </div>
-                                </NavLink>
-                            </div>
-
-                            <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Watch_Later" @onclick="CloseMenu">
-                                    <div class="menu-item @IsActive">
-
-                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12.5 0C5.625 0 0 5.625 0 12.5C0 19.375 5.625 25 12.5 25C19.375 25 25 19.375 25 12.5C25 5.625 19.375 0 12.5 0ZM17.75 17.75L11.25 13.75V6.25H13.125V12.75L18.75 16.125L17.75 17.75Z" fill="white" />
-                                        </svg>
-
-
-                                        <div class="ButtonText @IsActive">
-                                            Watch
-                                        </div>
-
+                                    <div class="ButtonText @IsActive">
+                                        Profile
                                     </div>
-                                </NavLink>
-                            </div>
 
-                            <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Watched" @onclick="CloseMenu">
-                                    <div class="menu-item @IsActive">
+                                </div>
+                            </NavLink>
+                        </div>
 
-                                        <svg width="25" height="20" viewBox="0 0 25 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12.5 6C11.5959 6 10.7287 6.42143 10.0894 7.17157C9.45008 7.92172 9.09091 8.93913 9.09091 10C9.09091 11.0609 9.45008 12.0783 10.0894 12.8284C10.7287 13.5786 11.5959 14 12.5 14C13.4041 14 14.2713 13.5786 14.9106 12.8284C15.5499 12.0783 15.9091 11.0609 15.9091 10C15.9091 8.93913 15.5499 7.92172 14.9106 7.17157C14.2713 6.42143 13.4041 6 12.5 6ZM12.5 16.6667C10.9931 16.6667 9.5479 15.9643 8.48235 14.714C7.4168 13.4638 6.81818 11.7681 6.81818 10C6.81818 8.23189 7.4168 6.5362 8.48235 5.28595C9.5479 4.03571 10.9931 3.33333 12.5 3.33333C14.0069 3.33333 15.4521 4.03571 16.5177 5.28595C17.5832 6.5362 18.1818 8.23189 18.1818 10C18.1818 11.7681 17.5832 13.4638 16.5177 14.714C15.4521 15.9643 14.0069 16.6667 12.5 16.6667ZM12.5 0C6.81818 0 1.96591 4.14667 0 10C1.96591 15.8533 6.81818 20 12.5 20C18.1818 20 23.0341 15.8533 25 10C23.0341 4.14667 18.1818 0 12.5 0Z" fill="white"/>
-                                        </svg>
-
-                                        <div class="ButtonText @IsActive">
-                                            Viewed
-                                        </div>
-
-                                    </div>
-                                </NavLink>
-                            </div>
-
-                            <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Classified" @onclick="CloseMenu">
-                                    <div class="menu-item @IsActive">
-
-                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M23.9583 10.4166C23.9583 9.86409 23.7388 9.33419 23.3481 8.94349C22.9574 8.55279 22.4275 8.33329 21.875 8.33329H15.2916L16.2916 3.57288C16.3125 3.46871 16.3229 3.35413 16.3229 3.23954C16.3229 2.81246 16.1458 2.41663 15.8645 2.13538L14.7604 1.04163L7.90621 7.89579C7.52079 8.28121 7.29163 8.80204 7.29163 9.37496V19.7916C7.29163 20.3442 7.51112 20.8741 7.90182 21.2648C8.29252 21.6555 8.82242 21.875 9.37496 21.875H18.75C19.6145 21.875 20.3541 21.3541 20.6666 20.6041L23.8125 13.2604C23.9062 13.0208 23.9583 12.7708 23.9583 12.5V10.4166ZM1.04163 21.875H5.20829V9.37496H1.04163V21.875Z" fill="white"/>
-                                        </svg>
-
-                                        <div class="ButtonText @IsActive">
-                                            Rated
-                                        </div>
-
-                                    </div>
-                                </NavLink>
-                            </div>
-
-                        </PassOneCheck>
-                    </RoleCkeck>
-
-
-                    <RoleCkeck AuthenticatedUserRoles="@UserRoles" Roles="@( new string[] {"moderator","admin","super_admin"} )">
-                        <PassOneCheck>
-
-                            <div class="menu-item-conteiner">
-                                <div class="sidebar-separator"></div>
-                                <div class="separator-text @IsActive">Admin</div>
-                            </div>
-
-                            <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/Profile" @onclick="CloseMenu">
-                                    <div class="menu-item @IsActive">
-
-                                        <div class="ButtonIcon">
-                                            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M11.1111 15.4762V25H0C0 22.4741 1.17063 20.0517 3.25437 18.2656C5.33811 16.4796 8.16426 15.4762 11.1111 15.4762ZM11.1111 14.2857C6.50694 14.2857 2.77778 11.0893 2.77778 7.14286C2.77778 3.19643 6.50694 0 11.1111 0C15.7153 0 19.4444 3.19643 19.4444 7.14286C19.4444 11.0893 15.7153 14.2857 11.1111 14.2857ZM23.6111 19.0476H25V25H13.8889V19.0476H15.2778V17.8571C15.2778 16.9099 15.7168 16.0015 16.4982 15.3318C17.2796 14.662 18.3394 14.2857 19.4444 14.2857C20.5495 14.2857 21.6093 14.662 22.3907 15.3318C23.1721 16.0015 23.6111 16.9099 23.6111 17.8571V19.0476ZM20.8333 19.0476V17.8571C20.8333 17.5414 20.687 17.2386 20.4265 17.0153C20.1661 16.7921 19.8128 16.6667 19.4444 16.6667C19.0761 16.6667 18.7228 16.7921 18.4623 17.0153C18.2019 17.2386 18.0556 17.5414 18.0556 17.8571V19.0476H20.8333Z" fill="white"/>
-                                            </svg>
-                                        </div>
-                                        <div class="ButtonText @IsActive">
-                                            Control Panel
-                                        </div>
-
-                                    </div>
-                                </NavLink>
-                            </div>
-
-                        </PassOneCheck>
-                    </RoleCkeck>
-
-                    @{
-                        bool _short = !IsActive.Equals("Active");
-                        Console.WriteLine($"Merda {AuthenticatedUser == null} {AuthenticatedUser?.Following == null}");
-                    }
-
-                    @if (AuthenticatedUser?.Following != null && AuthenticatedUser?.Following.Count > 0)
-                    {
-
-                        <div class="menu-item-conteiner2 @IsActive">
+                        <div class="menu-item-conteiner">
                             <div class="sidebar-separator"></div>
-                            <div class="separator-text2 @IsActive">Following</div>
+                            <div class="separator-text @IsActive">Collections</div>
                         </div>
 
-                        <div class="Follwing-container">
+                        <div class="menu-item-conteiner @IsActive">
+                            <NavLink href="/CollectionsExplorer">
+                                <div class="menu-item @IsActive">
 
-                            @{
-                                int nFollowings = _short ? MAX_NOT_OPEN_ALLOWED_FOLLOWING_USERS : MAX_OPEN_ALLOWED_FOLLOWING_USERS;
-                                nFollowings = _showAll ? AuthenticatedUser.Following.Count : nFollowings;
-                                int i = 0;
-                            }
-
-
-                            @foreach (ApplicationUser following in AuthenticatedUser.Following)
-                            {
-                                @if (i == nFollowings)
-                                {
-                                    break;
-                                }
-
-                                <div class="menu-item-conteiner @IsActive following-fonteiner">
-                                    <div class="menu-item2 @IsActive">
-                                        <NavLink href="@($"/Profile/{following.Id}")"  @onclick="CloseMenu">
-                                            <ItemUser User="@following" Short="@_short" />
-                                        </NavLink>
+                                    <div class="ButtonIcon">
+                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M15.2105 0.537602C16.2201 1.08157 16.9809 1.99414 17.3343 3.08515L17.9474 5.3577H11.0115L10.7758 5.36366H10.7591C9.62042 5.42813 8.54956 5.92596 7.76631 6.75499C6.98306 7.58403 6.54683 8.68138 6.54713 9.82186V18.7502L6.55308 18.9859V19.0026C6.57134 19.2994 6.61618 19.5871 6.68761 19.8656C5.97717 19.8518 5.28036 19.6681 4.65541 19.3299C3.64531 18.7862 2.88406 17.8736 2.53036 16.7824L0.154105 7.93263C-0.143328 6.83173 -0.00696814 5.65867 0.535067 4.65534C1.07883 3.6453 1.99148 2.88409 3.08275 2.5304L11.933 0.15309C13.0339 -0.143283 14.2065 -0.00608386 15.2093 0.536412M11.0199 6.54815L10.8175 6.5541C9.98428 6.60357 9.20144 6.96939 8.62899 7.57677C8.05653 8.18416 7.73769 8.98724 7.73764 9.82186V18.7418L7.74359 18.9442C7.79306 19.7774 8.1589 20.5602 8.76632 21.1326C9.37374 21.705 10.1769 22.0238 11.0115 22.0239H11.5854C10.7687 20.4564 10.5133 18.6566 10.8617 16.9239C11.21 15.1911 12.1411 13.6298 13.5 12.4996C14.859 11.3695 16.5639 10.7386 18.3312 10.7118C20.0985 10.6851 21.8217 11.2642 23.2142 12.3527V9.83019L23.2083 9.62782C23.1588 8.79467 22.793 8.01187 22.1856 7.43945C21.5781 6.86702 20.775 6.5482 19.9403 6.54815H11.0199ZM25 18.4526C25 16.7161 24.3101 15.0507 23.0822 13.8228C21.8542 12.595 20.1888 11.9051 18.4522 11.9051C16.7156 11.9051 15.0502 12.595 13.8222 13.8228C12.5943 15.0507 11.9044 16.7161 11.9044 18.4526C11.9044 20.1891 12.5943 21.8544 13.8222 23.0823C15.0502 24.3102 16.7156 25 18.4522 25C20.1888 25 21.8542 24.3102 23.0822 23.0823C24.3101 21.8544 25 20.1891 25 18.4526ZM18.3451 14.2944L18.4522 14.286L18.5594 14.2955C18.6783 14.3173 18.7878 14.3747 18.8733 14.4602C18.9588 14.5457 19.0162 14.6552 19.0379 14.7741L19.0475 14.8812V17.8573L22.0297 17.8585L22.1368 17.8681C22.2558 17.8898 22.3653 17.9472 22.4508 18.0327C22.5363 18.1182 22.5937 18.2277 22.6154 18.3466L22.6249 18.4538L22.6154 18.5609C22.5936 18.68 22.536 18.7896 22.4503 18.8751C22.3646 18.9606 22.2548 19.0179 22.1356 19.0395L22.0285 19.049H19.0487V22.0287L19.0391 22.1358C19.0174 22.2547 18.96 22.3642 18.8745 22.4497C18.789 22.5352 18.6795 22.5926 18.5605 22.6144L18.4534 22.6239L18.3463 22.6144C18.2273 22.5926 18.1178 22.5352 18.0323 22.4497C17.9468 22.3642 17.8894 22.2547 17.8677 22.1358L17.8581 22.0287V19.0478H14.8783L14.7712 19.0383C14.6522 19.0165 14.5427 18.9591 14.4572 18.8736C14.3717 18.7881 14.3143 18.6786 14.2926 18.5597L14.283 18.4526L14.2926 18.3454C14.3143 18.2265 14.3717 18.117 14.4572 18.0315C14.5427 17.946 14.6522 17.8886 14.7712 17.8669L14.8783 17.8573H17.857V14.8812L17.8665 14.7741C17.888 14.655 17.9453 14.5452 18.0308 14.4595C18.1163 14.3738 18.226 14.3162 18.3451 14.2944Z" fill="white" />
+                                        </svg>
                                     </div>
-                                </div>
-
-                                i++;
-                            }
-
-                            @if (!_short && AuthenticatedUser?.Following.Count > MAX_OPEN_ALLOWED_FOLLOWING_USERS )
-                            {
-                                
-                                <div class="menu-item-conteiner @IsActive" @onclick="OnClickShowAll">
-                                    <div class="menu-item @IsActive">
-
-                                            @if (_showAll)
-                                            {
-                                                <div class="ButtonIcon">
-                                                    <svg style="color:white; fill:white;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" >
-                                                        <path d="M18.4 14.6 12 8.3l-6.4 6.3.8.8L12 9.7l5.6 5.7z " color="white"></path>
-                                                    </svg>
-                                                </div>
-                                                <div class="ButtonText @IsActive">
-                                                    Show Less
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="ButtonIcon">
-                                                    <svg style="color:white; fill:white;" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false">
-                                                        <path d="m18 9.28-6.35 6.35-6.37-6.35.72-.71 5.64 5.65 5.65-5.65z" color="white"></path>
-                                                    </svg>
-                                                </div>
-                                                <div class="ButtonText @IsActive">
-                                                    Show More
-                                                </div>
-                                            }
-
+                                    <div class="ButtonText @IsActive">
+                                        Collections
                                     </div>
-                                </div>
-                            }
 
+                                </div>
+                            </NavLink>
                         </div>
 
-                    }
-                
+                        <div class="menu-item-conteiner @IsActive">
+                            <NavLink href="/ManageCollection/Favorites" >
+                                <div class="menu-item @IsActive">
+
+                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.5 25L10.6875 23.2016C4.25 16.8392 0 12.6294 0 7.49319C0 3.28338 3.025 0 6.875 0C9.05 0 11.1375 1.10354 12.5 2.83379C13.8625 1.10354 15.95 0 18.125 0C21.975 0 25 3.28338 25 7.49319C25 12.6294 20.75 16.8392 14.3125 23.2016L12.5 25Z" fill="white" />
+                                    </svg>
+
+                                    <div class="ButtonText @IsActive">
+                                        Favorites
+                                    </div>
+
+                                </div>
+                            </NavLink>
+                        </div>
+
+                        <div class="menu-item-conteiner @IsActive">
+                            <NavLink href="/ManageCollection/Watch_Later" >
+                                <div class="menu-item @IsActive">
+
+                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.5 0C5.625 0 0 5.625 0 12.5C0 19.375 5.625 25 12.5 25C19.375 25 25 19.375 25 12.5C25 5.625 19.375 0 12.5 0ZM17.75 17.75L11.25 13.75V6.25H13.125V12.75L18.75 16.125L17.75 17.75Z" fill="white" />
+                                    </svg>
+
+
+                                    <div class="ButtonText @IsActive">
+                                        Watch
+                                    </div>
+
+                                </div>
+                            </NavLink>
+                        </div>
+
+                        <div class="menu-item-conteiner @IsActive">
+                                <NavLink href="/ManageCollection/Watched" >
+                                <div class="menu-item @IsActive">
+
+                                    <svg width="25" height="20" viewBox="0 0 25 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.5 6C11.5959 6 10.7287 6.42143 10.0894 7.17157C9.45008 7.92172 9.09091 8.93913 9.09091 10C9.09091 11.0609 9.45008 12.0783 10.0894 12.8284C10.7287 13.5786 11.5959 14 12.5 14C13.4041 14 14.2713 13.5786 14.9106 12.8284C15.5499 12.0783 15.9091 11.0609 15.9091 10C15.9091 8.93913 15.5499 7.92172 14.9106 7.17157C14.2713 6.42143 13.4041 6 12.5 6ZM12.5 16.6667C10.9931 16.6667 9.5479 15.9643 8.48235 14.714C7.4168 13.4638 6.81818 11.7681 6.81818 10C6.81818 8.23189 7.4168 6.5362 8.48235 5.28595C9.5479 4.03571 10.9931 3.33333 12.5 3.33333C14.0069 3.33333 15.4521 4.03571 16.5177 5.28595C17.5832 6.5362 18.1818 8.23189 18.1818 10C18.1818 11.7681 17.5832 13.4638 16.5177 14.714C15.4521 15.9643 14.0069 16.6667 12.5 16.6667ZM12.5 0C6.81818 0 1.96591 4.14667 0 10C1.96591 15.8533 6.81818 20 12.5 20C18.1818 20 23.0341 15.8533 25 10C23.0341 4.14667 18.1818 0 12.5 0Z" fill="white"/>
+                                    </svg>
+
+                                    <div class="ButtonText @IsActive">
+                                        Viewed
+                                    </div>
+
+                                </div>
+                            </NavLink>
+                        </div>
+
+                        <div class="menu-item-conteiner @IsActive">
+                            <NavLink href="/ManageCollection/Classified" >
+                                <div class="menu-item @IsActive">
+
+                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M23.9583 10.4166C23.9583 9.86409 23.7388 9.33419 23.3481 8.94349C22.9574 8.55279 22.4275 8.33329 21.875 8.33329H15.2916L16.2916 3.57288C16.3125 3.46871 16.3229 3.35413 16.3229 3.23954C16.3229 2.81246 16.1458 2.41663 15.8645 2.13538L14.7604 1.04163L7.90621 7.89579C7.52079 8.28121 7.29163 8.80204 7.29163 9.37496V19.7916C7.29163 20.3442 7.51112 20.8741 7.90182 21.2648C8.29252 21.6555 8.82242 21.875 9.37496 21.875H18.75C19.6145 21.875 20.3541 21.3541 20.6666 20.6041L23.8125 13.2604C23.9062 13.0208 23.9583 12.7708 23.9583 12.5V10.4166ZM1.04163 21.875H5.20829V9.37496H1.04163V21.875Z" fill="white"/>
+                                    </svg>
+
+                                    <div class="ButtonText @IsActive">
+                                        Rated
+                                    </div>
+
+                                </div>
+                            </NavLink>
+                        </div>
+
+                    </CustomAuthorized>
+                </CustomAuthorizedView>
+
+
+                <CustomAuthorizedView DebugName="C" CheckAuthentication=false User="@User" Roles="moderator,admin,super_admin">
+                    <CustomAuthorized>
+
+                        <div class="menu-item-conteiner">
+                            <div class="sidebar-separator"></div>
+                            <div class="separator-text @IsActive">Admin</div>
+                        </div>
+
+                        <div class="menu-item-conteiner @IsActive">
+                            <NavLink href="/Profile" >
+                                <div class="menu-item @IsActive">
+
+                                    <div class="ButtonIcon">
+                                        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11.1111 15.4762V25H0C0 22.4741 1.17063 20.0517 3.25437 18.2656C5.33811 16.4796 8.16426 15.4762 11.1111 15.4762ZM11.1111 14.2857C6.50694 14.2857 2.77778 11.0893 2.77778 7.14286C2.77778 3.19643 6.50694 0 11.1111 0C15.7153 0 19.4444 3.19643 19.4444 7.14286C19.4444 11.0893 15.7153 14.2857 11.1111 14.2857ZM23.6111 19.0476H25V25H13.8889V19.0476H15.2778V17.8571C15.2778 16.9099 15.7168 16.0015 16.4982 15.3318C17.2796 14.662 18.3394 14.2857 19.4444 14.2857C20.5495 14.2857 21.6093 14.662 22.3907 15.3318C23.1721 16.0015 23.6111 16.9099 23.6111 17.8571V19.0476ZM20.8333 19.0476V17.8571C20.8333 17.5414 20.687 17.2386 20.4265 17.0153C20.1661 16.7921 19.8128 16.6667 19.4444 16.6667C19.0761 16.6667 18.7228 16.7921 18.4623 17.0153C18.2019 17.2386 18.0556 17.5414 18.0556 17.8571V19.0476H20.8333Z" fill="white"/>
+                                        </svg>
+                                    </div>
+                                    <div class="ButtonText @IsActive">
+                                        Control Panel
+                                    </div>
+
+                                </div>
+                            </NavLink>
+                        </div>
+
+                    </CustomAuthorized>
+                </CustomAuthorizedView>
+
+
+                @if (User?.Following != null && User?.Following.Count > 0)
+                {
                     <div class="menu-item-conteiner">
                         <div class="sidebar-separator"></div>
-                        <div class="separator-text @IsActive">Acount</div>
+                        <div class="separator-text @IsActive">Following</div>
                     </div>
 
-                    <form class="menu-item-conteiner @IsActive" action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <div>
-                            <input type="hidden" name="ReturnUrl" value="" />
-                            <button action="Account/Logout" class="profileButon menu-item @IsActive" @onclick="CloseMenu">
-                                <div class="ButtonIcon">
-                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.2626 12.188C17.2626 11.9393 17.1685 11.7009 17.0011 11.525C16.8336 11.3492 16.6065 11.2505 16.3697 11.2505H3.30662L5.64114 9.15045C5.73025 9.07035 5.80346 8.9726 5.8566 8.86278C5.90973 8.75297 5.94174 8.63324 5.95081 8.51043C5.95987 8.38763 5.94581 8.26415 5.90943 8.14705C5.87304 8.02995 5.81505 7.92152 5.73876 7.82795C5.66247 7.73439 5.56937 7.65751 5.46479 7.60173C5.3602 7.54594 5.24617 7.51232 5.12921 7.5028C5.01226 7.49329 4.89466 7.50805 4.78314 7.54625C4.67161 7.58445 4.56835 7.64535 4.47924 7.72545L0.312569 11.4755C0.214551 11.5635 0.135856 11.6727 0.0818982 11.7957C0.0279401 11.9187 0 12.0525 0 12.188C0 12.3234 0.0279401 12.4572 0.0818982 12.5802C0.135856 12.7032 0.214551 12.8124 0.312569 12.9005L4.47924 16.6505C4.6592 16.8122 4.89301 16.8923 5.12921 16.8731C5.36542 16.8539 5.58468 16.7369 5.73876 16.548C5.89284 16.359 5.96911 16.1135 5.95081 15.8655C5.9325 15.6175 5.82111 15.3872 5.64114 15.2255L3.30781 13.1255H16.3697C16.6065 13.1255 16.8336 13.0267 17.0011 12.8509C17.1685 12.6751 17.2626 12.4366 17.2626 12.188Z" fill="white" />
-                                        <path d="M9.5238 7.5C9.5238 8.3775 9.5238 8.81625 9.72499 9.1325C9.81164 9.26847 9.92288 9.38527 10.0524 9.47625C10.3536 9.6875 10.7714 9.6875 11.6071 9.6875H16.6667C17.3771 9.6875 18.0584 9.98382 18.5607 10.5113C19.063 11.0387 19.3452 11.7541 19.3452 12.5C19.3452 13.2459 19.063 13.9613 18.5607 14.4887C18.0584 15.0162 17.3771 15.3125 16.6667 15.3125H11.6071C10.7714 15.3125 10.3536 15.3125 10.0524 15.5225C9.92276 15.6139 9.81152 15.7311 9.72499 15.8675C9.5238 16.1838 9.5238 16.6225 9.5238 17.5C9.5238 21.035 9.5238 22.8038 10.5702 23.9013C11.6155 25 13.2988 25 16.6655 25H17.8559C21.225 25 22.9071 25 23.9536 23.9013C25 22.8038 25 21.035 25 17.5V7.5C25 3.965 25 2.19625 23.9536 1.09875C22.9071 -7.45058e-08 21.2238 0 17.8571 0H16.6667C13.2988 0 11.6155 -7.45058e-08 10.5702 1.09875C9.5238 2.19625 9.5238 3.965 9.5238 7.5Z" fill="white" />
-                                    </svg>
-                                </div>
-                                <div class="ButtonText @IsActive">
-                                    Logout
-                                </div>
-                            </button>
-                        </div>
-                    </form>
+                    <div class="menu-item-conteiner @IsActive following-fonteiner">
 
-                </PassAllChecks>
-            </RoleCkeck>
+                        @foreach( ApplicationUser followed in User.Following)
+                        {
+                            <div class="menu-item-Following-conteiner">
+                                <div class="Following-image-conteiner">
+                                    <img class="Following-image" alt="Foto"/>
+                                </div>
+                                <div class="Following-name">@followed.UserName</div>
+                            </div>
+                        }
 
-        </div>
+                    </div>
+                }
+
+                <div class="menu-item-conteiner">
+                    <div class="sidebar-separator"></div>
+                    <div class="separator-text @IsActive">Acount</div>
+                </div>
+
+                @* <div class="menu-item-conteiner @IsActive"> *@
+
+                <form class="menu-item-conteiner @IsActive" action="Account/Logout" method="post">
+                    <AntiforgeryToken />
+                    <div>
+                        <input type="hidden" name="ReturnUrl" value="" />
+                    <button action="Account/Logout" class="profileButon menu-item @IsActive">
+                            <div class="ButtonIcon">
+                                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.2626 12.188C17.2626 11.9393 17.1685 11.7009 17.0011 11.525C16.8336 11.3492 16.6065 11.2505 16.3697 11.2505H3.30662L5.64114 9.15045C5.73025 9.07035 5.80346 8.9726 5.8566 8.86278C5.90973 8.75297 5.94174 8.63324 5.95081 8.51043C5.95987 8.38763 5.94581 8.26415 5.90943 8.14705C5.87304 8.02995 5.81505 7.92152 5.73876 7.82795C5.66247 7.73439 5.56937 7.65751 5.46479 7.60173C5.3602 7.54594 5.24617 7.51232 5.12921 7.5028C5.01226 7.49329 4.89466 7.50805 4.78314 7.54625C4.67161 7.58445 4.56835 7.64535 4.47924 7.72545L0.312569 11.4755C0.214551 11.5635 0.135856 11.6727 0.0818982 11.7957C0.0279401 11.9187 0 12.0525 0 12.188C0 12.3234 0.0279401 12.4572 0.0818982 12.5802C0.135856 12.7032 0.214551 12.8124 0.312569 12.9005L4.47924 16.6505C4.6592 16.8122 4.89301 16.8923 5.12921 16.8731C5.36542 16.8539 5.58468 16.7369 5.73876 16.548C5.89284 16.359 5.96911 16.1135 5.95081 15.8655C5.9325 15.6175 5.82111 15.3872 5.64114 15.2255L3.30781 13.1255H16.3697C16.6065 13.1255 16.8336 13.0267 17.0011 12.8509C17.1685 12.6751 17.2626 12.4366 17.2626 12.188Z" fill="white" />
+                                    <path d="M9.5238 7.5C9.5238 8.3775 9.5238 8.81625 9.72499 9.1325C9.81164 9.26847 9.92288 9.38527 10.0524 9.47625C10.3536 9.6875 10.7714 9.6875 11.6071 9.6875H16.6667C17.3771 9.6875 18.0584 9.98382 18.5607 10.5113C19.063 11.0387 19.3452 11.7541 19.3452 12.5C19.3452 13.2459 19.063 13.9613 18.5607 14.4887C18.0584 15.0162 17.3771 15.3125 16.6667 15.3125H11.6071C10.7714 15.3125 10.3536 15.3125 10.0524 15.5225C9.92276 15.6139 9.81152 15.7311 9.72499 15.8675C9.5238 16.1838 9.5238 16.6225 9.5238 17.5C9.5238 21.035 9.5238 22.8038 10.5702 23.9013C11.6155 25 13.2988 25 16.6655 25H17.8559C21.225 25 22.9071 25 23.9536 23.9013C25 22.8038 25 21.035 25 17.5V7.5C25 3.965 25 2.19625 23.9536 1.09875C22.9071 -7.45058e-08 21.2238 0 17.8571 0H16.6667C13.2988 0 11.6155 -7.45058e-08 10.5702 1.09875C9.5238 2.19625 9.5238 3.965 9.5238 7.5Z" fill="white" />
+                                </svg>
+                            </div>
+                            <div class="ButtonText @IsActive">
+                                Logout
+                            </div>
+                        </button>
+                    </div>
+                </form>
+
+            </CustomAuthorized>
+        </CustomAuthorizedView>
+
     </div>
-    <div @onclick="CloseMenu" class="Obverlay @IsActive">
-    </div>
+
 </div>
