@@ -124,3 +124,8 @@
     *::-webkit-scrollbar-thumb:active {
         background-color: #1824ff;
     }
+.remove-collection {
+    display:flex;
+    position: absolute;
+    left: 80%;
+}

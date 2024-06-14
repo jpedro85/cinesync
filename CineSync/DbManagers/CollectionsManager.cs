@@ -4,6 +4,7 @@ using CineSync.Data.Models;
 using CineSync.Data;
 using CineSync.Core.Logger.Enums;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging.Console;
 
 namespace CineSync.DbManagers
 {
@@ -109,6 +110,29 @@ namespace CineSync.DbManagers
 
             return false;
         }
+        /// <summary>
+        /// Removes a specified collection for a user.
+        /// </summary>
+        /// <param name="userId">The identifier of the user.</param>
+        /// <param name="collectionName">The name of the collection to remove.</param>
+        /// <returns>Returns true if the collection is successfully removed, otherwise false.</returns>
+        /// <exception cref="Exception">Throws if the collection is not found.</exception>
+        public async Task<bool> RemoveCollectionAsync(string userId, string collectionName)
+        {
+            // Obter o usuário pelo ID
+            ApplicationUser user = await GetUserByIdAsync(userId);
+
+            // Encontrar a coleção pelo nome
+            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName)
+                                         ?? throw new Exception("Collection not found");
+
+            // Remover a coleção da lista de coleções do usuário
+            user.Collections.Remove(collection);
+
+            // Salvar mudanças
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
 
         /// <summary>
         /// Changes the Name of a collection.

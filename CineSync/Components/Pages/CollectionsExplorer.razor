@@ -1,0 +1,35 @@
+﻿@page "/CollectionsExplorer/{UserId?}"
+@attribute [Authorize]
+
+@using CineSync.Components.Buttons
+@using CineSync.Components.Account.Component
+@using CineSync.Components.PopUps
+@using Microsoft.AspNetCore.Authorization
+@rendermode InteractiveServer
+
+<div class="Collections-container">
+<div class="Profile">
+
+
+
+    <div class="Collections-info">
+            <div class="PageSubtitle">Collections
+                <div class="ButtonNewCollection">
+                    <RectButton1   DataToggle="modal" DataTarget="#NewCollection" Text="New Collection" ></RectButton1>
+                </div>
+                <NewCollection/>
+            </div>
+            <div class="tab-content">
+                    <div class="Collections">
+                        <div class="Collections-colum">
+                            @foreach (var collection in movieCollections)
+                            {
+                           
+                                <Collection MovieCollection="collection" />
+                            }
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
