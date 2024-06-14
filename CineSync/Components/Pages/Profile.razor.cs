@@ -71,10 +71,15 @@ namespace CineSync.Components.Pages
         {
             AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
 
-            if (string.IsNullOrEmpty(UserId))
+            if (string.IsNullOrEmpty(UserId) || UserId == "0")
             {
                 _visit = false;
                 User = AuthenticatedUser;
+                if (UserId == "0")
+                {
+                    _invalid = true;
+                    return;
+                }
                 Console.WriteLine($"User{User?.Following?.Count},{User?.Followers?.Count}");
             }
             else
