@@ -14,6 +14,9 @@ namespace CineSync.Components.Pages
     public partial class ManageCollection : ComponentBase
     {
 
+        [Parameter]
+        public string? CollectionName { get; set; }
+
         [Inject]
         private CollectionsManager CollectionsManager { get; set; }
 
@@ -24,12 +27,9 @@ namespace CineSync.Components.Pages
 
         private ApplicationUser? AuthenticatedUser { get; set; }
 
-        private ICollection<CollectionsMovies> AllMovies { get; set; } = new List<CollectionsMovies> (0);
+        private ICollection<CollectionsMovies> AllMovies { get; set; } = new List<CollectionsMovies>(0);
 
-        private ICollection<string> DefaultCollection { get; set; } = new List<string>();
-
-        [Parameter]
-        public string? CollectionName { get; set; }
+        private ICollection<string> DefaultCollection { get; set; } = new string[] { "Favorites", "Watched", "Classified", "Watch Later" };
 
         public MovieCollection Collection { get; set; }
 
@@ -40,22 +40,12 @@ namespace CineSync.Components.Pages
             MainLayout = LayoutService.MainLayout;
             AuthenticatedUser = MainLayout.AuthenticatedUser;
             await GetCollection();
-            startDefaultCollectionList();
-        }
-
-        private void startDefaultCollectionList()
-        {
-            DefaultCollection.Add("Favorites");
-            DefaultCollection.Add("Watched");
-            DefaultCollection.Add("Classified");
-            DefaultCollection.Add("Watch Later");
- 
         }
 
         private async Task GetCollection()
         {
             var collections = await CollectionsManager.GetUserCollections(AuthenticatedUser.Id);
-            Collection = collections.FirstOrDefault(collection => collection.Name == CollectionName.Replace("_"," "));
+            Collection = collections.FirstOrDefault(collection => collection.Name == CollectionName.Replace("_", " "));
             if (Collection != null)
                 AllMovies = Collection!.CollectionMovies!.ToList();
         }
@@ -75,9 +65,9 @@ namespace CineSync.Components.Pages
 
         private async void OnChangeName(string newName)
         {
-            if(!newName.IsNullOrEmpty()) 
+            if (!newName.IsNullOrEmpty())
             {
-                await CollectionsManager.ChangeCollectioName( AuthenticatedUser.Id, Collection.Name, newName);
+                await CollectionsManager.ChangeCollectioName(AuthenticatedUser.Id, Collection.Name, newName);
                 StateHasChanged();
             }
         }
