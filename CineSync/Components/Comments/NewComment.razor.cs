@@ -12,6 +12,13 @@ namespace CineSync.Components.Comments
 {
     public partial class NewComment : ComponentBase, IDisposable
     {
+
+        [Parameter]
+        public string TextAreaStyle { get; set; } = "";
+
+        [Parameter]
+        public string SelectedFileStyle { get; set; } = "";
+
         // Maxsize is 4MB
         private const long MaxFileSize = 4 * 1024 * 1024;
 

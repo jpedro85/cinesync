@@ -13,22 +13,24 @@ namespace CineSync.Components.Comments
     {
 
         [Parameter]
+        public ICollection<UserLikedComment> LikedComments { get; set; }
+
+        [Parameter]
+        public ICollection<UserDislikedComment> DislikedComments { get; set; }
+
+        [Parameter]
         public Comment Comment { get; set; }
 
         [Parameter]
         public bool Liked { get; set; } = false;
+        private bool _Liked {  get; set; }
 
         [Parameter]
         public bool DisLiked { get; set; } = false;
+		private bool _Disliked { get; set; }
 
         [Parameter]
         public bool AllowFollow { get; set; } = true;
-
-        [Parameter]
-        public LikeStatusChange OnDislikeChange { get; set; } = (s) => { };
-
-        [Parameter]
-        public LikeStatusChange OnlikeChange { get; set; } = (s) => { };
 
         [Parameter]
         public EventCallback OnChange { get; set; }
@@ -63,52 +65,112 @@ namespace CineSync.Components.Comments
             _Disliked = DisLiked;
         }
 
-        private async void AddLike(Comment commentAddLike)
+		private async void AddLike()
         {
             if (_Disliked)
             {
-                await CommentManager.RemoveDesLikeAsync(commentAddLike, _authenticatedUser.Id);
+                await CommentManager.RemoveDesLikeAsync(Comment, _authenticatedUser.Id);
                 _Disliked = false;
-                OnDislikeChange(_Disliked);
-            }
+                UpdateDislike(_Disliked);
+            }    
 
             if (_Liked)
             {
-                await CommentManager.RemoveLikeAsync(commentAddLike, _authenticatedUser.Id);
+                await CommentManager.RemoveLikeAsync(Comment, _authenticatedUser.Id);
                 _Liked = false;
             }
             else
             {
-                await CommentManager.AddLikeAsync(commentAddLike, _authenticatedUser.Id);
+                await CommentManager.AddLikeAsync(Comment, _authenticatedUser.Id);
                 _Liked = true;
             }
 
-            OnlikeChange(_Liked);
+            UpdateLike(_Liked);
             StateHasChanged();
         }
 
-        private async void AddDeslike(Comment commentAddDesLike)
+        private async void AddDeslike()
         {
             if (_Liked)
             {
-                await CommentManager.RemoveLikeAsync(commentAddDesLike, _authenticatedUser.Id);
+                await CommentManager.RemoveLikeAsync(Comment, _authenticatedUser.Id);
                 _Liked = false;
-                OnlikeChange(_Liked);
+                UpdateLike(_Liked);
             }
 
             if (_Disliked)
             {
-                await CommentManager.RemoveDesLikeAsync(commentAddDesLike, _authenticatedUser.Id);
+                await CommentManager.RemoveDesLikeAsync(Comment, _authenticatedUser.Id);
                 _Disliked = false;
             }
             else
             {
-                await CommentManager.AddDesLikeAsync(commentAddDesLike, _authenticatedUser.Id);
+                await CommentManager.AddDesLikeAsync(Comment, _authenticatedUser.Id);
                 _Disliked = true;
             }
 
-            OnDislikeChange(_Disliked);
+            UpdateDislike(_Disliked);
             StateHasChanged();
+        }
+
+        private void UpdateLike(bool newState )
+        {
+            if (newState)
+            {
+                if (!LikedComments.Any(u => u.Comment.Equals(Comment)))
+                {
+                    LikedComments.Add(
+                            new UserLikedComment()
+                            {
+                                User = _authenticatedUser,
+                                Comment = Comment,
+                                UserId = _authenticatedUser.Id,
+                                CommentId = Comment.Id
+                            }
+                        );
+                }
+            }
+            else
+            {
+                foreach (var item in LikedComments)
+                {
+                    if (item.Equals(Comment))
+                    {
+                        LikedComments.Remove(item);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void UpdateDislike(bool newState)
+        {
+            if (newState)
+            {
+                if (!DislikedComments.Any(u => u.Comment.Equals(Comment)))
+                {
+                    DislikedComments.Add(
+                            new UserDislikedComment()
+                            {
+                                User = _authenticatedUser,
+                                Comment = Comment,
+                                UserId = _authenticatedUser.Id,
+                                CommentId = Comment.Id
+                            }
+                        );
+                }
+            }
+            else
+            {
+                foreach (var item in DislikedComments)
+                {
+                    if (item.Equals(Comment)) 
+                    {
+                        DislikedComments.Remove(item);
+                        break;
+                    }
+                }
+            }
         }
 
         private async void Follow(string id)

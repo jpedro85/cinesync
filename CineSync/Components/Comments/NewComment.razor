@@ -3,7 +3,7 @@
 @using CineSync.Components.Buttons
  
 <div class="newcomment-container">
-    <textarea @bind="comment.Content" placeholder="Content"></textarea>
+    <textarea style="@TextAreaStyle" @bind="comment.Content" placeholder="Content"></textarea>
     <label class="file-input-button" for="file-upload">
         <div class="input-container">
             <div class="text">
@@ -38,7 +38,7 @@
                         OpenAttachement(localKvp.Value,localKvp.Key.Name);
                     }"
             >
-                <div class="selected-file-left">
+                <div style="@SelectedFileStyle" class="selected-file-left">
                     <img class="attachment" src="@( ImageConverter.ConverBytesTo64( kvp.Value ) )" alt="@kvp.Key.Name" />
                     <div>
                         @if (@kvp.Key.Name.Length > 20)
