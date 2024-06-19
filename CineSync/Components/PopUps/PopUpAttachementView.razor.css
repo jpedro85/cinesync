@@ -1,0 +1,12 @@
+﻿.image-container {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    max-height:400px !important;
+    max-width:882px !important;
+    overflow:auto;
+}
+
+.file-name {
+    max-width: 882px;
+}

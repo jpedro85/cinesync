@@ -1,0 +1,47 @@
+﻿@using CineSync.Components.Utils.Authorization
+@using CineSync.Components.Buttons
+@using CineSync.Components.Comments
+
+<div class="containor">
+    <div class="title-containor">
+        <div>Start a Discussion</div>
+    </div>
+    <textarea @bind="_discussion.Title" placeholder="Discussion Title"></textarea>
+    <div class="first-comment-containor">
+
+        <div class="simple-button" @onclick="ToogleFistComment">
+            @if (_addFirstComment)
+            {
+                <div class="ButtonText">
+                    Remove first comment
+                </div>
+                <div class="ButtonIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" color="currentcolor" height="24" viewBox="0 0 24 24" width="24" focusable="false">
+                        <path d="M18.4 14.6 12 8.3l-6.4 6.3.8.8L12 9.7l5.6 5.7z "></path>
+                    </svg>
+                </div>
+            }
+            else
+            {
+                <div class="ButtonText">
+                    Add also first comment
+                </div>
+                <div class="ButtonIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" color="currentcolor" height="24" viewBox="0 0 24 24" width="24" focusable="false">
+                        <path d="m18 9.28-6.35 6.35-6.37-6.35.72-.71 5.64 5.65 5.65-5.65z"></path>
+                    </svg>
+                </div>
+            }
+        </div>
+
+        @if (_addFirstComment)
+        {
+            <div class="new-comment">
+                <hr>
+                <NewComment @ref="@_newComment"></NewComment>
+                <hr>
+            </div>
+        }
+
+    </div>
+</div>

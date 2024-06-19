@@ -1,0 +1,15 @@
+﻿@using CineSync.Components.Utils.Authorization
+@using CineSync.Components.Buttons
+@using CineSync.Components.Comments
+
+<RoleCkeck AuthenticatedUserRoles="@AuthenticatedUserRoles" Roles="@( new string[] { "user","moderador","admin","super_admin" } )">
+    <PassOneCheck>     
+        <div class="add-discussion-containor" >
+            <NewDiscussion></NewDiscussion>
+            <RectColoredButton Text="Start"></RectColoredButton>
+        </div>
+    </PassOneCheck>
+</RoleCkeck>
+<div>
+    AAAAAAAAAAAAAAAAAA
+</div>

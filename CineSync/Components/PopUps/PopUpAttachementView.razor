@@ -1,0 +1,22 @@
+﻿
+@using CineSync.Components.Buttons
+@using CineSync.Components.Utils;
+
+<PopUpLayout Id="@Id" @ref="@_popUpLayout">
+	<Header>
+		<div class="file-title">File:</div>
+		<div class="file-name">@Name</div
+	</Header>
+	<Body>
+		<div class="image-container">
+			@if(Attachment != null)
+			{
+				<img class="attachment" src="@( ImageConverter.ConverBytesTo64( Attachment ) )" alt="@Name" />
+			}
+		</div>
+	</Body>
+	<Footer>
+		<RectButton2 Text="Close" DataDismiss="modal"></RectButton2>
+	</Footer>
+</PopUpLayout>
+
