@@ -35,6 +35,12 @@ namespace CineSync.Data
         [JsonIgnore]
         public ICollection<UserDislikedComment> DislikedComments { get; set; }
 
+        [JsonIgnore]
+        public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; }
+
+        [JsonIgnore]
+        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; }
+
         public override bool Equals(object? obj)
         {
             if (obj != null && obj is ApplicationUser otherUser)

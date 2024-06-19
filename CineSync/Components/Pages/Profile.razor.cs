@@ -15,7 +15,7 @@ namespace CineSync.Components.Pages
         public string? UserId { get; set; }
 
         [Inject]
-        public DbManager<Comment> DbCommentManage { get; set; }
+        public CommentManager DbCommentManage { get; set; }
 
         [Inject]
         public DbManager<Discussion> DbDiscussionsManage { get; set; }
@@ -70,8 +70,8 @@ namespace CineSync.Components.Pages
         protected override async Task OnInitializedAsync()
         {
             AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
-
-            if (string.IsNullOrEmpty(UserId) || UserId == "0")
+          
+            if (string.IsNullOrEmpty(UserId) || UserId == AuthenticatedUser.Id || UserId == "0")
             {
                 _visit = false;
                 User = AuthenticatedUser;

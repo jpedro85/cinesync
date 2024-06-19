@@ -4,6 +4,7 @@
 @using CineSync.Components.Utils
 @using CineSync.Components.Utils.Authorization
 @using CineSync.Components.Comments
+@using CineSync.Components.Discussions
 @using CineSync.Components.PopUps
 @using CineSync.Components.Buttons
 
@@ -165,16 +166,33 @@
 			/>
 
 			<div class="page-bottom-content">
-				<Comments MovieId=@MovieId LikedComments="@_likedComents" DislikedComments="@_dislikedComents"></Comments>
+
+				@if( _activeTab == _tabNames[0] ) //comments
+				{
+					
+					<Comments 
+						MovieId=@MovieId 
+						LikedComments="@_likedComents" 
+						DislikedComments="@_dislikedComents"
+					>
+					</Comments>
+		
+				}
+				else if ( _activeTab == _tabNames[1] ) //Discussions
+				{
+				
+					<Discussions 
+						MovieId=@MovieId
+						LikedDiscussions="@_likedDiscussion" 
+						DislikedDiscussions="@_dislikedDiscussions"
+					>
+					</Discussions>
+				}
 			</div>
 
 		</div>
 
 	}
-	else
-	{
-
-	}
-
+	
 </div>
 

@@ -1,15 +1,40 @@
 ﻿@using CineSync.Components.Utils.Authorization
 @using CineSync.Components.Buttons
 @using CineSync.Components.Comments
+@using CineSync.Data.Models
 
-<RoleCkeck AuthenticatedUserRoles="@AuthenticatedUserRoles" Roles="@( new string[] { "user","moderador","admin","super_admin" } )">
+<RoleCkeck AuthenticatedUserRoles="@_authenticatedUserRoles" Roles="@( new string[] { "user","moderador","admin","super_admin" } )">
     <PassOneCheck>     
         <div class="add-discussion-containor" >
-            <NewDiscussion></NewDiscussion>
-            <RectColoredButton Text="Start"></RectColoredButton>
+            <NewDiscussion @ref="@_newDiscussion"></NewDiscussion>
+            <RectColoredButton Text="Start" OnClick="StartDiscussion"></RectColoredButton>
         </div>
     </PassOneCheck>
 </RoleCkeck>
-<div>
-    AAAAAAAAAAAAAAAAAA
+<div class="discussions">
+
+    @if (_movieDiscussions == null)
+    {
+        <CineSync.Components.Layout.Loading></CineSync.Components.Layout.Loading>
+    }
+    else if (_movieDiscussions.Count == 0)
+    {
+        <div class="nocomments">There is no Discussions at this time.</div>
+    }
+    else
+    {
+        @foreach ( Discussion discussion in _movieDiscussions)
+        {
+            <ItemDiscussion 
+                Discussion="@discussion"
+                OnChange="() => { InvokeAsync(StateHasChanged); }"
+                Liked="@( LikedDiscussions.Any( uLike => uLike.Discussion.Equals(discussion) ) )"
+                DisLiked="@( DislikedDiscussions.Any( uDisLike => uDisLike.Discussion.Equals( discussion) ) )"
+                LikedDiscussions="@LikedDiscussions"
+                DislikedDiscussions="@DislikedDiscussions"
+            >
+            </ItemDiscussion>
+        }
+    }
+   
 </div>

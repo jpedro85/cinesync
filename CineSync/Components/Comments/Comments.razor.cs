@@ -6,6 +6,7 @@ using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Concurrent;
+using CineSync.Data;
 
 namespace CineSync.Components.Comments
 {
@@ -29,7 +30,7 @@ namespace CineSync.Components.Comments
         // Maxsize is 4MB
         private const long MaxFileSize = 4 * 1024 * 1024;
 
-        private ICollection<Comment> CommentsList { get; set; } = new List<Comment>(0);
+        private ICollection<Comment>? CommentsList { get; set; } = null;
 
         private MainLayout MainLayout { get; set; }
 
@@ -43,10 +44,13 @@ namespace CineSync.Components.Comments
 
         private ICollection<string> AuthenticatedUserRoles { get; set; } = [];
 
+        private ApplicationUser _authenticatedUser;
+
         protected override async void OnInitialized()
         {
             MainLayout = LayoutService.MainLayout;
             AuthenticatedUserRoles = LayoutService.MainLayout.UserRoles;
+            _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

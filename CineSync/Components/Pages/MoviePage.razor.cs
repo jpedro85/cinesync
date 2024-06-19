@@ -31,6 +31,12 @@ namespace CineSync.Components.Pages
         public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
 
         [Inject]
+        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion { get; set; }
+
+        [Inject]
+        public DbManager<UserDislikedDiscussion> DbUserDislikedDiscussion { get; set; }
+
+        [Inject]
         private UserManager UserManager { get; set; }
 
         [Inject]
@@ -44,13 +50,15 @@ namespace CineSync.Components.Pages
 
         private string _activeTab = "Comments";
 
-        private string[] _tabNames = { "Comments", "Discutions" };
+        private string[] _tabNames = { "Comments", "Discussions" };
 
         private ICollection<string> _userRoles;
 
         private ICollection<UserLikedComment> _likedComents = new List<UserLikedComment>();
-
         private ICollection<UserDislikedComment> _dislikedComents = new List<UserDislikedComment>();
+
+        private ICollection<UserLikedDiscussion> _likedDiscussion = new List<UserLikedDiscussion>();
+        private ICollection<UserDislikedDiscussion> _dislikedDiscussions= new List<UserDislikedDiscussion>();
 
         private ApplicationUser _authenticatedUser;
 
@@ -62,6 +70,8 @@ namespace CineSync.Components.Pages
             _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
             Movie = await GetMovieDetails();
             GetUserStatusComments();
+            GetUserStatusDiscussions();
+
             if (_authenticatedUser != null)
             {
                 _hasRatedMovie = await HasUserRatedMovieAsync();
@@ -76,7 +86,7 @@ namespace CineSync.Components.Pages
         {
             string ratedMoviesCollectionName = "Classified";
             var ratedMovies = await CollectionsManager.GetFirstByConditionAsync(
-                mc => mc.ApplicationUser == _authenticatedUser && mc.Name == ratedMoviesCollectionName,
+                mc => mc.ApplicationUser.Equals(_authenticatedUser) && mc.Name == ratedMoviesCollectionName,
                 "CollectionMovies"
             );
             return ratedMovies!.CollectionMovies?.Any(cm => cm.MovieId == Movie.Id) ?? false;
@@ -97,6 +107,40 @@ namespace CineSync.Components.Pages
                             likedComment.Comment.MovieId == Movie.Id &&
                             likedComment.UserId == _authenticatedUser.Id
                             ).Result.ToList();
+
+                StateHasChanged();
+            }
+            else 
+            {
+                _likedComents = new List<UserLikedComment>(0);
+                _dislikedComents = new List<UserDislikedComment>(0);
+            }
+        }
+
+        private void GetUserStatusDiscussions()
+        {
+            if (Movie != null && _authenticatedUser != null)
+            {
+                _likedDiscussion = DbUserLikedDiscussion.GetByConditionAsync(
+                            likedDiscussion =>
+                            likedDiscussion.Discussion.MovieId == Movie.Id &&
+                            likedDiscussion.UserId == _authenticatedUser.Id
+                            ).Result.ToList();
+
+                _dislikedDiscussions = DbUserDislikedDiscussion.GetByConditionAsync(
+                            likedDiscussion =>
+                            likedDiscussion.Discussion.MovieId == Movie.Id &&
+                            likedDiscussion.UserId == _authenticatedUser.Id
+                            ).Result.ToList();
+
+                Console.WriteLine($"count l:{_likedDiscussion.Count} d:{_dislikedDiscussions.Count}");
+
+                StateHasChanged();
+            }
+            else
+            {
+                _likedDiscussion = new List<UserLikedDiscussion>(0);
+                _dislikedDiscussions = new List<UserDislikedDiscussion>(0);
             }
         }
 

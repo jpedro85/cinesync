@@ -12,7 +12,7 @@ namespace CineSync.Components.Discussions
 
         private bool _addFirstComment = false;
 
-        private NewComment _newComment { get; set; }
+        private NewComment _newComment;
 
         private void ToogleFistComment()
         {
@@ -34,7 +34,11 @@ namespace CineSync.Components.Discussions
         public void Reset()
         {
             _discussion = new Discussion();
-            _newComment.Reset();
+
+            if (_addFirstComment)
+            {
+                _newComment.Reset();
+            }
         }
     }
 }
