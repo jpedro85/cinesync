@@ -47,17 +47,6 @@ namespace CineSync.Components.Layout
 
         private bool _hasSearch = true;
 
-        private MainLayoutService _mainLayoutService;
-
-        private string _test;
-        protected override void OnInitialized()
-        {
-            _mainLayoutService = new MainLayoutService(this, _menu!);
-            Console.WriteLine("Merda");
-
-            _test = "AAAAAAAAAAA";
-        }
-
         protected override async Task OnInitializedAsync()
         {
             //await CheckLoginState();

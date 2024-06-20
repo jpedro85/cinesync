@@ -45,9 +45,6 @@ namespace CineSync.Components.Comments
         [Parameter]
         public EventCallback OnChange { get; set; }
 
-        private bool _Liked { get; set; }
-
-        private bool _Disliked { get; set; }
         
         private bool _allowSee;
 
