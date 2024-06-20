@@ -164,7 +164,7 @@
                                     @foreach (var collection in _movieCollections)
                                     {
 
-                                        <Collection MovieCollection="collection" />
+                                        <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection" />
                                     }
                                 </div>
                             </div>
