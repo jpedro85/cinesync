@@ -1,3 +1,4 @@
+using CineSync.Components.Layout;
 using CineSync.Data;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
@@ -9,6 +10,9 @@ namespace CineSync.Components.PopUps
 {
     public partial class RemoveCollection : ComponentBase
     {
+        [CascadingParameter(Name ="PageLayout")]
+        public PageLayout PageLayout { get; set; }
+
         [Parameter]
         public MovieCollection Collection { get; set; }
 
@@ -18,9 +22,6 @@ namespace CineSync.Components.PopUps
         [Inject]
         public CollectionsManager CollectionsManager { get; set; }
 
-        [Inject]
-        private LayoutService LayoutService { get; set; }
-
         private PopUpLayout PopUpLayout { get; set; }
 
         private ApplicationUser AuthenticatedUser { get; set; }
@@ -29,7 +30,7 @@ namespace CineSync.Components.PopUps
 
         protected override void OnInitialized()
         {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            AuthenticatedUser = PageLayout.AuthenticatedUser;
         }
 
 
@@ -44,6 +45,16 @@ namespace CineSync.Components.PopUps
             {
                 ErrorMessage = "Something occured an we were unable to remove the Collection.";
             }
+        }
+
+        public void Open() 
+        {
+            PopUpLayout.Open();
+        }
+
+        public void Close()
+        {
+            PopUpLayout.Close();
         }
     }
 }

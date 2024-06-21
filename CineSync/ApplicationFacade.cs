@@ -167,12 +167,12 @@ namespace CineSync
                     typeof(Notification),
                     typeof(UsersNotifications)
             };
+            services.AddSingleton<IFactory>(sp => new Factory(types));
 
             services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
             services.AddHttpClient<ApiService>();
             services.AddScoped<MovieController>();
             services.AddScoped<MovieDetailsAdapter>();
-            services.AddSingleton<IFactory>(sp => new Factory(types));
             services.AddScoped<IUnitOfWork, UnitOfWork<ApplicationDbContext>>();
             services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync<ApplicationDbContext>>();
             services.AddScoped<MovieController>();
@@ -181,9 +181,10 @@ namespace CineSync
             services.AddScoped<DbManager<UserLikedComment>>();
             services.AddScoped<DbManager<UserDislikedComment>>();
             services.AddScoped<DbManager<UserImage>>();
-            services.AddScoped<DbManager<Comment>>();
             services.AddScoped<DbManager<Discussion>>();
             services.AddScoped<UserImageManager>();
+            services.AddScoped<DbManager<UserLikedDiscussion>>();
+            services.AddScoped<DbManager<UserDislikedDiscussion>>();
             services.AddScoped<UserRoleManager<ApplicationUser>>();
             services.AddScoped<CollectionsManager>();
             services.AddScoped<CommentManager>();
@@ -195,9 +196,9 @@ namespace CineSync
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
 
-            services.AddSingleton<NavBarEvents>();
-            services.AddSingleton<LayoutService>();
-            services.AddSingleton<MenuService>();
+            //services.AddSingleton<NavBarEvents>();
+            //services.AddSingleton<LayoutService>();
+            //services.AddSingleton<MenuService>();
 
         }
 

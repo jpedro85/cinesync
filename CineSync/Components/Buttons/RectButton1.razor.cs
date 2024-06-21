@@ -21,5 +21,9 @@ namespace CineSync.Components.Buttons
 		[Parameter]
 		public string DataTarget { get; set; } = "";
 
-	}
+        [Parameter]
+        public string Style { get; set; } = "";
+
+        public RenderFragment ChildContent { get; set; }	
+    }
 }

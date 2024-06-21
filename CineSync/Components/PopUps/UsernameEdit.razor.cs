@@ -1,4 +1,5 @@
-﻿using CineSync.Data;
+﻿using CineSync.Components.Layout;
+using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -8,21 +9,21 @@ namespace CineSync.Components.PopUps
 {
     public partial class UsernameEdit : ComponentBase
     {
-        [Parameter]
-        public EventCallback OnUsernameChange { get; set; }
+        [CascadingParameter(Name = "PageLayout")]
+        public PageLayout PageLayout { get; set; }
 
-        [Inject]
-        private IJSRuntime JSRuntime { get; set; }
 
         [Inject]
         private UserManager UserManager { get; set; }
 
-        [Inject]
-        private LayoutService LayoutService { get; set; }
+
+        [Parameter]
+        public EventCallback OnUsernameChange { get; set; }
+
 
         private PopUpLayout PopUpLayout;
 
-        private ApplicationUser AuthenticatedUser { get; set; }
+        private ApplicationUser? AuthenticatedUser { get; set; }
 
         private string? ErrorMessage { get; set; } = string.Empty;
 
@@ -30,7 +31,7 @@ namespace CineSync.Components.PopUps
 
         protected override async Task OnInitializedAsync()
         {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            AuthenticatedUser = PageLayout!.AuthenticatedUser;
         }
 
         private void HandleInputChange(ChangeEventArgs e)
@@ -51,7 +52,7 @@ namespace CineSync.Components.PopUps
 
             if (await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName))
             {
-                LayoutService.MainLayout.AuthenticatedUser.UserName = _newUserName;
+                PageLayout!.AuthenticatedUser.UserName = _newUserName;
                 await OnUsernameChange.InvokeAsync();
                 PopUpLayout.Close();
             }

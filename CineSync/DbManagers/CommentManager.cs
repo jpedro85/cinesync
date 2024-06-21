@@ -16,6 +16,7 @@ namespace CineSync.DbManagers
 	public class CommentManager : DbManager<Comment>
     {
         private readonly IRepositoryAsync<Movie> _movieRepository;
+        private readonly IRepositoryAsync<Discussion> _discussionRepository;
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
 
 
@@ -27,6 +28,7 @@ namespace CineSync.DbManagers
         public CommentManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger) : base(unitOfWork, logger)
         {
             _movieRepository = _unitOfWork.GetRepositoryAsync<Movie>();
+            _discussionRepository = _unitOfWork.GetRepositoryAsync<Discussion>();
             _userRepository = _unitOfWork.GetRepositoryAsync<ApplicationUser>();
         }
 
@@ -49,16 +51,31 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
+        /// Return the comment of a movie.
+        /// </summary>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <returns>Return the comment of a movie</returns>
+        public async Task<ICollection<Comment>> GetCommentsOfDiscussion(uint discussionId)
+        {
+            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync( discussion => discussion.Id == discussionId, "Comments", "Comments.Attachements");
+
+            if ( discussion != null && discussion.Comments != null)
+                return discussion.Comments;
+
+            return new List<Comment>(0);
+        }
+
+        /// <summary>
         /// Adds a comment to a specific movie by a specified user.
         /// </summary>
         /// <param name="comment">The comment entity to add.</param>
         /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
         /// <param name="userId">The ID of the user adding the comment.</param>
         /// <returns>True if the comment is successfully added, otherwise false.</returns>
-        public async Task<bool> AddComment(Comment comment, int movieId, string userId)
+        public async Task<bool> AddCommentToMovie(Comment comment, int movieId, string userId)
         {
-            Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
-            ApplicationUser user = await _userRepository.GetFirstByConditionAsync(user => user.Id == userId);
+            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
+            ApplicationUser? user = await _userRepository.GetFirstByConditionAsync(user => user.Id == userId);
 
             if (movie == null)
             {
@@ -79,6 +96,39 @@ namespace CineSync.DbManagers
             movie.Comments.Add(comment);
 
             return await _unitOfWork.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Adds a comment to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="comment">The comment entity to add.</param>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
+        public async Task<bool> AddCommentToDiscussion(Comment comment, uint discussionId, string userId)
+        {
+            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync( d => d.Id == discussionId, "Comments");
+            ApplicationUser? user = await _userRepository.GetFirstByConditionAsync(user => user.Id == userId);
+
+            if (discussion == null || user == null)
+                return false;
+            
+            Console.WriteLine($" d:{discussionId} u:{userId}");
+            comment.Autor = user;
+
+            if (discussion.Comments == null)
+            {
+                discussion.Comments = new List<Comment>() { comment };
+                return await _unitOfWork.SaveChangesAsync();
+            }
+            else if (!discussion.Comments.Contains(comment))
+            {
+                discussion.Comments.Add(comment);
+                return await _unitOfWork.SaveChangesAsync();
+            }
+            else
+                return false;
+
         }
 
         /// <summary>
@@ -223,13 +273,18 @@ namespace CineSync.DbManagers
         /// </summary>
         /// <param name="comment">The comment to update.</param>
         /// <param name="content">The new content to set for the comment.</param>
-        public async Task EditContentAsync(Comment comment, string content)
+        public async Task<bool> EditAsync(Comment editedComment)
         {
-            comment.Content = content;
-            await _unitOfWork.SaveChangesAsync();
+            Comment? comment = await _repository.GetFirstByConditionAsync(ed => ed.Equals(editedComment));
+
+            if (comment == null)
+                return false;
+
+            comment.Content = editedComment.Content;
+            comment.HasSpoiler = editedComment.HasSpoiler;
+
+            return await _unitOfWork.SaveChangesAsync();
         }
-
-
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using CineSync.Data;
+﻿using CineSync.Components.Layout;
+using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
@@ -8,11 +9,11 @@ namespace CineSync.Components.PopUps
 {
     public partial class NewCollection
     {
+        [CascadingParameter(Name = "PageLayout")]
+        public PageLayout PageLayout { get; set; }
+
         [Parameter]
         public EventCallback OnNewCollection { get; set; }
-
-        [Inject]
-        private LayoutService LayoutService { get; set; }
 
         [Inject]
         private CollectionsManager CollectionsManager { get; set; }
@@ -26,7 +27,7 @@ namespace CineSync.Components.PopUps
 
         protected override async Task OnInitializedAsync()
         {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            AuthenticatedUser = PageLayout.AuthenticatedUser!;
         }
 
         public async void OnSave()

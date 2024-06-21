@@ -21,9 +21,6 @@ namespace CineSync.Components.Pages
 		[Inject]
 		private NavigationManager NavigationManager { get; set; }
 
-		[Inject]
-		private LayoutService LayoutService { get; set; }
-		private MainLayout MainLayout { get; set; }
 
 		[Parameter]
 		public string Query { get; set; }
@@ -31,26 +28,21 @@ namespace CineSync.Components.Pages
 		[Parameter]
 		public SearchButton SearchButton { get; set; }
 
-		private string _currentSearchQuery = string.Empty;
+		private PageLayout _pageLayout;
 
+
+		private string _currentSearchQuery = string.Empty;
 		private List<MovieSearchAdapter> SearchResults { get; set; } = new () ;
 		
 		private int _currentPage = 1;
 		private bool _isLastpage = false;
 		private string _isLoading = string.Empty;
 
-		protected override void OnInitialized()
-		{
-
-            MainLayout = LayoutService.MainLayout;
-            MainLayout.RemoveSearchButton();
-
-		}
-
 		protected override void OnAfterRender(bool firstRender)
 		{
 			if (firstRender)
 			{
+				_pageLayout.NavBar.SetVisibleSearchButton(false);
 				SearchButton.OnSearch += SearchMoviesSearchButtonHandler;
 
 				if (!string.IsNullOrEmpty(Query))
@@ -61,7 +53,7 @@ namespace CineSync.Components.Pages
 				{
 					FecthUpcoming();
 				}
-            }
+			}
 
         }
 
@@ -139,6 +131,12 @@ namespace CineSync.Components.Pages
 		private void MovieClickhandler(MovieSearchAdapter movie)
 		{
 			NavigationManager.NavigateTo($"MovieDetails/{movie.MovieId}");
+		}
+
+		private void GetPagelayout(PageLayout instance)
+		{
+			if (_pageLayout == null)
+				_pageLayout = instance;
 		}
 	}
 }

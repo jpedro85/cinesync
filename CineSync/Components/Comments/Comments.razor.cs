@@ -6,16 +6,20 @@ using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Concurrent;
+using CineSync.Data;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace CineSync.Components.Comments
 {
     public partial class Comments : ComponentBase, IDisposable
     {
-        [Inject]
-        private LayoutService LayoutService { get; set; }
+		[CascadingParameter(Name = "PageLayout")]
+		public PageLayout PageLayout { get; set; }
 
-        [Inject]
+
+		[Inject]
         private CommentManager CommentManager { get; set; }
+
 
         [Parameter]
         public int MovieId { get; set; }
@@ -29,11 +33,9 @@ namespace CineSync.Components.Comments
         // Maxsize is 4MB
         private const long MaxFileSize = 4 * 1024 * 1024;
 
-        private ICollection<Comment> CommentsList { get; set; } = new List<Comment>(0);
+        private ICollection<Comment>? CommentsList { get; set; } = null;
 
-        private MainLayout MainLayout { get; set; }
-
-        private Comment comment = new Comment();
+        private NewComment _newComment;
 
         private ConcurrentDictionary<IBrowserFile, byte[]> selectedFilesWithPreviews = new ConcurrentDictionary<IBrowserFile, byte[]>();
 
@@ -43,10 +45,12 @@ namespace CineSync.Components.Comments
 
         private ICollection<string> AuthenticatedUserRoles { get; set; } = [];
 
+        private ApplicationUser _authenticatedUser;
+
         protected override async void OnInitialized()
         {
-            MainLayout = LayoutService.MainLayout;
-            AuthenticatedUserRoles = LayoutService.MainLayout.UserRoles;
+            AuthenticatedUserRoles = PageLayout.UserRoles;
+            _authenticatedUser = PageLayout!.AuthenticatedUser!;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -56,6 +60,7 @@ namespace CineSync.Components.Comments
                 CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
                 StateHasChanged();
             }
+
         }
 
 
@@ -99,15 +104,18 @@ namespace CineSync.Components.Comments
             }
         }
 
-        private async void HandleSubmit()
+        private async void HandleSubmit(MouseEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(comment.Content))
+            Comment newComment = _newComment.GetComment();
+
+            if (!string.IsNullOrWhiteSpace(newComment.Content))
             {
-                await AddComment();
+                await AddComment(newComment);
+                _newComment.Reset();
             }
         }
 
-        private async Task AddComment()
+        private async Task AddComment(Comment comment)
         {
             comment.TimeStamp = DateTime.Now;
             comment.Attachements = new List<CommentAttachment>();
@@ -121,7 +129,7 @@ namespace CineSync.Components.Comments
                 comment.Attachements.Add(attachment);
             }
 
-            await CommentManager.AddComment(comment, MovieId, MainLayout.AuthenticatedUser.Id);
+            await CommentManager.AddCommentToMovie(comment, MovieId, _authenticatedUser.Id);
 
             comment = new Comment();
             selectedFilesWithPreviews.Clear();

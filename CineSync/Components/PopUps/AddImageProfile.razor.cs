@@ -1,4 +1,5 @@
-﻿using CineSync.Components.Utils;
+﻿using CineSync.Components.Layout;
+using CineSync.Components.Utils;
 using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
@@ -10,6 +11,10 @@ namespace CineSync.Components.PopUps
 {
     public partial class AddImageProfile : ComponentBase
     {
+        [CascadingParameter(Name="PageLayout")]
+        public PageLayout PageLayout { get; set; }
+
+
         [Parameter]
         public EventCallback OnImageChange { get; set; }
 
@@ -19,12 +24,10 @@ namespace CineSync.Components.PopUps
         [Inject]
         public UserManager UserManager { get; set; }
 
-        [Inject]
-        public LayoutService LayoutService { get; set; }
 
         private const long MaxFileSize = 4 * 1024 * 1024;
 
-        private ApplicationUser AuthenticatedUser { get; set; }
+        private ApplicationUser? AuthenticatedUser { get; set; }
 
         private IBrowserFile selectedFile;
 
@@ -32,11 +35,9 @@ namespace CineSync.Components.PopUps
 
         private string ErrorMessage;
 
-        private uint Count = 0;
-
         protected override async Task OnInitializedAsync()
         {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            AuthenticatedUser = PageLayout!.AuthenticatedUser;
         }
 
         private void HandleSelected(InputFileChangeEventArgs e)

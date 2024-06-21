@@ -7,34 +7,40 @@ using CineSync.Core.Adapters.ApiAdapters;
 using CineSync.Services;
 using CineSync.Components.Layout;
 using CineSync.Components.Buttons;
+using System;
 
 namespace CineSync.Components.Pages
 {
     public partial class Home : ComponentBase
     {
-
+      
         [Inject]
         private HttpClient _client { get; set; }
 
         [Inject]
-        private LayoutService LayoutService { get; set; }
-
-        [Inject]
         private NavigationManager NavigationManager { get; set; }
 
-        private MainLayout MainLayout { get; set; }
 
         private bool showNavMenu = false;
-
         private System.Timers.Timer _timer;
+        private SearchButton SearchButton { get; set; }
 
-        private SearchButton SearchButton { get; set; } = new SearchButton();
+        private PageLayout _pageLayout;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            MainLayout = LayoutService.MainLayout;
-            MainLayout.RemoveSearchButton();
+
+            
         }
+
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    //MainLayout = LayoutService.MainLayout;
+        //    //MainLayout?.RemoveSearchButton();
+        //    //Console.WriteLine(PotatoValue);
+        //    Console.WriteLine($"Teste :{MainLayouta == null}");
+
+        //}
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -42,12 +48,16 @@ namespace CineSync.Components.Pages
             {
                 SearchButton.OnSearch += OnSearch;
             }
-        }
 
-        private void ToggleNavMenu()
-        {
-            showNavMenu = !showNavMenu;
-        }
+            Console.WriteLine($"aa {_pageLayout != null}");
+			Console.WriteLine($"aa1 {_pageLayout?.Menu != null}");
+			Console.WriteLine($"a2 {_pageLayout?.NavBar != null}");
+		}
+
+        //private void ToggleNavMenu()
+        //{
+        //    //showNavMenu = !showNavMenu;
+        //}
 
         public void OnSearch(string searchQuery)
         {
@@ -55,5 +65,10 @@ namespace CineSync.Components.Pages
                 NavigationManager.NavigateTo($"/Search/{searchQuery}");
         }
 
-    }
+        private void GetPagelayout(PageLayout instance) 
+        {
+            if(_pageLayout == null)
+                _pageLayout = instance;
+		}
+	}
 }

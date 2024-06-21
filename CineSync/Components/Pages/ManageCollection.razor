@@ -2,36 +2,60 @@
 @attribute [Authorize]
 
 @using Microsoft.AspNetCore.Authorization
+@using CineSync.Components.Layout
 @using CineSync.Components.Buttons
 @using CineSync.Components.Movies
 @using CineSync.Core.Adapters.ApiAdapters
 @using CineSync.Data.Models
 @using CineSync.Components.PopUps
 
+
 @rendermode InteractiveServer
 
-<div class="main-content">
 
-    <div class="content">
+<PageLayout
+    @ref="@_pageLayout"
+	GetInstance="GetPagelayout"
+>
 
-        <div class="Subtilte">
-            <div>
-                @Collection.Name
+    @{ Initialize(); }    
+
+
+    <CascadingValue Name="PageLayout" Value="_pageLayout" TValue="PageLayout">
+
+        @if(_inicialized)
+        {
+            <div class="main-content">
+
+                <div class="content">
+
+                    <div class="Subtilte">
+                        <div>
+                            @Collection.Name
+                        </div>
+                        <div class="toggle-button">
+                            <ToggleButton OnChange="OnChangePublic" InitialState="Collection.IsPublic" />
+
+                            @if (!DefaultCollection.Contains(Collection.Name))
+                            {
+                                <button class="EditName" data-toggle="modal" data-target="#POPUPINPUT">Edit Name</button>
+                            }
+                        </div>
+                    </div>
+
+                    <PopUpInput Tilte="Change Collection Name" Question="Insert new name" PlaceHolder="New collection name" OnSave="OnChangeName"></PopUpInput>
+
+                    <ManagerCollectionMovies AuthenticatedUser="AuthenticatedUser" Collection="Collection"></ManagerCollectionMovies>
+      
+                </div>
+  
             </div>
-            <div class="toggle-button">
-                <ToggleButton OnChange="OnChangePublic" InitialState="Collection.IsPublic" />
+        }
+        else
+        {
+            <Loading></Loading>
+        }
 
-                @if (!DefaultCollection.Contains(Collection.Name))
-                {
-                    <button class="EditName" data-toggle="modal" data-target="#POPUPINPUT">Edit Name</button>
-                }
-            </div>
-        </div>
+    </CascadingValue>
 
-        <PopUpInput Tilte="Change Collection Name" Question="Insert new name" PlaceHolder="New collection name" OnSave="OnChangeName"></PopUpInput>
-
-        <ManagerCollectionMovies Collection="Collection" />
-
-    </div>
-
-</div>
+</PageLayout>

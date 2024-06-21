@@ -7,6 +7,8 @@ namespace CineSync.Components.PopUps
 {
     public partial class RemoveComment : ComponentBase
     {
+        private static uint _counter = 0;
+
         [Parameter]
         public Comment Comment { get; set; }
 
@@ -24,12 +26,14 @@ namespace CineSync.Components.PopUps
 
         protected override void OnInitialized()
         {
-            Id += Comment.Id;
+            Id += _counter++;
+            Console.WriteLine($"CommentId {Comment.Id} {Id}");
         }
 
 
         private async void ExecuteRemoveComment()
         {
+            Console.WriteLine($"CommentId {Comment.Id} {Id}");
             if (await CommentManager.RemoveAsync(Comment))
             {
                 await OnRemove.InvokeAsync();
@@ -38,6 +42,18 @@ namespace CineSync.Components.PopUps
             {
                 ErrorMessage = "Something occured an we were unable to remove the Comment.";
             }
+        }
+
+        public void Open() 
+        {
+            Console.WriteLine($"OpenCommentId {Comment.Id} {Id}");
+            PopUpLayout.Open();
+            Console.WriteLine($"OpenCommentId {Comment.Id} {Id}");
+        }
+
+        public void Close()
+        {
+            PopUpLayout.Close();
         }
     }
 }
