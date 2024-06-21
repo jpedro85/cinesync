@@ -196,9 +196,9 @@ namespace CineSync
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
 
-            services.AddSingleton<NavBarEvents>();
-            services.AddSingleton<LayoutService>();
-            services.AddSingleton<MenuService>();
+            //services.AddSingleton<NavBarEvents>();
+            //services.AddSingleton<LayoutService>();
+            //services.AddSingleton<MenuService>();
 
         }
 

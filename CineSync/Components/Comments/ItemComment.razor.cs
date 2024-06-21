@@ -11,6 +11,16 @@ namespace CineSync.Components.Comments
 {
     public partial class ItemComment : ComponentBase
     {
+        [CascadingParameter(Name = "PageLayout")]
+        public PageLayout PageLayout { get; set; }
+
+
+        [Inject]
+        private UserManager UserManager { get; set; }
+
+        [Inject]
+        private CommentManager CommentManager { get; set; }
+
 
         [Parameter]
         public ICollection<UserLikedComment> LikedComments { get; set; }
@@ -35,34 +45,26 @@ namespace CineSync.Components.Comments
         [Parameter]
         public EventCallback OnChange { get; set; }
 
-        [Inject]
-        private UserManager UserManager { get; set; }
-
-        [Inject]
-        private CommentManager CommentManager { get; set; }
-
-
-        [Inject]
-        private LayoutService LayoutService { get; set; }
-
-        public delegate void Action();
-
-        public delegate void LikeStatusChange(bool newStatus);
-
         private bool _Liked { get; set; }
 
         private bool _Disliked { get; set; }
+        
+        private bool _allowSee;
 
         private ApplicationUser _authenticatedUser;
 
         private ICollection<string> _userRoles;
 
+        private PopUpAttachementView _attachementView;
+        
         protected override void OnInitialized()
-        {
-            _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
-            _userRoles = LayoutService.MainLayout.UserRoles;
+		{
+            _authenticatedUser = PageLayout.AuthenticatedUser!;
+            _userRoles = PageLayout.UserRoles;
             _Liked = Liked;
             _Disliked = DisLiked;
+            _allowSee = !Comment.HasSpoiler;
+
         }
 
 		private async void AddLike()
@@ -111,6 +113,14 @@ namespace CineSync.Components.Comments
 
             UpdateDislike(_Disliked);
             StateHasChanged();
+        }
+
+        public async void UpdateSpoilerState(bool newState)
+        {
+            Comment.HasSpoiler = newState;
+
+            if( await CommentManager.EditAsync(Comment) ) 
+                StateHasChanged();
         }
 
         private void UpdateLike(bool newState )
@@ -183,7 +193,7 @@ namespace CineSync.Components.Comments
                 _authenticatedUser.Following.Add(Comment.Autor!);
 
                 StateHasChanged();
-                LayoutService.MainLayout.TriggerMenuReRender();
+                await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
             }
         }
@@ -198,9 +208,18 @@ namespace CineSync.Components.Comments
                 _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Comment.Autor!.Id).ToList();
 
                 StateHasChanged();
-                LayoutService.MainLayout.TriggerMenuReRender();
+                await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
             }
+        }
+
+        private void OpenAttachment(byte[] attachment) 
+        {
+            Console.WriteLine(attachment.Length);
+            _attachementView.Attachment = attachment;
+            _attachementView.Name = "View Attachement";
+            _attachementView.TrigerStatehasChanged();
+            _attachementView.Open();
         }
 
         private async void RemoveComment()

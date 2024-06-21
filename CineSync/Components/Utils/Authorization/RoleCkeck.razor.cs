@@ -11,8 +11,6 @@ namespace CineSync.Components.Utils.Authorization
 		[Inject]
 		private UserRoleManager<ApplicationUser> UserRoleManager { get; set; }
 
-		[Inject]
-		private LayoutService LayoutService { get; set; }
 
 		[Parameter]
 		public RenderFragment PassAllChecks {  get; set; }
@@ -26,17 +24,8 @@ namespace CineSync.Components.Utils.Authorization
 		[Parameter]
 		public ICollection<string> Roles { get; set; } = [];
 
-		[Parameter]
+		[Parameter,EditorRequired]
 		public ICollection<string> AuthenticatedUserRoles { get; set; } = [];
-
-		protected override async void OnInitialized()
-		{
-			if(Roles.Count == 0) 
-			{
-				if (LayoutService.MainLayout.AuthenticatedUser != null)
-					AuthenticatedUserRoles = await UserRoleManager.GetRolesOfUserAsync(LayoutService.MainLayout.AuthenticatedUser);
-			}
-		}
 
 		private bool HasAllRoles()
 		{

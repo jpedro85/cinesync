@@ -6,7 +6,7 @@
     <div class="title-containor">
         <div>Start a Discussion</div>
     </div>
-    <textarea @bind="@_discussion.Title" placeholder="Discussion Title"></textarea>
+    <textarea @bind="@Discussion.Title" placeholder="Discussion Title"></textarea>
     <div class="first-comment-containor">
 
         <div class="simple-button" @onclick="ToogleFistComment">
@@ -38,7 +38,7 @@
         {
             <div class="new-comment">
                 <hr>
-                <NewComment @ref="@_newComment"></NewComment>
+                <NewComment @ref="@FirstComment"></NewComment>
                 <hr>
             </div>
         }

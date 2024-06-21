@@ -3,23 +3,29 @@
 
 @using CineSync.Components.Movies;
 @using CineSync.Components.Buttons;
+@using CineSync.Components.Layout;
 
-<div class="MainConteiner">
-    <div class="content-search">
+<PageLayout GetInstance="GetPagelayout" @ref="@_pageLayout" >
+
+    <div class="MainConteiner">
+
+        <div class="content-search">
         
-        <div class="content">
-            <div class="logo-container-main">
-                <img id="logo" src="logo.png" alt="CineSync Main Logo">
+            <div class="content">
+                <div class="logo-container-main">
+                    <img id="logo" src="logo.png" alt="CineSync Main Logo">
+                </div>
+
+                <SearchButton @ref="SearchButton" />
+
+                <div class="shadow"></div>
             </div>
-
-            <SearchButton @ref="SearchButton" />
-
-            <div class="shadow"></div>
         </div>
-    </div>
     
-    <div class="searched-movies">
-        <Caroussel />
-    </div>     
+        <div class="searched-movies">
+            <Caroussel />
+        </div>
  
-</div>
+    </div>
+
+</PageLayout>

@@ -8,7 +8,9 @@ namespace CineSync.Data.Models
     {
         public uint Id { get; set; }
 
-        public uint MovieId { get; set; }
+        public uint? MovieId { get; set; }
+
+        public uint? DiscussionId { get; set; }
 
         [Required]
         public ApplicationUser Autor { get; set; }
@@ -27,6 +29,8 @@ namespace CineSync.Data.Models
         public ICollection<UserLikedComment> LikedByUsers { get; set; }
 
         public ICollection<UserDislikedComment> DislikedByUsers { get; set; }
+
+        public bool HasSpoiler { get; set; } = false;
 
         public override bool Equals(object? obj)
         {

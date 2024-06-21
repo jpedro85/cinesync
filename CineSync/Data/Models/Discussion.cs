@@ -7,7 +7,9 @@ namespace CineSync.Data.Models
         public uint Id { get; set; }
 
 		public uint MovieId { get; set; }
-        
+
+        public bool HasSpoiler { get; set; } = false;
+
         [Required]
         public string Title { get; set; }
 

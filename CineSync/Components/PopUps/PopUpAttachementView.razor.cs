@@ -22,7 +22,7 @@ namespace CineSync.Components.PopUps
 
         public void Open()
         {
-            _popUpLayout.Open();
+			_popUpLayout.Open();
         }
 
         public void Close()

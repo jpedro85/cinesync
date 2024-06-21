@@ -32,7 +32,7 @@
                 DisLiked="@( DislikedDiscussions.Any( uDisLike => uDisLike.Discussion.Equals( discussion) ) )"
                 LikedDiscussions="@LikedDiscussions"
                 DislikedDiscussions="@DislikedDiscussions"
-            >
+                OnRemove="(id) => { _movieDiscussions = _movieDiscussions.Where(d=>d.Id != id).ToList(); }">
             </ItemDiscussion>
         }
     }

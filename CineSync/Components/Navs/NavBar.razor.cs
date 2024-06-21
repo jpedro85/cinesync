@@ -1,43 +1,53 @@
-﻿using CineSync.Components.Utils;
+﻿using CineSync.Components.Layout;
+using CineSync.Components.Utils;
 using CineSync.Data;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace CineSync.Components.Navs
 {
-    public partial class NavBar : ComponentBase, IDisposable
+    public partial class NavBar : ComponentBase
     {
-        [Parameter]
-        public bool HasSearch { get; set; } = false;
-
         [Inject]
         public UserImageManager UserImageManager { get; set; }
 
-        [Inject]
-        public LayoutService LayoutService { get; set; }
 
-        [Inject]
+        [Parameter]
+        public GetInstanceDelegate GetInstance { get; set; } = (m) => { };
+        public delegate void GetInstanceDelegate( NavBar instance );
+
+        [Parameter]
+        public bool HasSearch { get; set; } = true;
+        private bool _hasSearch;
+
+        [Parameter,EditorRequired]
+        public ApplicationUser? AuthenticatedUser { get; set; }
+
+		[Parameter, EditorRequired]
         public NavBarEvents NavBarEvents { get; set; }
 
-        public ApplicationUser? User { get; set; }
 
         private UserImage? UserImage { get; set; }
 
+
         protected override void OnInitialized()
         {
-            NavBarEvents.OnRequestNavBarReRender += ReRender;
+            _hasSearch = HasSearch;
+			NavBarEvents.OnRequestNavBarReRender += ReRender;
+            GetInstance(this);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            User = LayoutService.MainLayout.AuthenticatedUser;
+           // User = LayoutService.MainLayout.AuthenticatedUser;
             if (firstRender)
             {
-                if (User != null)
+                if (AuthenticatedUser != null)
                 {
-                    UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User.Id);
+                    UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == AuthenticatedUser.Id);
                     StateHasChanged();
                 }
             }
@@ -52,16 +62,27 @@ namespace CineSync.Components.Navs
         public async Task ReRender()
         {
             Console.WriteLine("Was called");
-            if (UserImage == null)
+            if (UserImage == null && AuthenticatedUser != null)
             {
-                UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == User.Id);
+                UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == AuthenticatedUser.Id);
             }
             await InvokeAsync(StateHasChanged);
         }
-
-        public void Dispose()
+        
+        private void OnMenuClick(MouseEventArgs e) 
         {
-            NavBarEvents.OnRequestNavBarReRender -= ReRender;
+            NavBarEvents.OnMenuClick(e);
+        }
+
+        private void OnNotificationClick(MouseEventArgs e)
+        {
+            NavBarEvents.OnClickNotification(e);
+        }
+
+        public void SetVisibleSearchButton(bool visible) 
+        {
+            _hasSearch = visible;
+			InvokeAsync(StateHasChanged);
         }
     }
 }

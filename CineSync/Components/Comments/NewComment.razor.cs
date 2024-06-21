@@ -12,12 +12,17 @@ namespace CineSync.Components.Comments
 {
     public partial class NewComment : ComponentBase, IDisposable
     {
+        private static int _instanceConnter = 0;
+        private int _instanceId = 0;
 
         [Parameter]
         public string TextAreaStyle { get; set; } = "";
 
         [Parameter]
         public string SelectedFileStyle { get; set; } = "";
+
+        [Parameter]
+        public string SelectedClass { get; set; } = "";
 
         // Maxsize is 4MB
         private const long MaxFileSize = 4 * 1024 * 1024;
@@ -36,8 +41,16 @@ namespace CineSync.Components.Comments
 
         private bool _clicRemoveAttachment = false;
 
+        protected override void OnInitialized()
+        {
+            _instanceConnter++;
+            _instanceId = _instanceConnter;
+        }
+
         private async Task HandleFileSelected(InputFileChangeEventArgs e)
         {
+            Console.WriteLine($"Add:{_instanceId}");
+
             ErrorMessages.Clear();
 
             IEnumerable<Task>? tasks = e.GetMultipleFiles(e.FileCount).Select(async attachment =>
@@ -138,10 +151,17 @@ namespace CineSync.Components.Comments
             return comment;
         }
 
+        public void UpdateSpoilerState( bool newState ) 
+        {
+            comment.HasSpoiler = newState;
+            StateHasChanged();
+        }
+
         public void Reset()
         {
             comment = new Comment();
             selectedFilesWithPreviews.Clear();
+            fileHashCodes.Clear();
             StateHasChanged();
         }
 

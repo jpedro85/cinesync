@@ -1,0 +1,31 @@
+﻿@using CineSync.Services;
+@using CineSync.Components.Navs;
+
+<div class="page">
+
+    <NavBar 
+        HasSearch="@HasSearch"
+        GetInstance="GetNavbarInstance" 
+        AuthenticatedUser="@AuthenticatedUser"
+        NavBarEvents="@_navBarEvents" 
+    />
+
+        <div class="pageRow">
+
+        <div class="sidebar" >
+            <Menu 
+                GetInstance="GetMenuInstance"
+                AuthenticatedUser="@AuthenticatedUser"
+                UserRoles="UserRoles"
+                NavBarEvents="@_navBarEvents" 
+            />
+        </div>
+        <div class="bodyCoteiner">
+            @* if Innitialize is needed put callback here *@
+            @ChildContent
+        </div>
+
+    </div>
+
+</div>
+

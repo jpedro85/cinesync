@@ -76,54 +76,6 @@ namespace CineSync.DbManagers
         }
 
         /// <summary>
-        /// Adds a comment to a specific discussion if it does not already exist in the discussion's comment collection.
-        /// </summary>
-        /// <param name="discussion">The discussion to which the comment will be added.</param>
-        /// <param name="comment">The new comment to add to the discussion.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating whether the operation was successful.</returns>
-        public async Task<bool> AddCommentAsync(Discussion discussion, Comment comment , bool newComment = true)
-        {
-            Discussion? _discussion = await _repository.GetFirstByConditionAsync(d => d.Id == discussion.Id);
-
-            if (_discussion == null || comment == null) 
-                return false;
-            
-            Comment? _comment = newComment ? comment! : await _commentRepository.GetFirstByConditionAsync( c => c.Id == comment.Id);
-
-            if (_comment != null && _discussion.Comments != null && !_discussion.Comments.Contains(_comment) )
-            {
-                _discussion.Comments.Add( _comment );
-                return await _unitOfWork.SaveChangesAsync();
-            }
-            else
-                return false;
-        }
-
-        /// <summary>
-        /// Adds a discussion to a specific discussion if it does not already exist in the discussion's comment collection.
-        /// </summary>
-        /// <param name="discussion">The discussion to which the comment will be added.</param>
-        /// <param name="commentId">The id of the comment to remove from the discussion.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean indicating whether the operation was successful.</returns>
-        public async Task<bool> ReomveCommentAsync(Discussion discussion, uint commentId)
-        {
-            Discussion? _discussion = await _repository.GetFirstByConditionAsync(d => d.Id == discussion.Id);
-
-            if (_discussion == null ) 
-                return false;
-
-            Comment? _comment = await _commentRepository.GetFirstByConditionAsync(c => c.Id == discussion.Id);
-
-            if (_comment != null && _discussion.Comments != null )
-            {
-                _discussion.Comments.Remove(_comment);
-                return await _unitOfWork.SaveChangesAsync();
-            }
-            else
-                return false;
-        }
-
-        /// <summary>
         /// Increments the number of likes on a given discussion.
         /// </summary>
         /// <param name="discussion">The discussion to be liked.</param>

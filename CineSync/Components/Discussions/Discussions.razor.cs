@@ -11,12 +11,16 @@ namespace CineSync.Components.Discussions
 {
 	public partial class Discussions
 	{
+		[CascadingParameter(Name = "PageLayout")]
+		public PageLayout PageLayout { get; set; }
 
-		[Inject]
-		private LayoutService LayoutService { get; set; }
 
         [Inject]
         private DiscussionManager DiscussionManager { get; set; }
+
+        [Inject]
+        private CommentManager CommentManager { get; set; }
+
 
         [Parameter]
 		public int MovieId { get; set; }
@@ -26,6 +30,7 @@ namespace CineSync.Components.Discussions
 
         [Parameter]
         public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; }
+
 
         private ApplicationUser _authenticatedUser;
         private ICollection<string> _authenticatedUserRoles { get; set; } = new List<string>();
@@ -37,8 +42,8 @@ namespace CineSync.Components.Discussions
 
 		protected override void OnInitialized()
 		{
-            _authenticatedUserRoles = LayoutService.MainLayout.UserRoles;
-            _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            _authenticatedUserRoles = PageLayout.UserRoles;
+            _authenticatedUser = PageLayout.AuthenticatedUser!;
         }
 
         protected override async void OnAfterRender(bool firstRender)
@@ -53,19 +58,21 @@ namespace CineSync.Components.Discussions
         private async void StartDiscussion( MouseEventArgs e)
         {
 
-            Discussion newDiscussion = _newDiscussion.GetDiscussion();
+            Discussion newDiscussion = _newDiscussion.Discussion;
 
-            if( !newDiscussion.Title.IsNullOrEmpty() )
-            { 
+            if (newDiscussion.Title.IsNullOrEmpty())
+                return;
 
-                _newDiscussion.Reset();
-                if ( await DiscussionManager.AddDiscussion(newDiscussion, MovieId, LayoutService.MainLayout.AuthenticatedUser.Id) )
-                { 
-                    _movieDiscussions.Add(newDiscussion);
-                    StateHasChanged();
-                }
+            Comment firstComment = _newDiscussion.FirstComment.GetComment();
+
+            await DiscussionManager.AddDiscussion(newDiscussion, MovieId, _authenticatedUser.Id);
+            
+            if (!firstComment.Content.IsNullOrEmpty()) 
+            {
+                await CommentManager.AddCommentToDiscussion(firstComment, newDiscussion.Id,_authenticatedUser.Id);
             }
 
+            _newDiscussion.Reset();
         }
 
     }

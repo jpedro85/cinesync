@@ -10,22 +10,20 @@ namespace CineSync.Components.Layout
 {
     public partial class Menu : ComponentBase
     {
-        [Inject]
-        private LayoutService LayoutService { get; set; }
-
-        [Inject]
-        private NavBarEvents NavBarEvents { get; set; }
-
-        [Inject]
-        private MenuService MenuService { get; set; }
-
-        [Inject]
-        private SignInManager<ApplicationUser> SignInManager { get; set; }
-
-        public ApplicationUser? AuthenticatedUser { get; set; }
 
         [Parameter]
+        public GetInstanceDelegate GetInstance { get; set; } = (m) => { };
+        public delegate void GetInstanceDelegate(Menu menu);
+
+        [Parameter,EditorRequired]
+        public ApplicationUser? AuthenticatedUser { get; set; }
+
+        [Parameter, EditorRequired]
         public ICollection<string> UserRoles { get; set; }
+
+        [Parameter, EditorRequired]
+        public NavBarEvents NavBarEvents { get; set; }
+
 
         private const int MAX_NOT_OPEN_ALLOWED_FOLLOWING_USERS = 4;
         private const int MAX_OPEN_ALLOWED_FOLLOWING_USERS = 8;
@@ -33,11 +31,12 @@ namespace CineSync.Components.Layout
 
         private string IsActive { get; set; } = string.Empty;
 
+        public int Teste { get; set; } = 69;
+
         protected override void OnInitialized()
         {
-            MenuService.OnRequestMenuReRender += ReRender;
             NavBarEvents.OnMenuChange += this.ChangeState;
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            GetInstance(this);
         }
 
         public void CloseMenu( MouseEventArgs e)
@@ -78,9 +77,8 @@ namespace CineSync.Components.Layout
             StateHasChanged();
         }
 
-        private Task ReRender() 
+        public Task ReRender() 
         {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
             return InvokeAsync(StateHasChanged);
         }
     }

@@ -3,16 +3,17 @@ using CineSync.Data;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using CineSync.Components.Comments;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CineSync.Components.Discussions
 {
     public partial class NewDiscussion
     {
-        private Discussion _discussion { get; set; } = new Discussion();
+        public Discussion Discussion { get; private set; } = new Discussion();
 
         private bool _addFirstComment = false;
 
-        private NewComment _newComment;
+        public NewComment FirstComment { get; private set; }
 
         private void ToogleFistComment()
         {
@@ -20,24 +21,15 @@ namespace CineSync.Components.Discussions
             InvokeAsync(StateHasChanged);
         }
 
-        public Discussion GetDiscussion()
-        {
-            if (_addFirstComment)
-            {
-                _discussion.Comments = new List<Comment>();
-                _discussion.Comments.Add(_newComment.GetComment());
-            }
-
-            return _discussion;
-        }
-
         public void Reset()
         {
-            _discussion = new Discussion();
+            Discussion = new Discussion();
+
+            InvokeAsync(StateHasChanged);
 
             if (_addFirstComment)
             {
-                _newComment.Reset();
+                FirstComment.Reset();
             }
         }
     }

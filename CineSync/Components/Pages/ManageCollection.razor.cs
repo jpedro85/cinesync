@@ -13,17 +13,15 @@ namespace CineSync.Components.Pages
 {
     public partial class ManageCollection : ComponentBase
     {
+        [Inject]
+        private CollectionsManager CollectionsManager { get; set; }
+
 
         [Parameter]
         public string? CollectionName { get; set; }
 
-        [Inject]
-        private CollectionsManager CollectionsManager { get; set; }
-
-        [Inject]
-        private LayoutService LayoutService { get; set; }
-
-        private MainLayout MainLayout { get; set; }
+        private PageLayout _pageLayout;
+        private bool _inicialized = false;
 
         private ApplicationUser? AuthenticatedUser { get; set; }
 
@@ -35,11 +33,11 @@ namespace CineSync.Components.Pages
 
         private bool isEditing = false;
 
-        protected override async Task OnInitializedAsync()
+        private async void Initialize() 
         {
-            MainLayout = LayoutService.MainLayout;
-            AuthenticatedUser = MainLayout.AuthenticatedUser;
+            AuthenticatedUser = _pageLayout.AuthenticatedUser;
             await GetCollection();
+            _inicialized = true;
         }
 
         private async Task GetCollection()
@@ -76,6 +74,12 @@ namespace CineSync.Components.Pages
         {
             await CollectionsManager.ChangePublicSate(AuthenticatedUser.Id, Collection.Name, newState);
             StateHasChanged();
+        }
+
+        private void GetPagelayout( PageLayout instance) 
+        {
+            if(_pageLayout == null)
+                _pageLayout = instance;
         }
     }
 }

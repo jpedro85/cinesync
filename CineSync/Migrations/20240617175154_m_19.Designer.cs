@@ -3,6 +3,7 @@ using System;
 using CineSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CineSync.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240617175154_m_19")]
+    partial class m_19
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
@@ -29,7 +32,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("ApplicationUserApplicationUser", (string)null);
+                    b.ToTable("ApplicationUserApplicationUser");
                 });
 
             modelBuilder.Entity("CineSync.Data.ApplicationUser", b =>
@@ -129,7 +132,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("CollectionsMovies", (string)null);
+                    b.ToTable("CollectionsMovies");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Comment", b =>
@@ -172,7 +175,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.CommentAttachment", b =>
@@ -192,7 +195,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("CommentAttachments", (string)null);
+                    b.ToTable("CommentAttachments");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Discussion", b =>
@@ -230,7 +233,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Discutions", (string)null);
+                    b.ToTable("Discutions");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Genre", b =>
@@ -248,7 +251,7 @@ namespace CineSync.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genre", (string)null);
+                    b.ToTable("Genre");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Movie", b =>
@@ -300,7 +303,7 @@ namespace CineSync.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>
@@ -323,7 +326,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Collections", (string)null);
+                    b.ToTable("Collections");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Notification", b =>
@@ -346,7 +349,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UserDislikedComment", b =>
@@ -368,7 +371,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDislikedComments", (string)null);
+                    b.ToTable("UserDislikedComments");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UserDislikedDiscussion", b =>
@@ -390,7 +393,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDislikedDiscussion", (string)null);
+                    b.ToTable("UserDislikedDiscussion");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UserImage", b =>
@@ -416,7 +419,7 @@ namespace CineSync.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserImage", (string)null);
+                    b.ToTable("UserImage");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UserLikedComment", b =>
@@ -438,7 +441,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLikedComments", (string)null);
+                    b.ToTable("UserLikedComments");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UserLikedDiscussion", b =>
@@ -460,7 +463,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLikedDiscussion", (string)null);
+                    b.ToTable("UserLikedDiscussion");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UsersNotifications", b =>
@@ -482,7 +485,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("NotificationId");
 
-                    b.ToTable("UsersNotifications", (string)null);
+                    b.ToTable("UsersNotifications");
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
@@ -497,7 +500,7 @@ namespace CineSync.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("GenreMovie", (string)null);
+                    b.ToTable("GenreMovie");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

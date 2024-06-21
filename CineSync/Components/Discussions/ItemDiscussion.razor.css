@@ -158,6 +158,8 @@ hr {
 }
 
 .discution-comments-container {
+    display:flex;
+    flex-direction:column;
     background-color: rgb(25, 25, 25);
     border-radius: 5px;
     border: 1px solid rgb(60,60,60);
@@ -165,6 +167,7 @@ hr {
     max-height: 300px;
     padding: 10px;
     overflow-y: auto;
+    gap:20px;
 }
 
 .discution-options {
@@ -226,4 +229,13 @@ hr {
     width: 100%;
     justify-content: center;
     align-items: center;
+}
+
+.align-left {
+    margin-right: 10%;
+}
+
+.align-rigth 
+{
+    margin-left:10%;
 }

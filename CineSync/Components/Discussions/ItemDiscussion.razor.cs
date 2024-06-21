@@ -3,20 +3,28 @@ using Microsoft.AspNetCore.Components;
 using CineSync.Data.Models;
 using CineSync.Services;
 using CineSync.Data;
+using CineSync.Components.Comments;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Components.Web;
+using CineSync.Components.Layout;
 
 namespace CineSync.Components.Discussions
 {
     public partial class ItemDiscussion
     {
-        [Inject]
+		[CascadingParameter(Name = "PageLayout")]
+		public PageLayout PageLayout { get; set; }
+
+
+		[Inject]
         private UserManager UserManager { get; set; }
 
         [Inject]
         private DiscussionManager DiscussionManager {  get; set; }
 
- 
         [Inject]
-        private LayoutService LayoutService { get; set; }
+        private CommentManager CommentManager { get; set; }
+
 
         [Parameter]
         public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; }
@@ -36,21 +44,37 @@ namespace CineSync.Components.Discussions
         public bool DisLiked { get; set; } = false;
         private bool _Disliked { get; set; }
 
+
         [Parameter]
         public bool AllowFollow { get; set; } = true;
 
         [Parameter]
         public EventCallback OnChange { get; set; }
 
+        [Parameter]
+        public EventCallback<uint> OnRemove { get; set; }
+
         private ApplicationUser _authenticatedUser;
 
         private ICollection<string> _userRoles;
+
+        private NewComment _newComment;
+
         protected override void OnInitialized()
         {
-            _authenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
-            _userRoles = LayoutService.MainLayout.UserRoles;
+            _authenticatedUser = PageLayout.AuthenticatedUser!;
+            _userRoles = PageLayout.UserRoles;
             _Liked = Liked;
             _Disliked = DisLiked;
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender) 
+            {
+                Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
+                StateHasChanged();
+            }
         }
 
         private async void Follow(string id)
@@ -63,7 +87,7 @@ namespace CineSync.Components.Discussions
                 _authenticatedUser.Following.Add(Discussion.Autor!);
 
                 StateHasChanged();
-                LayoutService.MainLayout.TriggerMenuReRender();
+				await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
             }
         }
@@ -78,8 +102,8 @@ namespace CineSync.Components.Discussions
                 _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Discussion.Autor!.Id).ToList();
 
                 StateHasChanged();
-                LayoutService.MainLayout.TriggerMenuReRender();
-                await OnChange.InvokeAsync();
+				await PageLayout.Menu.ReRender();
+				await OnChange.InvokeAsync();
             }
         }
 
@@ -199,6 +223,26 @@ namespace CineSync.Components.Discussions
             }
 
             StateHasChanged();
+        }
+
+        private async void AddComment(MouseEventArgs e) 
+        {
+            Comment commentToAdd = _newComment.GetComment();
+            commentToAdd.Autor = _authenticatedUser;
+
+            if (!commentToAdd.Content.IsNullOrEmpty()) 
+            {
+                await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser.Id );
+                _newComment.Reset();
+                StateHasChanged();
+            }
+        }
+
+        private async void Remove() 
+        {
+            uint id = (Discussion.Id);
+            await DiscussionManager.RemoveAsync(Discussion);
+            await OnRemove.InvokeAsync(id);
         }
     }
 }

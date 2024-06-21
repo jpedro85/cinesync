@@ -155,37 +155,71 @@
 
     <hr/>
 
-    <div class="comment-content">
-        <div>@Comment.Content</div>
-        @if (Comment.Attachements != null && Comment.Attachements.Any())
-        {
-            foreach (CommentAttachment attachment in Comment.Attachements)
-            {
-                <div class="attachments">
-                    <img src="@(ImageConverter.ConverBytesTo64(attachment.Attachment))" alt="Selected File" />
-                    @* NOTE: For Edit functionality Remove this if *@
-                    @if(false) {
-                        @if (Comment.Autor.Id == _authenticatedUser?.Id)
-                        {
-                            <div class="hover-button" data-toggle="modal" data-target="#RemoveAttachmentModal_@attachment.Id">
-                                <svg class="svg-size" viewBox="0 0 31 31" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.79552 13.8865C9.43386 13.8865 9.08702 14.0301 8.83128 14.2859C8.57555 14.5416 8.43188 14.8885 8.43188 15.2501C8.43188 15.6118 8.57555 15.9586 8.83128 16.2143C9.08702 16.4701 9.43386 16.6137 9.79552 16.6137H20.7046C21.0663 16.6137 21.4131 16.4701 21.6688 16.2143C21.9246 15.9586 22.0682 15.6118 22.0682 15.2501C22.0682 14.8885 21.9246 14.5416 21.6688 14.2859C21.4131 14.0301 21.0663 13.8865 20.7046 13.8865H9.79552Z" fill="currentcolor" />
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M30.25 15.25C30.25 23.5341 23.5341 30.25 15.25 30.25C6.96591 30.25 0.25 23.5341 0.25 15.25C0.25 6.96591 6.96591 0.25 15.25 0.25C23.5341 0.25 30.25 6.96591 30.25 15.25ZM27.5227 15.25C27.5227 16.8617 27.2053 18.4576 26.5885 19.9466C25.9718 21.4356 25.0678 22.7885 23.9281 23.9281C22.7885 25.0678 21.4356 25.9718 19.9466 26.5885C18.4576 27.2053 16.8617 27.5227 15.25 27.5227C13.6383 27.5227 12.0424 27.2053 10.5534 26.5885C9.06443 25.9718 7.7115 25.0678 6.57187 23.9281C5.43224 22.7885 4.52824 21.4356 3.91148 19.9466C3.29472 18.4576 2.97727 16.8617 2.97727 15.25C2.97727 11.9951 4.27029 8.87345 6.57187 6.57187C8.87345 4.27029 11.9951 2.97727 15.25 2.97727C18.5049 2.97727 21.6265 4.27029 23.9281 6.57187C26.2297 8.87345 27.5227 11.9951 27.5227 15.25Z" fill="currentcolor" />
-                                </svg>
-                            </div>
-                            <RemoveAttachment Comment=@Comment Attachment=@attachment OnRemove=OnChange />
-                        }
-                    }
-                </div>
-            }
-        }
-    </div>
+    @if( _allowSee || Comment.Autor.Id == _authenticatedUser.Id  )
+    {
+        <div class="comment-content">
+            <div>@Comment.Content</div>
 
-        <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
-            <PassOneCheck>
-                @if(_authenticatedUser.Id != Comment.Autor.Id)
+            @if (Comment.Attachements != null && Comment.Attachements.Any())
+            {
+                <div class="Attachment-container">
+
+                    @foreach (CommentAttachment attachment in Comment.Attachements)
+                    {
+                        CommentAttachment localAttachment = attachment;
+                        <div class="attachments">
+                            <img src="@(ImageConverter.ConverBytesTo64(attachment.Attachment))" alt="Selected File" />
+                    
+                           @*  @* NOTE: For Edit functionality Remove this if 
+                            @if(false) {
+                                @if (Comment.Autor.Id == _authenticatedUser?.Id)
+                                {
+                                    <div class="hover-button" data-toggle="modal" data-target="#RemoveAttachmentModal_@attachment.Id">
+                                        <svg class="svg-size" viewBox="0 0 31 31" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.79552 13.8865C9.43386 13.8865 9.08702 14.0301 8.83128 14.2859C8.57555 14.5416 8.43188 14.8885 8.43188 15.2501C8.43188 15.6118 8.57555 15.9586 8.83128 16.2143C9.08702 16.4701 9.43386 16.6137 9.79552 16.6137H20.7046C21.0663 16.6137 21.4131 16.4701 21.6688 16.2143C21.9246 15.9586 22.0682 15.6118 22.0682 15.2501C22.0682 14.8885 21.9246 14.5416 21.6688 14.2859C21.4131 14.0301 21.0663 13.8865 20.7046 13.8865H9.79552Z" fill="currentcolor" />
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M30.25 15.25C30.25 23.5341 23.5341 30.25 15.25 30.25C6.96591 30.25 0.25 23.5341 0.25 15.25C0.25 6.96591 6.96591 0.25 15.25 0.25C23.5341 0.25 30.25 6.96591 30.25 15.25ZM27.5227 15.25C27.5227 16.8617 27.2053 18.4576 26.5885 19.9466C25.9718 21.4356 25.0678 22.7885 23.9281 23.9281C22.7885 25.0678 21.4356 25.9718 19.9466 26.5885C18.4576 27.2053 16.8617 27.5227 15.25 27.5227C13.6383 27.5227 12.0424 27.2053 10.5534 26.5885C9.06443 25.9718 7.7115 25.0678 6.57187 23.9281C5.43224 22.7885 4.52824 21.4356 3.91148 19.9466C3.29472 18.4576 2.97727 16.8617 2.97727 15.25C2.97727 11.9951 4.27029 8.87345 6.57187 6.57187C8.87345 4.27029 11.9951 2.97727 15.25 2.97727C18.5049 2.97727 21.6265 4.27029 23.9281 6.57187C26.2297 8.87345 27.5227 11.9951 27.5227 15.25Z" fill="currentcolor" />
+                                        </svg>
+                                    </div>
+                                    <RemoveAttachment Comment=@Comment Attachment=@attachment OnRemove=OnChange />
+                                }
+                            } *@
+
+                            <div class="view" @onclick="(e) => { OpenAttachment(localAttachment.Attachment); } ">
+                                <div>
+                                    View
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <PopUpAttachementView 
+                    Id="@( "_attachementView1" + Comment.Id.ToString() )" @ref="@_attachementView">
+                </PopUpAttachementView>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="comment-content-spoiler">
+            <div class="comment-content-spoiler-left">
+                <img class="spoiler-alert" src="Spoiler-Alert.png" alt="Spoiler Alert Image"/>
+            </div>
+            <div class="comment-content-spoiler-rigth">
+                <div class="spoiler-textt-container">This Comment has spoiler !</div>
+                <RectButton1 Text="See Anyway" OnClick="()=>{_allowSee=true;StateHasChanged();}"></RectButton1>
+            </div>
+        </div>
+    }
+
+
+    <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
+        <PassOneCheck>
+            <div class="comment-actions">
+                @if(_authenticatedUser.Id != Comment.Autor.Id && _allowSee)
                 {
-                    <div class="comment-actions">
+                    <div class="comment-actions-left">
                         <div class="likeStatusButton-conteiner">
                             <div class="likeStatusButton @( _Liked ? "active" : "" )" @onclick="(e)=>{AddLike();}">
                                 <svg  viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -206,12 +240,29 @@
                                 @Comment.NumberOfDislikes
                             </div>
                         </div>
-                            <div class="comment-actions-ritgh">
-                            <RectButton1 Text="Start discussion"></RectButton1>
-                        </div>
+                    </div>
+                    <div class="comment-actions-ritgh">
+                        <RectButton1 Text="Start discussion"></RectButton1>
                     </div>
                 }
-            </PassOneCheck>
-        </RoleCkeck>
+
+                @if (_authenticatedUser.Id == Comment.Autor.Id )
+                {
+                    @if ( !Comment.HasSpoiler)
+                    {
+                        <div class="comment-actions-ritgh">
+                        <RectButton2 Style="min-width:180px;" Text="Marck as Spoiler" OnClick="()=>{ UpdateSpoilerState(true); }"></RectButton2>
+                        </div>
+                    }
+                    else 
+                    {
+                        <div class="comment-actions-ritgh">
+                            <RectButton1 Style="min-width:180px;" Text="Unmarck as Spoiler" OnClick="()=>{ UpdateSpoilerState(false); }"></RectButton1>
+                        </div>
+                    }
+                }
+        </div>
+        </PassOneCheck>
+    </RoleCkeck>
 
  </div>
