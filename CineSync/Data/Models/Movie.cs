@@ -20,7 +20,7 @@ namespace CineSync.Data.Models
 
         public ICollection<Genre> Genres { get; set; }
 
-        public byte[] PosterImage { get; set; }
+        public byte[]? PosterImage { get; set; }
 
         public string? Overview { get; set; }
 
