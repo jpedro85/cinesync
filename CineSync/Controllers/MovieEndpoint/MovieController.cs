@@ -45,21 +45,11 @@ namespace CineSync.Controllers.MovieEndpoint
         [HttpGet]
         public async Task<IActionResult> GetMovieById([FromQuery] int id)
         {
-            _logger.Log($"Fetching the Movie details {id}", LogTypes.INFO);
-            Movie? databaseResult = await _movieManager.GetByTmdbId(id);
-
-            if (databaseResult != null)
-            {
-                _logger.Log($"Fetched the Movie details for {id} from the database, Successfully", LogTypes.DEBUG);
-                return Ok(databaseResult);
-            }
-
-            // In case its not on the database
             string endpoint = $"movie/{id}?append_to_response=credits,videos";
             string data = await _apiService.FetchDataAsync(endpoint);
             Movie movie = await _movieDetailsAdapter.FromJson(data);
             // Add to the Database async
-            _movieManager.AddAsync(movie);
+            await _movieManager.AddAsync(movie);
             _logger.Log($"Fetched the Movie details for {id} from the API, Successfully", LogTypes.INFO);
 
             return Ok(movie);

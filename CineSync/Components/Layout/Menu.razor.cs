@@ -10,24 +10,36 @@ namespace CineSync.Components.Layout
 {
     public partial class Menu : ComponentBase
     {
-        [Inject]
-        private NavBarEvents NavBarEvents { get; set; }
-
-        [Inject]
-        private SignInManager<ApplicationUser> SignInManager { get; set; }
-
-        [Inject]
-        private NavigationManager NavManager { get; set; }
 
         [Parameter]
-        public ApplicationUser? User { get; set; }
+        public GetInstanceDelegate GetInstance { get; set; } = (m) => { };
+        public delegate void GetInstanceDelegate(Menu menu);
 
-        [Parameter]
+        [Parameter,EditorRequired]
+        public ApplicationUser? AuthenticatedUser { get; set; }
+
+        [Parameter, EditorRequired]
         public ICollection<string> UserRoles { get; set; }
+
+        [Parameter, EditorRequired]
+        public NavBarEvents NavBarEvents { get; set; }
+
+
+        private const int MAX_NOT_OPEN_ALLOWED_FOLLOWING_USERS = 4;
+        private const int MAX_OPEN_ALLOWED_FOLLOWING_USERS = 8;
+        private bool _showAll = false;
 
         private string IsActive { get; set; } = string.Empty;
 
-        public void OverlayClick( MouseEventArgs e)
+        public int Teste { get; set; } = 69;
+
+        protected override void OnInitialized()
+        {
+            NavBarEvents.OnMenuChange += this.ChangeState;
+            GetInstance(this);
+        }
+
+        public void CloseMenu( MouseEventArgs e)
         {
             IsActive = "";
 
@@ -37,7 +49,6 @@ namespace CineSync.Components.Layout
             {
                 StateHasChanged();
             });
-
         }
 
         public void ChangeState( bool active)
@@ -58,10 +69,17 @@ namespace CineSync.Components.Layout
 
         }
 
-        protected override void OnInitialized()
+        private void OnClickShowAll(MouseEventArgs e) 
         {
-			NavBarEvents.OnMenuChange += this.ChangeState;
+            _showAll = !_showAll;
+            IsActive = "Active";
+            Console.WriteLine($"IsActive: {IsActive}");
+            StateHasChanged();
         }
 
+        public Task ReRender() 
+        {
+            return InvokeAsync(StateHasChanged);
+        }
     }
 }

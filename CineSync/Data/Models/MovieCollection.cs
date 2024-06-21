@@ -3,10 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace CineSync.Data.Models
 {
-    public class MovieCollection 
+    public class MovieCollection
     {
-        public uint Id { get; set; } 
-        
+        public uint Id { get; set; }
+
         [Required]
         public string? Name { get; set; }
 
@@ -14,5 +14,8 @@ namespace CineSync.Data.Models
 
         [JsonIgnore]
         public ICollection<CollectionsMovies>? CollectionMovies { get; set; }
+
+        [JsonIgnore]
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

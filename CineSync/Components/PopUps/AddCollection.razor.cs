@@ -1,23 +1,26 @@
-﻿using CineSync.Data;
+﻿using CineSync.Components.Layout;
+using CineSync.Data;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.ObjectModel;
 
 namespace CineSync.Components.PopUps
 {
 	public partial class AddCollection : ComponentBase
     {
-        [Parameter]
-        public uint MovieID { get; set; }
+		[CascadingParameter(Name = "PageLayout")]
+		public PageLayout PageLayout { get; set; }
 
-		[Inject]
-		private LayoutService LayoutService { get; set; }
 
         [Inject]
         private CollectionsManager CollectionsManager { get; set; }
+
+
+		[Parameter]
+        public uint MovieID { get; set; }
+
 
         private ApplicationUser AuthenticatedUser { get; set; }
 
@@ -30,7 +33,7 @@ namespace CineSync.Components.PopUps
 
         protected override async Task OnInitializedAsync()
         {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+            AuthenticatedUser = PageLayout.AuthenticatedUser!;
 
             Collections = await FetchCollections();
             CollectionsMovieStatus = UpdateStateCollections();
@@ -55,15 +58,15 @@ namespace CineSync.Components.PopUps
             return dic;
         }
 
-        public void UpdateState(string key,bool isCheecked) 
+        public void UpdateState(string key,bool isCheecked)
         {
             CollectionsMovieStatus[key] = isCheecked;
-            
+
             if(!edited.Contains(key))
                 edited.Add(key);
         }
 
-        public async void OnSave() 
+        public async void OnSave()
         {
             if (!_newCollectionName.IsNullOrEmpty())
             {

@@ -12,11 +12,14 @@
     <Body>
         <div class="modal-body" style="font-size:20px;">
             <p>Are you sure you want to delete your account?</p>
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="text-danger">@ErrorMessage</div>
+            }
         </div>
     </Body>
     <Footer>
-        <RectButton1 Text="Delete" DataDismiss="modal"> </RectButton1>
-        <RectButton1 Text="Cancel" DataDismiss="modal"> </RectButton1>
-        @*         <button @onclick="OnSave" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button> *@
+        <RectButton1 Text="Delete" OnClick="DeleteAccount" />
+        <RectButton2 Text="Cancel" DataDismiss="modal" />
     </Footer>
 </PopUpLayout>

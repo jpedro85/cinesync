@@ -9,7 +9,19 @@ namespace CineSync.Components.PopUps
 {
     public partial class Classification : ComponentBase
     {
-        [Parameter]
+		[CascadingParameter(Name = "PageLayout")]
+		public PageLayout PageLayout { get; set; }
+
+
+
+        [Inject]
+        private MovieManager MovieManager { get; set; }
+
+        [Inject]
+        private CollectionsManager CollectionsManager { get; set; }
+
+
+		[Parameter]
         public int MovieAPIId { get; set; }
 
         [Parameter]
@@ -18,29 +30,12 @@ namespace CineSync.Components.PopUps
         [Parameter]
         public EventCallback OnRatingSaved { get; set; }
 
-        [Inject]
-        private MovieManager MovieManager { get; set; }
-
-        [Inject]
-        private CollectionsManager CollectionsManager { get; set; }
-
-        [Inject]
-        private LayoutService LayoutService { get; set; }
-
-        [Inject]
-        private IJSRuntime JSRuntime { get; set; }
-
-        private MainLayout MainLayout { get; set; }
 
         public ApplicationUser AuthenticatedUser { get; set; }
 
         private int Rating { get; set; }
 
-        protected override void OnInitialized()
-        {
-            MainLayout = LayoutService.MainLayout;
-        }
-
+        
         private void SetRating(ChangeEventArgs e)
         {
             Rating = Convert.ToInt32(e.Value);
@@ -48,9 +43,8 @@ namespace CineSync.Components.PopUps
 
         private async void SaveRating()
         {
-            await MovieManager.AddRating(Rating, MovieAPIId, MainLayout.AuthenticatedUser.Id);
-            await OnRatingSaved.InvokeAsync(null);
-            // await JSRuntime.InvokeVoidAsync("window.location.reload");
+            await MovieManager.AddRating(Rating, MovieAPIId, PageLayout!.AuthenticatedUser.Id);
+            await OnRatingSaved.InvokeAsync();
         }
     }
 }

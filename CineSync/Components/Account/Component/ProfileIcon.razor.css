@@ -1,6 +1,12 @@
 ﻿
+.main-container{
+    z-index:0;
+}
+
 .Profile-pic {
+    position:relative;
     border-radius: 50%;
     background: #ffffff;
     padding: 6px;
+    z-index: 0;
 }

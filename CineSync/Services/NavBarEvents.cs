@@ -15,7 +15,7 @@ namespace CineSync.Services
 
         public event Func<Task> OnRequestNavBarReRender;
 
-        public void OnclickNotification(MouseEventArgs e)
+        public void OnClickNotification(MouseEventArgs e)
         {
             Console.WriteLine("Testing event count:" + OnNotificationChange?.GetInvocationList().Count());
             IsNotificationOpen = !IsNotificationOpen;

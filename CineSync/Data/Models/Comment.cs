@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CineSync.Components.Comments;
+using System.ComponentModel.DataAnnotations;
 
 namespace CineSync.Data.Models
 {
@@ -7,10 +8,12 @@ namespace CineSync.Data.Models
     {
         public uint Id { get; set; }
 
-        public uint MovieId { get; set; }
+        public uint? MovieId { get; set; }
+
+        public uint? DiscussionId { get; set; }
 
         [Required]
-        public ApplicationUser? Autor { get; set; }
+        public ApplicationUser Autor { get; set; }
 
         [Required]
         public string? Content { get; set; }
@@ -26,5 +29,23 @@ namespace CineSync.Data.Models
         public ICollection<UserLikedComment> LikedByUsers { get; set; }
 
         public ICollection<UserDislikedComment> DislikedByUsers { get; set; }
+
+        public bool HasSpoiler { get; set; } = false;
+
+        public override bool Equals(object? obj)
+        {
+
+            if (obj == null || !(obj is Comment))
+            {
+                return false;
+            }
+
+            return ((Comment)obj).Id == this.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }

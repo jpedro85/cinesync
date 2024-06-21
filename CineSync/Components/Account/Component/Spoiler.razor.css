@@ -1,0 +1,30 @@
+﻿.comment-content-spoiler {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    font-size: 20px;
+    font-family: Roboto;
+    height: fit-content;
+}
+
+.comment-content-spoiler-rigth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spoiler-textt-container {
+    padding: 5px;
+}
+
+.spoiler-textt-container {
+    padding-right: 20px;
+}
+
+.spoiler-alert {
+    width: auto;
+    height: 100px;
+}

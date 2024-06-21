@@ -1,5 +1,7 @@
 ﻿@rendermode InteractiveServer
 
+@using CineSync.Components.Buttons;
+
 <PopUpLayout @ref=PopUpLayout Id="editUsernameModal">
     <Header>
         <div class="title">Edit Username</div>
@@ -20,6 +22,7 @@
         </div>
     </Body>
     <Footer>
-        <button type="button" class="btn btn-primary" @onclick="RenameUsername" >SaveChanges</button>
+        <RectButton2 Text="Cancel" DataDismiss="modal"> </RectButton2>
+        <RectButton1 Text="Save Changes" DataDismiss="modal" OnClick="()=>{RenameUsername();}"> </RectButton1>
     </Footer>
 </PopUpLayout>

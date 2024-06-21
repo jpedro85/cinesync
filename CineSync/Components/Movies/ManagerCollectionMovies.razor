@@ -1,23 +1,22 @@
-﻿@using CineSync.Components.Movies
-@using CineSync.Data.Models
+﻿@using CineSync.Data.Models
 @using CineSync.Components.Buttons
 
 
 <div class="Collection-Movies-container">
     <div class="Collection-Movies">
         <div class="collection-movies-shadow-top"></div>
-            
-        @foreach (CollectionsMovies collectionsMovies in AllMovies)
+        @foreach (CollectionsMovies collectionsMovies in Collection.CollectionMovies)
         {
             <div class="MovieConteainer" @onclick="(e) => MovieClickHandler(collectionsMovies.Movie)">
-                <div class="remove-movie" @onclick:stopPropagation @onclick=" () => { RemoveMovieFromCollection(collectionsMovies); }">
-                    <RemoveMovieButton />
-                </div>
-                <MoviePlace Movie="collectionsMovies.Movie" Width="250" Heigth="350" />
+                @if (Collection.Name != "Classified")
+                {
+                    <div class="remove-movie" @onclick:stopPropagation @onclick=" () => { RemoveMovieFromCollection(collectionsMovies); }">
+                        <RemoveMovieButton/>
+                    </div>
+                }
+                <MoviePlace Movie="collectionsMovies.Movie" Width="250" Heigth="350"/>
             </div>
         }
-          
         <div class="collection-movies-shadow-bottom"></div>
     </div>
 </div>
-

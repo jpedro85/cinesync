@@ -4,19 +4,23 @@
 @using CineSync.Data.Models
 @using CineSync.Data
 @using CineSync.Components.PopUps;
+@using CineSync.Components.Account.Component;
 
 @{
     DateTime today = DateTime.Now;
     int daysInDiference = 0;
-    int monthsInDiference = 0;
     int weeks = 0;
     int years = 0;
+    string ghostUserId = "0";
 }
 
 <div class="comment">
     <div class="comment-header">
 
         <div class="commend-header-left">
+
+        @if (Comment.Autor.Id != ghostUserId ){
+
             <NavLink href="@($"/Profile/{Comment.Autor!.Id}")">
                 <div class="UsernameConteiner">
                      @if (Comment.Autor.UserImage != null )
@@ -34,7 +38,7 @@
             <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"} )">
                 <PassOneCheck>
 
-                    @if(_authenticatedUser.Id != Comment.Autor.Id)
+                    @if (_authenticatedUser.Id != Comment.Autor.Id && AllowFollow)
                     {
                         @if (_authenticatedUser.Following == null || !_authenticatedUser.Following.Any(user => user.Equals(Comment.Autor)) )
                         {
@@ -70,6 +74,21 @@
 
                 </PassOneCheck>
             </RoleCkeck>
+        }
+        else{
+                <div class="UsernameConteiner">
+                     @if (Comment.Autor.UserImage != null )
+                     {
+                         <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Comment.Autor.UserImage.ImageData, Comment.Autor.UserImage.ContentType))" alt="UserImage" />
+                     }
+                     else
+                     {
+                        <img class="user-profilepic" src="NoProfilePic.png" alt="UserImage"/>
+                     }
+                    <div>@Comment.Autor!.UserName</div>
+                </div>
+        }
+
 
         </div>
 
@@ -105,27 +124,30 @@
 
                     @if(_authenticatedUser.Id == Comment.Autor.Id)
                     {
+                        <RemoveComment Comment="@Comment" OnRemove="RemoveComment" @ref="_popUpRemove"/>
                         <div class="comment-options" >
-                            <buttom class="BtnBin"  data-toggle="modal" data-target="#RemoveCommentModal">
+                            <button class="BtnBin" @onclick="() => {_popUpRemove.Open();}">
                                 <svg width="30px" height="30px" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z" fill="currentcolor" />
                                 </svg>
-                            </buttom>
-                            <RemoveComment Callback="Remove" ></RemoveComment>
+                            </button>
                         </div>
                     }
 
-                    <div class="comment-options">
-                        <button class="BtnOptions" data-toggle="modal" data-target="#ReportModal">
-                            <svg width="40" height="40" viewBox="0 0 42 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M27.5275 5.125H14.4725L5.25 14.1279V26.8721L14.4725 35.875H27.5275L36.75 26.8721V14.1279L27.5275 5.125ZM33.25 25.4542L26.075 32.4583H15.925L8.75 25.4542V15.5458L15.925 8.54167H26.075L33.25 15.5458V25.4542Z" fill="currentcolor"/>
-                            <path d="M21 29.0417C21.9665 29.0417 22.75 28.2768 22.75 27.3333C22.75 26.3898 21.9665 25.625 21 25.625C20.0335 25.625 19.25 26.3898 19.25 27.3333C19.25 28.2768 20.0335 29.0417 21 29.0417Z" fill="currentcolor"/>
-                            <path d="M19.25 11.958H22.75V23.9163H19.25V11.958Z" fill="currentcolor"/>
-                        </svg>
-                       </button>
-                       <CommentOptionPopUpClass></CommentOptionPopUpClass>
+                    @if (_authenticatedUser.Id != Comment.Autor.Id)
+                    {
+                        <div class="comment-options">
+                            <button class="BtnOptions" data-toggle="modal" data-target="#ReportModal">
+                                <svg width="40" height="40" viewBox="0 0 42 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M27.5275 5.125H14.4725L5.25 14.1279V26.8721L14.4725 35.875H27.5275L36.75 26.8721V14.1279L27.5275 5.125ZM33.25 25.4542L26.075 32.4583H15.925L8.75 25.4542V15.5458L15.925 8.54167H26.075L33.25 15.5458V25.4542Z" fill="currentcolor"/>
+                                <path d="M21 29.0417C21.9665 29.0417 22.75 28.2768 22.75 27.3333C22.75 26.3898 21.9665 25.625 21 25.625C20.0335 25.625 19.25 26.3898 19.25 27.3333C19.25 28.2768 20.0335 29.0417 21 29.0417Z" fill="currentcolor"/>
+                                <path d="M19.25 11.958H22.75V23.9163H19.25V11.958Z" fill="currentcolor"/>
+                            </svg>
+                           </button>
+                           <CommentOptionPopUpClass></CommentOptionPopUpClass>
 
-                    </div>
+                        </div>
+                    }
 
                 </PassOneCheck>
             </RoleCkeck>
@@ -136,26 +158,65 @@
 
     <hr/>
 
-    <div class="comment-content">
-        <div>@Comment.Content</div>
-        @if (Comment.Attachements != null && Comment.Attachements.Any())
-        {
-            foreach (CommentAttachment attachment in Comment.Attachements)
-            {
-                <div class="attachments">
-                    <img src="@(ImageConverter.ConverBytesTo64(attachment.Attachment))" alt="Selected File" />
-                </div>
-            }
-        }
-    </div>
+    @if( _allowSee || ( _authenticatedUser != null && Comment.Autor.Id == _authenticatedUser.Id)   )
+    {
+        <div class="comment-content">
+            <div>@Comment.Content</div>
 
-        <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
-            <PassOneCheck>
-                @if(_authenticatedUser.Id != Comment.Autor.Id)
+            @if (Comment.Attachements != null && Comment.Attachements.Any())
+            {
+                <div class="Attachment-container">
+
+                    @foreach (CommentAttachment attachment in Comment.Attachements)
+                    {
+                        CommentAttachment localAttachment = attachment;
+                        <div class="attachments">
+                            <img src="@(ImageConverter.ConverBytesTo64(attachment.Attachment))" alt="Selected File" />
+                    
+                           @*  @* NOTE: For Edit functionality Remove this if 
+                            @if(false) {
+                                @if (Comment.Autor.Id == _authenticatedUser?.Id)
+                                {
+                                    <div class="hover-button" data-toggle="modal" data-target="#RemoveAttachmentModal_@attachment.Id">
+                                        <svg class="svg-size" viewBox="0 0 31 31" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.79552 13.8865C9.43386 13.8865 9.08702 14.0301 8.83128 14.2859C8.57555 14.5416 8.43188 14.8885 8.43188 15.2501C8.43188 15.6118 8.57555 15.9586 8.83128 16.2143C9.08702 16.4701 9.43386 16.6137 9.79552 16.6137H20.7046C21.0663 16.6137 21.4131 16.4701 21.6688 16.2143C21.9246 15.9586 22.0682 15.6118 22.0682 15.2501C22.0682 14.8885 21.9246 14.5416 21.6688 14.2859C21.4131 14.0301 21.0663 13.8865 20.7046 13.8865H9.79552Z" fill="currentcolor" />
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M30.25 15.25C30.25 23.5341 23.5341 30.25 15.25 30.25C6.96591 30.25 0.25 23.5341 0.25 15.25C0.25 6.96591 6.96591 0.25 15.25 0.25C23.5341 0.25 30.25 6.96591 30.25 15.25ZM27.5227 15.25C27.5227 16.8617 27.2053 18.4576 26.5885 19.9466C25.9718 21.4356 25.0678 22.7885 23.9281 23.9281C22.7885 25.0678 21.4356 25.9718 19.9466 26.5885C18.4576 27.2053 16.8617 27.5227 15.25 27.5227C13.6383 27.5227 12.0424 27.2053 10.5534 26.5885C9.06443 25.9718 7.7115 25.0678 6.57187 23.9281C5.43224 22.7885 4.52824 21.4356 3.91148 19.9466C3.29472 18.4576 2.97727 16.8617 2.97727 15.25C2.97727 11.9951 4.27029 8.87345 6.57187 6.57187C8.87345 4.27029 11.9951 2.97727 15.25 2.97727C18.5049 2.97727 21.6265 4.27029 23.9281 6.57187C26.2297 8.87345 27.5227 11.9951 27.5227 15.25Z" fill="currentcolor" />
+                                        </svg>
+                                    </div>
+                                    <RemoveAttachment Comment=@Comment Attachment=@attachment OnRemove=OnChange />
+                                }
+                            } *@
+
+                            <div class="view" @onclick="(e) => { OpenAttachment(localAttachment.Attachment); } ">
+                                <div>
+                                    View
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <PopUpAttachementView 
+                    Id="@( "_attachementView1" + Comment.Id.ToString() )" @ref="@_attachementView">
+                </PopUpAttachementView>
+            }
+        </div>
+    }
+    else
+    {
+        <Spoiler Heigth="100" OnClickSeeAnyway="()=>{_allowSee=true;StateHasChanged();}"/>
+    }
+
+
+    <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
+        <PassOneCheck>
+            <div class="comment-actions">
+                @if(_authenticatedUser.Id != Comment.Autor.Id && _allowSee)
                 {
-                    <div class="comment-actions">
+                    <div class="comment-actions-left">
                         <div class="likeStatusButton-conteiner">
-                            <div class="likeStatusButton @( _Liked ? "active" : "" )" @onclick="(e)=>{AddLike(Comment);}">
+                            <div class="likeStatusButton @( _Liked ? "active" : "" )" @onclick="(e)=>{AddLike();}">
                                 <svg  viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M40 18C40 16.9391 39.6169 15.9217 38.9349 15.1716C38.253 14.4214 37.3281 14 36.3636 14H24.8727L26.6182 4.86C26.6545 4.66 26.6727 4.44 26.6727 4.22C26.6727 3.4 26.3636 2.64 25.8727 2.1L23.9455 0L11.9818 13.16C11.3091 13.9 10.9091 14.9 10.9091 16V36C10.9091 37.0609 11.2922 38.0783 11.9742 38.8284C12.6561 39.5786 13.581 40 14.5455 40H30.9091C32.4182 40 33.7091 39 34.2545 37.56L39.7455 23.46C39.9091 23 40 22.52 40 22V18ZM0 40H7.27273V16H0V40Z" fill="currentcolor" />
                                 </svg>
@@ -165,7 +226,7 @@
                             </div>
                         </div>
                         <div class="likeStatusButton-conteiner">
-                            <div class="likeStatusButton @( _Disliked ? "active" : "" )" @onclick="(e)=>{AddDeslike(Comment);}">
+                            <div class="likeStatusButton @( _Disliked ? "active" : "" )" @onclick="(e)=>{AddDeslike();}">
                                 <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M32.7273 24H40V0H32.7273M25.4545 0H9.09091C7.58182 0 6.29091 1 5.74545 2.44L0.254545 16.54C0.0909091 17 0 17.48 0 18V22C0 23.0609 0.383116 24.0783 1.06507 24.8284C1.74702 25.5786 2.67194 26 3.63636 26H15.1091L13.3818 35.14C13.3455 35.34 13.3273 35.54 13.3273 35.76C13.3273 36.6 13.6364 37.34 14.1273 37.88L16.0545 40L28.0182 26.82C28.6909 26.1 29.0909 25.1 29.0909 24V4C29.0909 2.93913 28.7078 1.92172 28.0258 1.17157C27.3439 0.421427 26.419 0 25.4545 0Z" fill="currentcolor"/>
                                 </svg>
@@ -174,12 +235,29 @@
                                 @Comment.NumberOfDislikes
                             </div>
                         </div>
-                            <div class="comment-actions-ritgh">
-                            <RectButton1 Text="Start discussion"></RectButton1>
-                        </div>
+                    </div>
+                    <div class="comment-actions-ritgh">
+                        <RectButton1 Text="Start discussion"></RectButton1>
                     </div>
                 }
-            </PassOneCheck>
-        </RoleCkeck>
+
+                @if (_authenticatedUser.Id == Comment.Autor.Id )
+                {
+                    @if ( !Comment.HasSpoiler)
+                    {
+                        <div class="comment-actions-ritgh">
+                        <RectButton2 Style="min-width:180px;" Text="Marck as Spoiler" OnClick="()=>{ UpdateSpoilerState(true); }"></RectButton2>
+                        </div>
+                    }
+                    else 
+                    {
+                        <div class="comment-actions-ritgh">
+                            <RectButton1 Style="min-width:180px;" Text="Unmarck as Spoiler" OnClick="()=>{ UpdateSpoilerState(false); }"></RectButton1>
+                        </div>
+                    }
+                }
+        </div>
+        </PassOneCheck>
+    </RoleCkeck>
 
  </div>

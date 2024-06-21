@@ -1,0 +1,24 @@
+﻿@rendermode InteractiveServer
+@using CineSync.Data.Models;
+@using CineSync.Components.Buttons;
+
+<PopUpLayout @ref=PopUpLayout Id="NewCollection">
+    <Header>
+        <div class="title">New Colection</div>
+    </Header>
+    <Body>
+        <div class="form-group">
+            <div class="newcollection">
+                <input type="text" class="form-control" id="collectionName" placeholder="New Collection name" @bind-value="@_newCollectionName">
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="text-danger">@ErrorMessage</div>
+        }
+    </Body>
+    <Footer>
+        <RectButton2 Text="Cancel" DataDismiss="modal" ></RectButton2>
+        <RectButton1 Text="Save changes" OnClick="OnSave" DataDismiss="modal" />
+    </Footer>
+</PopUpLayout>

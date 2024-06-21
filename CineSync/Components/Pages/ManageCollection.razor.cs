@@ -13,49 +13,37 @@ namespace CineSync.Components.Pages
 {
     public partial class ManageCollection : ComponentBase
     {
-
         [Inject]
         private CollectionsManager CollectionsManager { get; set; }
 
-        [Inject]
-        private LayoutService LayoutService { get; set; }
-
-        private MainLayout MainLayout { get; set; }
-
-        private ApplicationUser? AuthenticatedUser { get; set; }
-
-        private ICollection<CollectionsMovies> AllMovies { get; set; } = new List<CollectionsMovies> (0);
-
-        private ICollection<string> DefaultCollection { get; set; } = new List<string>();
 
         [Parameter]
         public string? CollectionName { get; set; }
+
+        private PageLayout _pageLayout;
+        private bool _inicialized = false;
+
+        private ApplicationUser? AuthenticatedUser { get; set; }
+
+        private ICollection<CollectionsMovies> AllMovies { get; set; } = new List<CollectionsMovies>(0);
+
+        private ICollection<string> DefaultCollection { get; set; } = new string[] { "Favorites", "Watched", "Classified", "Watch Later" };
 
         public MovieCollection Collection { get; set; }
 
         private bool isEditing = false;
 
-        protected override async Task OnInitializedAsync()
+        private async void Initialize() 
         {
-            MainLayout = LayoutService.MainLayout;
-            AuthenticatedUser = MainLayout.AuthenticatedUser;
+            AuthenticatedUser = _pageLayout.AuthenticatedUser;
             await GetCollection();
-            startDefaultCollectionList();
-        }
-
-        private void startDefaultCollectionList()
-        {
-            DefaultCollection.Add("Favorites");
-            DefaultCollection.Add("Watched");
-            DefaultCollection.Add("Classified");
-            DefaultCollection.Add("Watch Later");
- 
+            _inicialized = true;
         }
 
         private async Task GetCollection()
         {
             var collections = await CollectionsManager.GetUserCollections(AuthenticatedUser.Id);
-            Collection = collections.FirstOrDefault(collection => collection.Name == CollectionName.Replace("_"," "));
+            Collection = collections.FirstOrDefault(collection => collection.Name == CollectionName.Replace("_", " "));
             if (Collection != null)
                 AllMovies = Collection!.CollectionMovies!.ToList();
         }
@@ -75,9 +63,9 @@ namespace CineSync.Components.Pages
 
         private async void OnChangeName(string newName)
         {
-            if(!newName.IsNullOrEmpty()) 
+            if (!newName.IsNullOrEmpty())
             {
-                await CollectionsManager.ChangeCollectioName( AuthenticatedUser.Id, Collection.Name, newName);
+                await CollectionsManager.ChangeCollectioName(AuthenticatedUser.Id, Collection.Name, newName);
                 StateHasChanged();
             }
         }
@@ -86,6 +74,12 @@ namespace CineSync.Components.Pages
         {
             await CollectionsManager.ChangePublicSate(AuthenticatedUser.Id, Collection.Name, newState);
             StateHasChanged();
+        }
+
+        private void GetPagelayout( PageLayout instance) 
+        {
+            if(_pageLayout == null)
+                _pageLayout = instance;
         }
     }
 }

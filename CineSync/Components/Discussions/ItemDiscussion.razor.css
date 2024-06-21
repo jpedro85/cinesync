@@ -1,0 +1,275 @@
+﻿.discution {
+    background: linear-gradient(to right, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.1));
+    padding: 15px;
+    border-radius: 10px;
+    color:white;
+}
+
+.discution-header {
+    display: flex;
+    color: white;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.removeFromFollowing,
+.addToFollowing {
+    width: 30px;
+    height: 30px;
+    color: white;
+    transition: transform 0.1s
+}
+
+    .removeFromFollowing:hover,
+    .addToFollowing:hover {
+        color: white;
+        color: rgb(128, 128, 128);
+        transform: scale(1.1);
+    }
+
+    .removeFromFollowing:active,
+    .addToFollowing:active {
+        color: white;
+    }
+
+.UsernameConteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    color: white;
+    font-weight: 500;
+}
+
+.discution-header-left {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.discution-header-rigth {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    color: black;
+    height: 40px;
+}
+
+.discution-time-stanp {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    align-items: center;
+    color: white;
+}
+
+.user-profilepic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+hr {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+
+.likeStatusButton-conteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 17px;
+    justify-content: center;
+    align-items: center;
+}
+
+.dislike,
+.like {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.likeStatusButton {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+    .likeStatusButton:hover {
+        color: rgb(128, 128, 128) !important;
+        transform: scale(1.4);
+        transition: transform 0.2s;
+    }
+
+    .likeStatusButton:active {
+        color: rgb(0, 236, 252);
+        transform: scale(1.6);
+        transition: transform 0.2s;
+    }
+
+    .likeStatusButton.active {
+        color: rgb(0, 236, 252);
+    }
+
+    .likeStatusButton.active {
+        color: rgb(0, 211, 225);
+    }
+
+
+.discution-actions {
+    padding: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    color:white;
+}
+
+.discution-actions-ritgh {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.discution-header span:nth-child(1) {
+    font-weight: bold;
+}
+
+.discussionTitle{
+    padding-bottom:10px;
+}
+
+.discution-content {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: fit-content;
+    word-wrap: break-word;
+    font-size: 20px;
+    color: white;
+}
+
+.discution-comments-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(25, 25, 25);
+    border-radius: 5px;
+    border: 1px solid rgb(60,60,60);
+    padding: 10px;
+    overflow-y: auto;
+    gap: 20px;
+}
+
+.discution-options {
+    color: white;
+}
+
+    .discution-options:hover {
+        color: rgb(128, 128, 128);
+    }
+
+    .discution-options:active {
+        color: rgb(255, 255, 255);
+    }
+
+.BtnOptions {
+    background-color: transparent;
+    border: none;
+    color: currentColor;
+    cursor: pointer;
+    padding: 0px;
+}
+
+.BtnBin {
+    background-color: transparent;
+    border: none;
+    color: currentColor;
+    cursor: pointer;
+    padding: 5px;
+    width: fit-content;
+    height: fit-content;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.no-comments {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:black;
+    padding:5px;
+    border-radius:5px;
+}
+
+.new-comment-title {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.new-comment-container{
+    margin-top:10px;
+}
+
+.new-comment-container hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.send-container {
+    display: flex;
+    padding: 5px;
+    padding-top: 10px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.align-left {
+    margin-right: 10%;
+}
+
+.align-rigth 
+{
+    margin-left:10%;
+}
+
+.simple-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    font-family: Roboto;
+    font-size: 15px;
+    color: black;
+    background-color: white;
+    width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    gap: 10px;
+    min-width: 210px;
+}
+    .simple-button:hover {
+        color: white !important;
+        background-color: rgb(128, 128, 128);
+        box-shadow: inset rgb(255, 255, 255) 0px 0px 5px 3px;
+    }
+
+    .simple-button:active {
+        background-color: rgb(148, 148, 148);
+    }
+
+.vspace {
+    height:15px;
+}
