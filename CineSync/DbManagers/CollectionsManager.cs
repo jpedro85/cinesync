@@ -11,6 +11,7 @@ namespace CineSync.DbManagers
     public class CollectionsManager : DbManager<MovieCollection>
     {
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
+        private readonly ICollection<string> collectionNames = new string[] { "Favorites", "Watched", "Classified", "Watch Later" };
 
         /// <summary>
         /// Initializes a new instance of the CollectionsManager class.
@@ -41,7 +42,6 @@ namespace CineSync.DbManagers
         public async Task<bool> InitializeUserCollectionsAsync(string userId)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            List<string> collectionNames = new List<string> { "Favorites", "Watched", "Classified", "Watch Later" };
             foreach (string name in collectionNames)
             {
                 user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
@@ -58,6 +58,10 @@ namespace CineSync.DbManagers
         public async Task<bool> CreateNewCollectionAsync(string userId, string collectionName)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
+            if (collectionNames.Contains(collectionName))
+            {
+                return true;
+            }
             user.Collections!.Add(new MovieCollection { Name = collectionName, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
             return await _unitOfWork.SaveChangesAsync();
         }
