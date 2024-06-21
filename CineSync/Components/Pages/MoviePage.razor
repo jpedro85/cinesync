@@ -46,7 +46,7 @@
 								<div class="buttonTreiler">
 									@if (Movie.TrailerKey != null)
 									{
-										<button style="all:unset;" data-toggle="modal" data-target="#trailerModal">Trailer</button>
+										<button class="BtnTrailer" data-toggle="modal" data-target="#trailerModal">Trailer</button>
 											<VideoTrailer TrailerLink=@($"{_youtubeLink}{Movie.TrailerKey}") />
 									}
 									else
