@@ -5,7 +5,6 @@
     border-radius: 10px;
 }
 
-
 .comment-header {
     display: flex;
     color: white;
@@ -171,7 +170,7 @@ hr {
 
 .spoiler-textt-container
 {
-    padding:20px;
+    padding:5px;
 }
 
 .spoiler-textt-container {
@@ -180,7 +179,7 @@ hr {
 
 .spoiler-alert {
     width: auto;
-    height: 180px;
+    height: 100px;
 }
 
 .Attachment-container {

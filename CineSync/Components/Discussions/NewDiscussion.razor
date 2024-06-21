@@ -34,14 +34,11 @@
             }
         </div>
 
-        @if (_addFirstComment)
-        {
-            <div class="new-comment">
-                <hr>
-                <NewComment @ref="@FirstComment"></NewComment>
-                <hr>
-            </div>
-        }
+        <div class="new-comment" style="@( _addFirstComment? "" : "display:none" )">
+            <hr>
+            <NewComment @ref="@FirstComment"></NewComment>
+            <hr>
+        </div>
 
     </div>
 </div>

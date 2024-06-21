@@ -33,6 +33,12 @@ namespace CineSync.Components.Pages
         public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
 
         [Inject]
+        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion{ get; set; }
+
+        [Inject]
+        public DbManager<UserDislikedDiscussion> DbUserDislikedDiscussion { get; set; }
+
+        [Inject]
         public CollectionsManager CollectionManager { get; set; }
 
         [Inject]
@@ -59,6 +65,10 @@ namespace CineSync.Components.Pages
         private ICollection<UserLikedComment> _likedComents = new List<UserLikedComment>();
 
         private ICollection<UserDislikedComment> _dislikedComents = new List<UserDislikedComment>();
+
+        private ICollection<UserLikedDiscussion> _likedDiscussions = new List<UserLikedDiscussion>();
+
+        private ICollection<UserDislikedDiscussion> _dislikedDiscussions = new List<UserDislikedDiscussion>();
 
         private ICollection<Discussion>? _discussions = null;
 
@@ -145,9 +155,10 @@ namespace CineSync.Components.Pages
 
         private void UpdateComments()
         {
-            _comments = DbCommentManage.GetByConditionAsync(comment => comment.Autor.Id == User.Id, "Attachements" )
-                       .Result
-                       .ToList();
+            _comments = DbCommentManage.GetByConditionAsync(
+                        comment => 
+                        comment.Autor.Id == User.Id, "Attachements" 
+                        ).Result.ToList();
 
             _likedComents = DbUserLikedComment.GetByConditionAsync(
                         likedComment =>
@@ -166,12 +177,23 @@ namespace CineSync.Components.Pages
 
         private void UpdateDiscussions()
         {
-            //Discussions = DbDiscussionsManage.GetByConditionAsync( discussion => discussion.Autor == User.Id)
-            //              .Result
-            //              .ToList();
+            _discussions = DbDiscussionsManage.GetByConditionAsync( discussion => discussion.Autor.Id == User!.Id, "Comments" )
+                          .Result
+                          .ToList();
 
-            _discussions = new List<Discussion>();
-            //TODO:Finish
+            _likedDiscussions = DbUserLikedDiscussion.GetByConditionAsync(
+                        likedComment =>
+                        likedComment.Discussion.Autor.Id == User!.Id &&
+                        likedComment.UserId == AuthenticatedUser.Id
+                        ).Result.ToList();
+
+            _dislikedDiscussions = DbUserDislikedDiscussion.GetByConditionAsync(
+                        dislikedComment =>
+                        dislikedComment.Discussion.Autor.Id == User!.Id &&
+                        dislikedComment.UserId == AuthenticatedUser.Id
+                        ).Result.ToList();
+
+            StateHasChanged();
         }
 
         private async void Follow()

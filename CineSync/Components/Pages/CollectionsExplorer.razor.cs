@@ -1,4 +1,5 @@
-﻿using CineSync.Components.PopUps;
+﻿using CineSync.Components.Layout;
+using CineSync.Components.PopUps;
 using CineSync.Data;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
@@ -13,9 +14,6 @@ namespace CineSync.Components.Pages
         public CollectionsManager CollectionManager { get; set; }
 
         [Inject]
-        public LayoutService LayoutService { get; set; }
-
-        [Inject]
         public UserManager UserManager { get; set; }
 
         public ApplicationUser AuthenticatedUser { get; set; }
@@ -24,11 +22,18 @@ namespace CineSync.Components.Pages
 
         private string[] _tabNames = { "Collections", "Comments", "Discutions", "Following", "Followers" };
 
-        protected override async Task OnInitializedAsync()
-        {
-            AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser;
+        private PageLayout _pageLayout;
 
+        public async void Initialize() 
+        {
+            AuthenticatedUser = _pageLayout.AuthenticatedUser!;
             movieCollections = await CollectionManager.GetUserCollections(AuthenticatedUser.Id);
+        }
+
+        private void GetPageLayout(PageLayout instance) 
+        {
+            if (_pageLayout == null)
+                _pageLayout = instance;
         }
 
         private async Task OnCollectionsEdit()

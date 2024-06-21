@@ -158,16 +158,14 @@ hr {
 }
 
 .discution-comments-container {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     background-color: rgb(25, 25, 25);
     border-radius: 5px;
     border: 1px solid rgb(60,60,60);
-    min-height: 300px;
-    max-height: 300px;
     padding: 10px;
     overflow-y: auto;
-    gap:20px;
+    gap: 20px;
 }
 
 .discution-options {
@@ -213,8 +211,12 @@ hr {
 }
 
 .new-comment-title {
-    margin-top:10px;
+    margin-top:5px;
     margin-bottom:5px;
+}
+
+.new-comment-container{
+    margin-top:10px;
 }
 
 .new-comment-container hr {
@@ -238,4 +240,36 @@ hr {
 .align-rigth 
 {
     margin-left:10%;
+}
+
+.simple-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    font-family: Roboto;
+    font-size: 15px;
+    color: black;
+    background-color: white;
+    width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    gap: 10px;
+    min-width: 210px;
+}
+    .simple-button:hover {
+        color: white !important;
+        background-color: rgb(128, 128, 128);
+        box-shadow: inset rgb(255, 255, 255) 0px 0px 5px 3px;
+    }
+
+    .simple-button:active {
+        background-color: rgb(148, 148, 148);
+    }
+
+.vspace {
+    height:15px;
 }

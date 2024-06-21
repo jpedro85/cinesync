@@ -20,37 +20,42 @@
 
     @{ Initialize(); }    
 
-    @if(_inicialized)
-    {
-        <div class="main-content">
 
-            <div class="content">
+    <CascadingValue Name="PageLayout" Value="_pageLayout" TValue="PageLayout">
 
-                <div class="Subtilte">
-                    <div>
-                        @Collection.Name
+        @if(_inicialized)
+        {
+            <div class="main-content">
+
+                <div class="content">
+
+                    <div class="Subtilte">
+                        <div>
+                            @Collection.Name
+                        </div>
+                        <div class="toggle-button">
+                            <ToggleButton OnChange="OnChangePublic" InitialState="Collection.IsPublic" />
+
+                            @if (!DefaultCollection.Contains(Collection.Name))
+                            {
+                                <button class="EditName" data-toggle="modal" data-target="#POPUPINPUT">Edit Name</button>
+                            }
+                        </div>
                     </div>
-                    <div class="toggle-button">
-                        <ToggleButton OnChange="OnChangePublic" InitialState="Collection.IsPublic" />
 
-                        @if (!DefaultCollection.Contains(Collection.Name))
-                        {
-                            <button class="EditName" data-toggle="modal" data-target="#POPUPINPUT">Edit Name</button>
-                        }
-                    </div>
-                </div>
+                    <PopUpInput Tilte="Change Collection Name" Question="Insert new name" PlaceHolder="New collection name" OnSave="OnChangeName"></PopUpInput>
 
-                <PopUpInput Tilte="Change Collection Name" Question="Insert new name" PlaceHolder="New collection name" OnSave="OnChangeName"></PopUpInput>
-
-                <ManagerCollectionMovies AuthenticatedUser="AuthenticatedUser" Collection="Collection" AllMovies="AllMovies"></ManagerCollectionMovies>
+                    <ManagerCollectionMovies AuthenticatedUser="AuthenticatedUser" Collection="Collection"></ManagerCollectionMovies>
       
-            </div>
+                </div>
   
-        </div>
-    }
-    else
-    {
-        <Loading></Loading>
-    }
+            </div>
+        }
+        else
+        {
+            <Loading></Loading>
+        }
+
+    </CascadingValue>
 
 </PageLayout>

@@ -60,7 +60,7 @@ namespace CineSync.Components.Comments
                 CommentsList = await CommentManager.GetCommentsOfMovie(MovieId);
                 StateHasChanged();
             }
-            Console.WriteLine(_authenticatedUser.UserName);
+
         }
 
 

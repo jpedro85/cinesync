@@ -24,5 +24,15 @@ namespace CineSync.Components.PopUps
         {
             await OnRemove.InvokeAsync();
         }
+
+        public void Open() 
+        {
+            PopUpLayout.Open();
+        }
+
+        public void Close()
+        {
+            PopUpLayout.Close();
+        }
     }
 }

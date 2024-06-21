@@ -5,28 +5,42 @@
 @using CineSync.Components.Account.Component
 @using CineSync.Components.PopUps
 @using Microsoft.AspNetCore.Authorization
+@using CineSync.Components.Layout;
+
 @rendermode InteractiveServer
 
-<div class="Collections-container">
-<div class="Profile">
-    <div class="Collections-info">
-            <div class="PageSubtitle">Collections
-                <div class="ButtonNewCollection">
-                    <RectButton1   DataToggle="modal" DataTarget="#NewCollection" Text="New Collection" ></RectButton1>
-                </div>
-                <NewCollection OnNewCollection="OnCollectionsEdit" />
-            </div>
-            <div class="tab-content">
-                <div class="Collections">
-                    <div class="Collections-colum">
-                        @foreach (var collection in movieCollections)
-                        {
+<PageLayout
+    GetInstance="GetPageLayout"   
+    @ref="@_pageLayout"
+>
+    
+    @{ Initialize(); }
 
-                            <Collection OnRemove="OnCollectionsEdit" MovieCollection="collection" />
-                        }
+    <CascadingValue Name="PageLayout" Value="_pageLayout" TValue="PageLayout">
+
+        <div class="Collections-container">
+        <div class="Profile">
+            <div class="Collections-info">
+                    <div class="PageSubtitle">Collections
+                        <div class="ButtonNewCollection">
+                            <RectButton1   DataToggle="modal" DataTarget="#NewCollection" Text="New Collection" ></RectButton1>
+                        </div>
+                        <NewCollection OnNewCollection="OnCollectionsEdit" />
+                    </div>
+                    <div class="tab-content">
+                        <div class="Collections">
+                            <div class="Collections-colum">
+                                @foreach (var collection in movieCollections)
+                                {
+
+                                    <Collection OnRemove="OnCollectionsEdit" MovieCollection="collection" />
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
+    </CascadingValue>
+</PageLayout>

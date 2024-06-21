@@ -11,13 +11,15 @@ namespace CineSync.Components.Movies
         [Parameter]
         public MovieCollection Collection { get; set; }
 
+        [Parameter]
+        public ApplicationUser AuthenticatedUser { get; set; }
+
+
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
         [Inject]
         public CollectionsManager CollectionsManager { get; set; }
-
-        private ApplicationUser AuthenticatedUser { get; set; }
 
         private async void RemoveMovieFromCollection(CollectionsMovies collectionsMovies)
         {

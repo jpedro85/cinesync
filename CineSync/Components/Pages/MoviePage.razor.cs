@@ -104,8 +104,6 @@ namespace CineSync.Components.Pages
                             likedComment.Comment.MovieId == Movie.Id &&
                             likedComment.UserId == _authenticatedUser.Id
                             ).Result.ToList();
-
-                //StateHasChanged();
             }
             else 
             {
@@ -129,10 +127,6 @@ namespace CineSync.Components.Pages
                             likedDiscussion.Discussion.MovieId == Movie.Id &&
                             likedDiscussion.UserId == _authenticatedUser.Id
                             ).Result.ToList();
-
-                Console.WriteLine($"count l:{_likedDiscussion.Count} d:{_dislikedDiscussions.Count}");
-
-                //StateHasChanged();
             }
             else
             {

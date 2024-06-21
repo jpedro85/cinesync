@@ -7,6 +7,7 @@ using CineSync.Components.Comments;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Components.Web;
 using CineSync.Components.Layout;
+using CineSync.Components.PopUps;
 
 namespace CineSync.Components.Discussions
 {
@@ -25,15 +26,25 @@ namespace CineSync.Components.Discussions
         [Inject]
         private CommentManager CommentManager { get; set; }
 
+        [Inject]
+        private DbManager<UserLikedComment> DbUserLikedComment { get; set; }
 
-        [Parameter]
+        [Inject]
+        private DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
+
+
+        [Parameter,EditorRequired]
         public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; }
 
-        [Parameter]
-        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; }
+        [Parameter, EditorRequired]
+        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; } 
 
+        public ICollection<UserLikedComment> _likedComments { get; set; } 
+        public ICollection<UserDislikedComment> _dislikedComments { get; set; } 
         [Parameter]
         public Discussion Discussion { get; set; }
+
+        private RemoveDiscussion _popupRemove;
 
 
         [Parameter]
@@ -54,38 +65,54 @@ namespace CineSync.Components.Discussions
         [Parameter]
         public EventCallback<uint> OnRemove { get; set; }
 
-        private ApplicationUser _authenticatedUser;
+        private ApplicationUser? _authenticatedUser;
 
         private ICollection<string> _userRoles;
 
         private NewComment _newComment;
 
+        private bool _DoComment = false;
+
+        private bool _allowSee = false;
+
         protected override void OnInitialized()
         {
-            _authenticatedUser = PageLayout.AuthenticatedUser!;
+            _authenticatedUser = PageLayout.AuthenticatedUser;
             _userRoles = PageLayout.UserRoles;
             _Liked = Liked;
             _Disliked = DisLiked;
+            _allowSee = !Discussion.HasSpoiler;
+        }
+        protected async void GetDiscutionInfo()
+        {
+            Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
+            GetUserStatusComments();
+            StateHasChanged();
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        private void GetUserStatusComments()
         {
-            if (firstRender) 
+            if (_authenticatedUser != null)
             {
-                Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
-                StateHasChanged();
+                _likedComments = DbUserLikedComment.GetByConditionAsync(
+                            likedComment =>
+                            likedComment.Comment.DiscussionId == Discussion.Id &&
+                            likedComment.UserId == _authenticatedUser.Id
+                            ).Result.ToList();
+
+                _dislikedComments = DbUserDislikedComment.GetByConditionAsync(
+                            likedComment =>
+                            likedComment.Comment.DiscussionId == Discussion.Id &&
+                            likedComment.UserId == _authenticatedUser.Id
+                            ).Result.ToList();
             }
         }
 
+
         private async void Follow(string id)
         {
-            if (await UserManager.Follow(_authenticatedUser.Id, id))
+            if (await UserManager.Follow(_authenticatedUser!.Id, id))
             {
-                if (_authenticatedUser.Following == null)
-                    _authenticatedUser.Following = new List<ApplicationUser>();
-
-                _authenticatedUser.Following.Add(Discussion.Autor!);
-
                 StateHasChanged();
 				await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
@@ -94,13 +121,8 @@ namespace CineSync.Components.Discussions
 
         private async void UnFollow(string id)
         {
-            if (await UserManager.UnFollow(_authenticatedUser.Id, id))
+            if (await UserManager.UnFollow(_authenticatedUser!.Id, id))
             {
-                if (_authenticatedUser.Following == null)
-                    _authenticatedUser.Following = new List<ApplicationUser>();
-
-                _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Discussion.Autor!.Id).ToList();
-
                 StateHasChanged();
 				await PageLayout.Menu.ReRender();
 				await OnChange.InvokeAsync();
@@ -111,19 +133,19 @@ namespace CineSync.Components.Discussions
         {
             if (_Disliked)
             {
-                await DiscussionManager.RemoveDesLikeAsync(Discussion, _authenticatedUser.Id);
+                await DiscussionManager.RemoveDesLikeAsync(Discussion, _authenticatedUser!.Id);
                 _Disliked = false;
                 UpdateDislike(_Disliked);
             }
 
             if (_Liked)
             {
-                await DiscussionManager.RemoveLikeAsync(Discussion, _authenticatedUser.Id);
+                await DiscussionManager.RemoveLikeAsync(Discussion, _authenticatedUser!.Id);
                 _Liked = false;
             }
             else
             {
-                await DiscussionManager.AddLikeAsync(Discussion, _authenticatedUser.Id);
+                await DiscussionManager.AddLikeAsync(Discussion, _authenticatedUser!.Id);
                 _Liked = true;
             }
 
@@ -136,19 +158,19 @@ namespace CineSync.Components.Discussions
 
             if (_Liked)
             {
-                await DiscussionManager.RemoveLikeAsync(Discussion, _authenticatedUser.Id);
+                await DiscussionManager.RemoveLikeAsync(Discussion, _authenticatedUser!.Id);
                 _Liked = false;
                 UpdateLike(_Liked);
             }
 
             if (_Disliked)
             {
-                await DiscussionManager.RemoveDesLikeAsync(Discussion, _authenticatedUser.Id);
+                await DiscussionManager.RemoveDesLikeAsync(Discussion, _authenticatedUser!.Id);
                 _Disliked = false;
             }
             else
             {
-                await DiscussionManager.AddDesLikeAsync(Discussion, _authenticatedUser.Id);
+                await DiscussionManager.AddDesLikeAsync(Discussion, _authenticatedUser!.Id);
                 _Disliked = true;
             }
             UpdateDislike(_Disliked);
@@ -164,9 +186,9 @@ namespace CineSync.Components.Discussions
                     LikedDiscussions.Add(
                             new UserLikedDiscussion()
                             {
-                                User = _authenticatedUser,
+                                User = _authenticatedUser!,
                                 Discussion = Discussion,
-                                UserId = _authenticatedUser.Id,
+                                UserId = _authenticatedUser!.Id,
                                 DiscussionId = Discussion.Id
                             }
                         );
@@ -199,9 +221,9 @@ namespace CineSync.Components.Discussions
                     DislikedDiscussions.Add(
                             new UserDislikedDiscussion()
                             {
-                                User = _authenticatedUser,
+                                User = _authenticatedUser!,
                                 Discussion = Discussion,
-                                UserId = _authenticatedUser.Id,
+                                UserId = _authenticatedUser!.Id,
                                 DiscussionId = Discussion.Id
                             }
                         );
@@ -228,21 +250,26 @@ namespace CineSync.Components.Discussions
         private async void AddComment(MouseEventArgs e) 
         {
             Comment commentToAdd = _newComment.GetComment();
-            commentToAdd.Autor = _authenticatedUser;
+            commentToAdd.Autor = _authenticatedUser!;
 
             if (!commentToAdd.Content.IsNullOrEmpty()) 
             {
-                await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser.Id );
+                await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser!.Id );
                 _newComment.Reset();
                 StateHasChanged();
             }
         }
 
-        private async void Remove() 
+        private async void Remove()
         {
             uint id = (Discussion.Id);
             await DiscussionManager.RemoveAsync(Discussion);
             await OnRemove.InvokeAsync(id);
+        }
+
+        private void ToogleComment() 
+        {
+            _DoComment = !_DoComment;
         }
     }
 }

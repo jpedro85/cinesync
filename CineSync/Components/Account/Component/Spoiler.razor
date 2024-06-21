@@ -1,0 +1,23 @@
+﻿@using CineSync.Components.Buttons
+
+<div class="comment-content-spoiler">
+    <div class="comment-content-spoiler-left">
+        <img style="height:@Heigth;" class="spoiler-alert" src="Spoiler-Alert.png" alt="Spoiler Alert Image" />
+    </div>
+    <div class="comment-content-spoiler-rigth">
+        <div class="spoiler-textt-container">@Text</div>
+        <RectButton1 Text="See Anyway" OnClick="() => { OnClickSeeAnyway.InvokeAsync(); }"></RectButton1>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Text { get; set; } = "This Comment has spoiler !";
+
+    [Parameter,EditorRequired]
+    public int Heigth {get; set;}
+
+    [Parameter,EditorRequired]
+    public EventCallback OnClickSeeAnyway { get; set; }
+}

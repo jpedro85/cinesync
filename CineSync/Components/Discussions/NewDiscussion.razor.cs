@@ -29,7 +29,7 @@ namespace CineSync.Components.Discussions
 
             if (_addFirstComment)
             {
-                FirstComment.Reset();
+                FirstComment?.Reset();
             }
         }
     }

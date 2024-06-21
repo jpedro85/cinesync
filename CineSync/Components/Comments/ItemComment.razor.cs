@@ -22,10 +22,10 @@ namespace CineSync.Components.Comments
         private CommentManager CommentManager { get; set; }
 
 
-        [Parameter]
+        [Parameter,EditorRequired]
         public ICollection<UserLikedComment> LikedComments { get; set; }
 
-        [Parameter]
+        [Parameter,EditorRequired]
         public ICollection<UserDislikedComment> DislikedComments { get; set; }
 
         [Parameter]
@@ -53,7 +53,9 @@ namespace CineSync.Components.Comments
         private ICollection<string> _userRoles;
 
         private PopUpAttachementView _attachementView;
-        
+
+        private RemoveComment _popUpRemove;
+
         protected override void OnInitialized()
 		{
             _authenticatedUser = PageLayout.AuthenticatedUser!;
@@ -61,7 +63,7 @@ namespace CineSync.Components.Comments
             _Liked = Liked;
             _Disliked = DisLiked;
             _allowSee = !Comment.HasSpoiler;
-
+            Console.WriteLine($"CommentId11 {Comment.Id}");
         }
 
 		private async void AddLike()
@@ -184,11 +186,6 @@ namespace CineSync.Components.Comments
         {
             if (await UserManager.Follow(_authenticatedUser.Id, id))
             {
-                if (_authenticatedUser.Following == null)
-                    _authenticatedUser.Following = new List<ApplicationUser>();
-
-                _authenticatedUser.Following.Add(Comment.Autor!);
-
                 StateHasChanged();
                 await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
@@ -199,11 +196,6 @@ namespace CineSync.Components.Comments
         {
             if (await UserManager.UnFollow(_authenticatedUser.Id, id))
             {
-                if (_authenticatedUser.Following == null)
-                    _authenticatedUser.Following = new List<ApplicationUser>();
-
-                _authenticatedUser.Following = _authenticatedUser.Following.Where(u => u.Id != Comment.Autor!.Id).ToList();
-
                 StateHasChanged();
                 await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
@@ -212,7 +204,6 @@ namespace CineSync.Components.Comments
 
         private void OpenAttachment(byte[] attachment) 
         {
-            Console.WriteLine(attachment.Length);
             _attachementView.Attachment = attachment;
             _attachementView.Name = "View Attachement";
             _attachementView.TrigerStatehasChanged();

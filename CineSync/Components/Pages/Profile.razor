@@ -7,6 +7,8 @@
 @using CineSync.Components.Account.Component;
 @using CineSync.Components.PopUps;
 @using Microsoft.AspNetCore.Authorization;
+@using CineSync.Components.Discussions;
+
 @rendermode InteractiveServer
 
 <PageLayout
@@ -224,12 +226,40 @@
                                 }
                                 else if (_activeTab == _tabNames[2]) // discusiions
                                 {
-                                    <div class="Loading-container">
-                                        <Loading></Loading>
-                                    </div>
-                                    <div class="noFound">
-                                        This has not created any discussions yet !
-                                    </div>
+
+                                    if (_discussions == null)
+                                    {
+                                        UpdateDiscussions();
+                                        <div class="Loading-container">
+                                            <Loading></Loading>
+                                        </div>
+                                    }
+                                    else if (_discussions.Count == 0)
+                                    {
+                                        <div class="noFound">
+                                            This user has not created any discussions yet !
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="Collections">
+                                            <div class="Collections-colum">
+                                                @foreach (var discussion in _discussions)
+                                                {
+                                                    <ItemDiscussion 
+                                                        AllowFollow=false
+                                                        Discussion="@discussion"
+                                                        LikedDiscussions="_likedDiscussions"
+                                                        DislikedDiscussions="_dislikedDiscussions"
+                                                        Liked="@( _likedDiscussions.Any( uLike => uLike.DiscussionId == discussion.Id ) )"
+                                                        DisLiked="@( _dislikedDiscussions.Any( uDisLike => uDisLike.DiscussionId == discussion.Id ) )"
+                                                        OnChange="() => { InvokeAsync(StateHasChanged); }"
+                                                    >
+                                                    </ItemDiscussion>
+                                                }
+                                            </div>
+                                        </div>
+                                    }                                   
                                 }
                                 else if (_activeTab == _tabNames[3]) // Following
                                 {
