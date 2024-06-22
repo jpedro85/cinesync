@@ -30,17 +30,20 @@ public partial class Caroussel : ComponentBase
 
     private bool isCarouselActive = true;
 
+    private bool _hasLoaded = false;
+    
     private DotNetObjectReference<Caroussel> objRef;
 
     protected override async Task OnInitializedAsync()
     {
-        await FetchTopRatedMovies();
+        _hasLoaded = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            await FetchTopRatedMovies();
             InitializeQueue();
             objRef = DotNetObjectReference.Create(this);
             await JSRuntime.InvokeVoidAsync("addResizeListener", objRef);
@@ -115,6 +118,7 @@ public partial class Caroussel : ComponentBase
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 AllRatedMovies = JsonConvert.DeserializeObject<ApiSearchResponse>(jsonResponse)?.Results;
+                _hasLoaded = true;
             }
         }
     }
