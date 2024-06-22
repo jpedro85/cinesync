@@ -44,13 +44,16 @@ namespace CineSync.DbManagers
         /// </remarks>
         public async Task<bool> ChangeUsernameAsync(string userId, string username)
         {
+            _logger.Log("Checking if the Username is already in user", LogTypes.DEBUG);
             ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId);
             if (user == null || string.IsNullOrEmpty(username) || await GetFirstByConditionAsync(user => user.UserName == username) != null)
             {
+                _logger.Log("The Username is already in Use", LogTypes.WARN);
                 return false;
             }
 
             user.UserName = username;
+            _logger.Log("The Username has already been changed", LogTypes.WARN);
             return await _unitOfWork.SaveChangesAsync();
         }
 

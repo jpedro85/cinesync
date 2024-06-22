@@ -12,14 +12,11 @@ namespace CineSync.Components.PopUps
         [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; }
 
-
         [Inject]
         private UserManager UserManager { get; set; }
 
-
         [Parameter]
         public EventCallback OnUsernameChange { get; set; }
-
 
         private PopUpLayout PopUpLayout;
 
@@ -40,25 +37,27 @@ namespace CineSync.Components.PopUps
             ErrorMessage = string.Empty;
         }
 
-        private async Task RenameUsername()
+        private async void RenameUsername()
         {
             ErrorMessage = string.Empty;
 
             if (string.IsNullOrWhiteSpace(_newUserName))
             {
                 ErrorMessage = "Username cannot be empty.";
+                StateHasChanged();
                 return;
             }
-
             if (await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName))
             {
-                PageLayout!.AuthenticatedUser.UserName = _newUserName;
-                await OnUsernameChange.InvokeAsync();
                 PopUpLayout.Close();
+                await OnUsernameChange.InvokeAsync();
+                return;
             }
             else
             {
-                ErrorMessage = "Something went wrong could not change your username";
+                ErrorMessage = "Username is already taken or something went wrong.";
+                StateHasChanged();
+                return;
             }
 
         }
