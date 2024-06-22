@@ -95,19 +95,12 @@ namespace CineSync.Components.Pages
             {
                 _visit = false;
                 User = AuthenticatedUser;
-                if (UserId == "0")
-                {
-                    _invalid = true;
-                    return;
-                }
-                Console.WriteLine($"User{User?.Following?.Count},{User?.Followers?.Count}");
             }
             else
             {
                 User = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId, "Following", "Followers");
-                Console.WriteLine($"User{User?.Following?.Count},{User?.Followers?.Count}");
 
-                if (User == null)
+                if (User == null || UserId == "0")
                 {
                     _invalid = true;
                     return;
