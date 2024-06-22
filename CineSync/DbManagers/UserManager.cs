@@ -32,7 +32,7 @@ namespace CineSync.DbManagers
         /// Attempts to change the username of a specified user.
         /// </summary>
         /// <param name="userId">The unique identifier for the user whose username is to be changed.</param>
-        /// <param name="username">The new username to be assigned to the user.</param>
+        /// <param name="newUsername">The new username to be assigned to the user.</param>
         /// <returns>
         /// A task that represents the asynchronous operation, containing a boolean value.
         /// True if the username was successfully changed; otherwise, false if the user does not exist,
@@ -42,15 +42,18 @@ namespace CineSync.DbManagers
         /// This method first ensures the user exists and that the proposed new username is not null or already in use.
         /// If these conditions are met, it updates the username and commits the changes to the database.
         /// </remarks>
-        public async Task<bool> ChangeUsernameAsync(string userId, string username)
+        public async Task<bool> ChangeUsernameAsync(string userId, string newUsername)
         {
+            _logger.Log("Checking if the Username is already in user", LogTypes.DEBUG);
             ApplicationUser user = await GetFirstByConditionAsync(u => u.Id == userId);
-            if (user == null || string.IsNullOrEmpty(username) || await GetFirstByConditionAsync(user => user.UserName == username) != null)
+            if (user == null || string.IsNullOrEmpty(newUsername) || await GetFirstByConditionAsync(user => user.UserName == newUsername) != null)
             {
+                _logger.Log("The Username is already in Use", LogTypes.WARN);
                 return false;
             }
 
-            user.UserName = username;
+            user.UserName = newUsername;
+            _logger.Log("The Username has already been changed", LogTypes.WARN);
             return await _unitOfWork.SaveChangesAsync();
         }
 
@@ -71,14 +74,14 @@ namespace CineSync.DbManagers
             if (userToFollow.Followers == null)
                 userToFollow.Followers = new List<ApplicationUser>();
 
-            if (!user.Following.Contains(userToFollow))
-            {
-                user.Following.Add(userToFollow);
-                user.FollowingCount = (uint)user.Following.Count;
-
-                userToFollow.Followers.Add(user);
-                userToFollow.FollowersCount = (uint)userToFollow.Followers.Count;
-            }
+            // if (!user.Following.Contains(userToFollow))
+            // {
+            //     user.Following.Add(userToFollow);
+            //     user.FollowingCount = (uint)user.Following.Count;
+            //
+            //     userToFollow.Followers.Add(user);
+            //     userToFollow.FollowersCount = (uint)userToFollow.Followers.Count;
+            // }
             else
                 return false;
 

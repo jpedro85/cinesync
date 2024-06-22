@@ -1,9 +1,7 @@
 ﻿using CineSync.Components.Layout;
 using CineSync.Data;
 using CineSync.DbManagers;
-using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace CineSync.Components.PopUps
 {
@@ -38,27 +36,30 @@ namespace CineSync.Components.PopUps
         {
             _newUserName = e.Value?.ToString() ?? string.Empty;
             ErrorMessage = string.Empty;
+            StateHasChanged();
         }
 
-        private async Task RenameUsername()
+        private async void RenameUsername()
         {
             ErrorMessage = string.Empty;
 
             if (string.IsNullOrWhiteSpace(_newUserName))
             {
                 ErrorMessage = "Username cannot be empty.";
+                StateHasChanged();
                 return;
             }
 
-            if (await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName))
+            bool _hasChangedUsername = await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName);
+            if (_hasChangedUsername)
             {
-                PageLayout!.AuthenticatedUser.UserName = _newUserName;
-                await OnUsernameChange.InvokeAsync();
                 PopUpLayout.Close();
+                await OnUsernameChange.InvokeAsync();
             }
             else
             {
-                ErrorMessage = "Something went wrong could not change your username";
+                ErrorMessage = "The Username is already in use or Something went wrong";
+                StateHasChanged();
             }
 
         }
