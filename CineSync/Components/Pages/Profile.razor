@@ -177,10 +177,9 @@
                                     {
                                         <div class="Collections">
                                             <div class="Collections-colum">
-                                                @foreach (var collection in _movieCollections)
+                                                @foreach (var collection in _movieCollections.Where(c => !_visit || c.IsPublic))
                                                 {
-
-                                                    <Collection  OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection" />
+                                                <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection"/>
                                                 }
                                             </div>
                                         </div>
