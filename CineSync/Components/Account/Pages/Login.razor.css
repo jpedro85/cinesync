@@ -6,7 +6,7 @@
     flex-direction: row;
     padding: 50px;
     gap: 50px;
-    height:100%;
+    height: 100%;
 }
 
 .main-content {
@@ -25,15 +25,14 @@
     min-width: 500px;
     color: grey;
     outline: auto;
-    min-height: 600px;
 }
 
 .login-container {
     padding-bottom: 20px;
     flex-grow: 1;
-    align-items:center;
-    justify-content:center;
-    display:flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 
 #logo {
@@ -91,16 +90,16 @@
     font-weight: 700;
     font-size: 20px;
     font-family: Itim;
-    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50);
-    border: solid 2px rgb(255,255,255);
+    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0, 50);
+    border: solid 2px rgb(255, 255, 255);
 }
 
-    .login-btn:hover {
-        transition: width 0.1s ease;
-        box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
-        width: 170px;
-        color: black;
-    }
+.login-btn:hover {
+    transition: width 0.1s ease;
+    box-shadow: inset 0 0 20px 2px rgb(255, 255, 255, 50);
+    width: 170px;
+    color: black;
+}
 
 .text-center {
     color: white;
