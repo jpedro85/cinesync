@@ -33,7 +33,7 @@ namespace CineSync.Components.Pages
         public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
 
         [Inject]
-        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion{ get; set; }
+        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion { get; set; }
 
         [Inject]
         public DbManager<UserDislikedDiscussion> DbUserDislikedDiscussion { get; set; }
@@ -142,9 +142,8 @@ namespace CineSync.Components.Pages
             {
                 FetchUserImage();
             }
-            //AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
             StateHasChanged();
-            //await LayoutService.MainLayout.TriggerNavBarReRender();
+            await _pageLayout.NavBar.ReRender();
         }
 
         private void UpdateMovieCollections()
@@ -177,7 +176,7 @@ namespace CineSync.Components.Pages
 
         private void UpdateDiscussions()
         {
-            _discussions = DbDiscussionsManage.GetByConditionAsync( discussion => discussion.Autor.Id == User!.Id, "Comments" )
+            _discussions = DbDiscussionsManage.GetByConditionAsync(discussion => discussion.Autor.Id == User!.Id, "Comments")
                           .Result
                           .ToList();
 
@@ -229,7 +228,7 @@ namespace CineSync.Components.Pages
             InvokeAsync(StateHasChanged);
         }
 
-        private void GetPagelayout( PageLayout instance)
+        private void GetPagelayout(PageLayout instance)
         {
             if (_pageLayout == null)
                 _pageLayout = instance;
