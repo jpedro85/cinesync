@@ -6,8 +6,8 @@
 @using CineSync.Components.Layout;
 @using CineSync.Core.Adapters.ApiAdapters;
 
-<PageLayout 
-	@ref="@_pageLayout" 
+<PageLayout
+	@ref="@_pageLayout"
 	GetInstance="GetPagelayout"
 	HasSearch=false
 >
@@ -67,5 +67,11 @@
 		</div>
 
 	</div>
-
+    <script>
+        function updateUrl(query) {
+            const newUrl = new URL(window.location);
+            newUrl.pathname = `/Search/${query}`;
+            window.history.pushState({}, '', newUrl);
+        }
+    </script>
 </PageLayout>
