@@ -1,12 +1,8 @@
-﻿using CineSync.Core;
-using CineSync.Components.PopUps;
-using CineSync.Components.Account.Component;
+﻿using CineSync.Components.PopUps;
 using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Data.Models;
-using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-using System.Net.Mail;
 using CineSync.Components.Layout;
 
 namespace CineSync.Components.Pages
@@ -15,7 +11,6 @@ namespace CineSync.Components.Pages
     {
         [Parameter]
         public string? UserId { get; set; }
-
 
         [Inject]
         public CommentManager DbCommentManage { get; set; }
@@ -47,14 +42,11 @@ namespace CineSync.Components.Pages
         [Inject]
         public UserManager UserManager { get; set; }
 
-
         public UsernameEdit newuserName { get; set; }
 
         public ApplicationUser? User { get; set; }
 
         public ApplicationUser AuthenticatedUser { get; set; }
-
-
 
         public UserImage? UserImage { get; set; }
 
@@ -91,7 +83,7 @@ namespace CineSync.Components.Pages
         {
             AuthenticatedUser = _pageLayout.AuthenticatedUser!;
 
-            if (string.IsNullOrEmpty(UserId) || UserId == AuthenticatedUser.Id || UserId == "0")
+            if (string.IsNullOrEmpty(UserId) || UserId == AuthenticatedUser.Id)
             {
                 _visit = false;
                 User = AuthenticatedUser;
@@ -99,11 +91,9 @@ namespace CineSync.Components.Pages
             else
             {
                 User = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId, "Following", "Followers");
-
                 if (User == null || UserId == "0")
                 {
                     _invalid = true;
-                    return;
                 }
                 else
                 {
