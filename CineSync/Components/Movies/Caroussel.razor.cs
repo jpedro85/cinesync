@@ -30,13 +30,10 @@ public partial class Caroussel : ComponentBase
 
     private bool isCarouselActive = true;
 
-    private bool _hasLoaded = false;
-    
     private DotNetObjectReference<Caroussel> objRef;
 
     protected override async Task OnInitializedAsync()
     {
-        _hasLoaded = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -118,7 +115,6 @@ public partial class Caroussel : ComponentBase
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 AllRatedMovies = JsonConvert.DeserializeObject<ApiSearchResponse>(jsonResponse)?.Results;
-                _hasLoaded = true;
             }
         }
     }
