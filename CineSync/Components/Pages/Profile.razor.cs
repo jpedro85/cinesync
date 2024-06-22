@@ -87,7 +87,7 @@ namespace CineSync.Components.Pages
         {
         }
 
-        private async void Initialize() 
+        private async void Initialize()
         {
             AuthenticatedUser = _pageLayout.AuthenticatedUser!;
 
@@ -156,8 +156,8 @@ namespace CineSync.Components.Pages
         private void UpdateComments()
         {
             _comments = DbCommentManage.GetByConditionAsync(
-                        comment => 
-                        comment.Autor.Id == User.Id, "Attachements" 
+                        comment =>
+                        comment.Autor.Id == User.Id, "Attachements"
                         ).Result.ToList();
 
             _likedComents = DbUserLikedComment.GetByConditionAsync(
@@ -203,8 +203,6 @@ namespace CineSync.Components.Pages
                 if (AuthenticatedUser.Following == null)
                     AuthenticatedUser.Following = new List<ApplicationUser>();
 
-                AuthenticatedUser.Following.Add(User!);
-
                 StateHasChanged();
                 //LayoutService.MainLayout.TriggerMenuReRender();
             }
@@ -231,7 +229,7 @@ namespace CineSync.Components.Pages
             InvokeAsync(StateHasChanged);
         }
 
-        private void GetPagelayout( PageLayout instance) 
+        private void GetPagelayout( PageLayout instance)
         {
             if (_pageLayout == null)
                 _pageLayout = instance;
