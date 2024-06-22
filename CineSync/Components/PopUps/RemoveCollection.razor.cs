@@ -36,7 +36,6 @@ namespace CineSync.Components.PopUps
 
         private async void ExecuteRemoveCollection()
         {
-            Console.WriteLine("Remove Collection: " + Collection.Id);
             if (await CollectionsManager.RemoveCollectionAsync(AuthenticatedUser.Id, Collection.Id))
             {
                 await OnRemove.InvokeAsync();
@@ -47,7 +46,7 @@ namespace CineSync.Components.PopUps
             }
         }
 
-        public void Open() 
+        public void Open()
         {
             PopUpLayout.Open();
         }

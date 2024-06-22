@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using CineSync.Data.Models;
-using Humanizer;
 
 namespace CineSync.Components.PopUps
 {
@@ -14,7 +12,7 @@ namespace CineSync.Components.PopUps
         public string Name { get; set; }
 
         private PopUpLayout _popUpLayout;
-        
+
         public void TrigerStatehasChanged()
         {
             InvokeAsync(StateHasChanged);

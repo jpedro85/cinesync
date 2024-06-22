@@ -45,7 +45,7 @@ namespace CineSync.Components.Comments
         [Parameter]
         public EventCallback OnChange { get; set; }
 
-        
+
         private bool _allowSee;
 
         private ApplicationUser _authenticatedUser;
@@ -63,7 +63,6 @@ namespace CineSync.Components.Comments
             _Liked = Liked;
             _Disliked = DisLiked;
             _allowSee = !Comment.HasSpoiler;
-            Console.WriteLine($"CommentId11 {Comment.Id}");
         }
 
 		private async void AddLike()
@@ -73,7 +72,7 @@ namespace CineSync.Components.Comments
                 await CommentManager.RemoveDesLikeAsync(Comment, _authenticatedUser.Id);
                 _Disliked = false;
                 UpdateDislike(_Disliked);
-            }    
+            }
 
             if (_Liked)
             {
@@ -118,7 +117,7 @@ namespace CineSync.Components.Comments
         {
             Comment.HasSpoiler = newState;
 
-            if( await CommentManager.EditAsync(Comment) ) 
+            if( await CommentManager.EditAsync(Comment) )
                 StateHasChanged();
         }
 
@@ -173,7 +172,7 @@ namespace CineSync.Components.Comments
             {
                 foreach (var item in DislikedComments)
                 {
-                    if (item.Equals(Comment)) 
+                    if (item.Equals(Comment))
                     {
                         DislikedComments.Remove(item);
                         break;
@@ -202,7 +201,7 @@ namespace CineSync.Components.Comments
             }
         }
 
-        private void OpenAttachment(byte[] attachment) 
+        private void OpenAttachment(byte[] attachment)
         {
             _attachementView.Attachment = attachment;
             _attachementView.Name = "View Attachement";

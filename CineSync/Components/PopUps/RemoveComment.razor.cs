@@ -27,13 +27,11 @@ namespace CineSync.Components.PopUps
         protected override void OnInitialized()
         {
             Id += _counter++;
-            Console.WriteLine($"CommentId {Comment.Id} {Id}");
         }
 
 
         private async void ExecuteRemoveComment()
         {
-            Console.WriteLine($"CommentId {Comment.Id} {Id}");
             if (await CommentManager.RemoveAsync(Comment))
             {
                 await OnRemove.InvokeAsync();
@@ -44,11 +42,9 @@ namespace CineSync.Components.PopUps
             }
         }
 
-        public void Open() 
+        public void Open()
         {
-            Console.WriteLine($"OpenCommentId {Comment.Id} {Id}");
             PopUpLayout.Open();
-            Console.WriteLine($"OpenCommentId {Comment.Id} {Id}");
         }
 
         public void Close()

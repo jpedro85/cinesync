@@ -17,7 +17,6 @@ namespace CineSync.Services
 
         public void OnClickNotification(MouseEventArgs e)
         {
-            Console.WriteLine("Testing event count:" + OnNotificationChange?.GetInvocationList().Count());
             IsNotificationOpen = !IsNotificationOpen;
             OnNotificationChange?.Invoke(IsNotificationOpen);
         }
@@ -25,7 +24,6 @@ namespace CineSync.Services
         public void OnMenuClick(MouseEventArgs e)
         {
             IsMenuOpen = !IsMenuOpen;
-            Console.WriteLine("Testing event count:" + OnMenuChange?.GetInvocationList().Count());
             OnMenuChange?.Invoke(IsMenuOpen);
         }
 

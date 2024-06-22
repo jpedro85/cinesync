@@ -112,8 +112,7 @@ namespace CineSync.DbManagers
 
             if (discussion == null || user == null)
                 return false;
-            
-            Console.WriteLine($" d:{discussionId} u:{userId}");
+
             comment.Autor = user;
 
             if (discussion.Comments == null)

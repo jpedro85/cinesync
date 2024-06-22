@@ -15,7 +15,6 @@
 												TabButtonPermissions.deactivate();
 												TabButtonAccountStatus.deactivate();
 												Tab=1;
-												Console.WriteLine(Tab);
 											})"
 					@ref=@TabButtonComplaints
 				/>
@@ -26,16 +25,14 @@
 												TabButtonComplaints.deactivate();
 												TabButtonAccountStatus.deactivate();
 												Tab=2;
-												Console.WriteLine(Tab);
 											})"
 			   @ref=@TabButtonPermissions />
-				<TabButton 
+				<TabButton
 					Text="Account Status"
 					OnActionClick="@(() => {
 												TabButtonComplaints.deactivate();
 												TabButtonPermissions.deactivate();
 												Tab=3;
-												Console.WriteLine(Tab);
 											})"
 			   @ref=@TabButtonAccountStatus />
 			</div>

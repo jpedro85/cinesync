@@ -8,9 +8,8 @@
         {
             <TabButton Text="@TabNames[indice]"
             StartActive=true
-            OnActionClick="@(() => 
-                        { 
-                            Console.WriteLine(_activeTab);
+            OnActionClick="@(() =>
+                        {
                             TabButtons[_activeTab].deactivate();
                             _activeTab=indice;
                             OnTabChange( TabNames[indice] );
@@ -22,9 +21,8 @@
         {
             <TabButton Text="@TabNames[indice]"
             StartActive=false
-            OnActionClick="@(() => 
-                        { 
-                            Console.WriteLine(_activeTab);
+            OnActionClick="@(() =>
+                        {
                             TabButtons[_activeTab].deactivate();
                             _activeTab=indice;
                             OnTabChange( TabNames[indice] );
