@@ -38,6 +38,7 @@ namespace CineSync.Components.Pages
 
         private string _isLoading = string.Empty;
 
+        private const int MOVIELIMIT =18;
         protected override async Task OnParametersSetAsync()
         {
             if (!string.IsNullOrEmpty(Query))
@@ -91,7 +92,7 @@ namespace CineSync.Components.Pages
 
             List<MovieSearchAdapter> results = await GetMovies($"/movie/search?Query={searchQuery}&Page={page}");
 
-            if ((results.Count == 0) && page > 1)
+            if ((results.Count == 0) && page > 1 || (results.Count <= MOVIELIMIT))
             {
                 _isLastpage = true;
             }
