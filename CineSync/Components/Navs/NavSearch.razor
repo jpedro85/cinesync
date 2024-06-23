@@ -1,6 +1,6 @@
 ﻿@rendermode InteractiveServer
 
-<div class="NavSearchconteiner @_searchActive" @onkeydown="OnSearchClick">
+<div class="NavSearchconteiner @_searchActive" @onkeydown="OnSearchClick" @onmouseleave="OnMouseLeave">
     <input 
         @onclick="ClickInput"
         @onfocusout="OutSearch"
