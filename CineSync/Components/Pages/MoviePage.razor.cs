@@ -65,18 +65,24 @@ namespace CineSync.Components.Pages
 
         protected async void Initialize()
         {
-            _authenticatedUser = _pageLayout!.AuthenticatedUser!;
-            _userRoles = _pageLayout!.UserRoles;
-            Movie = (await GetMovieDetails())!;
-            GetUserStatusComments();
-            GetUserStatusDiscussions();
 
-            if (_authenticatedUser != null)
+            if (!_initialized) 
             {
-                _hasRatedMovie = await HasUserRatedMovieAsync();
-            }
+                _authenticatedUser = _pageLayout!.AuthenticatedUser!;
+                _userRoles = _pageLayout!.UserRoles;
+                Movie = (await GetMovieDetails())!;
+                GetUserStatusComments();
+                GetUserStatusDiscussions();
+
+                if (_authenticatedUser != null)
+                {
+                    _hasRatedMovie = await HasUserRatedMovieAsync();
+                }
             
-            _initialized = true;
+                _initialized = true;
+
+                StateHasChanged();
+            }
 		}
 
         private async Task<bool> HasUserRatedMovieAsync()
