@@ -46,7 +46,7 @@ namespace CineSync.Components.Discussions
             _authenticatedUser = PageLayout.AuthenticatedUser!;
         }
 
-        protected override async void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if( firstRender )
             {

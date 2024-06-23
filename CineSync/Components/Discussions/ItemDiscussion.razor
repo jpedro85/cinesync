@@ -8,68 +8,68 @@
 @using CineSync.Components.Account.Component;
 
 <div class="discution">
-  
+
     <div class="discution-header">
 
         <div class="discution-header-left">
             @{
-            const string ghostUserId = "0";
+                const string ghostUserId = "0";
             }
             @if (Discussion.Autor.Id != ghostUserId)
             {
-            <NavLink href="@($"/Profile/{Discussion.Autor.Id}")">
-                <div class="UsernameConteiner">
-                    @if (Discussion.Autor.UserImage != null)
-                    {
-                        <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Discussion.Autor.UserImage.ImageData, Discussion.Autor.UserImage.ContentType))" alt="UserImage" />
-                    }
-                    else
-                    {
-                        <img class="user-profilepic" src="NoProfilePic.png" alt="UserImage" />
-                    }
-                    <div>@Discussion.Autor.UserName</div>
-                </div>
-            </NavLink>
-
-            <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"} )">
-                <PassOneCheck>
-
-                    @if (_authenticatedUser.Id != Discussion.Autor.Id && AllowFollow)
-                    {
-                        @if (_authenticatedUser.Following == null || !_authenticatedUser.Following.Any(user => user.Equals(Discussion.Autor)))
+                <NavLink href="@($"/Profile/{Discussion.Autor.Id}")">
+                    <div class="UsernameConteiner">
+                        @if (Discussion.Autor.UserImage != null)
                         {
-                            <div class="addToFollowing" @onclick="@((e)=>{ Follow( Discussion.Autor.Id ); })">
-                                <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_391_2435)">
-                                        <path d="M20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5ZM37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H39.5801V45.8301H35.4102V39.5801H29.1602V35.4102H35.4102V29.1602H39.5801V35.4102H45.8301V39.5801Z" fill="currentcolor" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_391_2435">
-                                            <rect width="50" height="50" fill="currentcolor" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </div>
+                            <img class="user-profilepic" src="@(ImageConverter.ConverBytesTo64(Discussion.Autor.UserImage.ImageData, Discussion.Autor.UserImage.ContentType))" alt="UserImage"/>
                         }
                         else
                         {
-                            <div class="removeFromFollowing" @onclick="@((e)=>{ UnFollow( Discussion.Autor.Id ); })">
-                                <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_391_2437)">
-                                        <path d="M37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H29.1699V35.4102H45.8398V39.5801H45.8301ZM20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5Z" fill="currentcolor" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_391_2437">
-                                            <rect width="50" height="50" fill="currentcolor" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </div>
+                            <img class="user-profilepic" src="NoProfilePic.png" alt="UserImage"/>
                         }
-                    }
+                        <div>@Discussion.Autor.UserName</div>
+                    </div>
+                </NavLink>
 
-                </PassOneCheck>
-            </RoleCkeck>
+                <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] { "user", "moderator", "admin", "super_admin" })">
+                    <PassOneCheck>
+
+                        @if (_authenticatedUser.Id != Discussion.Autor.Id && AllowFollow)
+                        {
+                            @if (_authenticatedUser.Following == null || !_authenticatedUser.Following.Any(user => user.Equals(Discussion.Autor)))
+                            {
+                                <div class="addToFollowing" @onclick="@((e) => { Follow(Discussion.Autor.Id); })">
+                                    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_391_2435)">
+                                            <path d="M20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5ZM37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H39.5801V45.8301H35.4102V39.5801H29.1602V35.4102H35.4102V29.1602H39.5801V35.4102H45.8301V39.5801Z" fill="currentcolor"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_391_2435">
+                                                <rect width="50" height="50" fill="currentcolor"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="removeFromFollowing" @onclick="@((e) => { UnFollow(Discussion.Autor.Id); })">
+                                    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_391_2437)">
+                                            <path d="M37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H29.1699V35.4102H45.8398V39.5801H45.8301ZM20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5Z" fill="currentcolor"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_391_2437">
+                                                <rect width="50" height="50" fill="currentcolor"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </div>
+                            }
+                        }
+
+                    </PassOneCheck>
+                </RoleCkeck>
             }
             else
             {
@@ -86,36 +86,36 @@
                 </div>
             }
         </div>
- 
+
         <div class="discution-header-rigth">
 
             @{
-            var TimeDifference = ElapsedTimeCalculator.CalculateDifference(Discussion.TimeStamp, DateTime.Now);
+                var TimeDifference = ElapsedTimeCalculator.CalculateDifference(Discussion.TimeStamp, DateTime.Now);
             }
             <div class="commen-time-stanp">@(ElapsedTimeCalculator.FormatTimeDifference(TimeDifference))</div>
 
-            <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
+            <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] { "user", "moderator", "admin", "super_admin" })">
                 <PassOneCheck>
 
                     @if (_authenticatedUser.Id == Discussion.Autor.Id)
                     {
                         <div class="discution-options">
-                            <RemoveDiscussion Discussion="@Discussion" OnRemove="Remove" @ref="@_popupRemove" ></RemoveDiscussion>
+                            <RemoveDiscussion Discussion="@Discussion" OnRemove="Remove" @ref="@_popupRemove"></RemoveDiscussion>
                             <button class="BtnBin" @onclick="() => { _popupRemove.Open(); }">
                                 <svg width="30px" height="30px" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z" fill="currentcolor" />
+                                    <path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z" fill="currentcolor"/>
                                 </svg>
                             </button>
                         </div>
-                   }
+                    }
                     else
                     {
                         <div class="discution-options">
                             <button class="BtnOptions" data-toggle="modal" data-target="#ReportModal">
                                 <svg width="40" height="40" viewBox="0 0 42 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M27.5275 5.125H14.4725L5.25 14.1279V26.8721L14.4725 35.875H27.5275L36.75 26.8721V14.1279L27.5275 5.125ZM33.25 25.4542L26.075 32.4583H15.925L8.75 25.4542V15.5458L15.925 8.54167H26.075L33.25 15.5458V25.4542Z" fill="currentcolor" />
-                                    <path d="M21 29.0417C21.9665 29.0417 22.75 28.2768 22.75 27.3333C22.75 26.3898 21.9665 25.625 21 25.625C20.0335 25.625 19.25 26.3898 19.25 27.3333C19.25 28.2768 20.0335 29.0417 21 29.0417Z" fill="currentcolor" />
-                                    <path d="M19.25 11.958H22.75V23.9163H19.25V11.958Z" fill="currentcolor" />
+                                    <path d="M27.5275 5.125H14.4725L5.25 14.1279V26.8721L14.4725 35.875H27.5275L36.75 26.8721V14.1279L27.5275 5.125ZM33.25 25.4542L26.075 32.4583H15.925L8.75 25.4542V15.5458L15.925 8.54167H26.075L33.25 15.5458V25.4542Z" fill="currentcolor"/>
+                                    <path d="M21 29.0417C21.9665 29.0417 22.75 28.2768 22.75 27.3333C22.75 26.3898 21.9665 25.625 21 25.625C20.0335 25.625 19.25 26.3898 19.25 27.3333C19.25 28.2768 20.0335 29.0417 21 29.0417Z" fill="currentcolor"/>
+                                    <path d="M19.25 11.958H22.75V23.9163H19.25V11.958Z" fill="currentcolor"/>
                                 </svg>
                             </button>
                             <CommentOptionPopUpClass></CommentOptionPopUpClass>
@@ -125,58 +125,56 @@
 
                 </PassOneCheck>
             </RoleCkeck>
-        </div> 
+        </div>
 
     </div>
 
-    <hr />
+    <hr/>
 
     <div class="discution-content">
-        <div class="discussionTitle"><span>Title:</span> @Discussion.Title</div>
-        
+        <div class="discussionTitle">
+            <span>Title:</span> @Discussion.Title
+        </div>
 
-        @if (!_allowSee && _authenticatedUser != null && !_authenticatedUser.Equals(Discussion.Autor) )
+
+        @if (!_allowSee && _authenticatedUser != null && !_authenticatedUser.Equals(Discussion.Autor))
         {
-            <Spoiler Heigth="100" OnClickSeeAnyway="()=>{ _allowSee=true; StateHasChanged();}"> </Spoiler>
+            <Spoiler Heigth="100" OnClickSeeAnyway="() => { _allowSee = true; StateHasChanged(); }"> </Spoiler>
         }
-        else 
+        else
         {
-
-            string fit = (Discussion.Comments != null && Discussion.Comments.Count>0) ? "min-height: calc(100vh - 350px); max-height: calc(100vh - 350px);" : "";
+            string fit = (Discussion.Comments != null && Discussion.Comments.Count > 0) ? "min-height: calc(100vh - 350px); max-height: calc(100vh - 350px);" : "";
             <div class="discution-comments-container" style="@fit">
-            
-                @if (Discussion.Comments == null || _likedComments == null || _dislikedComments==null )
+
+                @if (Discussion.Comments == null )
                 {
                     <Loading></Loading>
                     GetDiscutionInfo();
                 }
                 else if (Discussion.Comments.Count > 0)
                 {
-                    @foreach( Comment comment in Discussion.Comments )
+                    @foreach (Comment comment in Discussion.Comments)
                     {
-
-                        <div class=" align-@( comment.Autor.Equals(_authenticatedUser)? "left" : "rigth" ) ">
-                            <ItemComment 
+                        <div class=" align-@(comment.Autor.Equals(_authenticatedUser) ? "left" : "rigth") ">
+                            <ItemComment
                                 Comment="comment"
                                 LikedComments="@_likedComments"
                                 DislikedComments="@_dislikedComments"
-                                OnChange="(a)=>{ InvokeAsync(StateHasChanged); }"
-                                AllowFollow="@( ! comment.Autor.Equals(Discussion.Autor) )"
-                            >
+                                OnChange="(a) => { InvokeAsync(StateHasChanged); }"
+                                AllowFollow="@(!comment.Autor.Equals(Discussion.Autor))">
                             </ItemComment>
                         </div>
                     }
-
                 }
                 else
                 {
-                    <div class="no-comments"> 
+                    <div class="no-comments">
                         There is no comments at this time.
                     </div>
                 }
             </div>
 
-            <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
+            <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] { "user", "moderator", "admin", "super_admin" })">
                 <PassOneCheck>
 
                     <div class="new-comment-container">
@@ -206,18 +204,18 @@
 
                         @if (_DoComment)
                         {
-    @*                         <div class="new-comment-title">Comment</div> 
+                            @*                         <div class="new-comment-title">Comment</div> 
                             <hr>
     *@
                             <div class="vspace"></div>
-                            <NewComment 
+                            <NewComment
                                 SelectedFileStyle="background-color:rgb(25,25,25);  "
                                 SelectedClass=" selected-file-left2 "
                                 TextAreaStyle="background-color:rgb(25,25,25); min-height:50px;"
-                                @ref=@_newComment>    
+                                @ref=@_newComment>
                             </NewComment>
-                           @*  <hr> *@
-                            <div class="send-container" >
+                            @*  <hr> *@
+                            <div class="send-container">
                                 <RectColoredButton Text="Send" OnClick="AddComment"></RectColoredButton>
                             </div>
                         }
@@ -225,24 +223,22 @@
                     </div>
                 </PassOneCheck>
             </RoleCkeck>
-
         }
 
     </div>
 
-    <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@( new string[] {"user","moderator","admin","super_admin"} )">
+    <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] { "user", "moderator", "admin", "super_admin" })">
         <PassOneCheck>
 
-            @if(_allowSee)
+            @if (_allowSee)
             {
-                
-                @if ( !_authenticatedUser!.Equals(Discussion.Autor) )
+                @if (!_authenticatedUser!.Equals(Discussion.Autor))
                 {
                     <div class="discution-actions">
                         <div class="likeStatusButton-conteiner">
-                            <div class="likeStatusButton @( _Liked ? "active" : "" )" @onclick="(e)=>{ AddLike(); }">
+                            <div class="likeStatusButton @(_Liked ? "active" : "")" @onclick="(e) => { AddLike(); }">
                                 <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M40 18C40 16.9391 39.6169 15.9217 38.9349 15.1716C38.253 14.4214 37.3281 14 36.3636 14H24.8727L26.6182 4.86C26.6545 4.66 26.6727 4.44 26.6727 4.22C26.6727 3.4 26.3636 2.64 25.8727 2.1L23.9455 0L11.9818 13.16C11.3091 13.9 10.9091 14.9 10.9091 16V36C10.9091 37.0609 11.2922 38.0783 11.9742 38.8284C12.6561 39.5786 13.581 40 14.5455 40H30.9091C32.4182 40 33.7091 39 34.2545 37.56L39.7455 23.46C39.9091 23 40 22.52 40 22V18ZM0 40H7.27273V16H0V40Z" fill="currentcolor" />
+                                    <path d="M40 18C40 16.9391 39.6169 15.9217 38.9349 15.1716C38.253 14.4214 37.3281 14 36.3636 14H24.8727L26.6182 4.86C26.6545 4.66 26.6727 4.44 26.6727 4.22C26.6727 3.4 26.3636 2.64 25.8727 2.1L23.9455 0L11.9818 13.16C11.3091 13.9 10.9091 14.9 10.9091 16V36C10.9091 37.0609 11.2922 38.0783 11.9742 38.8284C12.6561 39.5786 13.581 40 14.5455 40H30.9091C32.4182 40 33.7091 39 34.2545 37.56L39.7455 23.46C39.9091 23 40 22.52 40 22V18ZM0 40H7.27273V16H0V40Z" fill="currentcolor"/>
                                 </svg>
                             </div>
                             <div>
@@ -250,9 +246,9 @@
                             </div>
                         </div>
                         <div class="likeStatusButton-conteiner">
-                            <div class="likeStatusButton @( _Disliked ? "active" : "" )" @onclick="(e)=>{ AddDeslike(); }">
+                            <div class="likeStatusButton @(_Disliked ? "active" : "")" @onclick="(e) => { AddDeslike(); }">
                                 <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M32.7273 24H40V0H32.7273M25.4545 0H9.09091C7.58182 0 6.29091 1 5.74545 2.44L0.254545 16.54C0.0909091 17 0 17.48 0 18V22C0 23.0609 0.383116 24.0783 1.06507 24.8284C1.74702 25.5786 2.67194 26 3.63636 26H15.1091L13.3818 35.14C13.3455 35.34 13.3273 35.54 13.3273 35.76C13.3273 36.6 13.6364 37.34 14.1273 37.88L16.0545 40L28.0182 26.82C28.6909 26.1 29.0909 25.1 29.0909 24V4C29.0909 2.93913 28.7078 1.92172 28.0258 1.17157C27.3439 0.421427 26.419 0 25.4545 0Z" fill="currentcolor" />
+                                    <path d="M32.7273 24H40V0H32.7273M25.4545 0H9.09091C7.58182 0 6.29091 1 5.74545 2.44L0.254545 16.54C0.0909091 17 0 17.48 0 18V22C0 23.0609 0.383116 24.0783 1.06507 24.8284C1.74702 25.5786 2.67194 26 3.63636 26H15.1091L13.3818 35.14C13.3455 35.34 13.3273 35.54 13.3273 35.76C13.3273 36.6 13.6364 37.34 14.1273 37.88L16.0545 40L28.0182 26.82C28.6909 26.1 29.0909 25.1 29.0909 24V4C29.0909 2.93913 28.7078 1.92172 28.0258 1.17157C27.3439 0.421427 26.419 0 25.4545 0Z" fill="currentcolor"/>
                                 </svg>
                             </div>
                             <div>
@@ -269,7 +265,7 @@
                         <div class="likeStatusButton-conteiner">
                             <div class="like">
                                 <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M40 18C40 16.9391 39.6169 15.9217 38.9349 15.1716C38.253 14.4214 37.3281 14 36.3636 14H24.8727L26.6182 4.86C26.6545 4.66 26.6727 4.44 26.6727 4.22C26.6727 3.4 26.3636 2.64 25.8727 2.1L23.9455 0L11.9818 13.16C11.3091 13.9 10.9091 14.9 10.9091 16V36C10.9091 37.0609 11.2922 38.0783 11.9742 38.8284C12.6561 39.5786 13.581 40 14.5455 40H30.9091C32.4182 40 33.7091 39 34.2545 37.56L39.7455 23.46C39.9091 23 40 22.52 40 22V18ZM0 40H7.27273V16H0V40Z" fill="currentcolor" />
+                                    <path d="M40 18C40 16.9391 39.6169 15.9217 38.9349 15.1716C38.253 14.4214 37.3281 14 36.3636 14H24.8727L26.6182 4.86C26.6545 4.66 26.6727 4.44 26.6727 4.22C26.6727 3.4 26.3636 2.64 25.8727 2.1L23.9455 0L11.9818 13.16C11.3091 13.9 10.9091 14.9 10.9091 16V36C10.9091 37.0609 11.2922 38.0783 11.9742 38.8284C12.6561 39.5786 13.581 40 14.5455 40H30.9091C32.4182 40 33.7091 39 34.2545 37.56L39.7455 23.46C39.9091 23 40 22.52 40 22V18ZM0 40H7.27273V16H0V40Z" fill="currentcolor"/>
                                 </svg>
                             </div>
                             <div>
@@ -279,7 +275,7 @@
                         <div class="likeStatusButton-conteiner">
                             <div class="dislike">
                                 <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M32.7273 24H40V0H32.7273M25.4545 0H9.09091C7.58182 0 6.29091 1 5.74545 2.44L0.254545 16.54C0.0909091 17 0 17.48 0 18V22C0 23.0609 0.383116 24.0783 1.06507 24.8284C1.74702 25.5786 2.67194 26 3.63636 26H15.1091L13.3818 35.14C13.3455 35.34 13.3273 35.54 13.3273 35.76C13.3273 36.6 13.6364 37.34 14.1273 37.88L16.0545 40L28.0182 26.82C28.6909 26.1 29.0909 25.1 29.0909 24V4C29.0909 2.93913 28.7078 1.92172 28.0258 1.17157C27.3439 0.421427 26.419 0 25.4545 0Z" fill="currentcolor" />
+                                    <path d="M32.7273 24H40V0H32.7273M25.4545 0H9.09091C7.58182 0 6.29091 1 5.74545 2.44L0.254545 16.54C0.0909091 17 0 17.48 0 18V22C0 23.0609 0.383116 24.0783 1.06507 24.8284C1.74702 25.5786 2.67194 26 3.63636 26H15.1091L13.3818 35.14C13.3455 35.34 13.3273 35.54 13.3273 35.76C13.3273 36.6 13.6364 37.34 14.1273 37.88L16.0545 40L28.0182 26.82C28.6909 26.1 29.0909 25.1 29.0909 24V4C29.0909 2.93913 28.7078 1.92172 28.0258 1.17157C27.3439 0.421427 26.419 0 25.4545 0Z" fill="currentcolor"/>
                                 </svg>
                             </div>
                             <div>
@@ -294,4 +290,3 @@
     </RoleCkeck>
 
 </div>
-

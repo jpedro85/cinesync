@@ -2,7 +2,7 @@
 
 namespace CineSync.Data.Models
 {
-    public class Discussion 
+    public class Discussion
     {
         public uint Id { get; set; }
 
@@ -40,5 +40,12 @@ namespace CineSync.Data.Models
 		{
 			return Id.GetHashCode();
 		}
+
+        public override string ToString()
+        {
+            return $"Discussion: Id={Id}, MovieId={MovieId}, HasSpoiler={HasSpoiler}, Title={Title}, " +
+                   $"Autor={Autor?.UserName}, NumberOfLikes={NumberOfLikes}, NumberOfDeslikes={NumberOfDeslikes}, " +
+                   $"TimeStamp={TimeStamp}, NumberOfComments={Comments?.Count ?? 0}";
+        }
 	}
 }

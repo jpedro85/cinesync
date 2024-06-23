@@ -1,7 +1,6 @@
 ﻿using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components;
 using CineSync.Data.Models;
-using CineSync.Services;
 using CineSync.Data;
 using CineSync.Components.Comments;
 using Microsoft.IdentityModel.Tokens;
@@ -11,17 +10,16 @@ using CineSync.Components.PopUps;
 
 namespace CineSync.Components.Discussions
 {
-    public partial class ItemDiscussion
+    public partial class ItemDiscussion : ComponentBase
     {
-		[CascadingParameter(Name = "PageLayout")]
-		public PageLayout PageLayout { get; set; }
+        [CascadingParameter(Name = "PageLayout")]
+        public PageLayout PageLayout { get; set; }
 
-
-		[Inject]
+        [Inject]
         private UserManager UserManager { get; set; }
 
         [Inject]
-        private DiscussionManager DiscussionManager {  get; set; }
+        private DiscussionManager DiscussionManager { get; set; }
 
         [Inject]
         private CommentManager CommentManager { get; set; }
@@ -32,15 +30,16 @@ namespace CineSync.Components.Discussions
         [Inject]
         private DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
 
-
-        [Parameter,EditorRequired]
+        [Parameter, EditorRequired]
         public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; }
 
         [Parameter, EditorRequired]
-        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; } 
+        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; }
 
-        public ICollection<UserLikedComment> _likedComments { get; set; } 
-        public ICollection<UserDislikedComment> _dislikedComments { get; set; } 
+        public ICollection<UserLikedComment> _likedComments { get; set; } = new List<UserLikedComment>(0);
+
+        public ICollection<UserDislikedComment> _dislikedComments { get; set; } = new List<UserDislikedComment>(0);
+
         [Parameter]
         public Discussion Discussion { get; set; }
 
@@ -78,8 +77,10 @@ namespace CineSync.Components.Discussions
             _Disliked = DislikedDiscussions.Any( uDisLike => uDisLike.Discussion.Equals( Discussion) );
             _allowSee = !Discussion.HasSpoiler;
         }
+        
         protected async void GetDiscutionInfo()
         {
+            Console.WriteLine(Discussion);
             Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
             GetUserStatusComments();
             UpdateSpoilerState();
@@ -110,7 +111,7 @@ namespace CineSync.Components.Discussions
             if (await UserManager.Follow(_authenticatedUser!.Id, id))
             {
                 StateHasChanged();
-				await PageLayout.Menu.ReRender();
+                await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
             }
         }
@@ -120,8 +121,8 @@ namespace CineSync.Components.Discussions
             if (await UserManager.UnFollow(_authenticatedUser!.Id, id))
             {
                 StateHasChanged();
-				await PageLayout.Menu.ReRender();
-				await OnChange.InvokeAsync();
+                await PageLayout.Menu.ReRender();
+                await OnChange.InvokeAsync();
             }
         }
 
@@ -243,14 +244,14 @@ namespace CineSync.Components.Discussions
             StateHasChanged();
         }
 
-        private async void AddComment(MouseEventArgs e) 
+        private async void AddComment(MouseEventArgs e)
         {
             Comment commentToAdd = _newComment.GetComment();
             commentToAdd.Autor = _authenticatedUser!;
 
-            if (!commentToAdd.Content.IsNullOrEmpty()) 
+            if (!commentToAdd.Content.IsNullOrEmpty())
             {
-                await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser!.Id );
+                await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser!.Id);
                 _newComment.Reset();
                 UpdateSpoilerState();
                 StateHasChanged();
@@ -266,7 +267,7 @@ namespace CineSync.Components.Discussions
             await OnRemove.InvokeAsync(id);
         }
 
-        private void ToogleComment() 
+        private void ToogleComment()
         {
             _DoComment = !_DoComment;
         }
