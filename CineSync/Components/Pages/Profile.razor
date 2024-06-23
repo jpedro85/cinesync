@@ -175,14 +175,25 @@
                                     }
                                     else
                                     {
+                                        var _movieCollectionsToShow = _movieCollections.Where(c => !_visit || c.IsPublic);
+                                        bool _hasNoCollectionToShow = _movieCollectionsToShow.Count() == 0;
+
                                         <div class="Collections">
                                             <div class="Collections-colum">
-                                                @foreach (var collection in _movieCollections.Where(c => !_visit || c.IsPublic))
+
+                                                @foreach (var collection in _movieCollectionsToShow)
                                                 {
-                                                <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection"/>
+                                                    <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection"/>
                                                 }
                                             </div>
                                         </div>
+
+                                        if (_hasNoCollectionToShow)
+                                        {
+                                            <div class="noFound">
+                                                No collections where found !
+                                            </div>
+                                        }
                                     }
 
                                 }
@@ -210,10 +221,8 @@
                                                     <ItemComment 
                                                         Comment="comment"
                                                         AllowFollow="false"
-                                                        LikedComments="_likedComents"
-                                                        DislikedComments="_dislikedComents"
-                                                        Liked="@( _likedComents.Any( uLike => uLike.CommentId == comment.Id ) )"
-                                                        DisLiked="@( _dislikedComents.Any( uDisLike => uDisLike.CommentId == comment.Id ) )"
+                                                        LikedComments="@_likedComents"
+                                                        DislikedComments="@_dislikedComents"
                                                         OnChange="() => { InvokeAsync(StateHasChanged); }" 
                                                         >
 

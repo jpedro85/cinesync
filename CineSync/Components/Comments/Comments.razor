@@ -38,8 +38,6 @@
             <ItemComment
                 Comment="@comment"
                 OnChange="() => { InvokeAsync(StateHasChanged); }"
-                Liked="@( LikedComments.Any( uLike => uLike.CommentId == comment.Id ) )"
-                DisLiked="@( DislikedComments.Any( uDisLike => uDisLike.CommentId == comment.Id ) )"
                 LikedComments="@LikedComments"
                 DislikedComments="@DislikedComments"
             >
