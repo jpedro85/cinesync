@@ -82,6 +82,7 @@ namespace CineSync.Components.Discussions
         {
             Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
             GetUserStatusComments();
+            UpdateSpoilerState();
             StateHasChanged();
         }
 
@@ -251,8 +252,11 @@ namespace CineSync.Components.Discussions
             {
                 await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser!.Id );
                 _newComment.Reset();
+                UpdateSpoilerState();
                 StateHasChanged();
             }
+
+
         }
 
         private async void Remove()
@@ -265,6 +269,28 @@ namespace CineSync.Components.Discussions
         private void ToogleComment() 
         {
             _DoComment = !_DoComment;
+        }
+
+        //TODO call this when a comment is removed or edited
+        public async void UpdateSpoilerState()
+        {
+            bool newSpoilerState = false;
+
+            if(Discussion.Comments != null) 
+            {
+                foreach (var item in Discussion.Comments)
+                {
+                    if (item.HasSpoiler) 
+                    {
+                        newSpoilerState = true;
+                        break;
+                    }
+                }
+            }
+
+            Discussion.HasSpoiler = newSpoilerState;
+
+            await DiscussionManager.EditAsync(Discussion);
         }
     }
 }

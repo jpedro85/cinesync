@@ -167,5 +167,21 @@ namespace CineSync.DbManagers
             return await _unitOfWork.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Updates the Discussion .
+        /// </summary>
+        /// <param name="editedDiscussion">The Discussion to update.</param>
+        public async Task<bool> EditAsync(Discussion editedDiscussion)
+        {
+            Discussion? discussion = await _repository.GetFirstByConditionAsync(ed => ed.Equals(editedDiscussion));
+
+            if (discussion == null)
+                return false;
+
+            discussion.Title = editedDiscussion.Title;
+            discussion.HasSpoiler = editedDiscussion.HasSpoiler;
+
+            return await _unitOfWork.SaveChangesAsync();
+        }
     }
 }
