@@ -4,7 +4,7 @@
 @using CineSync.Data.Models
 
 <RoleCkeck AuthenticatedUserRoles="@_authenticatedUserRoles" Roles="@( new string[] { "user","moderador","admin","super_admin" } )">
-    <PassOneCheck>     
+    <PassOneCheck>
         <div class="add-discussion-containor" >
             <NewDiscussion @ref="@_newDiscussion"></NewDiscussion>
             <RectColoredButton Text="Start" OnClick="StartDiscussion"></RectColoredButton>
@@ -19,13 +19,13 @@
     }
     else if (_movieDiscussions.Count == 0)
     {
-        <div class="nocomments">There are no Discussions for now.</div>
+        <div class="nocomments">There are no Discussions yet.</div>
     }
     else
     {
         @foreach ( Discussion discussion in _movieDiscussions)
         {
-            <ItemDiscussion 
+            <ItemDiscussion
                 Discussion="@discussion"
                 OnChange="() => { InvokeAsync(StateHasChanged); }"
                 Liked="@( LikedDiscussions.Any( uLike => uLike.Discussion.Equals(discussion) ) )"
@@ -36,5 +36,5 @@
             </ItemDiscussion>
         }
     }
-   
+
 </div>
