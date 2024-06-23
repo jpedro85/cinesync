@@ -148,7 +148,14 @@
 
                 @if (Discussion.Comments == null )
                 {
-                    <Loading></Loading>
+                    <Loading 
+                        FontPalceHeight="20"
+                        FontSize="18"
+                        LineHeight="30"
+                        LetterSpacing="0"
+                        MarginLeterLine="5"
+                        MaxWidth="120"
+                    ></Loading>
                     GetDiscutionInfo();
                 }
                 else if (Discussion.Comments.Count > 0)

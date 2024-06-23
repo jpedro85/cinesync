@@ -11,7 +11,7 @@
 
                     @if (UseHoverTitle)
                     {
-                        <div class="hovertitle movie-Title-conteiner" style=" width:@(Width - 50)px; height:@(Heigth -50)px">
+                    <div class="hovertitle movie-Title-conteiner" style=" width:@(Width - 50)px; height:@(Heigth -50)px; max-height:@(Heigth - 50)px;">
                             @Movie.Title
                         </div>
                     }
@@ -23,7 +23,7 @@
             <div class="NoFoundImage-container">
 
                 <div class="movie-Title-conteiner">
-                    <div class="movie-Title">
+                    <div class="movie-Title" style="max-height:@(Heigth - 50)px;">
                         @Movie.Title
                     </div>
                 </div>
@@ -70,7 +70,7 @@
         @if (UseTitle)
         {
             <div class="movie-Title-conteiner">
-                <div class="movie-Title">
+                <div class="movie-Title" style="max-height:@(Heigth - 50)px;">
                     @Movie.Title
                 </div>
             </div>
