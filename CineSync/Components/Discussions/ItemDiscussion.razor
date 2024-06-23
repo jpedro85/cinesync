@@ -158,8 +158,6 @@
                         <div class=" align-@( comment.Autor.Equals(_authenticatedUser)? "left" : "rigth" ) ">
                             <ItemComment 
                                 Comment="comment"
-                                Liked=@( _likedComments.Any( c => c.Comment.Equals(comment) ) )
-                                DisLiked="@( _dislikedComments.Any( d => d.Comment.Equals(comment) ) )"
                                 LikedComments="@_likedComments"
                                 DislikedComments="@_dislikedComments"
                                 OnChange="(a)=>{ InvokeAsync(StateHasChanged); }"

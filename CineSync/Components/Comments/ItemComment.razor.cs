@@ -28,16 +28,8 @@ namespace CineSync.Components.Comments
         [Parameter,EditorRequired]
         public ICollection<UserDislikedComment> DislikedComments { get; set; }
 
-        [Parameter]
+        [Parameter,EditorRequired]
         public Comment Comment { get; set; }
-
-        [Parameter]
-        public bool Liked { get; set; } = false;
-        private bool _Liked {  get; set; }
-
-        [Parameter]
-        public bool DisLiked { get; set; } = false;
-		private bool _Disliked { get; set; }
 
         [Parameter]
         public bool AllowFollow { get; set; } = true;
@@ -45,7 +37,8 @@ namespace CineSync.Components.Comments
         [Parameter]
         public EventCallback OnChange { get; set; }
 
-
+        private bool _Liked = false;
+		private bool _Disliked = false;
         private bool _allowSee;
 
         private ApplicationUser _authenticatedUser;
@@ -60,8 +53,8 @@ namespace CineSync.Components.Comments
 		{
             _authenticatedUser = PageLayout.AuthenticatedUser!;
             _userRoles = PageLayout.UserRoles;
-            _Liked = Liked;
-            _Disliked = DisLiked;
+            _Liked = LikedComments.Any(uLike => uLike.Comment.Equals(Comment));
+            _Disliked = DislikedComments.Any(uDisLike => uDisLike.Comment.Equals(Comment)); 
             _allowSee = !Comment.HasSpoiler;
         }
 
@@ -87,6 +80,7 @@ namespace CineSync.Components.Comments
 
             UpdateLike(_Liked);
             StateHasChanged();
+
         }
 
         private async void AddDeslike()
@@ -142,7 +136,7 @@ namespace CineSync.Components.Comments
             {
                 foreach (var item in LikedComments)
                 {
-                    if (item.Equals(Comment))
+                    if (item.Comment.Equals(Comment))
                     {
                         LikedComments.Remove(item);
                         break;
@@ -172,7 +166,7 @@ namespace CineSync.Components.Comments
             {
                 foreach (var item in DislikedComments)
                 {
-                    if (item.Equals(Comment))
+                    if (item.Comment.Equals(Comment))
                     {
                         DislikedComments.Remove(item);
                         break;

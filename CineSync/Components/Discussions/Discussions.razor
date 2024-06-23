@@ -28,8 +28,6 @@
             <ItemDiscussion
                 Discussion="@discussion"
                 OnChange="() => { InvokeAsync(StateHasChanged); }"
-                Liked="@( LikedDiscussions.Any( uLike => uLike.Discussion.Equals(discussion) ) )"
-                DisLiked="@( DislikedDiscussions.Any( uDisLike => uDisLike.Discussion.Equals( discussion) ) )"
                 LikedDiscussions="@LikedDiscussions"
                 DislikedDiscussions="@DislikedDiscussions"
                 OnRemove="(id) => { _movieDiscussions = _movieDiscussions.Where(d=>d.Id != id).ToList(); }">

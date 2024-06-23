@@ -44,18 +44,6 @@ namespace CineSync.Components.Discussions
         [Parameter]
         public Discussion Discussion { get; set; }
 
-        private RemoveDiscussion _popupRemove;
-
-
-        [Parameter]
-        public bool Liked { get; set; } = false;
-        private bool _Liked { get; set; }
-
-        [Parameter]
-        public bool DisLiked { get; set; } = false;
-        private bool _Disliked { get; set; }
-
-
         [Parameter]
         public bool AllowFollow { get; set; } = true;
 
@@ -64,6 +52,13 @@ namespace CineSync.Components.Discussions
 
         [Parameter]
         public EventCallback<uint> OnRemove { get; set; }
+
+
+        private RemoveDiscussion _popupRemove;
+
+        private bool _Liked = false;
+
+        private bool _Disliked = false;
 
         private ApplicationUser? _authenticatedUser;
 
@@ -79,14 +74,15 @@ namespace CineSync.Components.Discussions
         {
             _authenticatedUser = PageLayout.AuthenticatedUser;
             _userRoles = PageLayout.UserRoles;
-            _Liked = Liked;
-            _Disliked = DisLiked;
+            _Liked = LikedDiscussions.Any(uLike => uLike.Discussion.Equals(Discussion));
+            _Disliked = DislikedDiscussions.Any( uDisLike => uDisLike.Discussion.Equals( Discussion) );
             _allowSee = !Discussion.HasSpoiler;
         }
         protected async void GetDiscutionInfo()
         {
             Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
             GetUserStatusComments();
+            UpdateSpoilerState();
             StateHasChanged();
         }
 
@@ -256,8 +252,11 @@ namespace CineSync.Components.Discussions
             {
                 await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser!.Id );
                 _newComment.Reset();
+                UpdateSpoilerState();
                 StateHasChanged();
             }
+
+
         }
 
         private async void Remove()
@@ -270,6 +269,28 @@ namespace CineSync.Components.Discussions
         private void ToogleComment() 
         {
             _DoComment = !_DoComment;
+        }
+
+        //TODO call this when a comment is removed or edited
+        public async void UpdateSpoilerState()
+        {
+            bool newSpoilerState = false;
+
+            if(Discussion.Comments != null) 
+            {
+                foreach (var item in Discussion.Comments)
+                {
+                    if (item.HasSpoiler) 
+                    {
+                        newSpoilerState = true;
+                        break;
+                    }
+                }
+            }
+
+            Discussion.HasSpoiler = newSpoilerState;
+
+            await DiscussionManager.EditAsync(Discussion);
         }
     }
 }

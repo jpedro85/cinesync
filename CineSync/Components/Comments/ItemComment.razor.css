@@ -299,3 +299,11 @@ hr {
     display: flex;
     align-items: center;
 }
+
+.dislike,
+.like {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}

@@ -188,7 +188,8 @@
     <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] { "user", "moderator", "admin", "super_admin" })">
         <PassOneCheck>
             <div class="comment-actions">
-                @if (_authenticatedUser.Id != Comment.Autor.Id && _allowSee)
+
+                @if(!Comment.Autor.Equals(_authenticatedUser) && _allowSee )
                 {
                     <div class="comment-actions-left">
                         <div class="likeStatusButton-conteiner">
@@ -216,13 +217,35 @@
                         <RectButton1 Text="Start discussion"></RectButton1>
                     </div>
                 }
-
-                @if (_authenticatedUser.Id == Comment.Autor.Id)
+                else if ( Comment.Autor.Equals(_authenticatedUser) )
                 {
+                    <div class="comment-actions-left">
+                        <div class="likeStatusButton-conteiner">
+                            <div class="like">
+                                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M40 18C40 16.9391 39.6169 15.9217 38.9349 15.1716C38.253 14.4214 37.3281 14 36.3636 14H24.8727L26.6182 4.86C26.6545 4.66 26.6727 4.44 26.6727 4.22C26.6727 3.4 26.3636 2.64 25.8727 2.1L23.9455 0L11.9818 13.16C11.3091 13.9 10.9091 14.9 10.9091 16V36C10.9091 37.0609 11.2922 38.0783 11.9742 38.8284C12.6561 39.5786 13.581 40 14.5455 40H30.9091C32.4182 40 33.7091 39 34.2545 37.56L39.7455 23.46C39.9091 23 40 22.52 40 22V18ZM0 40H7.27273V16H0V40Z" fill="currentcolor" />
+                                </svg>
+                            </div>
+                            <div>
+                                @Comment.NumberOfLikes
+                            </div>
+                        </div>
+                        <div class="likeStatusButton-conteiner">
+                            <div class="dislike">
+                                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M32.7273 24H40V0H32.7273M25.4545 0H9.09091C7.58182 0 6.29091 1 5.74545 2.44L0.254545 16.54C0.0909091 17 0 17.48 0 18V22C0 23.0609 0.383116 24.0783 1.06507 24.8284C1.74702 25.5786 2.67194 26 3.63636 26H15.1091L13.3818 35.14C13.3455 35.34 13.3273 35.54 13.3273 35.76C13.3273 36.6 13.6364 37.34 14.1273 37.88L16.0545 40L28.0182 26.82C28.6909 26.1 29.0909 25.1 29.0909 24V4C29.0909 2.93913 28.7078 1.92172 28.0258 1.17157C27.3439 0.421427 26.419 0 25.4545 0Z" fill="currentcolor" />
+                                </svg>
+                            </div>
+                            <div>
+                                @Comment.NumberOfDislikes
+                            </div>
+                        </div>
+                    </div>
+
                     @if (!Comment.HasSpoiler)
                     {
                         <div class="comment-actions-ritgh">
-                            <RectButton2 Style="min-width:180px;" Text="Marck as Spoiler" OnClick="() => { UpdateSpoilerState(true); }"></RectButton2>
+                            <RectButton2 Style="min-width:180px;" Text="Marck as Spoiler" OnClick="()=>{ UpdateSpoilerState(true); }"></RectButton2>
                         </div>
                     }
                     else
