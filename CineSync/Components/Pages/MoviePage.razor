@@ -13,7 +13,7 @@
 	@ref="@_pageLayout"
 	GetInstance="GetPageLayout"
 >
-	
+
 	@{
 		Initialize();
 	}
@@ -46,8 +46,8 @@
 								<div class="buttonTreiler">
 									@if (Movie.TrailerKey != null)
 									{
-										<button class="BtnTrailer" data-toggle="modal" data-target="#trailerModal">Trailer</button>
-											<VideoTrailer TrailerLink=@($"{_youtubeLink}{Movie.TrailerKey}") />
+										<button class="BtnTrailer" @onclick="() => { VideoTrailer.Open(); }">Trailer</button>
+										<VideoTrailer @ref="VideoTrailer" TrailerLink=@($"{_youtubeLink}{Movie.TrailerKey}") />
 									}
 									else
 									{
@@ -175,21 +175,21 @@
 
 							@if( _activeTab == _tabNames[0] ) //comments
 							{
-					
-								<Comments 
-									MovieId=@MovieId 
-									LikedComments="@_likedComents" 
+
+								<Comments
+									MovieId=@MovieId
+									LikedComments="@_likedComents"
 									DislikedComments="@_dislikedComents"
 								>
 								</Comments>
-		
+
 							}
 							else if ( _activeTab == _tabNames[1] ) //Discussions
 							{
-				
-								<Discussions 
+
+								<Discussions
 									MovieId=@MovieId
-									LikedDiscussions="@_likedDiscussion" 
+									LikedDiscussions="@_likedDiscussion"
 									DislikedDiscussions="@_dislikedDiscussions"
 								>
 								</Discussions>

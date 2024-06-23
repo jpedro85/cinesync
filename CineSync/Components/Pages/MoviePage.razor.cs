@@ -1,9 +1,10 @@
 ﻿using CineSync.Data;
 using Microsoft.AspNetCore.Components;
 using CineSync.Data.Models;
-using CineSync.Services;
 using CineSync.DbManagers;
 using CineSync.Components.Layout;
+using CineSync.Components.PopUps;
+
 
 namespace CineSync.Components.Pages
 {
@@ -63,6 +64,8 @@ namespace CineSync.Components.Pages
 
         private bool _hasRatedMovie = false;
 
+        private VideoTrailer VideoTrailer;
+
         protected async void Initialize()
         {
 
@@ -111,7 +114,7 @@ namespace CineSync.Components.Pages
                             likedComment.UserId == _authenticatedUser.Id
                             ).Result.ToList();
             }
-            else 
+            else
             {
                 _likedComents = new List<UserLikedComment>(0);
                 _dislikedComents = new List<UserDislikedComment>(0);
@@ -170,7 +173,7 @@ namespace CineSync.Components.Pages
             InvokeAsync(StateHasChanged);
         }
 
-        private void GetPageLayout( PageLayout instance) 
+        private void GetPageLayout( PageLayout instance)
         {
             if( _pageLayout == null)
                 _pageLayout = instance;
