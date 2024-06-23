@@ -120,3 +120,7 @@
         width: 170px;
         color: black;
     }
+
+.MoreResults-container.Active{
+    display: none;
+}

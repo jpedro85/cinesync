@@ -35,7 +35,7 @@
 
 					@if (!_isLastpage)
 					{
-						<div class="MoreResults-container">
+						<div class="MoreResults-container @_isLoading">
 							<button class="MoreResults" @onclick="(e)=>{LoadNextPageMovies();}">More Results</button>
 						</div>
 					}
