@@ -124,3 +124,18 @@
 .MoreResults-container.Active{
     display: none;
 }
+
+.NoResults-conteiner{
+    display: flex;
+    width:100%;
+    flex-direction: row;
+    font-size:20px;
+    margin-top:25px;
+    gap: 24px;
+    justify-content: space-evenly;
+    padding: 10px;
+    flex-wrap: wrap;
+    background-color: rgba(0,0,0,0.7);
+    color:white;
+    border-radius:15px;
+}

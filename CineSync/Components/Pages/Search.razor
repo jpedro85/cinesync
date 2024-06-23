@@ -29,7 +29,7 @@
 					@foreach (MovieSearchAdapter movie in SearchResults)
 					{
 						<div @onclick="(e) => MovieClickhandler(movie)" >
-							<MovieAdapterPlace  Movie=movie />
+							<MovieAdapterPlace  Movie=movie Width="280" Heigth="440"/>
 						</div>
 					}
 
@@ -37,6 +37,12 @@
 					{
 						<div class="MoreResults-container @_isLoading">
 							<button class="MoreResults" @onclick="(e)=>{LoadNextPageMovies();}">More Results</button>
+						</div>
+					}
+					else
+					{
+						<div class="NoResults-conteiner">
+							No more Results to Show!
 						</div>
 					}
 
