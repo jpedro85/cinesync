@@ -59,6 +59,7 @@
 }
 
 .logo-container {
+    height: fit-content;
     text-align: center;
     display: flex !important;
     flex-grow: 1;
@@ -82,4 +83,9 @@
     padding-top: 10px;
     padding-right: 0;
     padding-left: 0;
+}
+
+.main-container2
+{
+    height:fit-content;
 }
