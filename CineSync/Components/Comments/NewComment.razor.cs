@@ -68,6 +68,7 @@ namespace CineSync.Components.Comments
                 {
                     await ProcessFile(attachment, fileType);
                 }
+                StateHasChanged();
             });
 
             await Task.WhenAll(tasks);
