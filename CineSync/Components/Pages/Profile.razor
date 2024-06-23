@@ -257,10 +257,8 @@
                                                     <ItemDiscussion 
                                                         AllowFollow=false
                                                         Discussion="@discussion"
-                                                        LikedDiscussions="_likedDiscussions"
-                                                        DislikedDiscussions="_dislikedDiscussions"
-                                                        Liked="@( _likedDiscussions.Any( uLike => uLike.DiscussionId == discussion.Id ) )"
-                                                        DisLiked="@( _dislikedDiscussions.Any( uDisLike => uDisLike.DiscussionId == discussion.Id ) )"
+                                                        LikedDiscussions="@_likedDiscussions"
+                                                        DislikedDiscussions="@_dislikedDiscussions"
                                                         OnChange="() => { InvokeAsync(StateHasChanged); }"
                                                     >
                                                     </ItemDiscussion>
