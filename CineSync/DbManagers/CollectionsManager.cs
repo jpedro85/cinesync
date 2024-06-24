@@ -4,14 +4,15 @@ using CineSync.Data.Models;
 using CineSync.Data;
 using CineSync.Core.Logger.Enums;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Logging.Console;
 
 namespace CineSync.DbManagers
 {
     public class CollectionsManager : DbManager<MovieCollection>
     {
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
+        private readonly IRepositoryAsync<Movie> _movieRepository;
         private readonly ICollection<string> collectionNames = new string[] { "Favorites", "Watched", "Classified", "Watch Later" };
+        private readonly string WatchTimeCollection = "Watched";
 
         /// <summary>
         /// Initializes a new instance of the CollectionsManager class.
@@ -21,6 +22,7 @@ namespace CineSync.DbManagers
         public CollectionsManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger) : base(unitOfWork, logger)
         {
             _userRepository = _unitOfWork.GetRepositoryAsync<ApplicationUser>();
+            _movieRepository = _unitOfWork.GetRepositoryAsync<Movie>();
         }
 
         /// <summary>
@@ -77,21 +79,22 @@ namespace CineSync.DbManagers
         public async Task<bool> AddMovieToCollectionAsync(string userId, string collectionName, uint movieID)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
-
+            Movie movie = await _movieRepository.GetFirstByConditionAsync(m => m.Id == movieID) ?? throw new Exception("Movie not found");
+            MovieCollection collection = user.Collections!.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
             if (collection.CollectionMovies.IsNullOrEmpty())
             {
                 collection.CollectionMovies = new List<CollectionsMovies>();
             }
 
-            if (!IsMovieInCollection(movieID, collection))
+            if (IsMovieInCollection(movieID, collection))
             {
-                collection.CollectionMovies!.Add(new CollectionsMovies { MovieId = movieID, MovieCollectionId = collection.Id });
-                return await _unitOfWork.SaveChangesAsync();
+                _logger.Log("Movie is already in the collection", LogTypes.WARN);
+                return true;
             }
 
-            _logger.Log("Movie is already in the collection", LogTypes.WARN);
-            return true;
+            user.WatchTime += movie.RunTime;
+            collection.CollectionMovies!.Add(new CollectionsMovies { MovieId = movie.Id, MovieCollectionId = collection.Id });
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
@@ -100,10 +103,11 @@ namespace CineSync.DbManagers
         /// <param name="collectionId">The Id of the collection to remove the movie from.</param>
         /// <param name="movieId">The movie Id to remove from the collection.</param>
         /// <returns>Returns true if the movie is successfully removed, otherwise false.</returns>
-        public async Task<bool> RemoveMovieFromCollectionAsync(uint collectionId, uint movieId)
+        public async Task<bool> RemoveMovieFromCollectionAsync(string userId, uint collectionId, uint movieId)
         {
+            ApplicationUser user = await GetUserByIdAsync(userId);
             MovieCollection? collection = await _repository.GetFirstByConditionAsync(c => c.Id == collectionId);
-            if (collection == null)
+            if (user == null || collection == null)
             {
                 return false;
             }
@@ -112,6 +116,18 @@ namespace CineSync.DbManagers
             if (movieToRemove == null)
             {
                 return false;
+            }
+
+            if (collection.Name == WatchTimeCollection)
+            {
+                if (user.WatchTime - movieToRemove.Movie.RunTime < 0)
+                {
+                    user.WatchTime = 0;
+                }
+                else
+                {
+                    user.WatchTime -= movieToRemove.Movie.RunTime;
+                }
             }
 
             collection.CollectionMovies!.Remove(movieToRemove);
@@ -132,14 +148,25 @@ namespace CineSync.DbManagers
             {
                 return false;
             }
-            MovieCollection collection = user.Collections!.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
 
+            MovieCollection collection = user.Collections!.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
             CollectionsMovies? movieToRemove = collection.CollectionMovies!.FirstOrDefault(cm => cm.MovieId == movieId);
             if (movieToRemove == null)
             {
                 return false;
             }
 
+            if (collection.Name == WatchTimeCollection)
+            {
+                if (user.WatchTime - movieToRemove.Movie.RunTime < 0)
+                {
+                    user.WatchTime = 0;
+                }
+                else
+                {
+                    user.WatchTime -= movieToRemove.Movie.RunTime;
+                }
+            }
             collection.CollectionMovies!.Remove(movieToRemove);
             return await _unitOfWork.SaveChangesAsync();
         }
