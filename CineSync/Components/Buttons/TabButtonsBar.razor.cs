@@ -1,4 +1,5 @@
 ﻿using CineSync.Components.Buttons;
+using Humanizer;
 using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.Buttons
@@ -13,7 +14,7 @@ namespace CineSync.Components.Buttons
 
         public delegate void TabChange( string TabName );
 
-        [Parameter]
+        [Parameter,EditorRequired]
         public TabChange OnTabChange { get; set; } = (s) => { };
 
         [Parameter]
@@ -26,5 +27,27 @@ namespace CineSync.Components.Buttons
             TabButtons = new TabButton[TabNames.Length];
             _activeTab = ActiveTab;
         }
-    }
+
+		public void ChangeTab( string TabName) 
+        {
+            int TabIndex = 0;
+            foreach (var item in TabNames)
+            {
+                if (item == TabName)
+                    break;
+
+                TabIndex++;
+            }
+
+            ChangeTab(TabIndex);
+            OnTabChange.Invoke(TabName);
+		}
+
+        private void ChangeTab(int indice)
+        {
+			TabButtons[_activeTab].deactivate();
+			_activeTab = indice;
+			OnTabChange(TabNames[indice]);
+		}
+	}
 }

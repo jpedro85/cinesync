@@ -33,7 +33,7 @@
                 <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] { "user", "moderator", "admin", "super_admin" })">
                     <PassOneCheck>
 
-                        @if (_authenticatedUser.Id != Comment.Autor.Id && AllowFollow)
+                        @if (_authenticatedUser.Id != Comment.Autor.Id && AllowFollow && !ShowOnlyInfo)
                         {
                             @if (_authenticatedUser.Following == null || !_authenticatedUser.Following.Any(user => user.Equals(Comment.Autor)))
                             {
@@ -98,7 +98,7 @@
             <RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] { "user", "moderator", "admin", "super_admin" })">
                 <PassOneCheck>
 
-                    @if (_authenticatedUser.Id == Comment.Autor.Id)
+                    @if (_authenticatedUser.Id == Comment.Autor.Id && !ShowOnlyInfo)
                     {
                         <RemoveComment Comment="@Comment" OnRemove="RemoveComment" @ref="_popUpRemove"/>
                         <div class="comment-options">
@@ -110,7 +110,7 @@
                         </div>
                     }
 
-                    @if (_authenticatedUser.Id != Comment.Autor.Id)
+                    @if (_authenticatedUser.Id != Comment.Autor.Id && !ShowOnlyInfo)
                     {
                         <div class="comment-options">
                             <button class="BtnOptions" data-toggle="modal" data-target="#ReportModal">
@@ -189,7 +189,7 @@
         <PassOneCheck>
             <div class="comment-actions">
 
-                @if(!Comment.Autor.Equals(_authenticatedUser) && _allowSee )
+                @if (!Comment.Autor.Equals(_authenticatedUser) && _allowSee && !ShowOnlyInfo)
                 {
                     <div class="comment-actions-left">
                         <div class="likeStatusButton-conteiner">
@@ -214,7 +214,13 @@
                         </div>
                     </div>
                     <div class="comment-actions-ritgh">
-                        <RectButton1 Text="Start discussion"></RectButton1>
+                       <PopUpStartDiscussion 
+                            OnCreate="@OnCreateDiscussion"
+                            AuthenticatedUser="_authenticatedUser" 
+                            Comment="@Comment"
+                            @ref="@_newDiscussionPopUp">
+                        </PopUpStartDiscussion>
+                        <RectButton1 Text="Start discussion" OnClick="() => { _newDiscussionPopUp?.Open(); }"></RectButton1>
                     </div>
                 }
                 else if ( Comment.Autor.Equals(_authenticatedUser) )

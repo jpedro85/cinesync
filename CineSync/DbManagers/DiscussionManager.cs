@@ -47,19 +47,43 @@ namespace CineSync.DbManagers
                 return movie.Discussions ;
 		}
 
-
-
-
-		/// <summary>
-		/// Adds a discussion to a specific movie by a specified user.
-		/// </summary>
-		/// <param name="comment">The comment entity to add.</param>
-		/// <param name="movieId">The ID of the movie to which the comment is being added.</param>
-		/// <param name="userId">The ID of the user adding the comment.</param>
-		/// <returns>True if the comment is successfully added, otherwise false.</returns>
-		public async Task<bool> AddDiscussion(Discussion discussion, int movieId, string userId)
+        /// <summary>
+        /// Adds a discussion to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="discussion">The comment entity to add.</param>
+        /// <param name="movieIMDB_Id">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
+        public async Task<bool> AddDiscussion(Discussion discussion, int movieIMDB_Id, string userId)
         {
-            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Discussions");
+            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieIMDB_Id, "Discussions");
+            
+            return await AddDiscussion(discussion, movie, userId);
+        }
+
+        /// <summary>
+        /// Adds a discussion to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="discussion">The comment entity to add.</param>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
+        public async Task<bool> AddDiscussion(Discussion discussion, uint movieId, string userId)
+        {
+            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.Id == movieId, "Discussions");
+            
+            return await AddDiscussion(discussion, movie, userId);
+        }
+
+        /// <summary>
+        /// Adds a discussion to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="discussion">The comment entity to add.</param>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
+        public async Task<bool> AddDiscussion(Discussion discussion, Movie? movie, string userId)
+        {
             ApplicationUser? user = await _userRepository.GetFirstByConditionAsync(user => user.Id == userId);
 
             if (movie == null || user == null)
@@ -74,6 +98,8 @@ namespace CineSync.DbManagers
 
             return await _unitOfWork.SaveChangesAsync();
         }
+
+       
 
         /// <summary>
         /// Increments the number of likes on a given discussion.
