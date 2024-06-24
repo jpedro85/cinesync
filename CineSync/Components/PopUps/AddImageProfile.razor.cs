@@ -2,7 +2,6 @@
 using CineSync.Components.Utils;
 using CineSync.Data;
 using CineSync.DbManagers;
-using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
@@ -11,9 +10,8 @@ namespace CineSync.Components.PopUps
 {
     public partial class AddImageProfile : ComponentBase
     {
-        [CascadingParameter(Name="PageLayout")]
+        [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; }
-
 
         [Parameter]
         public EventCallback OnImageChange { get; set; }
@@ -24,6 +22,8 @@ namespace CineSync.Components.PopUps
         [Inject]
         public UserManager UserManager { get; set; }
 
+        // Delay is in ms
+        private const byte delayToClosePopUp = 100;
 
         private const long MaxFileSize = 4 * 1024 * 1024;
 
@@ -33,7 +33,8 @@ namespace CineSync.Components.PopUps
 
         private PopUpLayout PopUpLayout;
 
-        private string ErrorMessage;
+        private string ErrorMessage = string.Empty;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -58,32 +59,25 @@ namespace CineSync.Components.PopUps
                 ErrorMessage = "Invalid file type. Please select an image.";
                 selectedFile = null;
             }
-            
+
         }
-        private void ResetFileInput()
-        {
-            selectedFile = null;
-            ErrorMessage = string.Empty;
-            // Força a atualização do componente
-            StateHasChanged();
-        }
+
         private async Task UploadProfilePic()
         {
             if (selectedFile == null)
             {
                 ErrorMessage = "Please select a valid image file.";
+                StateHasChanged();
                 return;
             }
 
             try
             {
                 byte[] buffer = await ImageConverter.ReadImageAsBase64Async(selectedFile, MaxFileSize);
+
                 await SaveFileToDatabase(buffer);
                 await OnImageChange.InvokeAsync();
-                ResetFileInput();
-                PopUpLayout.Close();
-                StateHasChanged();
-
+                await Close();
             }
             catch (Exception ex)
             {
@@ -93,9 +87,19 @@ namespace CineSync.Components.PopUps
 
         private async Task SaveFileToDatabase(byte[] fileData)
         {
-            string userId = AuthenticatedUser.Id;
-            string contentType = selectedFile.ContentType;
+            string userId = AuthenticatedUser!.Id;
+            string contentType = selectedFile!.ContentType;
             await UserManager.ChangeProfilePictureAsync(userId, fileData, contentType);
+        }
+
+        private async Task Close()
+        {
+            selectedFile = null;
+            ErrorMessage = string.Empty;
+            PopUpLayout.Close();
+            StateHasChanged();
+            await Task.Delay(delayToClosePopUp);
+            await JSRuntime.InvokeVoidAsync("resetFileInput", "profilePicInput");
         }
 
     }

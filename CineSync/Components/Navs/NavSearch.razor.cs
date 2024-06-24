@@ -1,11 +1,9 @@
-﻿using CineSync.Services;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 
 namespace CineSync.Components.Navs
 {
-    public partial class NavSearch
+    public partial class NavSearch : ComponentBase
     {
         private string _searchActive = string.Empty;
 
@@ -17,7 +15,7 @@ namespace CineSync.Components.Navs
 		private void OnSearchClick( MouseEventArgs e )
         {
             if (_currentSearch != string.Empty)
-                NavigationManager.NavigateTo($"/Search/{_currentSearch}");		
+                NavigationManager.NavigateTo($"/Search/{_currentSearch}");
         }
 
 		private void OnSearchClick( KeyboardEventArgs e )
@@ -30,6 +28,7 @@ namespace CineSync.Components.Navs
         {
             _searchActive = "Active";
 		}
+
 		private void OutSearch()
         {
             _searchActive = "";
@@ -48,5 +47,6 @@ namespace CineSync.Components.Navs
 		{
 			throw new NotImplementedException();
 		}
+
 	}
 }
