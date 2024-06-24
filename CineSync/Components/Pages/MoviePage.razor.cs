@@ -4,6 +4,7 @@ using CineSync.Data.Models;
 using CineSync.DbManagers;
 using CineSync.Components.Layout;
 using CineSync.Components.PopUps;
+using CineSync.Components.Buttons;
 
 
 namespace CineSync.Components.Pages
@@ -64,9 +65,11 @@ namespace CineSync.Components.Pages
 
         private bool _hasRatedMovie = false;
 
-        private VideoTrailer VideoTrailer;
+        private VideoTrailer VideoTrailer = default!;
+		private TabButtonsBar _TabBar = default!;
 
-        protected async void Initialize()
+
+		protected async void Initialize()
         {
 
             if (!_initialized) 
