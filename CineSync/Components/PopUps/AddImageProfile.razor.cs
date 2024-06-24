@@ -58,8 +58,15 @@ namespace CineSync.Components.PopUps
                 ErrorMessage = "Invalid file type. Please select an image.";
                 selectedFile = null;
             }
+            
         }
-
+        private void ResetFileInput()
+        {
+            selectedFile = null;
+            ErrorMessage = string.Empty;
+            // Força a atualização do componente
+            StateHasChanged();
+        }
         private async Task UploadProfilePic()
         {
             if (selectedFile == null)
@@ -71,10 +78,11 @@ namespace CineSync.Components.PopUps
             try
             {
                 byte[] buffer = await ImageConverter.ReadImageAsBase64Async(selectedFile, MaxFileSize);
-
                 await SaveFileToDatabase(buffer);
                 await OnImageChange.InvokeAsync();
+                ResetFileInput();
                 PopUpLayout.Close();
+                StateHasChanged();
 
             }
             catch (Exception ex)

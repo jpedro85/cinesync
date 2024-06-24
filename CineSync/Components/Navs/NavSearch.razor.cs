@@ -44,5 +44,9 @@ namespace CineSync.Components.Navs
             });
 		}
 
+		private void OnMouseLeave(MouseEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

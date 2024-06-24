@@ -10,7 +10,7 @@
         <div class="modal-body">
             <div class="form-group">
                 <label for="profilePic">Profile Picture:</label>
-                <InputFile @bind-Value="selectedFile" OnChange="HandleSelected" accept="image/*" />
+                <InputFile @bind-Value="selectedFile"  OnChange="HandleSelected" accept="image/*"/>
                 @if (!string.IsNullOrEmpty(ErrorMessage))
                 {
                     <div class="text-danger">@ErrorMessage</div>
