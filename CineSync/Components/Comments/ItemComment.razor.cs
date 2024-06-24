@@ -12,42 +12,53 @@ namespace CineSync.Components.Comments
     public partial class ItemComment : ComponentBase
     {
         [CascadingParameter(Name = "PageLayout")]
-        public PageLayout PageLayout { get; set; }
+        public PageLayout PageLayout { get; set; } = default!;
 
 
         [Inject]
-        private UserManager UserManager { get; set; }
+        private UserManager UserManager { get; set; } = default!;
 
         [Inject]
-        private CommentManager CommentManager { get; set; }
+        private CommentManager CommentManager { get; set; } = default!;
 
 
         [Parameter,EditorRequired]
-        public ICollection<UserLikedComment> LikedComments { get; set; }
+        public ICollection<UserLikedComment> LikedComments { get; set; } = default!;
 
         [Parameter,EditorRequired]
-        public ICollection<UserDislikedComment> DislikedComments { get; set; }
+        public ICollection<UserDislikedComment> DislikedComments { get; set; } = default!;
 
         [Parameter,EditorRequired]
-        public Comment Comment { get; set; }
+        public Comment Comment { get; set; } = default!;
 
         [Parameter]
         public bool AllowFollow { get; set; } = true;
 
         [Parameter]
+        public bool AllowStartDiscusion { get; set; } = true;
+
+        [Parameter]
+        public bool ShowOnlyInfo { get; set; } = false;
+
+        [Parameter]
         public EventCallback OnChange { get; set; }
+
+        [Parameter]
+        public EventCallback OnCreateDiscussion { get; set; } = default;
 
         private bool _Liked = false;
 		private bool _Disliked = false;
         private bool _allowSee;
 
-        private ApplicationUser _authenticatedUser;
+        private ApplicationUser _authenticatedUser = default!;
 
-        private ICollection<string> _userRoles;
+        private ICollection<string> _userRoles = default!;
 
-        private PopUpAttachementView _attachementView;
+        private PopUpAttachementView _attachementView = default!;
 
-        private RemoveComment _popUpRemove;
+        private RemoveComment _popUpRemove = default!;
+
+        private PopUpStartDiscussion _newDiscussionPopUp = default!;
 
         protected override void OnInitialized()
 		{
