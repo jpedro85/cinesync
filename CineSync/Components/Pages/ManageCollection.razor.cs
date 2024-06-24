@@ -33,7 +33,7 @@ namespace CineSync.Components.Pages
 
         private bool isEditing = false;
 
-        private async void Initialize() 
+        private async void Initialize()
         {
             AuthenticatedUser = _pageLayout.AuthenticatedUser;
             await GetCollection();
@@ -65,20 +65,20 @@ namespace CineSync.Components.Pages
         {
             if (!newName.IsNullOrEmpty())
             {
-                await CollectionsManager.ChangeCollectioName(AuthenticatedUser.Id, Collection.Name, newName);
+                await CollectionsManager.ChangeCollectioName(Collection.Id, newName);
                 StateHasChanged();
             }
         }
 
         private async void OnChangePublic(bool newState)
         {
-            await CollectionsManager.ChangePublicSate(AuthenticatedUser.Id, Collection.Name, newState);
+            await CollectionsManager.ChangePublicSate(Collection.Id, newState);
             StateHasChanged();
         }
 
-        private void GetPagelayout( PageLayout instance) 
+        private void GetPagelayout(PageLayout instance)
         {
-            if(_pageLayout == null)
+            if (_pageLayout == null)
                 _pageLayout = instance;
         }
     }

@@ -153,8 +153,15 @@
 								<RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"})">
 									<PassOneCheck>
 										<div class="ButtonRatingitem-container">
-											<button class="ButtonRatingitem" data-toggle="modal" data-target="#RateModel"> Rate Movie</button>
-											<Classification MovieAPIId=@MovieId MovieId="@Movie.Id" OnRatingSaved="OnRatingSaved" />
+                                            @if(!_hasRatedMovie)
+                                            {
+                                                <button class="ButtonRatingitem" data-toggle="modal" data-target="#RateModel"> Rate Movie</button>
+                                                <Classification MovieAPIId=@MovieId MovieId="@Movie.Id" OnRatingSaved="OnRatingSaved" />
+                                            }
+                                            else
+                                            {
+                                                <span class="Rated">Rated</span>
+                                            }
 										</div>
 									</PassOneCheck>
 								</RoleCkeck>

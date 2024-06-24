@@ -54,7 +54,7 @@ namespace CineSync.DbManagers
         /// </summary>
         /// <param name="userId">The identifier of the user.</param>
         /// <param name="collectionName">The name of the new collection to create.</param>
-        /// <returns>Returns <c>true</c> if the collection is successfully created, otherwise <c>false</c>.</returns>
+        /// <returns>Returns True if the collection is successfully created, otherwise False.</returns>
         public async Task<bool> CreateNewCollectionAsync(string userId, string collectionName)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
@@ -71,7 +71,7 @@ namespace CineSync.DbManagers
         /// </summary>
         /// <param name="userId">The identifier of the user.</param>
         /// <param name="collectionName">The name of the collection to add the movie to.</param>
-        /// <param name="movie">The movie to add to the collection.</param>
+        /// <param name="movieID">The movie to add to the collection.</param>
         /// <returns>Returns true if the movie is successfully added, otherwise false.</returns>
         /// <exception cref="Exception">Throws if the collection is not found.</exception>
         public async Task<bool> AddMovieToCollectionAsync(string userId, string collectionName, uint movieID)
@@ -80,11 +80,13 @@ namespace CineSync.DbManagers
             MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
 
             if (collection.CollectionMovies.IsNullOrEmpty())
+            {
                 collection.CollectionMovies = new List<CollectionsMovies>();
+            }
 
             if (!IsMovieInCollection(movieID, collection))
             {
-                collection.CollectionMovies.Add(new CollectionsMovies { MovieId = movieID, MovieCollectionId = collection.Id });
+                collection.CollectionMovies!.Add(new CollectionsMovies { MovieId = movieID, MovieCollectionId = collection.Id });
                 return await _unitOfWork.SaveChangesAsync();
             }
 
@@ -95,6 +97,29 @@ namespace CineSync.DbManagers
         /// <summary>
         /// Removes a movie from a specified collection for a user.
         /// </summary>
+        /// <param name="collectionId">The Id of the collection to remove the movie from.</param>
+        /// <param name="movieId">The movie Id to remove from the collection.</param>
+        /// <returns>Returns true if the movie is successfully removed, otherwise false.</returns>
+        public async Task<bool> RemoveMovieFromCollectionAsync(uint collectionId, uint movieId)
+        {
+            MovieCollection? collection = await _repository.GetFirstByConditionAsync(c => c.Id == collectionId);
+            if (collection == null)
+            {
+                return false;
+            }
+
+            CollectionsMovies? movieToRemove = collection.CollectionMovies!.FirstOrDefault(cm => cm.MovieId == movieId);
+            if (movieToRemove == null)
+            {
+                return false;
+            }
+
+            collection.CollectionMovies!.Remove(movieToRemove);
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        /// Removes a movie from a specified collection for a user.
+        /// </summary>
         /// <param name="userId">The identifier of the user.</param>
         /// <param name="collectionName">The name of the collection to remove the movie from.</param>
         /// <param name="movie">The movie to remove from the collection.</param>
@@ -103,80 +128,73 @@ namespace CineSync.DbManagers
         public async Task<bool> RemoveMovieFromCollectionAsync(string userId, string collectionName, uint movieId)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
+            if (user == null)
+            {
+                return false;
+            }
+            MovieCollection collection = user.Collections!.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
 
             CollectionsMovies? movieToRemove = collection.CollectionMovies!.FirstOrDefault(cm => cm.MovieId == movieId);
-            if (movieToRemove != null)
+            if (movieToRemove == null)
             {
-                collection.CollectionMovies!.Remove(movieToRemove);
-                return await _unitOfWork.SaveChangesAsync();
+                return false;
             }
 
-            return false;
+            collection.CollectionMovies!.Remove(movieToRemove);
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
         /// Removes a specified collection for a user.
         /// </summary>
-        /// <param name="userId">The identifier of the user.</param>
         /// <param name="collectionId">The Id of the collection to remove.</param>
         /// <returns>Returns true if the collection is successfully removed, otherwise false.</returns>
-        /// <exception cref="Exception">Throws if the collection is not found.</exception>
-        public async Task<bool> RemoveCollectionAsync(string userId, uint collectionId)
+        public async Task<bool> RemoveCollectionAsync(uint collectionId)
         {
-            ApplicationUser user = await GetUserByIdAsync(userId);
-            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Id == collectionId);
-
+            MovieCollection? collection = await _repository.GetFirstByConditionAsync(c => c.Id == collectionId);
             if (collection == null)
             {
                 return false;
             }
-            user.Collections.Remove(collection);
 
-            return await _unitOfWork.SaveChangesAsync();
+            return await RemoveAsync(collection);
         }
 
 
         /// <summary>
         /// Changes the Name of a collection.
         /// </summary>
-        /// <param name="userId">The identifier of the user to retrieve.</param>
-        /// /// <param name="newCollectionName">The newName of the Collection.</param>
-        /// <returns>True if sucessefuly</returns>
-        /// <exception cref="Exception">Throws if the user is not found.</exception>
-        public async Task<bool> ChangeCollectioName(string userId, string collectionName, string newCollectionName)
+        /// <param name="collectionId">The Id of the collection to change the Name of.</param>
+        /// <param name="newCollectionName">The newName of the Collection.</param>
+        /// <returns>True if sucessefull otherwise False</returns>
+        public async Task<bool> ChangeCollectioName(uint collectionId, string newCollectionName)
         {
-            ApplicationUser user = await GetUserByIdAsync(userId);
-            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
-
-            if (collection != null)
+            MovieCollection? collection = await _repository.GetFirstByConditionAsync(c => c.Id == collectionId);
+            if (collection == null)
             {
-                collection.Name = newCollectionName;
-                return await _unitOfWork.SaveChangesAsync();
+                return false;
             }
 
-            return false;
+            collection.Name = newCollectionName;
+            return await _unitOfWork.SaveChangesAsync();
         }
 
         /// <summary>
         /// Changes the public state of a collection.
         /// </summary>
-        /// <param name="userId">The identifier of the user to retrieve.</param>
-        /// /// <param name="newState">The nes isPublic sate of the collection.</param>
-        /// <returns>True if sucessefuly.</returns>
-        /// <exception cref="Exception">Throws if the user is not found.</exception>
-        public async Task<bool> ChangePublicSate(string userId, string collectionName, bool newState)
+        /// <param name="collectionId">The id of the collection to change the state of.</param>
+        /// <param name="newState">The nes isPublic sate of the collection.</param>
+        /// <returns>True if sucessefull, otherwise false.</returns>
+        public async Task<bool> ChangePublicSate(uint collectionId, bool newState)
         {
-            ApplicationUser user = await GetUserByIdAsync(userId);
-            MovieCollection collection = user.Collections.FirstOrDefault(c => c.Name == collectionName) ?? throw new Exception("Collection not found");
-
-            if (collection != null)
+            MovieCollection? collection = await _repository.GetFirstByConditionAsync(c => c.Id == collectionId);
+            if (collection == null)
             {
-                collection.IsPublic = newState;
-                return await _unitOfWork.SaveChangesAsync();
+                return false;
             }
 
-            return false;
+            collection.IsPublic = newState;
+            return await _unitOfWork.SaveChangesAsync();
         }
 
 
