@@ -6,9 +6,10 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using CineSync.Data
+@using CineSync.Core.Email
 
 @inject UserManager<ApplicationUser> UserManager
-@inject IEmailSender<ApplicationUser> EmailSender
+@inject IEmailSender EmailSender
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
@@ -20,7 +21,7 @@
         <div class="form-container">
             <h1 class="text-center">Resend email confirmation</h1>
             <h2 class="text-center">Enter your email.</h2>
-            <div class="row">             
+            <div class="row">
                     <EditForm Model="Input" FormName="resend-email-confirmation" OnValidSubmit="OnValidSubmitAsync" method="post">
                         <DataAnnotationsValidator />
                         <ValidationSummary class="text-danger" role="alert" />
@@ -57,15 +58,21 @@
             return;
         }
 
+        await SendConfirmationEmailLinkAsync(user);
+
+        message = "Verification email sent. Please check your email.";
+    }
+
+    private async Task SendConfirmationEmailLinkAsync(ApplicationUser user)
+    {
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         var callbackUrl = NavigationManager.GetUriWithQueryParameters(
             NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
             new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code });
-        await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
-        message = "Verification email sent. Please check your email.";
+        await EmailSender.SendEmailAsync(user.Email, "ConfirmationLink", HtmlEncoder.Default.Encode(callbackUrl));
     }
 
     private sealed class InputModel

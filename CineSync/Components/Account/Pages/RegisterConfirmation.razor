@@ -1,68 +1,48 @@
 ﻿@page "/Account/RegisterConfirmation"
-
-@using System.Text
-@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
-@using CineSync.Data
+@inject NavigationManager Navigation
 
-@inject UserManager<ApplicationUser> UserManager
-@inject IEmailSender<ApplicationUser> EmailSender
-@inject NavigationManager NavigationManager
-@inject IdentityRedirectManager RedirectManager
+<PageTitle>Register Confirmation</PageTitle>
 
-<PageTitle>Register confirmation</PageTitle>
+<div class="page">
+    <div class="main-content">
+        <div class="form-container">
+            <h2>Thank you for registering!</h2>
+            <p>Please check your email to confirm your account. Once you have confirmed your account, you will be able to log in.</p>
+            <p>If you didn't receive an email, <a href="@ResendLink">click here to resend</a>.</p>
+        </div>
+    </div>
 
-<h1>Register confirmation</h1>
-
-<StatusMessage Message="@statusMessage" />
-
-@if (emailConfirmationLink is not null)
-{
-    <p>
-        This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-        Normally this would be emailed: <a href="@emailConfirmationLink">Click here to confirm your account</a>
-    </p>
-}
-else
-{
-    <p>Please check your email to confirm your account.</p>
-}
+    <div class="logo-container-main">
+        <div class="logo-container">
+            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+        </div>
+    </div>
+</div>
 
 @code {
-    private string? emailConfirmationLink;
-    private string? statusMessage;
+    private string? email;
+    private string? returnUrl;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
-
-    [SupplyParameterFromQuery]
-    private string? Email { get; set; }
-
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        if (Email is null)
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var query = QueryHelpers.ParseQuery(uri.Query);
+
+        if (query.TryGetValue("email", out var emailParam))
         {
-            RedirectManager.RedirectTo("");
+            email = emailParam;
         }
 
-        var user = await UserManager.FindByEmailAsync(Email);
-        if (user is null)
+        if (query.TryGetValue("returnUrl", out var returnUrlParam))
         {
-            HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            statusMessage = "Error finding user for unspecified email";
-        }
-        else if (EmailSender is IdentityNoOpEmailSender)
-        {
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            var userId = await UserManager.GetUserIdAsync(user);
-            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            emailConfirmationLink = NavigationManager.GetUriWithQueryParameters(
-                NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-                new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
+            returnUrl = returnUrlParam;
         }
     }
+
+    private string ResendLink => QueryHelpers.AddQueryString("/Account/ResendEmailConfirmation", new Dictionary<string, string?>
+    {
+        { "email", email },
+        { "returnUrl", returnUrl }
+    });
 }

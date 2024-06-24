@@ -8,12 +8,12 @@ using CineSync.Controllers;
 using CineSync.Controllers.MovieEndpoint;
 using CineSync.Core;
 using CineSync.Core.Adapters.ApiAdapters;
+using CineSync.Core.Email;
 using CineSync.Core.Logger;
 using CineSync.Core.Repository;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using CineSync.Services;
 
 namespace CineSync
 {
@@ -115,7 +115,7 @@ namespace CineSync
                 })
                 .AddIdentityCookies();
 
-            services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
@@ -195,7 +195,16 @@ namespace CineSync
                 {
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
-
+            services.Configure<SmtpSettings>(options =>
+                    {
+                        options.Server = Environment.GetEnvironmentVariable("SMTP_SERVER");
+                        options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT"));
+                        options.SenderName = Environment.GetEnvironmentVariable("SMTP_SENDER_NAME");
+                        options.SenderEmail = Environment.GetEnvironmentVariable("SMTP_SENDER_EMAIL");
+                        options.Username = Environment.GetEnvironmentVariable("SMTP_USERNAME");
+                        options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+                    });
+            services.AddTransient<IEmailSender, EmailSender>();
             //services.AddSingleton<NavBarEvents>();
             //services.AddSingleton<LayoutService>();
             //services.AddSingleton<MenuService>();
