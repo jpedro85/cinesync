@@ -1,6 +1,7 @@
 using MailKit.Net.Smtp;
 using MimeKit;
 using Microsoft.Extensions.Options;
+using SmtpStatusCode = System.Net.Mail.SmtpStatusCode;
 
 namespace CineSync.Core.Email
 {
@@ -31,5 +32,6 @@ namespace CineSync.Core.Email
                 await client.DisconnectAsync(true);
             }
         }
+
     }
 }
