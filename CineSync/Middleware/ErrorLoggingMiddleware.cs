@@ -44,7 +44,7 @@ namespace CineSync.Middleware
             catch (Exception ex)
             {
                 string errorMessageInside = FormatExceptionMessage(ex);
-                _logger.Log(errorMessageInside, type: LogTypes.ERROR);
+                _logger.Log(errorMessageInside, LogTypes.ERROR);
                 if (!context.Response.HasStarted)
                 {
                     context.Response.ContentType = "application/json";
