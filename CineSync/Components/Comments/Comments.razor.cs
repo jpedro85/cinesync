@@ -20,6 +20,8 @@ namespace CineSync.Components.Comments
 		[Inject]
         private CommentManager CommentManager { get; set; }
 
+        [Parameter]
+        public EventCallback OnCreateDiscussion { get; set; } = default;
 
         [Parameter]
         public int MovieId { get; set; }

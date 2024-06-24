@@ -35,7 +35,8 @@
     {
         @foreach (var comment in CommentsList)
         {
-            <ItemComment
+            <ItemComment 
+                OnCreateDiscussion="OnCreateDiscussion"
                 Comment="@comment"
                 OnChange="() => { InvokeAsync(StateHasChanged); }"
                 LikedComments="@LikedComments"
