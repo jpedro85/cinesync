@@ -3,6 +3,7 @@ using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.JSInterop;
 
 namespace CineSync.Components.PopUps
@@ -12,12 +13,12 @@ namespace CineSync.Components.PopUps
         [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; }
 
-        [Inject]
-        private UserManager UserManager { get; set; }
-
         [Parameter]
         public EventCallback OnUsernameChange { get; set; }
 
+        [Inject]
+        private UserManager UserManager { get; set; }
+        
         private PopUpLayout PopUpLayout;
 
         private ApplicationUser? AuthenticatedUser { get; set; }
@@ -47,21 +48,17 @@ namespace CineSync.Components.PopUps
                 StateHasChanged();
                 return;
             }
-            if (await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName))
-            {
-                PopUpLayout.Close();
-                await OnUsernameChange.InvokeAsync();
-                return;
-            }
-            else
+
+            bool result = await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName);
+            if (!result)
             {
                 ErrorMessage = "Username is already taken or something went wrong.";
                 StateHasChanged();
                 return;
             }
-
+            
+            PopUpLayout.Close();
+            await OnUsernameChange.InvokeAsync();
         }
-
     }
-
 }

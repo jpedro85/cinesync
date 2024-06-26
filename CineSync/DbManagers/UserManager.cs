@@ -3,6 +3,7 @@ using CineSync.Core.Logger.Enums;
 using CineSync.Core.Repository;
 using CineSync.Data;
 using CineSync.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CineSync.DbManagers
 {
@@ -18,16 +19,19 @@ namespace CineSync.DbManagers
     {
         private readonly IRepositoryAsync<Comment> _commentRepository;
         private readonly IRepositoryAsync<Discussion> _discussionRepository;
+        private ILookupNormalizer KeyNormalizer { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of the UserManager class.
         /// </summary>
         /// <param name="unitOfWork">Provides an interface for a unit of work mechanism to handle transactions.</param>
         /// <param name="logger">Provides logging capabilities to trace the operations and errors.</param>
-        public UserManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger) : base(unitOfWork, logger)
+        public UserManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger, ILookupNormalizer keyNormalizer) : base(unitOfWork, logger)
         {
             _commentRepository = _unitOfWork.GetRepositoryAsync<Comment>();
             _discussionRepository = _unitOfWork.GetRepositoryAsync<Discussion>();
+            KeyNormalizer = keyNormalizer;
         }
 
         /// <summary>
@@ -55,6 +59,7 @@ namespace CineSync.DbManagers
             }
 
             user.UserName = username;
+            user.NormalizedUserName = KeyNormalizer.NormalizeName(username);
             _logger.Log("The Username has already been changed", LogTypes.WARN);
             return await _unitOfWork.SaveChangesAsync();
         }

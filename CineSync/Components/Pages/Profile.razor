@@ -64,14 +64,14 @@
                                     </NavLink>
 
 
-                                    <NavLink href="/Account/Manage/Email">
+                                    <NavLink href="/Account/Manage/ChangeEmail">
                                         <button class="buttonProfile">Change Email</button>
                                     </NavLink>
 
                                     <form action="Account/Logout" method="post">
-                                        <AntiforgeryToken />
-                                            <input type="hidden" name="ReturnUrl" value="" />
-					                        <button class="buttonProfile">Logout</button>
+                                        <AntiforgeryToken/>
+                                        <input type="hidden" name="ReturnUrl" value=""/>
+                                        <button class="buttonProfile">Logout</button>
                                     </form>
                                     <button class="DeleteBTN" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
                                     <DeleteACC></DeleteACC>
