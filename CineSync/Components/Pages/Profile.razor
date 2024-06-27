@@ -225,9 +225,14 @@
                                                     AllowFollow="false"
                                                     LikedComments="@_likedComents"
                                                     DislikedComments="@_dislikedComents"
-                                                    OnChange="() => { InvokeAsync(StateHasChanged); }" 
-                                                    >
-
+                                                    OnChange="() => { InvokeAsync(StateHasChanged); }"
+                                                    OnCreateDiscussion="() => { OnDiscussionCreate(comment.MovieId); }" 
+                                                    OnRemove="(commentId) =>
+                                                    {
+                                                        _comments = _comments.Where(c =>  c.Id != commentId ).ToList();
+                                                        InvokeAsync(StateHasChanged);
+                                                    }"
+                                                >     
                                                 </ItemComment>
                                                 }
                                             </div>
@@ -263,7 +268,12 @@
                                                         LikedDiscussions="@_likedDiscussions"
                                                         DislikedDiscussions="@_dislikedDiscussions"
                                                         OnChange="() => { InvokeAsync(StateHasChanged); }"
-                                                    >
+                                                        OnRemove="(discussionId) => 
+                                                            { 
+                                                                _discussions = _discussions.Where(d =>  d.Id != discussionId ).ToList(); 
+                                                                InvokeAsync(StateHasChanged);   
+                                                            }"
+                                                        >
                                                     </ItemDiscussion>
                                                 }
                                             </div>

@@ -54,6 +54,9 @@ namespace CineSync.Components.Comments
         public EventCallback OnChange { get; set; }
 
         [Parameter]
+        public EventCallback<uint> OnRemove { get; set; }
+
+        [Parameter]
         public EventCallback OnCreateDiscussion { get; set; } = default;
 
         private bool _Liked = false;
@@ -237,7 +240,7 @@ namespace CineSync.Components.Comments
         {
 			_isNaveGationClick = false;
 
-			await OnChange.InvokeAsync();
+			await OnRemove.InvokeAsync(Comment.Id);
         }
 
         private async void Navegate() 
