@@ -1,5 +1,7 @@
 ﻿@rendermode InteractiveServer
+
 @using CineSync.Components.Buttons;
+@using CineSync.Components.Utils
 
 <PopUpLayout @ref="PopUpLayout" Id="@Id">
     <Header>
@@ -10,15 +12,12 @@
     </Header>
     <Body>
         <div>
-            <label for="reportReason" style="color:white;">Are you sure you want to remove this comment?</label>
-            @if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                <div class="text-danger">@ErrorMessage</div>
-            }
+            <StateMessage message="@ErrorMessage" />
+            <span style="color:white;">Are you sure you want to remove this comment?</span>
         </div>
     </Body>
     <Footer>
         <button class="btn btn-secondary" @onclick="PopUpLayout.Close">Cancel</button>
-        <RectButton1 Text="Remove" DataDismiss="modal" OnClick="ExecuteRemoveComment" />
+        <RectButton1 Text="Remove" OnClick="ExecuteRemoveComment" />
     </Footer>
 </PopUpLayout>
