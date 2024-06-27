@@ -29,17 +29,16 @@
     }
     else if (CommentsList.Count == 0)
     {
-        <div class="nocomments">There is no comments at this time.</div>
+        <div class="nocomments">There are no Comments yet.</div>
     }
     else
     {
         @foreach (var comment in CommentsList)
         {
-            <ItemComment
+            <ItemComment 
+                OnCreateDiscussion="OnCreateDiscussion"
                 Comment="@comment"
                 OnChange="() => { InvokeAsync(StateHasChanged); }"
-                Liked="@( LikedComments.Any( uLike => uLike.CommentId == comment.Id ) )"
-                DisLiked="@( DislikedComments.Any( uDisLike => uDisLike.CommentId == comment.Id ) )"
                 LikedComments="@LikedComments"
                 DislikedComments="@DislikedComments"
             >

@@ -34,13 +34,13 @@ public partial class Caroussel : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await FetchTopRatedMovies();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            await FetchTopRatedMovies();
             InitializeQueue();
             objRef = DotNetObjectReference.Create(this);
             await JSRuntime.InvokeVoidAsync("addResizeListener", objRef);

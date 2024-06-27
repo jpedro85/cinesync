@@ -2,7 +2,7 @@
 
 <div class="NavSearchconteiner @_searchActive" @onkeydown="OnSearchClick">
     <input 
-        @onclick="ClickInput"
+        @onmousedown="ClickInput"
         @onfocusout="OutSearch"
            class="NavSearch" type="text" @bind-value:event="oninput" @bind-value="@_currentSearch" placeholder="Search" />
 

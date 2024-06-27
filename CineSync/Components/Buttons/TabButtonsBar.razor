@@ -6,30 +6,21 @@
         int indice = i;
         @if (i == ActiveTab)
         {
+            @* TabButtons[_activeTab].deactivate();
+            _activeTab=indice;
+            OnTabChange( TabNames[indice] ); *@
             <TabButton Text="@TabNames[indice]"
             StartActive=true
-            OnActionClick="@(() => 
-                        { 
-                            Console.WriteLine(_activeTab);
-                            TabButtons[_activeTab].deactivate();
-                            _activeTab=indice;
-                            OnTabChange( TabNames[indice] );
-                        }
-                        )"
-                       @ref=@(TabButtons[indice]) />
+            OnActionClick="@(() => { ChangeTab(indice); })" @ref=@(TabButtons[indice]) />
         }
         else
         {
+            @* TabButtons[_activeTab].deactivate();
+            _activeTab=indice;
+            OnTabChange( TabNames[indice] ); *@
             <TabButton Text="@TabNames[indice]"
             StartActive=false
-            OnActionClick="@(() => 
-                        { 
-                            Console.WriteLine(_activeTab);
-                            TabButtons[_activeTab].deactivate();
-                            _activeTab=indice;
-                            OnTabChange( TabNames[indice] );
-                        })"
-                       @ref=@(TabButtons[indice]) />
+            OnActionClick="@(() => { ChangeTab(indice); })" @ref=@(TabButtons[indice]) />
         }
     }
 

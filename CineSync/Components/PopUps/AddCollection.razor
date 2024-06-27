@@ -1,4 +1,4 @@
-﻿@rendermode InteractiveServer 
+﻿@rendermode InteractiveServer
 @using CineSync.Data.Models;
 @using CineSync.Components.Buttons;
 
@@ -11,18 +11,21 @@
 
             @foreach (KeyValuePair<string, bool> kvp in CollectionsMovieStatus)
             {
-                <div class="CheckItem">
+                @if (!unmutableCollections.Contains(kvp.Key))
+                {
+                    <div class="CheckItem">
 
-                    <div class="conteinerRadio">
-                        <input type="checkbox" class="CheckIteminput"
-                               checked="@kvp.Value"
-                               @onchange="@( (e) => {UpdateState(@kvp.Key, (e.Value.ToString().ToLower() == "true") ); } )"
-                               id="@kvp.Key" name="AllCollection">
+                        <div class="conteinerRadio">
+                            <input type="checkbox" class="CheckIteminput"
+                                   checked="@kvp.Value"
+                                   @onchange="@( (e) => {UpdateState(@kvp.Key, (e.Value.ToString().ToLower() == "true") ); } )"
+                                   id="@kvp.Key" name="AllCollection">
+                        </div>
+
+                        <label class="conteinerRadioLabel" for="@kvp.Key">@kvp.Key</label>
+
                     </div>
-
-                    <label class="conteinerRadioLabel" for="@kvp.Key">@kvp.Key</label>
-
-                </div>
+                }
             }
 
             <div class="newcollection">

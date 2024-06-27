@@ -48,10 +48,10 @@ namespace CineSync.DbManagers
         /// <returns>A task resulting in a boolean indicating whether the removal was successful.</returns>
         public virtual async Task<bool> RemoveAsync(TEntity entity)
         {
-            _logger.Log($"Attemtping to remove the entity {entity.GetType()} to the database", LogTypes.DEBUG);
+            _logger.Log($"Attempting to remove the entity {entity.GetType()} to the database", LogTypes.DEBUG);
             _repository.Delete(entity);
             bool result = await _unitOfWork.SaveChangesAsync();
-            _logger.Log($"Attemtping to remove the entity {entity.ToString()} to the database", LogTypes.DEBUG);
+            _logger.Log($"Attempting to remove the entity {entity.ToString()} to the database", LogTypes.DEBUG);
             return result;
         }
 

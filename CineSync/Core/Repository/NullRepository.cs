@@ -53,6 +53,10 @@ namespace CineSync.Core.Repository
         {
         }
 
+        public void DeleteRange(IEnumerable<T> items) 
+        {
+        }
+
         public void Ensure<TProperty>( T entity, Expression<Func<T, TProperty?>> expression ) where TProperty : class
         {
         }

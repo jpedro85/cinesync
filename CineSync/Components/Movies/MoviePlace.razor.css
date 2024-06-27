@@ -66,9 +66,10 @@
 }
 
 .movie-Title-conteiner {
-    display:flex;
-    align-items:center;
-    position:relative;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow-y: auto;
 }
 
 .movie-Title {

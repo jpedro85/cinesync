@@ -2,141 +2,148 @@
 using CineSync.Components.Layout;
 using CineSync.Controllers.MovieEndpoint;
 using CineSync.Core.Adapters.ApiAdapters;
-using CineSync.Data;
-using CineSync.Data.Models;
-using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-
+using Microsoft.JSInterop;
 
 namespace CineSync.Components.Pages
 {
-	public partial class Search
-	{
+    public partial class Search : ComponentBase
+    {
 
-		[Inject]
-		private HttpClient _client { get; set; }
+        [Parameter]
+        public string Query { get; set; }
 
-		[Inject]
-		private NavigationManager NavigationManager { get; set; }
+        [Parameter]
+        public SearchButton SearchButton { get; set; }
 
+        [Inject]
+        private HttpClient _client { get; set; }
 
-		[Parameter]
-		public string Query { get; set; }
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
 
-		[Parameter]
-		public SearchButton SearchButton { get; set; }
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
 
-		private PageLayout _pageLayout;
+        private PageLayout _pageLayout;
 
+        private string _currentSearchQuery = string.Empty;
 
-		private string _currentSearchQuery = string.Empty;
-		private List<MovieSearchAdapter> SearchResults { get; set; } = new () ;
-		
-		private int _currentPage = 1;
-		private bool _isLastpage = false;
-		private string _isLoading = string.Empty;
+        private List<MovieSearchAdapter> SearchResults { get; set; } = new();
 
-		protected override void OnAfterRender(bool firstRender)
-		{
-			if (firstRender)
-			{
-				_pageLayout.NavBar.SetVisibleSearchButton(false);
-				SearchButton.OnSearch += SearchMoviesSearchButtonHandler;
+        private int _currentPage = 1;
 
-				if (!string.IsNullOrEmpty(Query))
-				{
-					SearchMoviesSearchButtonHandler(Query);
-				}
-				else
-				{
-					FecthUpcoming();
-				}
-			}
+        private bool _isLastpage = false;
+
+        private string _isLoading = string.Empty;
+
+        private const int MOVIELIMIT =18;
+        protected override async Task OnParametersSetAsync()
+        {
+            if (!string.IsNullOrEmpty(Query))
+            {
+                _currentSearchQuery = Query;
+                await SearchMovies(Query);
+            }
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                _pageLayout.NavBar.SetVisibleSearchButton(false);
+                SearchButton.OnSearch += SearchMoviesSearchButtonHandler;
+            }
 
         }
 
-		private async Task SearchMovies (string searchQuery) 
-		{
-			_currentPage = 1;
-			_isLastpage = false;
-			SearchResults.Clear();
-			_currentSearchQuery = searchQuery;
+        private async Task SearchMovies(string searchQuery)
+        {
+            _currentPage = 1;
+            _isLastpage = false;
+            SearchResults.Clear();
+            _currentSearchQuery = searchQuery;
 
-			await LoadPage(searchQuery, _currentPage);
-		}
+            await LoadPage(searchQuery, _currentPage);
+        }
 
 
-		private async void SearchMoviesSearchButtonHandler( string searchQuery )
-		{
-			await SearchMovies(searchQuery);
-			StateHasChanged();
-		}
+        private async void SearchMoviesSearchButtonHandler(string searchQuery)
+        {
+            await UpdateUrlWithSearchQuery(searchQuery);
+            await SearchMovies(searchQuery);
+            StateHasChanged();
+        }
 
-		private async Task LoadNextPageMovies()
-		{
+        private async Task LoadNextPageMovies()
+        {
 
-			if ( _isLastpage )
-				return;
-			
-			await LoadPage( _currentSearchQuery , ++_currentPage);
-			StateHasChanged();
-			
-		}
+            if (_isLastpage)
+                return;
 
-		private async Task LoadPage(string searchQuery, int page)
-		{
+            await LoadPage(_currentSearchQuery, ++_currentPage);
+            StateHasChanged();
 
-			List<MovieSearchAdapter> results = await GetMovies($"/movie/search?Query={searchQuery}&Page={page}");
+        }
 
-			if ( (results.Count == 0) && page > 1)
-			{
-				_isLastpage = true;
-			}
-			else
-			{
-				SearchResults.AddRange( results );
-			}
+        private async Task LoadPage(string searchQuery, int page)
+        {
 
-			_isLoading = string.Empty;
+            List<MovieSearchAdapter> results = await GetMovies($"/movie/search?Query={searchQuery}&Page={page}");
 
-		}
+            if ((results.Count == 0) && page > 1 || (results.Count <= MOVIELIMIT))
+            {
+                _isLastpage = true;
+            }
+            else
+            {
+                SearchResults.AddRange(results);
+            }
 
-		private async void FecthUpcoming()
-		{
-			List<MovieSearchAdapter> results = await GetMovies($"/movie/upcoming");
-			SearchResults.AddRange(results);
-			_isLoading = string.Empty;
-			StateHasChanged();
-		}
+            _isLoading = string.Empty;
 
-		private async Task< List<MovieSearchAdapter> > GetMovies( string url )
-		{
+        }
 
-			_isLoading = "Active";
-			StateHasChanged();
+        private async void FecthUpcoming()
+        {
+            List<MovieSearchAdapter> results = await GetMovies($"/movie/upcoming");
+            SearchResults.AddRange(results);
+            _isLoading = string.Empty;
+            StateHasChanged();
+        }
 
-			HttpResponseMessage response = await _client.GetAsync(url);
+        private async Task<List<MovieSearchAdapter>> GetMovies(string url)
+        {
 
-			if (response.IsSuccessStatusCode)
-			{
-				string jsonResponse = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<ApiSearchResponse>(jsonResponse)?.Results !;
-			}
+            _isLoading = "Active";
+            StateHasChanged();
 
-			return new List<MovieSearchAdapter>(0);
-		}
+            HttpResponseMessage response = await _client.GetAsync(url);
 
-		private void MovieClickhandler(MovieSearchAdapter movie)
-		{
-			NavigationManager.NavigateTo($"MovieDetails/{movie.MovieId}");
-		}
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<ApiSearchResponse>(jsonResponse)?.Results!;
+            }
 
-		private void GetPagelayout(PageLayout instance)
-		{
-			if (_pageLayout == null)
-				_pageLayout = instance;
-		}
-	}
+            return new List<MovieSearchAdapter>(0);
+        }
+
+        private void MovieClickhandler(MovieSearchAdapter movie)
+        {
+            NavigationManager.NavigateTo($"MovieDetails/{movie.MovieId}");
+        }
+
+        private void GetPagelayout(PageLayout instance)
+        {
+            if (_pageLayout == null)
+                _pageLayout = instance;
+        }
+
+        private async Task UpdateUrlWithSearchQuery(string searchQuery)
+        {
+            await JSRuntime.InvokeVoidAsync("updateUrl", searchQuery);
+        }
+    }
 }

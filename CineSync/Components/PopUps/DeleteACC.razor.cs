@@ -1,16 +1,15 @@
 ﻿using CineSync.Components.Layout;
 using CineSync.Data;
 using CineSync.DbManagers;
-using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace CineSync.Components.PopUps
 {
     public partial class DeleteACC : ComponentBase
     {
+
         [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; }
-
 
         [Inject]
         private UserManager UserManager { get; set; }
@@ -18,6 +17,7 @@ namespace CineSync.Components.PopUps
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
+        public PopUpLayout PopUpLayout { get; set; }
 
         private string ErrorMessage { get; set; } = string.Empty;
 
@@ -33,6 +33,7 @@ namespace CineSync.Components.PopUps
             ErrorMessage = string.Empty;
             if (await UserManager.DeleteAccountAsync(AuthenticatedUser.Id))
             {
+                PopUpLayout.Close();
                 NavigationManager.NavigateTo("/");
             }
             else

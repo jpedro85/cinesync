@@ -2,8 +2,11 @@
     background: linear-gradient(to right, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0.1));
     padding: 15px;
     border-radius: 10px;
-    color:white;
+    color: white;
 }
+    .discution.outline:hover {
+        outline: 2px solid white;
+    }
 
 .discution-header {
     display: flex;
@@ -20,17 +23,17 @@
     transition: transform 0.1s
 }
 
-    .removeFromFollowing:hover,
-    .addToFollowing:hover {
-        color: white;
-        color: rgb(128, 128, 128);
-        transform: scale(1.1);
-    }
+.removeFromFollowing:hover,
+.addToFollowing:hover {
+    color: white;
+    color: rgb(128, 128, 128);
+    transform: scale(1.1);
+}
 
-    .removeFromFollowing:active,
-    .addToFollowing:active {
-        color: white;
-    }
+.removeFromFollowing:active,
+.addToFollowing:active {
+    color: white;
+}
 
 .UsernameConteiner {
     display: flex;
@@ -52,7 +55,7 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
-    color: black;
+    color: white;
     height: 40px;
 }
 
@@ -75,7 +78,6 @@ hr {
     margin-bottom: 2px;
 }
 
-
 .likeStatusButton-conteiner {
     display: flex;
     flex-direction: row;
@@ -87,6 +89,7 @@ hr {
 
 .dislike,
 .like {
+    color: rgb(100, 100, 100);
     width: 20px;
     height: 20px;
     display: flex;
@@ -101,25 +104,25 @@ hr {
     transition: transform 0.2s;
 }
 
-    .likeStatusButton:hover {
-        color: rgb(128, 128, 128) !important;
-        transform: scale(1.4);
-        transition: transform 0.2s;
-    }
+.likeStatusButton:hover {
+    color: rgb(128, 128, 128) !important;
+    transform: scale(1.4);
+    transition: transform 0.2s;
+}
 
-    .likeStatusButton:active {
-        color: rgb(0, 236, 252);
-        transform: scale(1.6);
-        transition: transform 0.2s;
-    }
+.likeStatusButton:active {
+    color: rgb(0, 236, 252);
+    transform: scale(1.6);
+    transition: transform 0.2s;
+}
 
-    .likeStatusButton.active {
-        color: rgb(0, 236, 252);
-    }
+.likeStatusButton.active {
+    color: rgb(0, 236, 252);
+}
 
-    .likeStatusButton.active {
-        color: rgb(0, 211, 225);
-    }
+.likeStatusButton.active {
+    color: rgb(0, 211, 225);
+}
 
 
 .discution-actions {
@@ -128,7 +131,7 @@ hr {
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
-    color:white;
+    color: white;
 }
 
 .discution-actions-ritgh {
@@ -142,8 +145,8 @@ hr {
     font-weight: bold;
 }
 
-.discussionTitle{
-    padding-bottom:10px;
+.discussionTitle {
+    padding-bottom: 10px;
 }
 
 .discution-content {
@@ -162,7 +165,7 @@ hr {
     flex-direction: column;
     background-color: rgb(25, 25, 25);
     border-radius: 5px;
-    border: 1px solid rgb(60,60,60);
+    border: 1px solid rgb(60, 60, 60);
     padding: 10px;
     overflow-y: auto;
     gap: 20px;
@@ -172,13 +175,13 @@ hr {
     color: white;
 }
 
-    .discution-options:hover {
-        color: rgb(128, 128, 128);
-    }
+.discution-options:hover {
+    color: rgb(128, 128, 128);
+}
 
-    .discution-options:active {
-        color: rgb(255, 255, 255);
-    }
+.discution-options:active {
+    color: rgb(255, 255, 255);
+}
 
 .BtnOptions {
     background-color: transparent;
@@ -202,21 +205,21 @@ hr {
 }
 
 .no-comments {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background-color:black;
-    padding:5px;
-    border-radius:5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .new-comment-title {
-    margin-top:5px;
-    margin-bottom:5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-.new-comment-container{
-    margin-top:10px;
+.new-comment-container {
+    margin-top: 10px;
 }
 
 .new-comment-container hr {
@@ -237,9 +240,8 @@ hr {
     margin-right: 10%;
 }
 
-.align-rigth 
-{
-    margin-left:10%;
+.align-rigth {
+    margin-left: 10%;
 }
 
 .simple-button {
@@ -260,16 +262,17 @@ hr {
     gap: 10px;
     min-width: 210px;
 }
-    .simple-button:hover {
-        color: white !important;
-        background-color: rgb(128, 128, 128);
-        box-shadow: inset rgb(255, 255, 255) 0px 0px 5px 3px;
-    }
 
-    .simple-button:active {
-        background-color: rgb(148, 148, 148);
-    }
+.simple-button:hover {
+    color: white !important;
+    background-color: rgb(128, 128, 128);
+    box-shadow: inset rgb(255, 255, 255) 0px 0px 5px 3px;
+}
+
+.simple-button:active {
+    background-color: rgb(148, 148, 148);
+}
 
 .vspace {
-    height:15px;
+    height: 15px;
 }

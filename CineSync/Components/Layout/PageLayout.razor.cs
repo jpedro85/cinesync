@@ -76,10 +76,8 @@ namespace CineSync.Components.Layout
             AuthenticationState authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             string? userId = UserManager.GetUserId(authState.User);
 
-            Console.WriteLine($"is User {userId == null}");
             if (userId != null)
                 AuthenticatedUser = await DbUserManager.GetFirstByConditionAsync(u => u.Id == userId, "Following", "Followers");
-            Console.WriteLine($"BrawserUser {AuthenticatedUser?.Following?.Count},{AuthenticatedUser?.Followers?.Count}");
         }
 
         private async Task GetUserRoles()
@@ -88,16 +86,14 @@ namespace CineSync.Components.Layout
                 UserRoles = await DbUserRoleManager.GetRolesOfUserAsync(AuthenticatedUser);
         }
 
-        private void GetNavbarInstance( NavBar instance ) 
+        private void GetNavbarInstance( NavBar instance )
         {
-            Console.WriteLine("GetNavbarInstance called");
             if(_navBar == null)
                 _navBar = instance;
         }
 
         private void GetMenuInstance(Menu instance)
         {
-            Console.WriteLine("GetMenuInstance called");
             if (_menu == null)
                 _menu = instance;
         }

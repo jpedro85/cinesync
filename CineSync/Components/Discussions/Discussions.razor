@@ -4,7 +4,7 @@
 @using CineSync.Data.Models
 
 <RoleCkeck AuthenticatedUserRoles="@_authenticatedUserRoles" Roles="@( new string[] { "user","moderador","admin","super_admin" } )">
-    <PassOneCheck>     
+    <PassOneCheck>
         <div class="add-discussion-containor" >
             <NewDiscussion @ref="@_newDiscussion"></NewDiscussion>
             <RectColoredButton Text="Start" OnClick="StartDiscussion"></RectColoredButton>
@@ -19,22 +19,21 @@
     }
     else if (_movieDiscussions.Count == 0)
     {
-        <div class="nocomments">There is no Discussions at this time.</div>
+        <div class="nocomments">There are no Discussions yet.</div>
     }
     else
     {
         @foreach ( Discussion discussion in _movieDiscussions)
         {
-            <ItemDiscussion 
+            <ItemDiscussion
                 Discussion="@discussion"
                 OnChange="() => { InvokeAsync(StateHasChanged); }"
-                Liked="@( LikedDiscussions.Any( uLike => uLike.Discussion.Equals(discussion) ) )"
-                DisLiked="@( DislikedDiscussions.Any( uDisLike => uDisLike.Discussion.Equals( discussion) ) )"
                 LikedDiscussions="@LikedDiscussions"
                 DislikedDiscussions="@DislikedDiscussions"
-                OnRemove="(id) => { _movieDiscussions = _movieDiscussions.Where(d=>d.Id != id).ToList(); }">
+                OnRemove="(id) => { _movieDiscussions = _movieDiscussions.Where(d=>d.Id != id).ToList(); }"
+                OnCreate="(newdiscussion)=>{ _movieDiscussions.Add(newdiscussion); InvokeAsync(StateHasChanged); }">
             </ItemDiscussion>
         }
     }
-   
+
 </div>

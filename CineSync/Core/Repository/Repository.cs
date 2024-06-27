@@ -71,6 +71,11 @@ namespace CineSync.Core.Repository
             Context.Entry(item).State = EntityState.Modified;
         }
 
+        public void DeleteRange(IEnumerable<TEntity> items)
+        {
+            Context.RemoveRange(items);
+        }
+
         public void Delete(TEntity item)
         {
             Context.Remove(item);

@@ -2,15 +2,13 @@ using CineSync.Components.Layout;
 using CineSync.Data;
 using CineSync.Data.Models;
 using CineSync.DbManagers;
-using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-
 
 namespace CineSync.Components.PopUps
 {
     public partial class RemoveCollection : ComponentBase
     {
-        [CascadingParameter(Name ="PageLayout")]
+        [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; }
 
         [Parameter]
@@ -36,8 +34,7 @@ namespace CineSync.Components.PopUps
 
         private async void ExecuteRemoveCollection()
         {
-            Console.WriteLine("Remove Collection: " + Collection.Id);
-            if (await CollectionsManager.RemoveCollectionAsync(AuthenticatedUser.Id, Collection.Id))
+            if (await CollectionsManager.RemoveCollectionAsync(Collection.Id))
             {
                 await OnRemove.InvokeAsync();
             }
@@ -47,7 +44,7 @@ namespace CineSync.Components.PopUps
             }
         }
 
-        public void Open() 
+        public void Open()
         {
             PopUpLayout.Open();
         }

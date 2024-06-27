@@ -2,9 +2,6 @@
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CineSync.Components.Layout
 {
@@ -69,15 +66,14 @@ namespace CineSync.Components.Layout
 
         }
 
-        private void OnClickShowAll(MouseEventArgs e) 
+        private void OnClickShowAll(MouseEventArgs e)
         {
             _showAll = !_showAll;
             IsActive = "Active";
-            Console.WriteLine($"IsActive: {IsActive}");
             StateHasChanged();
         }
 
-        public Task ReRender() 
+        public Task ReRender()
         {
             return InvokeAsync(StateHasChanged);
         }

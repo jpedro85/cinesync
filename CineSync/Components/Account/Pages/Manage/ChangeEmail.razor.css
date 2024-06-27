@@ -2,9 +2,9 @@
     display: flex;
     justify-content: end;
     align-items: center;
-    position:absolute;
-    left:30%;
-    top:30%;
+    position: absolute;
+    left: 30%;
+    top: 30%;
     width: 50%;
 }
 
@@ -27,6 +27,12 @@
     display: flex;
 }
 
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
 #logo {
     width: 400px;
 }
@@ -44,7 +50,6 @@
     justify-content: center;
     align-content: center;
 }
-
 
 
 .text-center {

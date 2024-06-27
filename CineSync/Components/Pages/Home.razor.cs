@@ -13,7 +13,7 @@ namespace CineSync.Components.Pages
 {
     public partial class Home : ComponentBase
     {
-      
+
         [Inject]
         private HttpClient _client { get; set; }
 
@@ -30,7 +30,7 @@ namespace CineSync.Components.Pages
         protected override void OnInitialized()
         {
 
-            
+
         }
 
         //protected override async Task OnInitializedAsync()
@@ -48,10 +48,6 @@ namespace CineSync.Components.Pages
             {
                 SearchButton.OnSearch += OnSearch;
             }
-
-            Console.WriteLine($"aa {_pageLayout != null}");
-			Console.WriteLine($"aa1 {_pageLayout?.Menu != null}");
-			Console.WriteLine($"a2 {_pageLayout?.NavBar != null}");
 		}
 
         //private void ToggleNavMenu()
@@ -65,7 +61,7 @@ namespace CineSync.Components.Pages
                 NavigationManager.NavigateTo($"/Search/{searchQuery}");
         }
 
-        private void GetPagelayout(PageLayout instance) 
+        private void GetPagelayout(PageLayout instance)
         {
             if(_pageLayout == null)
                 _pageLayout = instance;

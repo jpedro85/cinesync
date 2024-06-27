@@ -16,6 +16,7 @@ namespace CineSync.Core.Repository
         void Insert(TEntity item);
         void Update(TEntity item);
         void Delete(TEntity item);
+        void DeleteRange(IEnumerable<TEntity> items);
 
         void Ensure<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty?>> expression) where TProperty : class;
         void Ensure<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> expression) where TProperty : class;

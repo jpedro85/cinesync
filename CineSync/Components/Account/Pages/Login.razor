@@ -23,7 +23,6 @@
                         <StatusMessage Message="@errorMessage" />
                         <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                             <DataAnnotationsValidator />
-                            <h2>Use a local account to log in.</h2>
                             <hr />
                             <ValidationSummary class="text-danger" role="alert" />
                             <div class="form-floating mb-3">
@@ -35,12 +34,6 @@
                                 <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
                                 <label for="password" class="form-label">Password</label>
                                 <ValidationMessage For="() => Input.Password" class="text-danger" />
-                            </div>
-                            <div class="checkbox3 mb-3">
-                                <label class="form-label">
-                                    <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
-                                    Remember me
-                                </label>
                             </div>
                             <div class="login-container">
                                 <button type="submit" class="login-btn">Log in</button>
@@ -71,7 +64,6 @@
 
 </div>
 
-
 @code {
     private string? errorMessage;
 
@@ -97,22 +89,26 @@
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+        ApplicationUser? User = await UserManager.FindByEmailAsync(Input.Email);
+        if (User == null)
+        {
+            errorMessage = "Error: Invalid Email.";
+            return;
+        }
+        SignInResult result = await SignInManager.PasswordSignInAsync(User, Input.Password, Input.RememberMe, false);
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
             RedirectManager.RedirectTo(ReturnUrl);
         }
-        else if (result.RequiresTwoFactor)
-        {
-            RedirectManager.RedirectTo(
-                "Account/LoginWith2fa",
-                new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
-        }
         else if (result.IsLockedOut)
         {
             Logger.LogWarning("User account locked out.");
             RedirectManager.RedirectTo("Account/Lockout");
+        }
+        else if(result.IsNotAllowed)
+        {
+            errorMessage = "Error: Your account is not activated. Please check your email for the activation link";
         }
         else
         {

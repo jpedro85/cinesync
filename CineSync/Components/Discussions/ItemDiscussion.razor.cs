@@ -1,7 +1,6 @@
 ﻿using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components;
 using CineSync.Data.Models;
-using CineSync.Services;
 using CineSync.Data;
 using CineSync.Components.Comments;
 using Microsoft.IdentityModel.Tokens;
@@ -11,50 +10,44 @@ using CineSync.Components.PopUps;
 
 namespace CineSync.Components.Discussions
 {
-    public partial class ItemDiscussion
+    public partial class ItemDiscussion : ComponentBase
     {
-		[CascadingParameter(Name = "PageLayout")]
-		public PageLayout PageLayout { get; set; }
-
-
-		[Inject]
-        private UserManager UserManager { get; set; }
+        [CascadingParameter(Name = "PageLayout")]
+        public PageLayout PageLayout { get; set; } = default!;
 
         [Inject]
-        private DiscussionManager DiscussionManager {  get; set; }
+        private MovieManager MovieManager { get; set; } = default!;
 
         [Inject]
-        private CommentManager CommentManager { get; set; }
+        private NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        private DbManager<UserLikedComment> DbUserLikedComment { get; set; }
+        private UserManager UserManager { get; set; } = default!;
 
         [Inject]
-        private DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
+        private DiscussionManager DiscussionManager { get; set; } = default!;
 
+        [Inject]
+        private CommentManager CommentManager { get; set; } = default!;
 
-        [Parameter,EditorRequired]
-        public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; }
+        [Inject]
+        private DbManager<UserLikedComment> DbUserLikedComment { get; set; } = default!;
+
+        [Inject]
+        private DbManager<UserDislikedComment> DbUserDislikedComment { get; set; } = default!;
 
         [Parameter, EditorRequired]
-        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; } 
+        public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; } = default!;
 
-        public ICollection<UserLikedComment> _likedComments { get; set; } 
-        public ICollection<UserDislikedComment> _dislikedComments { get; set; } 
-        [Parameter]
-        public Discussion Discussion { get; set; }
+        [Parameter, EditorRequired]
+        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; } = default!;
 
-        private RemoveDiscussion _popupRemove;
+        public ICollection<UserLikedComment> _likedComments { get; set; } = default!;
 
-
-        [Parameter]
-        public bool Liked { get; set; } = false;
-        private bool _Liked { get; set; }
+        public ICollection<UserDislikedComment> _dislikedComments { get; set; } = default!;
 
         [Parameter]
-        public bool DisLiked { get; set; } = false;
-        private bool _Disliked { get; set; }
-
+        public Discussion Discussion { get; set; } = default!;
 
         [Parameter]
         public bool AllowFollow { get; set; } = true;
@@ -65,29 +58,48 @@ namespace CineSync.Components.Discussions
         [Parameter]
         public EventCallback<uint> OnRemove { get; set; }
 
+        [Parameter]
+        public EventCallback<Discussion> OnCreate { get; set; } = default;
+
+        [Parameter]
+        public bool AllowNavegation { get; set; } = false;
+        //private bool _isNaveGationClick = true;
+
+
+        private RemoveDiscussion _popupRemove = default!;
+
+        private bool _Liked = false;
+
+        private bool _Disliked = false;
+
         private ApplicationUser? _authenticatedUser;
 
-        private ICollection<string> _userRoles;
+        private ICollection<string> _userRoles = default!;
 
-        private NewComment _newComment;
+        private NewComment _newComment = default!;
 
         private bool _DoComment = false;
 
         private bool _allowSee = false;
 
+        private bool _fetchedInfo = false;
+
         protected override void OnInitialized()
         {
             _authenticatedUser = PageLayout.AuthenticatedUser;
             _userRoles = PageLayout.UserRoles;
-            _Liked = Liked;
-            _Disliked = DisLiked;
+            _Liked = LikedDiscussions.Any(uLike => uLike.Discussion.Equals(Discussion));
+            _Disliked = DislikedDiscussions.Any( uDisLike => uDisLike.Discussion.Equals( Discussion) );
             _allowSee = !Discussion.HasSpoiler;
         }
+        
         protected async void GetDiscutionInfo()
         {
             Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
             GetUserStatusComments();
+            UpdateSpoilerState();
             StateHasChanged();
+            _fetchedInfo = true;
         }
 
         private void GetUserStatusComments()
@@ -106,6 +118,11 @@ namespace CineSync.Components.Discussions
                             likedComment.UserId == _authenticatedUser.Id
                             ).Result.ToList();
             }
+            else 
+            {
+                _likedComments = new List<UserLikedComment>(0);
+                _dislikedComments = new List<UserDislikedComment>(0);
+            }
         }
 
 
@@ -114,7 +131,7 @@ namespace CineSync.Components.Discussions
             if (await UserManager.Follow(_authenticatedUser!.Id, id))
             {
                 StateHasChanged();
-				await PageLayout.Menu.ReRender();
+                await PageLayout.Menu.ReRender();
                 await OnChange.InvokeAsync();
             }
         }
@@ -124,8 +141,8 @@ namespace CineSync.Components.Discussions
             if (await UserManager.UnFollow(_authenticatedUser!.Id, id))
             {
                 StateHasChanged();
-				await PageLayout.Menu.ReRender();
-				await OnChange.InvokeAsync();
+                await PageLayout.Menu.ReRender();
+                await OnChange.InvokeAsync();
             }
         }
 
@@ -247,29 +264,67 @@ namespace CineSync.Components.Discussions
             StateHasChanged();
         }
 
-        private async void AddComment(MouseEventArgs e) 
+        private async void AddComment(MouseEventArgs e)
         {
             Comment commentToAdd = _newComment.GetComment();
             commentToAdd.Autor = _authenticatedUser!;
 
-            if (!commentToAdd.Content.IsNullOrEmpty()) 
+            if (!commentToAdd.Content.IsNullOrEmpty())
             {
-                await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser!.Id );
+                await CommentManager.AddCommentToDiscussion(commentToAdd, Discussion.Id, _authenticatedUser!.Id);
                 _newComment.Reset();
+                UpdateSpoilerState();
                 StateHasChanged();
             }
+
+
         }
 
         private async void Remove()
         {
             uint id = (Discussion.Id);
-            await DiscussionManager.RemoveAsync(Discussion);
+            await DiscussionManager.DeleteAsync(Discussion);
             await OnRemove.InvokeAsync(id);
         }
 
-        private void ToogleComment() 
+        private void ToogleComment()
         {
             _DoComment = !_DoComment;
+        }
+
+        //TODO call this when a comment is removed or edited
+        public async void UpdateSpoilerState()
+        {
+            bool newSpoilerState = false;
+
+            if(Discussion.Comments != null) 
+            {
+                foreach (var item in Discussion.Comments)
+                {
+                    if (item.HasSpoiler) 
+                    {
+                        newSpoilerState = true;
+                        break;
+                    }
+                }
+            }
+
+            Discussion.HasSpoiler = newSpoilerState;
+
+            await DiscussionManager.EditAsync(Discussion);
+        }
+
+        private async void Navegate()
+        {
+            if (AllowNavegation)
+            {
+                int? MovieId = (await MovieManager.GetFirstByConditionAsync(m => m.Id == Discussion.MovieId))?.MovieId;
+
+                if (MovieId != null)
+                    NavigationManager.NavigateTo($"MovieDetails/{MovieId}/Discussions");
+            }
+
+            //_isNaveGationClick = true;
         }
     }
 }

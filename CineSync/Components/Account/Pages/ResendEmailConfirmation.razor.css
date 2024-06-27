@@ -8,12 +8,14 @@
     gap: 50px;
     height: 100%;
 }
+
 .main-content {
     display: flex;
     justify-content: end;
     align-items: center;
     width: 50%;
 }
+
 .form-container {
     background-color: rgba(0, 0, 0, 1); /* Black color with 50% opacity */
     padding: 20px;
@@ -24,6 +26,7 @@
     outline: auto;
     min-height: 300px;
 }
+
 .login-container {
     padding-bottom: 20px;
     flex-grow: 1;
@@ -31,13 +34,16 @@
     justify-content: center;
     display: flex;
 }
+
 #logo {
     width: 400px;
 }
+
 .logo-container {
     text-align: center;
     display: flex !important;
 }
+
 .logo-container-main {
     flex-grow: 1;
     margin-bottom: 10px;
@@ -46,6 +52,28 @@
     justify-content: center;
     align-content: center;
 }
-.text-center {
+
+.rbutton {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    padding: 8px 20px;
+    border-radius: 5px;
+    align-items: center;
+    cursor: pointer;
+    width: fit-content;
+    border: 2px solid rgb(128, 128, 128);
+}
+
+.rbutton:hover {
     color: white;
+    background-color: rgb(128, 128, 128);
+    box-shadow: inset rgb(255, 255, 255) 0px 0px 5px 3px;
+}
+
+.rbutton:active {
+    background-color: rgb(148, 148, 148);
 }

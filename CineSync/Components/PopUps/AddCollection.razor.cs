@@ -8,26 +8,26 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CineSync.Components.PopUps
 {
-	public partial class AddCollection : ComponentBase
+    public partial class AddCollection : ComponentBase
     {
-		[CascadingParameter(Name = "PageLayout")]
-		public PageLayout PageLayout { get; set; }
+        [CascadingParameter(Name = "PageLayout")]
+        public PageLayout PageLayout { get; set; }
 
+        [Parameter]
+        public uint MovieID { get; set; }
 
         [Inject]
         private CollectionsManager CollectionsManager { get; set; }
-
-
-		[Parameter]
-        public uint MovieID { get; set; }
-
 
         private ApplicationUser AuthenticatedUser { get; set; }
 
         private ICollection<MovieCollection> Collections { get; set; } = new List<MovieCollection>();
 
         private IDictionary<string, bool> CollectionsMovieStatus { get; set; } = new Dictionary<string, bool>();
+
         private ICollection<string> edited { get; set; } = new List<string>();
+
+        private ICollection<string> unmutableCollections = new string[] { "Classified" };
 
         private string _newCollectionName = "";
 
@@ -38,7 +38,7 @@ namespace CineSync.Components.PopUps
             Collections = await FetchCollections();
             CollectionsMovieStatus = UpdateStateCollections();
 
-		}
+        }
 
         private async Task<ICollection<MovieCollection>> FetchCollections()
         {
@@ -51,18 +51,18 @@ namespace CineSync.Components.PopUps
 
             foreach (MovieCollection collection in Collections)
             {
-                bool containMovie = collection.CollectionMovies.Any( relation => relation.MovieId == MovieID);
-				dic.Add(collection.Name, containMovie);
+                bool containMovie = collection.CollectionMovies.Any(relation => relation.MovieId == MovieID);
+                dic.Add(collection.Name, containMovie);
             }
 
             return dic;
         }
 
-        public void UpdateState(string key,bool isCheecked)
+        public void UpdateState(string key, bool isCheecked)
         {
             CollectionsMovieStatus[key] = isCheecked;
 
-            if(!edited.Contains(key))
+            if (!edited.Contains(key))
                 edited.Add(key);
         }
 

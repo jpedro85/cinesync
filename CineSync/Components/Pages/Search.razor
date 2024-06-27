@@ -6,8 +6,8 @@
 @using CineSync.Components.Layout;
 @using CineSync.Core.Adapters.ApiAdapters;
 
-<PageLayout 
-	@ref="@_pageLayout" 
+<PageLayout
+	@ref="@_pageLayout"
 	GetInstance="GetPagelayout"
 	HasSearch=false
 >
@@ -29,14 +29,20 @@
 					@foreach (MovieSearchAdapter movie in SearchResults)
 					{
 						<div @onclick="(e) => MovieClickhandler(movie)" >
-							<MovieAdapterPlace  Movie=movie />
+							<MovieAdapterPlace  Movie=movie Width="280" Heigth="420"/>
 						</div>
 					}
 
 					@if (!_isLastpage)
 					{
-						<div class="MoreResults-container">
+						<div class="MoreResults-container @_isLoading">
 							<button class="MoreResults" @onclick="(e)=>{LoadNextPageMovies();}">More Results</button>
+						</div>
+					}
+					else
+					{
+						<div class="NoResults-conteiner">
+							No more Results to Show!
 						</div>
 					}
 
@@ -67,5 +73,11 @@
 		</div>
 
 	</div>
-
+    <script>
+        function updateUrl(query) {
+            const newUrl = new URL(window.location);
+            newUrl.pathname = `/Search/${query}`;
+            window.history.pushState({}, '', newUrl);
+        }
+    </script>
 </PageLayout>

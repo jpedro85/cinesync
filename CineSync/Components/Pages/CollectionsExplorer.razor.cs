@@ -24,13 +24,13 @@ namespace CineSync.Components.Pages
 
         private PageLayout _pageLayout;
 
-        public async void Initialize() 
+        public async void Initialize()
         {
             AuthenticatedUser = _pageLayout.AuthenticatedUser!;
             movieCollections = await CollectionManager.GetUserCollections(AuthenticatedUser.Id);
         }
 
-        private void GetPageLayout(PageLayout instance) 
+        private void GetPageLayout(PageLayout instance)
         {
             if (_pageLayout == null)
                 _pageLayout = instance;
@@ -38,7 +38,6 @@ namespace CineSync.Components.Pages
 
         private async Task OnCollectionsEdit()
         {
-            Console.WriteLine("Was Called to ReRender");
             await InvokeAsync(StateHasChanged);
         }
 

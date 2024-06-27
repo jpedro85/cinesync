@@ -1,0 +1,20 @@
+﻿.title 
+{
+    font-family: 'Roboto';
+    font-size: 24px;
+    color: white;
+}
+
+
+/*@media (max-width:200px)
+{
+    .container {
+        min-width:80vw;
+    }
+}*/
+
+.container {
+    min-width: 80vw;
+    overflow-y:auto;
+    max-height:600px;
+}

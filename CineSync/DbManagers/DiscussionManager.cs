@@ -37,7 +37,7 @@ namespace CineSync.DbManagers
 		/// <returns>Return the comment of a movie</returns>
 		public async Task<ICollection<Discussion>> GetDiscussionsOfMovie(int movieId)
 		{
-            Movie? movie = await _movieRepository.GetFirstByConditionAsync( movie => movie.MovieId == movieId, "Discussions");
+            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Discussions", "Discussions.Autor");
 
             if (movie == null)
                 return new List<Discussion>(0);
@@ -47,19 +47,43 @@ namespace CineSync.DbManagers
                 return movie.Discussions ;
 		}
 
-
-
-
-		/// <summary>
-		/// Adds a discussion to a specific movie by a specified user.
-		/// </summary>
-		/// <param name="comment">The comment entity to add.</param>
-		/// <param name="movieId">The ID of the movie to which the comment is being added.</param>
-		/// <param name="userId">The ID of the user adding the comment.</param>
-		/// <returns>True if the comment is successfully added, otherwise false.</returns>
-		public async Task<bool> AddDiscussion(Discussion discussion, int movieId, string userId)
+        /// <summary>
+        /// Adds a discussion to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="discussion">The comment entity to add.</param>
+        /// <param name="movieIMDB_Id">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
+        public async Task<bool> AddDiscussion(Discussion discussion, int movieIMDB_Id, string userId)
         {
-            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Discussions");
+            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieIMDB_Id, "Discussions");
+            
+            return await AddDiscussion(discussion, movie, userId);
+        }
+
+        /// <summary>
+        /// Adds a discussion to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="discussion">The comment entity to add.</param>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
+        public async Task<bool> AddDiscussion(Discussion discussion, uint movieId, string userId)
+        {
+            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.Id == movieId, "Discussions");
+            
+            return await AddDiscussion(discussion, movie, userId);
+        }
+
+        /// <summary>
+        /// Adds a discussion to a specific movie by a specified user.
+        /// </summary>
+        /// <param name="discussion">The comment entity to add.</param>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <param name="userId">The ID of the user adding the comment.</param>
+        /// <returns>True if the comment is successfully added, otherwise false.</returns>
+        public async Task<bool> AddDiscussion(Discussion discussion, Movie? movie, string userId)
+        {
             ApplicationUser? user = await _userRepository.GetFirstByConditionAsync(user => user.Id == userId);
 
             if (movie == null || user == null)
@@ -74,6 +98,8 @@ namespace CineSync.DbManagers
 
             return await _unitOfWork.SaveChangesAsync();
         }
+
+       
 
         /// <summary>
         /// Increments the number of likes on a given discussion.
@@ -167,5 +193,33 @@ namespace CineSync.DbManagers
             return await _unitOfWork.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Updates the Discussion .
+        /// </summary>
+        /// <param name="editedDiscussion">The Discussion to update.</param>
+        public async Task<bool> EditAsync(Discussion editedDiscussion)
+        {
+            Discussion? discussion = await _repository.GetFirstByConditionAsync(ed => ed.Equals(editedDiscussion));
+
+            if (discussion == null)
+                return false;
+
+            discussion.Title = editedDiscussion.Title;
+            discussion.HasSpoiler = editedDiscussion.HasSpoiler;
+
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteAsync(Discussion entity)
+        {
+            IEnumerable<Comment> comentsToDelete = entity.Comments;
+
+            if (entity.Comments == null)
+               comentsToDelete = await _commentRepository.GetByConditionAsync( c => c.DiscussionId == entity.Id );
+
+            _commentRepository.DeleteRange(comentsToDelete);
+
+            return await RemoveAsync(entity);
+        }
     }
 }

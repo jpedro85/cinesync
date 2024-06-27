@@ -1,0 +1,26 @@
+﻿@using CineSync.Components.Buttons
+@using CineSync.Components.Discussions
+@using CineSync.Components.Comments
+
+<PopUpLayout Id="@("popupNewDiscussion"+_Id)" @ref="@_popUpLayout">
+	<Header>
+		<div class="title">
+			Start a new Discussion.
+		</div>
+	</Header>
+	<Body>
+		<div class="container">
+			<NewDiscussion Title="@Comment.Content" AllowFirsComment="false" @ref="_popUpNewDiscussion"></NewDiscussion>
+			<ItemComment 
+				LikedComments="[]"
+				DislikedComments="[]"
+				ShowOnlyInfo="true" 
+				Comment="@Comment">
+			</ItemComment>
+		</div>
+	</Body>
+	<Footer>
+		<RectButton2 Text="Cancel" DataDismiss="modal"></RectButton2>
+		<RectButton1 Text="Start" OnClick="CreateDiscussion"></RectButton1>
+	</Footer>
+</PopUpLayout>

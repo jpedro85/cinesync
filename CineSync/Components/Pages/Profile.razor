@@ -59,22 +59,23 @@
                                     <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal">Change Username</button>
                                     <UsernameEdit OnUsernameChange=OnProfileEdit />
 
-                                    <NavLink href="/Account/Manage/ChangePassword">
-                                        <button class="buttonProfile">Change Password</button>
-                                    </NavLink>
+                                    @* <NavLink href="/Account/Manage/ChangePassword"> *@
+                                    @*     <button class="buttonProfile">Change Password</button> *@
+                                    @* </NavLink> *@
+                                    <button class="buttonProfile" data-toggle="modal" data-target="#changePasswordPopUp">Change Password</button>
+                                    <ChangePasswordPopUp />
 
-
-                                    <NavLink href="/Account/Manage/Email">
-                                        <button class="buttonProfile">Change Email</button>
-                                    </NavLink>
-
+                                    <button class="buttonProfile" data-toggle="modal" data-target="#changeEmailPopUp">Change Email</button>
+                                    <ChangeEmailPopUp />
+                                    
                                     <form action="Account/Logout" method="post">
-                                        <AntiforgeryToken />
-                                            <input type="hidden" name="ReturnUrl" value="" />
-					                        <button class="buttonProfile">Logout</button>
+                                        <AntiforgeryToken/>
+                                        <input type="hidden" name="ReturnUrl" value=""/>
+                                        <button class="buttonProfile">Logout</button>
                                     </form>
+                                    
                                     <button class="DeleteBTN" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
-                                    <DeleteACC></DeleteACC>
+                                    <DeleteACC />
                                 }
                                 else
                                 {
@@ -125,7 +126,7 @@
 
                         @if (_invalid)
                         {
-                            <div class="error" >Ivalid user id</div>
+                            <div class="error" >Invalid user id</div>
                         }
                         else
                         {
@@ -175,15 +176,25 @@
                                     }
                                     else
                                     {
+                                        var _movieCollectionsToShow = _movieCollections.Where(c => !_visit || c.IsPublic);
+                                        bool _hasNoCollectionToShow = _movieCollectionsToShow.Count() == 0;
+
                                         <div class="Collections">
                                             <div class="Collections-colum">
-                                                @foreach (var collection in _movieCollections)
-                                                {
 
-                                                    <Collection  OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection" />
+                                                @foreach (var collection in _movieCollectionsToShow)
+                                                {
+                                                    <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection"/>
                                                 }
                                             </div>
                                         </div>
+
+                                        if (_hasNoCollectionToShow)
+                                        {
+                                            <div class="noFound">
+                                                No collections where found !
+                                            </div>
+                                        }
                                     }
 
                                 }
@@ -208,17 +219,22 @@
                                             <div class="Collections-colum">
                                                 @foreach (var comment in _comments)
                                                 {
-                                                    <ItemComment 
-                                                        Comment="comment"
-                                                        AllowFollow="false"
-                                                        LikedComments="_likedComents"
-                                                        DislikedComments="_dislikedComents"
-                                                        Liked="@( _likedComents.Any( uLike => uLike.CommentId == comment.Id ) )"
-                                                        DisLiked="@( _dislikedComents.Any( uDisLike => uDisLike.CommentId == comment.Id ) )"
-                                                        OnChange="() => { InvokeAsync(StateHasChanged); }" 
-                                                        >
-
-                                                    </ItemComment>
+                                                <ItemComment 
+                                                    AllowNavegation=true
+                                                    AllowStartDiscusion="false"
+                                                    Comment="comment"
+                                                    AllowFollow="false"
+                                                    LikedComments="@_likedComents"
+                                                    DislikedComments="@_dislikedComents"
+                                                    OnChange="() => { InvokeAsync(StateHasChanged); }"
+                                                    OnCreateDiscussion="() => { OnDiscussionCreate(comment.MovieId); }" 
+                                                    OnRemove="(commentId) =>
+                                                    {
+                                                        _comments = _comments.Where(c =>  c.Id != commentId ).ToList();
+                                                        InvokeAsync(StateHasChanged);
+                                                    }"
+                                                >     
+                                                </ItemComment>
                                                 }
                                             </div>
                                         </div>
@@ -247,14 +263,18 @@
                                                 @foreach (var discussion in _discussions)
                                                 {
                                                     <ItemDiscussion 
+                                                        AllowNavegation=true
                                                         AllowFollow=false
                                                         Discussion="@discussion"
-                                                        LikedDiscussions="_likedDiscussions"
-                                                        DislikedDiscussions="_dislikedDiscussions"
-                                                        Liked="@( _likedDiscussions.Any( uLike => uLike.DiscussionId == discussion.Id ) )"
-                                                        DisLiked="@( _dislikedDiscussions.Any( uDisLike => uDisLike.DiscussionId == discussion.Id ) )"
+                                                        LikedDiscussions="@_likedDiscussions"
+                                                        DislikedDiscussions="@_dislikedDiscussions"
                                                         OnChange="() => { InvokeAsync(StateHasChanged); }"
-                                                    >
+                                                        OnRemove="(discussionId) => 
+                                                            { 
+                                                                _discussions = _discussions.Where(d =>  d.Id != discussionId ).ToList(); 
+                                                                InvokeAsync(StateHasChanged);   
+                                                            }"
+                                                        >
                                                     </ItemDiscussion>
                                                 }
                                             </div>
@@ -327,7 +347,9 @@
     }
     else
     {
-        <Loading></Loading>
+        <div class="profile-container">
+            <Loading></Loading>
+        </div>
     }
 
 </PageLayout>

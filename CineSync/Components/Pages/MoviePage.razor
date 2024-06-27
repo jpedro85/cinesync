@@ -1,4 +1,4 @@
-﻿@page "/MovieDetails/{MovieId:int}"
+﻿@page "/MovieDetails/{MovieId:int}/{Tab?}"
 @rendermode InteractiveServer
 
 @using CineSync.Components.Layout
@@ -13,7 +13,7 @@
 	@ref="@_pageLayout"
 	GetInstance="GetPageLayout"
 >
-	
+
 	@{
 		Initialize();
 	}
@@ -46,8 +46,8 @@
 								<div class="buttonTreiler">
 									@if (Movie.TrailerKey != null)
 									{
-										<button style="all:unset;" data-toggle="modal" data-target="#trailerModal">Trailer</button>
-											<VideoTrailer TrailerLink=@($"{_youtubeLink}{Movie.TrailerKey}") />
+										<button class="BtnTrailer" @onclick="() => { VideoTrailer.Open(); }">Trailer</button>
+										<VideoTrailer @ref="VideoTrailer" TrailerLink=@($"{_youtubeLink}{Movie.TrailerKey}") />
 									}
 									else
 									{
@@ -153,8 +153,15 @@
 								<RoleCkeck AuthenticatedUserRoles="@_userRoles" Roles="@(new string[] {"user","moderator","admin","super_admin"})">
 									<PassOneCheck>
 										<div class="ButtonRatingitem-container">
-											<button class="ButtonRatingitem" data-toggle="modal" data-target="#RateModel"> Rate Movie</button>
-											<Classification MovieAPIId=@MovieId MovieId="@Movie.Id" OnRatingSaved="OnRatingSaved" />
+                                            @if(!_hasRatedMovie)
+                                            {
+                                                <button class="ButtonRatingitem" data-toggle="modal" data-target="#RateModel"> Rate Movie</button>
+                                                <Classification MovieAPIId=@MovieId MovieId="@Movie.Id" OnRatingSaved="OnRatingSaved" />
+                                            }
+                                            else
+                                            {
+                                                <span class="Rated">Rated</span>
+                                            }
 										</div>
 									</PassOneCheck>
 								</RoleCkeck>
@@ -167,7 +174,7 @@
 
 					<div class="page-bottom" >
 
-						<TabButtonsBar ActiveTab="0" OnTabChange="OnTabChange" TabNames="@_tabNames"
+						<TabButtonsBar @ref="@_TabBar" ActiveTab="_initialTab" OnTabChange="OnTabChange" TabNames="@_tabNames"
 							Background_Style="background: linear-gradient( to top, rgba(0,0,0,1), rgba(0,0,0,0) ) !important"
 						/>
 
@@ -175,21 +182,21 @@
 
 							@if( _activeTab == _tabNames[0] ) //comments
 							{
-					
-								<Comments 
-									MovieId=@MovieId 
-									LikedComments="@_likedComents" 
+
+								<Comments OnCreateDiscussion="@(() => { _TabBar.ChangeTab("Discussions"); })"
+									MovieId=@MovieId
+									LikedComments="@_likedComents"
 									DislikedComments="@_dislikedComents"
 								>
 								</Comments>
-		
+
 							}
 							else if ( _activeTab == _tabNames[1] ) //Discussions
 							{
-				
-								<Discussions 
+
+								<Discussions
 									MovieId=@MovieId
-									LikedDiscussions="@_likedDiscussion" 
+									LikedDiscussions="@_likedDiscussion"
 									DislikedDiscussions="@_dislikedDiscussions"
 								>
 								</Discussions>
@@ -205,7 +212,17 @@
 	}
 	else
 	{
-		<Loading></Loading>
+		<div class="page-main-Conteiner">
+			<Loading></Loading>
+		</div>
 	}
 
 </PageLayout>
+
+<script>
+	function updateUrl(movieId,tab) {
+		const newUrl = new URL(window.location);
+		newUrl.pathname = `/MovieDetails/${movieId}/${tab}`;
+		window.history.pushState({}, '', newUrl);
+	}
+</script>

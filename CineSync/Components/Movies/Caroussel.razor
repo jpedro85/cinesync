@@ -1,25 +1,33 @@
-<div class="movie-carousel">
-     @if (isCarouselActive)
-    {
-        foreach (var movie in CurrentMovies)
-        {
-            <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
-                <MovieAdapterPlace  Movie="movie"/>
-            </div>
-        }
-    }
-    else
-    {
-        foreach (var movie in AllRatedMovies)
-        {
-            <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
-                <MovieAdapterPlace  Movie="movie"/>
-            </div>
-        }
-    }
-</div>
-<script>
+@using CineSync.Components.Layout
 
+@if (AllRatedMovies == null)
+{
+    <Loading></Loading>
+}
+else
+{
+    <div class="movie-carousel">
+        @if (isCarouselActive)
+        {
+            foreach (var movie in CurrentMovies)
+            {
+                <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
+                    <MovieAdapterPlace Movie="movie"/>
+                </div>
+            }
+        }
+        else
+        {
+            foreach (var movie in AllRatedMovies)
+            {
+                <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
+                    <MovieAdapterPlace Movie="movie"/>
+                </div>
+            }
+        }
+    </div>
+}
+<script>
 var resizeTimeout;
 
 function addResizeListener(dotNetObjRef) {
@@ -51,5 +59,4 @@ function removeResizeListener() {
         currentResizeHandler = null;  // Clear the handler reference
     }
 }
-
 </script>

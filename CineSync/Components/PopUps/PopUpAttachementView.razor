@@ -1,11 +1,11 @@
-﻿
+﻿@using CineSync.Components.Layout
 @using CineSync.Components.Buttons
 @using CineSync.Components.Utils;
 
 <PopUpLayout Id="@Id" @ref="@_popUpLayout">
 	<Header>
 		<div class="file-title">File:</div>
-		<div class="file-name">@Name</div
+		<div class="file-name">@Name</div>
 	</Header>
 	<Body>
 		<div class="image-container">
@@ -15,7 +15,14 @@
 			}
 			else
 			{
-				<div>Merda</div>
+				<Loading 
+					FontPalceHeight="20"
+					FontSize="18"
+					LineHeight="30"
+					LetterSpacing="0"
+					MarginLeterLine="5"
+					MaxWidth="120">
+				 </Loading>
 			}
 		</div>
 	</Body>

@@ -61,15 +61,14 @@ namespace CineSync.Components.Navs
 
         public async Task ReRender()
         {
-            Console.WriteLine("Was called");
             if (UserImage == null && AuthenticatedUser != null)
             {
                 UserImage = await UserImageManager.GetFirstByConditionAsync(image => image.UserId == AuthenticatedUser.Id);
             }
             await InvokeAsync(StateHasChanged);
         }
-        
-        private void OnMenuClick(MouseEventArgs e) 
+
+        private void OnMenuClick(MouseEventArgs e)
         {
             NavBarEvents.OnMenuClick(e);
         }
@@ -79,7 +78,7 @@ namespace CineSync.Components.Navs
             NavBarEvents.OnClickNotification(e);
         }
 
-        public void SetVisibleSearchButton(bool visible) 
+        public void SetVisibleSearchButton(bool visible)
         {
             _hasSearch = visible;
 			InvokeAsync(StateHasChanged);

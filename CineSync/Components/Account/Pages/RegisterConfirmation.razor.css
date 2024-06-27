@@ -1,0 +1,63 @@
+﻿.page {
+    background-image: url("BackgorundHome.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: row;
+    padding: 50px;
+    gap: 50px;
+    height: 100%;
+}
+
+.main-content {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 50%;
+
+}
+
+.form-container {
+    background-color: rgba(0, 0, 0, 1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    left: 44%;
+    min-width: 500px;
+    color: white;
+    outline: auto;
+    position: relative;
+    min-height: 600px;
+}
+
+#logo {
+    width: 400px;
+}
+
+.logo-container {
+    text-align: center;
+    display: flex !important;
+}
+
+.logo-container-main {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+
+.register-conteiner {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    left: 50%;
+}
+
+p {
+    font-size: 1.2rem;
+}

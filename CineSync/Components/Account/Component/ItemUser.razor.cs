@@ -24,15 +24,14 @@ namespace CineSync.Components.Account.Component
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender) 
+            if (firstRender)
             {
                 GetImage();
-                Console.WriteLine($"FetImage {_image == null}");
                 StateHasChanged();
             }
         }
 
-        private async void GetImage() 
+        private async void GetImage()
         {
             _image = await DbUserImageManager.GetFirstByConditionAsync( uImage => uImage.UserId == User.Id );
         }

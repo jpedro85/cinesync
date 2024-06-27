@@ -49,7 +49,6 @@ namespace CineSync.Components.Comments
 
         private async Task HandleFileSelected(InputFileChangeEventArgs e)
         {
-            Console.WriteLine($"Add:{_instanceId}");
 
             ErrorMessages.Clear();
 
@@ -69,6 +68,7 @@ namespace CineSync.Components.Comments
                 {
                     await ProcessFile(attachment, fileType);
                 }
+                StateHasChanged();
             });
 
             await Task.WhenAll(tasks);
@@ -125,9 +125,8 @@ namespace CineSync.Components.Comments
 
         }
 
-        private void OpenAttachement( byte[] attachment , string fileName) 
+        private void OpenAttachement( byte[] attachment , string fileName)
         {
-            Console.WriteLine(fileName);
             _attachmentViwer.Attachment = attachment;
             _attachmentViwer.Name = fileName;
             _attachmentViwer.TrigerStatehasChanged();
@@ -151,7 +150,7 @@ namespace CineSync.Components.Comments
             return comment;
         }
 
-        public void UpdateSpoilerState( bool newState ) 
+        public void UpdateSpoilerState( bool newState )
         {
             comment.HasSpoiler = newState;
             StateHasChanged();

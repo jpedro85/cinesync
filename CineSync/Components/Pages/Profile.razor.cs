@@ -1,12 +1,8 @@
-﻿using CineSync.Core;
-using CineSync.Components.PopUps;
-using CineSync.Components.Account.Component;
+﻿using CineSync.Components.PopUps;
 using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Data.Models;
-using CineSync.Services;
 using Microsoft.AspNetCore.Components;
-using System.Net.Mail;
 using CineSync.Components.Layout;
 
 namespace CineSync.Components.Pages
@@ -15,7 +11,6 @@ namespace CineSync.Components.Pages
     {
         [Parameter]
         public string? UserId { get; set; }
-
 
         [Inject]
         public CommentManager DbCommentManage { get; set; }
@@ -33,7 +28,7 @@ namespace CineSync.Components.Pages
         public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
 
         [Inject]
-        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion{ get; set; }
+        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion { get; set; }
 
         [Inject]
         public DbManager<UserDislikedDiscussion> DbUserDislikedDiscussion { get; set; }
@@ -45,16 +40,19 @@ namespace CineSync.Components.Pages
         public UserImageManager UserImageManager { get; set; }
 
         [Inject]
-        public UserManager UserManager { get; set; }
+        public MovieManager MovieManager { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        public UserManager UserManager { get; set; }
 
         public UsernameEdit newuserName { get; set; }
 
         public ApplicationUser? User { get; set; }
 
         public ApplicationUser AuthenticatedUser { get; set; }
-
-
 
         public UserImage? UserImage { get; set; }
 
@@ -87,30 +85,21 @@ namespace CineSync.Components.Pages
         {
         }
 
-        private async void Initialize() 
+        private async void Initialize()
         {
             AuthenticatedUser = _pageLayout.AuthenticatedUser!;
 
-            if (string.IsNullOrEmpty(UserId) || UserId == AuthenticatedUser.Id || UserId == "0")
+            if (string.IsNullOrEmpty(UserId) || UserId == AuthenticatedUser.Id)
             {
                 _visit = false;
                 User = AuthenticatedUser;
-                if (UserId == "0")
-                {
-                    _invalid = true;
-                    return;
-                }
-                Console.WriteLine($"User{User?.Following?.Count},{User?.Followers?.Count}");
             }
             else
             {
                 User = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId, "Following", "Followers");
-                Console.WriteLine($"User{User?.Following?.Count},{User?.Followers?.Count}");
-
-                if (User == null)
+                if (User == null || UserId == "0")
                 {
                     _invalid = true;
-                    return;
                 }
                 else
                 {
@@ -142,9 +131,8 @@ namespace CineSync.Components.Pages
             {
                 FetchUserImage();
             }
-            //AuthenticatedUser = LayoutService.MainLayout.AuthenticatedUser!;
             StateHasChanged();
-            //await LayoutService.MainLayout.TriggerNavBarReRender();
+            await _pageLayout.NavBar.ReRender();
         }
 
         private void UpdateMovieCollections()
@@ -156,8 +144,8 @@ namespace CineSync.Components.Pages
         private void UpdateComments()
         {
             _comments = DbCommentManage.GetByConditionAsync(
-                        comment => 
-                        comment.Autor.Id == User.Id, "Attachements" 
+                        comment =>
+                        comment.Autor.Id == User.Id, "Attachements"
                         ).Result.ToList();
 
             _likedComents = DbUserLikedComment.GetByConditionAsync(
@@ -177,7 +165,7 @@ namespace CineSync.Components.Pages
 
         private void UpdateDiscussions()
         {
-            _discussions = DbDiscussionsManage.GetByConditionAsync( discussion => discussion.Autor.Id == User!.Id, "Comments" )
+            _discussions = DbDiscussionsManage.GetByConditionAsync(discussion => discussion.Autor.Id == User!.Id, "Comments")
                           .Result
                           .ToList();
 
@@ -203,8 +191,6 @@ namespace CineSync.Components.Pages
                 if (AuthenticatedUser.Following == null)
                     AuthenticatedUser.Following = new List<ApplicationUser>();
 
-                AuthenticatedUser.Following.Add(User!);
-
                 StateHasChanged();
                 //LayoutService.MainLayout.TriggerMenuReRender();
             }
@@ -225,13 +211,25 @@ namespace CineSync.Components.Pages
             }
         }
 
+        private async void OnDiscussionCreate(uint? movieId) 
+        {
+            if (movieId == null)
+                return;
+
+            Console.WriteLine("Called");
+            Movie? movie = await MovieManager.GetFirstByConditionAsync(m => m.Id == movieId);
+
+            if(movie != null)
+                NavigationManager.NavigateTo($"MovieDetails/{movie.MovieId}/Discussions");
+        }
+
         private void OnTabChange(string tabName)
         {
             _activeTab = tabName;
             InvokeAsync(StateHasChanged);
         }
 
-        private void GetPagelayout( PageLayout instance) 
+        private void GetPagelayout(PageLayout instance)
         {
             if (_pageLayout == null)
                 _pageLayout = instance;

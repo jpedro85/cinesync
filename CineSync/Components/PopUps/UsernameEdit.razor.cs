@@ -3,6 +3,7 @@ using CineSync.Data;
 using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.JSInterop;
 
 namespace CineSync.Components.PopUps
@@ -12,15 +13,12 @@ namespace CineSync.Components.PopUps
         [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; }
 
-
-        [Inject]
-        private UserManager UserManager { get; set; }
-
-
         [Parameter]
         public EventCallback OnUsernameChange { get; set; }
 
-
+        [Inject]
+        private UserManager UserManager { get; set; }
+        
         private PopUpLayout PopUpLayout;
 
         private ApplicationUser? AuthenticatedUser { get; set; }
@@ -40,29 +38,27 @@ namespace CineSync.Components.PopUps
             ErrorMessage = string.Empty;
         }
 
-        private async Task RenameUsername()
+        private async void RenameUsername()
         {
             ErrorMessage = string.Empty;
 
             if (string.IsNullOrWhiteSpace(_newUserName))
             {
-                ErrorMessage = "Username cannot be empty.";
+                ErrorMessage = "Error: Username cannot be empty.";
+                StateHasChanged();
                 return;
             }
 
-            if (await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName))
+            bool result = await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName);
+            if (!result)
             {
-                PageLayout!.AuthenticatedUser.UserName = _newUserName;
-                await OnUsernameChange.InvokeAsync();
-                PopUpLayout.Close();
+                ErrorMessage = "Error: Username is already taken or something went wrong.";
+                StateHasChanged();
+                return;
             }
-            else
-            {
-                ErrorMessage = "Something went wrong could not change your username";
-            }
-
+            
+            PopUpLayout.Close();
+            await OnUsernameChange.InvokeAsync();
         }
-
     }
-
 }

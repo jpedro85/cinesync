@@ -1,6 +1,7 @@
 ﻿@rendermode InteractiveServer
-@using CineSync.Data.Models;
+
 @using CineSync.Components.Buttons;
+@using CineSync.Components.Utils
 
 <PopUpLayout @ref=PopUpLayout Id="editProfileModal">
     <Header>
@@ -8,18 +9,20 @@
     </Header>
     <Body>
         <div class="modal-body">
+            <StateMessage message="@ErrorMessage" />
             <div class="form-group">
                 <label for="profilePic">Profile Picture:</label>
-                <InputFile @bind-Value="selectedFile" OnChange="HandleSelected" accept="image/*" />
-                @if (!string.IsNullOrEmpty(ErrorMessage))
-                {
-                    <div class="text-danger">@ErrorMessage</div>
-                }
+                <InputFile id="profilePicInput" OnChange="HandleSelected" accept="image/*"/>
             </div>
         </div>
     </Body>
     <Footer>
-        <RectButton2 Text="Cancel" DataDismiss="modal" ></RectButton2>
-        <RectButton1 Text="Update" DataDismiss="modal" OnClick="()=>{ UploadProfilePic();}"> </RectButton1>
+        <RectButton2 Text="Cancel" DataDismiss="modal"></RectButton2>
+        <RectButton1 Text="Update" OnClick="() => { UploadProfilePic(); }"/>
     </Footer>
 </PopUpLayout>
+<script>
+    function resetFileInput(elementId) {
+        document.getElementById(elementId).value = "";
+    }
+</script>

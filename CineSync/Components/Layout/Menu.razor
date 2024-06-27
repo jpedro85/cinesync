@@ -131,7 +131,7 @@
                                         </svg>
 
                                         <div class="ButtonText @IsActive">
-                                            Rated
+                                            Classified
                                         </div>
 
                                     </div>
@@ -172,7 +172,6 @@
 
                     @{
                         bool _short = !IsActive.Equals("Active");
-                        Console.WriteLine($"Merda {AuthenticatedUser == null} {AuthenticatedUser?.Following == null}");
                     }
 
                     @if (AuthenticatedUser?.Following != null && AuthenticatedUser?.Following.Count > 0)

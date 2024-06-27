@@ -39,7 +39,7 @@ namespace CineSync.DbManagers
         /// <returns>Return the comment of a movie</returns>
         public async Task<ICollection<Comment>> GetCommentsOfMovie(int movieId)
         {
-            Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
+            Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments", "Comments.Autor");
 
             ICollection<Comment> allcomments = new List<Comment>(0);
             foreach (var item in movie.Comments)
@@ -57,7 +57,7 @@ namespace CineSync.DbManagers
         /// <returns>Return the comment of a movie</returns>
         public async Task<ICollection<Comment>> GetCommentsOfDiscussion(uint discussionId)
         {
-            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync( discussion => discussion.Id == discussionId, "Comments", "Comments.Attachements");
+            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync(discussion => discussion.Id == discussionId, "Comments", "Comments.Attachements", "Comments.Autor");
 
             if ( discussion != null && discussion.Comments != null)
                 return discussion.Comments;
@@ -107,35 +107,49 @@ namespace CineSync.DbManagers
         /// <returns>True if the comment is successfully added, otherwise false.</returns>
         public async Task<bool> AddCommentToDiscussion(Comment comment, uint discussionId, string userId)
         {
-            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync( d => d.Id == discussionId, "Comments");
             ApplicationUser? user = await _userRepository.GetFirstByConditionAsync(user => user.Id == userId);
+            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync( d => d.Id == discussionId, "Comments");
 
-            if (discussion == null || user == null)
+            if (user == null)
                 return false;
-            
-            Console.WriteLine($" d:{discussionId} u:{userId}");
+
             comment.Autor = user;
 
-            if (discussion.Comments == null)
-            {
-                discussion.Comments = new List<Comment>() { comment };
-                return await _unitOfWork.SaveChangesAsync();
-            }
-            else if (!discussion.Comments.Contains(comment))
-            {
-                discussion.Comments.Add(comment);
-                return await _unitOfWork.SaveChangesAsync();
-            }
-            else
-                return false;
+            return await AddCommentToDiscussion(comment, discussionId);
+		}
 
-        }
+		/// <summary>
+		/// Adds a comment to a specific movie by a specified user.
+		/// </summary>
+		/// <param name="comment">The comment entity to add.</param>
+		/// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+		/// <returns>True if the comment is successfully added, otherwise false.</returns>
+		public async Task<bool> AddCommentToDiscussion(Comment comment, uint discussionId)
+        {
+			Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync(d => d.Id == discussionId, "Comments");
 
-        /// <summary>
-        /// Increments the number of likes on a given comment.
-        /// </summary>
-        /// <param name="comment">The comment to be liked.</param>
-        public async Task<bool> AddLikeAsync(Comment comment, string userId)
+			if (discussion == null )
+				return false;
+
+			if (discussion.Comments == null)
+			{
+				discussion.Comments = new List<Comment>() { comment };
+				return await _unitOfWork.SaveChangesAsync();
+			}
+			else if (!discussion.Comments.Contains(comment))
+			{
+				discussion.Comments.Add(comment);
+				return await _unitOfWork.SaveChangesAsync();
+			}
+			else
+				return false;
+		}
+
+		/// <summary>
+		/// Increments the number of likes on a given comment.
+		/// </summary>
+		/// <param name="comment">The comment to be liked.</param>
+		public async Task<bool> AddLikeAsync(Comment comment, string userId)
         {
             ApplicationUser user = await _userRepository.GetFirstByConditionAsync(u => u.Id == userId, "LikedComments" );
 
