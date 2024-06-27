@@ -1,6 +1,7 @@
 @rendermode InteractiveServer
 
 @using CineSync.Components.Buttons
+@using CineSync.Components.Utils
 
 <PopUpLayout @ref="PopUpLayout" Id="changeEmailPopUp">
     <Header>
@@ -15,32 +16,26 @@
         <div class="title prevent-select" style="color:white; font-size:30px;">Change Email</div>
     </Header>
     <Body>
-        <div class="main-container">
-            @if (!string.IsNullOrEmpty(message))
-            {
-                var statusMessageClass = message.StartsWith("Error") ? "danger" : "success";
-                <div class="alert alert-@statusMessageClass" role="alert">
-                    @message
-                </div>
-            }
-            <EditForm Model="Input" FormName="change-email" OnValidSubmit="OnValidSubmitAsync" method="post">
-                <DataAnnotationsValidator/>
-                <ValidationSummary class="text-danger" role="alert"/>
-                <div class="form-floating mb-3 prevent-select">
-                    <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Email</span>
-                    <div class="form-floating mb-3 input-group">
-                        <span class="form-control prevent-select" style="font-size: 1.3rem; background-color: #bfbfbf; border-right-color: #bfbfbf">@email</span>
-                        <div class="input-group-append prevent-select">
-                            <span class="h-100 input-group-text text-success font-weight-bold prevent-select" style="background-color: #bfbfbf; border-left: #bfbfbf">✓</span>
-                        </div>
+    <div class="main-container">
+        <StateMessage message="@message"/>
+        <EditForm Model="Input" FormName="change-email" OnValidSubmit="OnValidSubmitAsync" method="post">
+            <DataAnnotationsValidator/>
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="form-floating mb-3 prevent-select">
+                <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Email</span>
+                <div class="form-floating mb-3 input-group">
+                    <span class="form-control prevent-select" style="font-size: 1.3rem; background-color: #bfbfbf; border-right-color: #bfbfbf">@email</span>
+                    <div class="input-group-append prevent-select">
+                        <span class="h-100 input-group-text text-success font-weight-bold prevent-select" style="background-color: #bfbfbf; border-left: #bfbfbf">✓</span>
                     </div>
                 </div>
-                <div class="form-floating mb-3">
-                    <ValidationMessage For="() => Input.NewEmail" class="text-danger"/>
-                    <span class="form-label subtitle">New email</span>
-                    <InputText @bind-Value="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email."/>
-                </div>
-            </EditForm>
+            </div>
+            <div class="form-floating mb-3">
+                <ValidationMessage For="() => Input.NewEmail" class="text-danger"/>
+                <span class="form-label subtitle">New email</span>
+                <InputText @bind-Value="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email."/>
+            </div>
+        </EditForm>
     </div>
     </Body>
     <Footer>

@@ -1,6 +1,7 @@
 ﻿@rendermode InteractiveServer
 
 @using CineSync.Components.Buttons;
+@using CineSync.Components.Utils
 
 <PopUpLayout @ref=PopUpLayout Id="editUsernameModal">
     <Header>
@@ -8,22 +9,19 @@
         <div class="title">Edit Username</div>
     </Header>
     <Body>
-    <div class="modal-body">
-        <div class="form-group">
-            <div class="form-floating mb-3 prevent-select">
-                <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Username</span>
-                <span class="form-control prevent-select d-flex align-items-center" style="font-size: 1.3rem; background-color: #bfbfbf">@AuthenticatedUser</span>
-            </div>
-            <div class="form-floating mb-3 prevent-select">
-                <span class="form-label subtitle">New Username</span>
-                <InputText @bind-Value="_newUserName" class="form-control d-flex align-items-center" placeholder="Enter new username" @oninput="HandleInputChange"/>
+        <div class="modal-body">
+            <StateMessage message="@ErrorMessage" />
+            <div class="form-group">
+                <div class="form-floating mb-3 prevent-select">
+                    <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Username</span>
+                    <span class="form-control prevent-select d-flex align-items-center" style="font-size: 1.3rem; background-color: #bfbfbf">@AuthenticatedUser</span>
+                </div>
+                <div class="form-floating mb-3 prevent-select">
+                    <span class="form-label subtitle">New Username</span>
+                    <InputText @bind-Value="_newUserName" class="form-control d-flex align-items-center" placeholder="Enter new username" @oninput="HandleInputChange"/>
+                </div>
             </div>
         </div>
-        @if (!string.IsNullOrEmpty(ErrorMessage))
-        {
-            <span style="color:red;">@ErrorMessage</span>
-        }
-    </div>
     </Body>
     <Footer>
         <RectButton2 Text="Cancel" DataDismiss="modal"> </RectButton2>

@@ -44,7 +44,7 @@ namespace CineSync.Components.PopUps
 
             if (string.IsNullOrWhiteSpace(_newUserName))
             {
-                ErrorMessage = "Username cannot be empty.";
+                ErrorMessage = "Error: Username cannot be empty.";
                 StateHasChanged();
                 return;
             }
@@ -52,7 +52,7 @@ namespace CineSync.Components.PopUps
             bool result = await UserManager.ChangeUsernameAsync(AuthenticatedUser.Id, _newUserName);
             if (!result)
             {
-                ErrorMessage = "Username is already taken or something went wrong.";
+                ErrorMessage = "Error: Username is already taken or something went wrong.";
                 StateHasChanged();
                 return;
             }

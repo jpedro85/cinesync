@@ -1,9 +1,9 @@
 ﻿.rbutton {
-    font-family: Roboto ;
+    font-family: Roboto;
     font-weight: 500;
     font-size: 16px;
     color: #ffffff;
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
     color: black;
     padding: 8px 20px;
     border-radius: 5px;
@@ -13,12 +13,12 @@
     border: 2px solid rgb(128, 128, 128);
 }
 
-    .rbutton:hover {
-        color: white;
-        background-color: rgb(128, 128, 128);
-        box-shadow: inset rgb(255, 255, 255) 0px 0px 5px 3px;
-    }
+.rbutton:hover {
+    color: white;
+    background-color: rgb(128, 128, 128);
+    box-shadow: inset rgb(255, 255, 255) 0px 0px 5px 3px;
+}
 
-    .rbutton:active {
-        background-color: rgb(148, 148, 148);
-    }
+.rbutton:active {
+    background-color: rgb(148, 148, 148);
+}

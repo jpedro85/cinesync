@@ -51,12 +51,12 @@ namespace CineSync.Components.PopUps
             var fileType = selectedFile.ContentType;
             if (selectedFile.Size > MaxFileSize)
             {
-                ErrorMessage = $"File size exceeds the limit of {MaxFileSize / (1024 * 1024)} MB. Please select a smaller file.";
+                ErrorMessage = $"Error: File size exceeds the limit of {MaxFileSize / (1024 * 1024)} MB. Please select a smaller file.";
                 selectedFile = null;
             }
             else if (!fileType.StartsWith("image/"))
             {
-                ErrorMessage = "Invalid file type. Please select an image.";
+                ErrorMessage = "Error: Invalid file type. Please select an image.";
                 selectedFile = null;
             }
 
@@ -66,7 +66,7 @@ namespace CineSync.Components.PopUps
         {
             if (selectedFile == null)
             {
-                ErrorMessage = "Please select a valid image file.";
+                ErrorMessage = "Error: Please select a valid image file.";
                 StateHasChanged();
                 return;
             }
@@ -81,7 +81,7 @@ namespace CineSync.Components.PopUps
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Error uploading file: {ex.Message}";
+                ErrorMessage = $"Error uploading file {ex.Message}";
             }
         }
 

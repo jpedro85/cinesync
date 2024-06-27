@@ -46,10 +46,12 @@ namespace CineSync.Components.PopUps
             if (!changePasswordResult.Succeeded)
             {
                 message = $"Error: {string.Join(",", changePasswordResult.Errors.Select(error => error.Description))}";
+                StateHasChanged();
                 return;
             }
 
             message = "Password has changed successfully";
+            StateHasChanged();
         }
         
         private void ClearMessage()
