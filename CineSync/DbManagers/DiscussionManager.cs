@@ -37,7 +37,7 @@ namespace CineSync.DbManagers
 		/// <returns>Return the comment of a movie</returns>
 		public async Task<ICollection<Discussion>> GetDiscussionsOfMovie(int movieId)
 		{
-            Movie? movie = await _movieRepository.GetFirstByConditionAsync( movie => movie.MovieId == movieId, "Discussions");
+            Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Discussions", "Discussions.Autor");
 
             if (movie == null)
                 return new List<Discussion>(0);
@@ -208,6 +208,18 @@ namespace CineSync.DbManagers
             discussion.HasSpoiler = editedDiscussion.HasSpoiler;
 
             return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteAsync(Discussion entity)
+        {
+            IEnumerable<Comment> comentsToDelete = entity.Comments;
+
+            if (entity.Comments == null)
+               comentsToDelete = await _commentRepository.GetByConditionAsync( c => c.DiscussionId == entity.Id );
+
+            _commentRepository.DeleteRange(comentsToDelete);
+
+            return await RemoveAsync(entity);
         }
     }
 }

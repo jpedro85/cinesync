@@ -5,6 +5,7 @@ using CineSync.DbManagers;
 using CineSync.Components.Layout;
 using CineSync.Components.PopUps;
 using CineSync.Components.Buttons;
+using Microsoft.JSInterop;
 
 
 namespace CineSync.Components.Pages
@@ -15,45 +16,52 @@ namespace CineSync.Components.Pages
         [Parameter]
         public int MovieId { get; set; }
 
-        [Inject]
-        private HttpClient _client { get; set; }
+		[Parameter]
+		public string? Tab { get; set; }
+
 
         [Inject]
-        public CollectionsManager CollectionsManager { get; set; }
+        private HttpClient _client { get; set; } = default!;
 
         [Inject]
-        public DbManager<UserLikedComment> DbUserLikedComment { get; set; }
+        public CollectionsManager CollectionsManager { get; set; } = default!;
+
+		[Inject]
+        public DbManager<UserLikedComment> DbUserLikedComment { get; set; } = default!;
+
+		[Inject]
+        public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; } = default!;
+
+		[Inject]
+        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion { get; set; } = default!;
+
+		[Inject]
+        public DbManager<UserDislikedDiscussion> DbUserDislikedDiscussion { get; set; } = default!;
+
+		[Inject]
+        private UserManager UserManager { get; set; } = default!;
+
+		[Inject]
+        private MovieManager MovieManager { get; set; } = default!;
 
         [Inject]
-        public DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
+        private IJSRuntime JSRuntime { get; set; } = default!;
 
-        [Inject]
-        public DbManager<UserLikedDiscussion> DbUserLikedDiscussion { get; set; }
-
-        [Inject]
-        public DbManager<UserDislikedDiscussion> DbUserDislikedDiscussion { get; set; }
-
-        [Inject]
-        private UserManager UserManager { get; set; }
-
-        [Inject]
-        private MovieManager MovieManager { get; set; }
-
-        private PageLayout _pageLayout;
+		private PageLayout _pageLayout = default!;
         private bool _initialized = false;
 
 
 		private readonly string _youtubeLink = "https://www.youtube.com/embed/";
 
-        private string MoviePosterBase64;
+        private string MoviePosterBase64 = default!;
 
-        private Movie Movie { get; set; }
+		private Movie Movie { get; set; } = default!;
 
-        private string _activeTab = "Comments";
+		private string _activeTab = "Comments";
 
         private string[] _tabNames = { "Comments", "Discussions" };
 
-        private ICollection<string> _userRoles;
+        private ICollection<string> _userRoles = default!;
 
         private ICollection<UserLikedComment> _likedComents = new List<UserLikedComment>();
         private ICollection<UserDislikedComment> _dislikedComents = new List<UserDislikedComment>();
@@ -61,12 +69,13 @@ namespace CineSync.Components.Pages
         private ICollection<UserLikedDiscussion> _likedDiscussion = new List<UserLikedDiscussion>();
         private ICollection<UserDislikedDiscussion> _dislikedDiscussions= new List<UserDislikedDiscussion>();
 
-        private ApplicationUser _authenticatedUser;
+        private ApplicationUser? _authenticatedUser;
 
         private bool _hasRatedMovie = false;
 
         private VideoTrailer VideoTrailer = default!;
 		private TabButtonsBar _TabBar = default!;
+        private int _initialTab = 0;
 
 
 		protected async void Initialize()
@@ -74,7 +83,15 @@ namespace CineSync.Components.Pages
 
             if (!_initialized) 
             {
-                _authenticatedUser = _pageLayout!.AuthenticatedUser!;
+
+                if( Tab != null )
+                {
+                    _initialTab = Array.IndexOf(_tabNames, Tab);
+                    _initialTab = _initialTab == -1 ? 0 : _initialTab;
+				}
+				
+                _activeTab = _tabNames[_initialTab];
+				_authenticatedUser = _pageLayout.AuthenticatedUser;
                 _userRoles = _pageLayout!.UserRoles;
                 Movie = (await GetMovieDetails())!;
                 GetUserStatusComments();
@@ -173,13 +190,19 @@ namespace CineSync.Components.Pages
         private void OnTabChange(string tabName)
         {
             _activeTab = tabName;
-            InvokeAsync(StateHasChanged);
+            UpdateUrl(MovieId, _activeTab);
+			InvokeAsync(StateHasChanged);
         }
 
         private void GetPageLayout( PageLayout instance)
         {
             if( _pageLayout == null)
                 _pageLayout = instance;
+        }
+
+        private void UpdateUrl( int movieId, string tab ) 
+        {
+            JSRuntime.InvokeVoidAsync("updateUrl", movieId, tab);
         }
 
     }

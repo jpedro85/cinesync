@@ -30,7 +30,8 @@
                 OnChange="() => { InvokeAsync(StateHasChanged); }"
                 LikedDiscussions="@LikedDiscussions"
                 DislikedDiscussions="@DislikedDiscussions"
-                OnRemove="(id) => { _movieDiscussions = _movieDiscussions.Where(d=>d.Id != id).ToList(); }">
+                OnRemove="(id) => { _movieDiscussions = _movieDiscussions.Where(d=>d.Id != id).ToList(); }"
+                OnCreate="(newdiscussion)=>{ _movieDiscussions.Add(newdiscussion); InvokeAsync(StateHasChanged); }">
             </ItemDiscussion>
         }
     }

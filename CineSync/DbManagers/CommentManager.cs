@@ -39,7 +39,7 @@ namespace CineSync.DbManagers
         /// <returns>Return the comment of a movie</returns>
         public async Task<ICollection<Comment>> GetCommentsOfMovie(int movieId)
         {
-            Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments");
+            Movie movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Comments", "Comments.Autor");
 
             ICollection<Comment> allcomments = new List<Comment>(0);
             foreach (var item in movie.Comments)
@@ -57,7 +57,7 @@ namespace CineSync.DbManagers
         /// <returns>Return the comment of a movie</returns>
         public async Task<ICollection<Comment>> GetCommentsOfDiscussion(uint discussionId)
         {
-            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync( discussion => discussion.Id == discussionId, "Comments", "Comments.Attachements");
+            Discussion? discussion = await _discussionRepository.GetFirstByConditionAsync(discussion => discussion.Id == discussionId, "Comments", "Comments.Attachements", "Comments.Autor");
 
             if ( discussion != null && discussion.Comments != null)
                 return discussion.Comments;

@@ -1,4 +1,4 @@
-﻿@page "/MovieDetails/{MovieId:int}"
+﻿@page "/MovieDetails/{MovieId:int}/{Tab?}"
 @rendermode InteractiveServer
 
 @using CineSync.Components.Layout
@@ -174,7 +174,7 @@
 
 					<div class="page-bottom" >
 
-						<TabButtonsBar @ref="@_TabBar" ActiveTab="0" OnTabChange="OnTabChange" TabNames="@_tabNames"
+						<TabButtonsBar @ref="@_TabBar" ActiveTab="_initialTab" OnTabChange="OnTabChange" TabNames="@_tabNames"
 							Background_Style="background: linear-gradient( to top, rgba(0,0,0,1), rgba(0,0,0,0) ) !important"
 						/>
 
@@ -218,3 +218,11 @@
 	}
 
 </PageLayout>
+
+<script>
+	function updateUrl(movieId,tab) {
+		const newUrl = new URL(window.location);
+		newUrl.pathname = `/MovieDetails/${movieId}/${tab}`;
+		window.history.pushState({}, '', newUrl);
+	}
+</script>

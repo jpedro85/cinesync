@@ -16,6 +16,12 @@ namespace CineSync.Components.Comments
 
 
         [Inject]
+        private MovieManager MovieManager { get; set; } = default!;
+
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = default!;
+
+        [Inject]
         private UserManager UserManager { get; set; } = default!;
 
         [Inject]
@@ -41,7 +47,14 @@ namespace CineSync.Components.Comments
         public bool ShowOnlyInfo { get; set; } = false;
 
         [Parameter]
+        public bool AllowNavegation { get; set; } = false;
+        private bool _isNaveGationClick = true;
+
+        [Parameter]
         public EventCallback OnChange { get; set; }
+
+        [Parameter]
+        public EventCallback<uint> OnRemove { get; set; }
 
         [Parameter]
         public EventCallback OnCreateDiscussion { get; set; } = default;
@@ -71,7 +84,9 @@ namespace CineSync.Components.Comments
 
 		private async void AddLike()
         {
-            if (_Disliked)
+            _isNaveGationClick = false;
+
+			if (_Disliked)
             {
                 await CommentManager.RemoveDesLikeAsync(Comment, _authenticatedUser.Id);
                 _Disliked = false;
@@ -96,7 +111,9 @@ namespace CineSync.Components.Comments
 
         private async void AddDeslike()
         {
-            if (_Liked)
+			_isNaveGationClick = false;
+
+			if (_Liked)
             {
                 await CommentManager.RemoveLikeAsync(Comment, _authenticatedUser.Id);
                 _Liked = false;
@@ -188,7 +205,9 @@ namespace CineSync.Components.Comments
 
         private async void Follow(string id)
         {
-            if (await UserManager.Follow(_authenticatedUser.Id, id))
+			_isNaveGationClick = false;
+
+			if (await UserManager.Follow(_authenticatedUser.Id, id))
             {
                 StateHasChanged();
                 await PageLayout.Menu.ReRender();
@@ -198,7 +217,9 @@ namespace CineSync.Components.Comments
 
         private async void UnFollow(string id)
         {
-            if (await UserManager.UnFollow(_authenticatedUser.Id, id))
+			_isNaveGationClick = false;
+
+			if (await UserManager.UnFollow(_authenticatedUser.Id, id))
             {
                 StateHasChanged();
                 await PageLayout.Menu.ReRender();
@@ -208,6 +229,7 @@ namespace CineSync.Components.Comments
 
         private void OpenAttachment(byte[] attachment)
         {
+            _isNaveGationClick = false;
             _attachementView.Attachment = attachment;
             _attachementView.Name = "View Attachement";
             _attachementView.TrigerStatehasChanged();
@@ -216,7 +238,22 @@ namespace CineSync.Components.Comments
 
         private async void RemoveComment()
         {
-            await OnChange.InvokeAsync();
+			_isNaveGationClick = false;
+
+			await OnRemove.InvokeAsync(Comment.Id);
+        }
+
+        private async void Navegate() 
+        {
+            if (AllowNavegation && _isNaveGationClick) 
+            {
+                int? MovieId = ( await MovieManager.GetFirstByConditionAsync(m => m.Id == Comment.MovieId ))?.MovieId;
+
+                if(MovieId != null)
+                    NavigationManager.NavigateTo($"MovieDetails/{MovieId}/Comments");
+            }
+
+            _isNaveGationClick = true;
         }
 
         // WARN: May be Implemented in a later date

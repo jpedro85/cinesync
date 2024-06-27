@@ -11,36 +11,36 @@ namespace CineSync.Components.Discussions
 {
 	public partial class Discussions
 	{
-		[CascadingParameter(Name = "PageLayout")]
-		public PageLayout PageLayout { get; set; }
+        [CascadingParameter(Name = "PageLayout")]
+        public PageLayout PageLayout { get; set; } = default!;
 
 
         [Inject]
-        private DiscussionManager DiscussionManager { get; set; }
+        private DiscussionManager DiscussionManager { get; set; } = default!;
 
         [Inject]
-        private CommentManager CommentManager { get; set; }
+        private CommentManager CommentManager { get; set; } = default!;
 
 
         [Parameter]
 		public int MovieId { get; set; }
 
         [Parameter]
-        public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; }
+        public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; } = default!;
 
         [Parameter]
-        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; }
+        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; } = default!;
 
 
-        private ApplicationUser _authenticatedUser;
+        private ApplicationUser _authenticatedUser = default!;
         private ICollection<string> _authenticatedUserRoles { get; set; } = new List<string>();
-		private ICollection<string> _userRoles { get; set; }
+		private ICollection<string> _userRoles { get; set; } = default!;
 
-        private ICollection<Discussion> _movieDiscussions;
+        private ICollection<Discussion> _movieDiscussions = default!;
 
-        private NewDiscussion _newDiscussion;
+        private NewDiscussion _newDiscussion = default!;
 
-		protected override void OnInitialized()
+        protected override void OnInitialized()
 		{
             _authenticatedUserRoles = PageLayout.UserRoles;
             _authenticatedUser = PageLayout.AuthenticatedUser!;

@@ -13,35 +13,41 @@ namespace CineSync.Components.Discussions
     public partial class ItemDiscussion : ComponentBase
     {
         [CascadingParameter(Name = "PageLayout")]
-        public PageLayout PageLayout { get; set; }
+        public PageLayout PageLayout { get; set; } = default!;
 
         [Inject]
-        private UserManager UserManager { get; set; }
+        private MovieManager MovieManager { get; set; } = default!;
 
         [Inject]
-        private DiscussionManager DiscussionManager { get; set; }
+        private NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        private CommentManager CommentManager { get; set; }
+        private UserManager UserManager { get; set; } = default!;
 
         [Inject]
-        private DbManager<UserLikedComment> DbUserLikedComment { get; set; }
+        private DiscussionManager DiscussionManager { get; set; } = default!;
 
         [Inject]
-        private DbManager<UserDislikedComment> DbUserDislikedComment { get; set; }
+        private CommentManager CommentManager { get; set; } = default!;
+
+        [Inject]
+        private DbManager<UserLikedComment> DbUserLikedComment { get; set; } = default!;
+
+        [Inject]
+        private DbManager<UserDislikedComment> DbUserDislikedComment { get; set; } = default!;
 
         [Parameter, EditorRequired]
-        public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; }
+        public ICollection<UserLikedDiscussion> LikedDiscussions { get; set; } = default!;
 
         [Parameter, EditorRequired]
-        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; }
+        public ICollection<UserDislikedDiscussion> DislikedDiscussions { get; set; } = default!;
 
-        public ICollection<UserLikedComment> _likedComments { get; set; } = new List<UserLikedComment>(0);
+        public ICollection<UserLikedComment> _likedComments { get; set; } = default!;
 
-        public ICollection<UserDislikedComment> _dislikedComments { get; set; } = new List<UserDislikedComment>(0);
+        public ICollection<UserDislikedComment> _dislikedComments { get; set; } = default!;
 
         [Parameter]
-        public Discussion Discussion { get; set; }
+        public Discussion Discussion { get; set; } = default!;
 
         [Parameter]
         public bool AllowFollow { get; set; } = true;
@@ -52,8 +58,15 @@ namespace CineSync.Components.Discussions
         [Parameter]
         public EventCallback<uint> OnRemove { get; set; }
 
+        [Parameter]
+        public EventCallback<Discussion> OnCreate { get; set; } = default;
 
-        private RemoveDiscussion _popupRemove;
+        [Parameter]
+        public bool AllowNavegation { get; set; } = false;
+        //private bool _isNaveGationClick = true;
+
+
+        private RemoveDiscussion _popupRemove = default!;
 
         private bool _Liked = false;
 
@@ -61,13 +74,15 @@ namespace CineSync.Components.Discussions
 
         private ApplicationUser? _authenticatedUser;
 
-        private ICollection<string> _userRoles;
+        private ICollection<string> _userRoles = default!;
 
-        private NewComment _newComment;
+        private NewComment _newComment = default!;
 
         private bool _DoComment = false;
 
         private bool _allowSee = false;
+
+        private bool _fetchedInfo = false;
 
         protected override void OnInitialized()
         {
@@ -80,11 +95,11 @@ namespace CineSync.Components.Discussions
         
         protected async void GetDiscutionInfo()
         {
-            Console.WriteLine(Discussion);
             Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
             GetUserStatusComments();
             UpdateSpoilerState();
             StateHasChanged();
+            _fetchedInfo = true;
         }
 
         private void GetUserStatusComments()
@@ -102,6 +117,11 @@ namespace CineSync.Components.Discussions
                             likedComment.Comment.DiscussionId == Discussion.Id &&
                             likedComment.UserId == _authenticatedUser.Id
                             ).Result.ToList();
+            }
+            else 
+            {
+                _likedComments = new List<UserLikedComment>(0);
+                _dislikedComments = new List<UserDislikedComment>(0);
             }
         }
 
@@ -263,7 +283,7 @@ namespace CineSync.Components.Discussions
         private async void Remove()
         {
             uint id = (Discussion.Id);
-            await DiscussionManager.RemoveAsync(Discussion);
+            await DiscussionManager.DeleteAsync(Discussion);
             await OnRemove.InvokeAsync(id);
         }
 
@@ -292,6 +312,19 @@ namespace CineSync.Components.Discussions
             Discussion.HasSpoiler = newSpoilerState;
 
             await DiscussionManager.EditAsync(Discussion);
+        }
+
+        private async void Navegate()
+        {
+            if (AllowNavegation)
+            {
+                int? MovieId = (await MovieManager.GetFirstByConditionAsync(m => m.Id == Discussion.MovieId))?.MovieId;
+
+                if (MovieId != null)
+                    NavigationManager.NavigateTo($"MovieDetails/{MovieId}/Discussions");
+            }
+
+            //_isNaveGationClick = true;
         }
     }
 }

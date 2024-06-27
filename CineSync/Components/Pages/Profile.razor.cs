@@ -40,6 +40,12 @@ namespace CineSync.Components.Pages
         public UserImageManager UserImageManager { get; set; }
 
         [Inject]
+        public MovieManager MovieManager { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
         public UserManager UserManager { get; set; }
 
         public UsernameEdit newuserName { get; set; }
@@ -203,6 +209,18 @@ namespace CineSync.Components.Pages
                 //LayoutService.MainLayout.TriggerMenuReRender();
 
             }
+        }
+
+        private async void OnDiscussionCreate(uint? movieId) 
+        {
+            if (movieId == null)
+                return;
+
+            Console.WriteLine("Called");
+            Movie? movie = await MovieManager.GetFirstByConditionAsync(m => m.Id == movieId);
+
+            if(movie != null)
+                NavigationManager.NavigateTo($"MovieDetails/{movie.MovieId}/Discussions");
         }
 
         private void OnTabChange(string tabName)

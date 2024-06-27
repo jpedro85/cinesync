@@ -218,16 +218,22 @@
                                             <div class="Collections-colum">
                                                 @foreach (var comment in _comments)
                                                 {
-                                                    <ItemComment 
-                                                        AllowStartDiscusion="false"
-                                                        Comment="comment"
-                                                        AllowFollow="false"
-                                                        LikedComments="@_likedComents"
-                                                        DislikedComments="@_dislikedComents"
-                                                        OnChange="() => { InvokeAsync(StateHasChanged); }" 
-                                                        >
-
-                                                    </ItemComment>
+                                                <ItemComment 
+                                                    AllowNavegation=true
+                                                    AllowStartDiscusion="false"
+                                                    Comment="comment"
+                                                    AllowFollow="false"
+                                                    LikedComments="@_likedComents"
+                                                    DislikedComments="@_dislikedComents"
+                                                    OnChange="() => { InvokeAsync(StateHasChanged); }"
+                                                    OnCreateDiscussion="() => { OnDiscussionCreate(comment.MovieId); }" 
+                                                    OnRemove="(commentId) =>
+                                                    {
+                                                        _comments = _comments.Where(c =>  c.Id != commentId ).ToList();
+                                                        InvokeAsync(StateHasChanged);
+                                                    }"
+                                                >     
+                                                </ItemComment>
                                                 }
                                             </div>
                                         </div>
@@ -256,12 +262,18 @@
                                                 @foreach (var discussion in _discussions)
                                                 {
                                                     <ItemDiscussion 
+                                                        AllowNavegation=true
                                                         AllowFollow=false
                                                         Discussion="@discussion"
                                                         LikedDiscussions="@_likedDiscussions"
                                                         DislikedDiscussions="@_dislikedDiscussions"
                                                         OnChange="() => { InvokeAsync(StateHasChanged); }"
-                                                    >
+                                                        OnRemove="(discussionId) => 
+                                                            { 
+                                                                _discussions = _discussions.Where(d =>  d.Id != discussionId ).ToList(); 
+                                                                InvokeAsync(StateHasChanged);   
+                                                            }"
+                                                        >
                                                     </ItemDiscussion>
                                                 }
                                             </div>
