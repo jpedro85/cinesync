@@ -1,4 +1,7 @@
 ﻿@page "/Account/RegisterConfirmation"
+@rendermode InteractiveServer
+
+@using CineSync.Components.Buttons
 @using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager Navigation
 
@@ -7,14 +10,17 @@
 <div class="page">
     <div class="main-content">
         <div class="form-container">
-            <h2>Thank you for registering!</h2>
+            <h2>Thank you for Registering!</h2>
             <p>Please check your email to confirm your account. Once you have confirmed your account, you will be able to log in.</p>
             <p>If you didn't receive an email, <a href="@ResendLink">click here to resend</a>.</p>
-    <div class="logo-container-main">
-        <div class="logo-container">
-            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
-        </div>
-    </div>
+            <div class="logo-container-main">
+                <div class="logo-container" @onclick="GoHome">
+                    <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <RectButton1 Text="Home" OnClick="GoHome"/>
+            </div>
         </div>
     </div>
 </div>
@@ -39,9 +45,15 @@
         }
     }
 
+    private void GoHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+
     private string ResendLink => QueryHelpers.AddQueryString("/Account/ResendEmailConfirmation", new Dictionary<string, string?>
     {
         { "email", email },
         { "returnUrl", returnUrl }
     });
+
 }

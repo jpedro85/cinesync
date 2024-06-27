@@ -14,19 +14,19 @@
     justify-content: end;
     align-items: center;
     width: 50%;
-    
+
 }
 
 .form-container {
-    background-color: rgba(0, 0, 0, 1); /* Black color with 50% opacity */
+    background-color: rgba(0, 0, 0, 1);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     left: 44%;
     min-width: 500px;
-    color: grey;
+    color: white;
     outline: auto;
-    position:relative;
+    position: relative;
     min-height: 600px;
 }
 
@@ -55,7 +55,9 @@
     justify-content: center;
     align-items: center;
     height: 100px;
-    left:50%;
+    left: 50%;
 }
 
-
+p {
+    font-size: 1.2rem;
+}
