@@ -4,14 +4,19 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using CineSync.Data
+@using CineSync.Components.Layout;
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Confirm email</PageTitle>
-
+<div class="page">
+ <div class="main-content">
 <h1>Confirm email</h1>
 <StatusMessage Message="@statusMessage" />
+</div>
+</div>
+
 
 @code {
     private string? statusMessage;
