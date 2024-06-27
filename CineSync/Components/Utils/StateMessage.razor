@@ -1,0 +1,13 @@
+@rendermode InteractiveServer
+@if (!string.IsNullOrEmpty(message))
+{
+    var statusMessageClass = message.StartsWith("Error") ? "danger" : "success";
+    <div class="alert alert-@statusMessageClass" role="alert">
+        @message
+    </div>
+}
+
+
+@code{
+    [Parameter, EditorRequired] public string message { get; set; } = string.Empty;
+}
