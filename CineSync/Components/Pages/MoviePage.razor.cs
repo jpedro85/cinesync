@@ -61,7 +61,7 @@ namespace CineSync.Components.Pages
 
         private string[] _tabNames = { "Comments", "Discussions" };
 
-        private ICollection<string> _userRoles;
+        private ICollection<string> _userRoles = default!;
 
         private ICollection<UserLikedComment> _likedComents = new List<UserLikedComment>();
         private ICollection<UserDislikedComment> _dislikedComents = new List<UserDislikedComment>();
@@ -69,7 +69,7 @@ namespace CineSync.Components.Pages
         private ICollection<UserLikedDiscussion> _likedDiscussion = new List<UserLikedDiscussion>();
         private ICollection<UserDislikedDiscussion> _dislikedDiscussions= new List<UserDislikedDiscussion>();
 
-        private ApplicationUser _authenticatedUser;
+        private ApplicationUser? _authenticatedUser;
 
         private bool _hasRatedMovie = false;
 
@@ -91,7 +91,7 @@ namespace CineSync.Components.Pages
 				}
 				
                 _activeTab = _tabNames[_initialTab];
-				_authenticatedUser = _pageLayout!.AuthenticatedUser!;
+				_authenticatedUser = _pageLayout.AuthenticatedUser;
                 _userRoles = _pageLayout!.UserRoles;
                 Movie = (await GetMovieDetails())!;
                 GetUserStatusComments();

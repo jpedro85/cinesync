@@ -218,16 +218,17 @@
                                             <div class="Collections-colum">
                                                 @foreach (var comment in _comments)
                                                 {
-                                                    <ItemComment 
-                                                        AllowStartDiscusion="false"
-                                                        Comment="comment"
-                                                        AllowFollow="false"
-                                                        LikedComments="@_likedComents"
-                                                        DislikedComments="@_dislikedComents"
-                                                        OnChange="() => { InvokeAsync(StateHasChanged); }" 
-                                                        >
+                                                <ItemComment 
+                                                    AllowNavegation=true
+                                                    AllowStartDiscusion="false"
+                                                    Comment="comment"
+                                                    AllowFollow="false"
+                                                    LikedComments="@_likedComents"
+                                                    DislikedComments="@_dislikedComents"
+                                                    OnChange="() => { InvokeAsync(StateHasChanged); }" 
+                                                    >
 
-                                                    </ItemComment>
+                                                </ItemComment>
                                                 }
                                             </div>
                                         </div>
@@ -256,6 +257,7 @@
                                                 @foreach (var discussion in _discussions)
                                                 {
                                                     <ItemDiscussion 
+                                                        AllowNavegation=true
                                                         AllowFollow=false
                                                         Discussion="@discussion"
                                                         LikedDiscussions="@_likedDiscussions"

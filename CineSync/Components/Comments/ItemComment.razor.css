@@ -5,6 +5,11 @@
     border-radius: 10px;
 }
 
+    .comment.outline:hover {
+        outline: 2px solid white;
+    }
+
+
 .comment-header {
     display: flex;
     color: white;
@@ -302,6 +307,7 @@ hr {
 
 .dislike,
 .like {
+    color: rgb(100, 100, 100);
     width: 20px;
     height: 20px;
     display: flex;

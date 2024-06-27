@@ -17,7 +17,7 @@ namespace CineSync.Components.PopUps
         public Comment Comment { get; set; } = default!;
 
         [Parameter]
-        public EventCallback OnCreate { get; set; } = default;
+        public EventCallback<Discussion> OnCreate { get; set; } = default;
 
 
         [Inject]
@@ -71,24 +71,39 @@ namespace CineSync.Components.PopUps
 
                 if (MovieId == null)
                 {
-                    Discussion discussion = ( await DiscussionManager.GetFirstByConditionAsync(d => d.Id == firstComment.DiscussionId ) )!;
-                    MovieId = discussion.MovieId;
+                    Discussion? discussion = ( await DiscussionManager.GetFirstByConditionAsync(d => d.Id == firstComment.DiscussionId ) )!;
+                    MovieId = discussion?.MovieId;
                 }
-                
+
+                if (MovieId == null)
+                {
+                    Console.WriteLine("Comentario with movieId:null discussionId:null");
+                    return;
+                }
+
                 Movie? movie = await MovieManager.GetFirstByConditionAsync(
                                 movie => movie.Id == firstComment.MovieId 
                                 );
 
-                await DiscussionManager.AddDiscussion(newDiscussion, movie, AuthenticatedUser.Id);
-                await CommentManager.AddCommentToDiscussion(firstComment, newDiscussion.Id);
+                bool result = false;
 
-                _popUpNewDiscussion.Reset();
-                Close();
+                result = await DiscussionManager.AddDiscussion(newDiscussion, movie, AuthenticatedUser.Id);
+                result = result && await CommentManager.AddCommentToDiscussion(firstComment, newDiscussion.Id);
 
-                if (OnCreate.HasDelegate) 
+                if( result ) 
                 {
-                    await OnCreate.InvokeAsync();
+                    _popUpNewDiscussion.Reset();
+                    Close();
+                    if (OnCreate.HasDelegate) 
+                    {
+                        await OnCreate.InvokeAsync(newDiscussion);
+                    }
                 }
+
+            }
+            else
+            {
+                Console.WriteLine("No Comment.");
             }
         }
     }
