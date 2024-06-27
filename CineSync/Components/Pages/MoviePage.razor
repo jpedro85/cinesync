@@ -183,7 +183,8 @@
 							@if( _activeTab == _tabNames[0] ) //comments
 							{
 
-								<Comments OnCreateDiscussion="@(() => { _TabBar.ChangeTab("Discussions"); })"
+								<Comments 
+									OnCreateDiscussion="@(() => { _TabBar.ChangeTab("Discussions"); })"
 									MovieId=@MovieId
 									LikedComments="@_likedComents"
 									DislikedComments="@_dislikedComents"

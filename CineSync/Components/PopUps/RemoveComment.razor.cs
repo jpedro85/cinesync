@@ -15,7 +15,7 @@ namespace CineSync.Components.PopUps
         [Parameter]
         public EventCallback OnRemove { get; set; }
 
-        [Inject]
+        [Inject] 
         private CommentManager CommentManager { get; set; }
 
         private PopUpLayout PopUpLayout { get; set; }
@@ -34,6 +34,7 @@ namespace CineSync.Components.PopUps
         {
             if (await CommentManager.RemoveAsync(Comment))
             {
+                Close();
                 await OnRemove.InvokeAsync();
             }
             else
