@@ -59,22 +59,23 @@
                                     <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal">Change Username</button>
                                     <UsernameEdit OnUsernameChange=OnProfileEdit />
 
-                                    <NavLink href="/Account/Manage/ChangePassword">
-                                        <button class="buttonProfile">Change Password</button>
-                                    </NavLink>
+                                    @* <NavLink href="/Account/Manage/ChangePassword"> *@
+                                    @*     <button class="buttonProfile">Change Password</button> *@
+                                    @* </NavLink> *@
+                                    <button class="buttonProfile" data-toggle="modal" data-target="#changePasswordPopUp">Change Password</button>
+                                    <ChangePasswordPopUp />
 
-
-                                    <NavLink href="/Account/Manage/ChangeEmail">
-                                        <button class="buttonProfile">Change Email</button>
-                                    </NavLink>
-
+                                    <button class="buttonProfile" data-toggle="modal" data-target="#changeEmailPopUp">Change Email</button>
+                                    <ChangeEmailPopUp />
+                                    
                                     <form action="Account/Logout" method="post">
                                         <AntiforgeryToken/>
                                         <input type="hidden" name="ReturnUrl" value=""/>
                                         <button class="buttonProfile">Logout</button>
                                     </form>
+                                    
                                     <button class="DeleteBTN" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
-                                    <DeleteACC></DeleteACC>
+                                    <DeleteACC />
                                 }
                                 else
                                 {
