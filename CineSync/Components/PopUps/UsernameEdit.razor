@@ -4,25 +4,29 @@
 
 <PopUpLayout @ref=PopUpLayout Id="editUsernameModal">
     <Header>
+        <img style="width: 40px; height: 40px;" src="changeUsername.png" alt="changeText"/>
         <div class="title">Edit Username</div>
     </Header>
     <Body>
-        <div class="modal-body">
-            <div class="form-group">
-                <div id="actual" class="subtitle" >
-                    Current Username: <span id="actualUsername" style="color:white;">@AuthenticatedUser</span>
-                </div>
-                <span class="subtitle" >New Username:</span>
-                <InputText @bind-Value="_newUserName" class="form-control" placeholder="Enter new username" @oninput="HandleInputChange" />
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="form-floating mb-3 prevent-select">
+                <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Username</span>
+                <span class="form-control prevent-select d-flex align-items-center" style="font-size: 1.3rem; background-color: #bfbfbf">@AuthenticatedUser</span>
             </div>
-            @if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                <span style="color:red;">@ErrorMessage</span>
-            }
+            <div class="form-floating mb-3 prevent-select">
+                <span class="form-label subtitle">New Username</span>
+                <InputText @bind-Value="_newUserName" class="form-control d-flex align-items-center" placeholder="Enter new username" @oninput="HandleInputChange"/>
+            </div>
         </div>
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <span style="color:red;">@ErrorMessage</span>
+        }
+    </div>
     </Body>
     <Footer>
         <RectButton2 Text="Cancel" DataDismiss="modal"> </RectButton2>
-        <RectButton1 Text="Save Changes" OnClick="()=>{RenameUsername();_newUserName=string.Empty;}"> </RectButton1>
+        <RectButton1 Text="Save Changes" OnClick="() => { RenameUsername(); _newUserName = string.Empty; }"> </RectButton1>
     </Footer>
 </PopUpLayout>

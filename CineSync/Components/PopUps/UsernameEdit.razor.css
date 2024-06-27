@@ -8,13 +8,25 @@
     color: white;
 }
 
+.center-text {
+    display: flex;
+    align-items: center;
+}
+
 #actualUsername {
     font-size: 24px;
     color: white;
-    margin-left:10px;
-    margin-bottom:10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 #actual {
-    margin-bottom:20px;
+    margin-bottom: 20px;
+}
+
+.prevent-select{
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
 }

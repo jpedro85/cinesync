@@ -59,14 +59,12 @@
                                     <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal">Change Username</button>
                                     <UsernameEdit OnUsernameChange=OnProfileEdit />
 
-                                    <NavLink href="/Account/Manage/ChangePassword">
-                                        <button class="buttonProfile">Change Password</button>
-                                    </NavLink>
-
-
-                                    @* <NavLink href="/Account/Manage/ChangeEmail"> *@
-                                    @*     <button class="buttonProfile">Change Email</button> *@
+                                    @* <NavLink href="/Account/Manage/ChangePassword"> *@
+                                    @*     <button class="buttonProfile">Change Password</button> *@
                                     @* </NavLink> *@
+                                    <button class="buttonProfile" data-toggle="modal" data-target="#changePasswordPopUp">Change Password</button>
+                                    <ChangePasswordPopUp />
+
                                     <button class="buttonProfile" data-toggle="modal" data-target="#changeEmailPopUp">Change Email</button>
                                     <ChangeEmailPopUp />
                                     

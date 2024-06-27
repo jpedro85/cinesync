@@ -1,5 +1,7 @@
-@using CineSync.Components.Account.Shared
-@using Humanizer
+@rendermode InteractiveServer
+
+@using CineSync.Components.Buttons
+
 <PopUpLayout @ref="PopUpLayout" Id="changeEmailPopUp">
     <Header>
         <svg fill="#fff" width="40" height="40" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 75.294 75.294" xml:space="preserve">
@@ -13,35 +15,36 @@
         <div class="title prevent-select" style="color:white; font-size:30px;">Change Email</div>
     </Header>
     <Body>
-    <div class="main-container">
-        @if (!string.IsNullOrEmpty(message))
-        {
-            var statusMessageClass = message.StartsWith("Error") ? "danger" : "success";
-            <div class="alert alert-@statusMessageClass" role="alert">
-                @message
-            </div>
-        }
-        <EditForm Model="Input" FormName="change-email" OnValidSubmit="OnValidSubmitAsync" method="post">
-            <DataAnnotationsValidator/>
-            <ValidationSummary class="text-danger" role="alert"/>
-            <div class="form-floating mb-3 prevent-select">
-                <span class="form-label prevent-select" style="color: #ffffff">Email</span>
-                <div class="form-floating mb-3 input-group">
-                    <span class="form-control prevent-select" style="font-size: large ">@email</span>
-                    <div class="input-group-append prevent-select">
-                        <span class="h-100 input-group-text text-success font-weight-bold prevent-select">✓</span>
+        <div class="main-container">
+            @if (!string.IsNullOrEmpty(message))
+            {
+                var statusMessageClass = message.StartsWith("Error") ? "danger" : "success";
+                <div class="alert alert-@statusMessageClass" role="alert">
+                    @message
+                </div>
+            }
+            <EditForm Model="Input" FormName="change-email" OnValidSubmit="OnValidSubmitAsync" method="post">
+                <DataAnnotationsValidator/>
+                <ValidationSummary class="text-danger" role="alert"/>
+                <div class="form-floating mb-3 prevent-select">
+                    <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Email</span>
+                    <div class="form-floating mb-3 input-group">
+                        <span class="form-control prevent-select" style="font-size: 1.3rem; background-color: #bfbfbf; border-right-color: #bfbfbf">@email</span>
+                        <div class="input-group-append prevent-select">
+                            <span class="h-100 input-group-text text-success font-weight-bold prevent-select" style="background-color: #bfbfbf; border-left: #bfbfbf">✓</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-floating mb-3">
-                <ValidationMessage For="() => Input.NewEmail" class="text-danger"/>
-                <span class="form-label">New email</span>
-                <InputText @bind-Value="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email."/>
-            </div>
-        </EditForm>
+                <div class="form-floating mb-3">
+                    <ValidationMessage For="() => Input.NewEmail" class="text-danger"/>
+                    <span class="form-label subtitle">New email</span>
+                    <InputText @bind-Value="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email."/>
+                </div>
+            </EditForm>
     </div>
     </Body>
     <Footer>
-        <button @onclick="OnValidSubmitAsync" class="w-100 btn btn-lg btn-primary">Change email</button>
+        <RectButton2 Text="Cancel" OnClick="PopUpLayout.Close" />
+        <RectButton1 Text="Change email" OnClick="async ()=> await OnValidSubmitAsync()" />
     </Footer>
 </PopUpLayout>
