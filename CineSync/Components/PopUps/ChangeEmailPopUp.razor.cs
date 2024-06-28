@@ -47,8 +47,6 @@ namespace CineSync.Components.PopUps
             user = PageLayout.AuthenticatedUser;
             email = user.Email;
             isEmailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
-
-            Input.NewEmail ??= email;
         }
 
         private async Task OnValidSubmitAsync()

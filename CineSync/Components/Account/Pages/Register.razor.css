@@ -11,36 +11,26 @@
 
 .main-content {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
-    width: 50%;
+    /*width: 50%;*/
 }
 
 .form-container {
-    background-color: rgba(0, 0, 0, 1); /* Black color with 50% opacity */
+    background-color: rgba(0, 0, 0, 1);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Shadow effect */
-
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     min-width: 500px;
     color: grey;
     outline: auto;
-
-    min-height:600px;
 }
 
 #logo {
     width: 400px;
 }
 
-.logo-container {
-    text-align: center;
-    display: flex !important;
-}
-
 .logo-container-main {
-    flex-grow: 1;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,7 +43,7 @@
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    height:100px;
+    height: 100px;
 }
 
 .register {
@@ -64,16 +54,16 @@
     Background: linear-gradient(0.25Turn, rgb(74, 186, 217) 10%, rgb(208, 6, 247));
     color: white;
     font-weight: 700;
-    font-size:20px;
-    font-family:Itim;
-    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50); 
-    border:solid 2px rgb(255,255,255);
+    font-size: 20px;
+    font-family: Itim;
+    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0, 50);
+    border: solid 2px rgb(255, 255, 255);
 
 }
 
-    .register:hover {
-        transition: width 0.1s ease;
-        box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
-        width: 170px;
-        color: black;
-    }
+.register:hover {
+    transition: width 0.1s ease;
+    box-shadow: inset 0 0 20px 2px rgb(255, 255, 255, 50);
+    width: 170px;
+    color: black;
+}
