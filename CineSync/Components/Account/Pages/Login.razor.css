@@ -4,6 +4,8 @@
     background-position: center;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     padding: 50px;
     gap: 50px;
     height: 100%;
@@ -44,7 +46,6 @@
 }
 
 .logo-container-main {
-    flex-grow: 1;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
