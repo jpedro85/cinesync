@@ -20,6 +20,9 @@ namespace CineSync.Components.Buttons
         [Parameter]
         public string Background_Style { get; set; } = "";
 
+        [Parameter]
+        public int FontSize { get; set; } = 24;
+
         private TabButton[] TabButtons;
 
         protected override void OnInitialized()
