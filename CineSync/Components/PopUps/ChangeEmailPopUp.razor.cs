@@ -73,7 +73,7 @@ namespace CineSync.Components.PopUps
                 NavigationManager.ToAbsoluteUri("Account/ConfirmEmailChange").AbsoluteUri,
                 new Dictionary<string, object?> { ["userId"] = userId, ["email"] = Input.NewEmail, ["code"] = code });
 
-            await EmailSender.SendEmailAsync(Input.NewEmail, "Confirm New Email Link",
+            await EmailSender.SendEmailAsync(Input.NewEmail, "Confirm New Email",
                 HtmlEncoder.Default.Encode(callbackUrl));
         }
 
