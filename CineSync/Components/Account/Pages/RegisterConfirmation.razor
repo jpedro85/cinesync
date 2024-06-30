@@ -5,14 +5,13 @@
 @using Microsoft.AspNetCore.WebUtilities
 @inject NavigationManager Navigation
 
-<PageTitle>Register Confirmation</PageTitle>
-
 <div class="page">
     <div class="main-content">
         <div class="form-container">
-            <h2>Thank you for Registering!</h2>
-            <p>Please check your email to confirm your account. Once you have confirmed your account, you will be able to log in.</p>
-            <p>If you didn't receive an email, <a href="@ResendLink">click here to resend</a>.</p>
+            <h2 class="text-center text-white">Thank you for Registering!</h2>
+            <hr class="text-white"/>
+            <p class="text-white">Please check your email to confirm your account. Once you have confirmed your account, you will be able to log in.</p>
+            <p class="text-white">If you didn't receive an email, <a href="@ResendLink">click here to resend</a>.</p>
             <div class="logo-container-main">
                 <div class="logo-container" @onclick="GoHome">
                     <img id="logo" src="../logo.png" alt="CineSync Main Logo">

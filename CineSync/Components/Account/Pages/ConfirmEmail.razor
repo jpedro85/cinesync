@@ -1,34 +1,44 @@
 ﻿@page "/Account/ConfirmEmail"
+@rendermode InteractiveServer
 
 @using System.Text
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using CineSync.Data
-@using CineSync.Components.Layout;
+@using CineSync.Components.Buttons
+@using CineSync.Components.Utils
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IdentityRedirectManager RedirectManager
+@inject NavigationManager NavigationManager
 
-<PageTitle>Confirm email</PageTitle>
 <div class="page">
- <div class="main-content">
-<h1>Confirm email</h1>
-<StatusMessage Message="@statusMessage" />
-</div>
+    <div class="main-content">
+        <div class="form-container">
+            <h1 class="text-center text-white">Confirm email</h1>
+            <hr class="text-white"/>
+            <StateMessage Message="@statusMessage"/>
+            <div class="logo-container-main" >
+                <div @onclick="GoHome">
+                    <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <RectButton1 Text="Home" OnClick="GoHome"/>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 @code {
-    private string? statusMessage;
+    private string statusMessage = string.Empty;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery]
-    private string? UserId { get; set; }
+    [SupplyParameterFromQuery] private string? UserId { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? Code { get; set; }
+    [SupplyParameterFromQuery] private string? Code { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,8 +50,8 @@
         var user = await UserManager.FindByIdAsync(UserId);
         if (user is null)
         {
-            HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            statusMessage = $"Error loading user with ID {UserId}";
+            // HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            statusMessage = $"Error: User not found";
         }
         else
         {
@@ -50,4 +60,11 @@
             statusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
         }
     }
+
+    private void GoHome()
+    {
+        Console.WriteLine("this shit is being called like a bitch");
+        NavigationManager.NavigateTo("/");
+    }
+
 }

@@ -59,7 +59,6 @@ namespace CineSync.Components.PopUps
             message = string.Empty;
         }
 
-
         private sealed class InputModel
         {
             [Required]

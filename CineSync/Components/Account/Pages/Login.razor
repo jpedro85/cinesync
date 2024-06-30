@@ -23,7 +23,7 @@
                         <StatusMessage Message="@errorMessage"/>
                         <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                             <DataAnnotationsValidator/>
-                            <hr/>
+                            <hr class="text-white"/>
                             <ValidationSummary class="text-danger" role="alert"/>
                             <div class="form-floating mb-3">
                                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
@@ -65,11 +65,14 @@
 @code {
     private string? errorMessage;
 
-    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] 
+    private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
+    [SupplyParameterFromForm] 
+    private InputModel Input { get; set; } = new();
 
-    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
+    [SupplyParameterFromQuery] 
+    private string? ReturnUrl { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

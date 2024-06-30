@@ -14,7 +14,6 @@
     justify-content: end;
     align-items: center;
     width: 50%;
-
 }
 
 .form-container {
@@ -24,7 +23,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     left: 44%;
     min-width: 500px;
-    color: white;
+    color: grey;
     outline: auto;
     position: relative;
     min-height: 600px;
@@ -46,16 +45,6 @@
     align-items: center;
     justify-content: center;
     align-content: center;
-}
-
-
-.register-conteiner {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    left: 50%;
 }
 
 p {
