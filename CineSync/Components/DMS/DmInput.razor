@@ -1,0 +1,33 @@
+@rendermode InteractiveServer
+
+<div class="dm-input-container">
+    <button class="icon-button user-select-none" @onclick="ToggleEmojiPicker">
+        <img src="smileIcon.png" alt="smile icon" class="emoji-icon user-select-none"/>
+    </button>
+    <input @bind="message" @onkeydown="HandleKeyPress" placeholder="Mensagem..." class="dm-input user-select-none"/>
+    <label for="file_upload" class="icon-button user-select-none">
+        <img src="ImageIcon.png" alt="image icon" class="image-icon user-select-none"/>
+    </label>
+    <InputFile id="file_upload" class="file-input" OnChange="HandleFileSelected" multiple accept="image/*" style="display:none"/>
+    <button class="icon-button user-select-none" @onclick="SendMessage">
+        <img src="sendIcon.png" alt="send icon" class="send-icon user-select-none"/>
+    </button>
+</div>
+
+@if (showEmojiPicker)
+{
+    <EmojiPicker OnEmojiSelected="AddEmoji" />
+}
+
+@foreach (string ErrorMessage in ErrorMessages)
+{
+    <p class="error">@ErrorMessage</p>
+}
+
+@if (selectedFilesWithPreviews.Count != 0)
+{
+    <div>
+        Attachments
+    </div>
+}
+<ImageAttachments SelectedFilesWithPreviews="selectedFilesWithPreviews" OnRemove="RemoveAttachment" />

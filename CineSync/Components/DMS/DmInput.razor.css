@@ -1,0 +1,47 @@
+.dm-input-container {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid #444;
+    border-radius: 25px;
+    background-color: #000;
+    color: #fff;
+    max-width: 500px;
+    margin: auto;
+}
+
+.dm-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    border-radius: 25px;
+    background-color: #000;
+    color: #fff;
+    font-size: 16px;
+}
+
+.icon-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin: 0 4px;
+}
+
+.emoji-icon, .image-icon {
+    width: 20px;
+    height: 20px;
+    color: white;
+}
+
+.send-icon {
+    width: 25px;
+    height: 25px;
+    color: white;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}

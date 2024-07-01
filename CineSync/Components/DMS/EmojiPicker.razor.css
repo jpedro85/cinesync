@@ -1,0 +1,27 @@
+.emoji-picker-container {
+    position: absolute;
+    background-color: #2a2a2a;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 300px;
+    z-index: 1000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.emoji-picker {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.emoji-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    margin: 5px;
+}
+
+.emoji-button:hover {
+    box-shadow: 0px 0px 5px rgb(139 139 139 / 50%);
+}
