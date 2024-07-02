@@ -21,7 +21,7 @@
         border: solid 2px #0066cc;
     }
 .page {
-    background-image: url("BackgorundHome.png");
+    background-image: url("BackgorundHome.webp");
     background-size: cover;
     background-position: center;
     display: flex;
