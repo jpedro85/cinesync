@@ -29,11 +29,13 @@ public partial class Caroussel : ComponentBase
     private static List<MovieSearchAdapter> TopRatedMovies { get; set; }
 
     private bool isCarouselActive = true;
+    private bool hasLoaded = false;
 
     private DotNetObjectReference<Caroussel> objRef;
 
     protected override async Task OnInitializedAsync()
     {
+        hasLoaded = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -45,6 +47,7 @@ public partial class Caroussel : ComponentBase
             objRef = DotNetObjectReference.Create(this);
             await JSRuntime.InvokeVoidAsync("addResizeListener", objRef);
             await UpdateDisplayMode();
+            hasLoaded = true;
             StateHasChanged();
         }
     }
