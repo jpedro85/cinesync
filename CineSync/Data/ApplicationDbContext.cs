@@ -38,10 +38,12 @@ namespace CineSync.Data
 
         public DbSet<Reaction> Reactions {  get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<Invite> Invites { get; set; }
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlite("Data Source=CineSyncData.db");
         }
-    }
+	}
 }
