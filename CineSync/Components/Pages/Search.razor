@@ -15,7 +15,11 @@
 	<div class="main-container">
 
 		<div class="search-container">
-			<SearchButton @ref="SearchButton" SearchInput="@Query"></SearchButton>
+			<SearchButton 
+				OnSearch="SearchMoviesSearchButtonHandler"
+				@ref="SearchButton" 
+				SearchInput="@Query"
+			></SearchButton>
 		</div>
 
 		<div class="scrool-comteiner">

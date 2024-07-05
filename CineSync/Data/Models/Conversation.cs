@@ -13,9 +13,11 @@ namespace CineSync.Data.Models
 
         public ICollection<UserConversations> Participants { get; set; } = default!;
 
-        public ICollection<Message> Messages { get; set; } = default!;
+		public ICollection<Invite> Invites { get; set; } = new List<Invite>(0);
 
-        public override bool Equals(object? obj)
+        public ICollection<Message> Messages { get; set; } = new List<Message>(0);
+
+		public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Conversation))
             {

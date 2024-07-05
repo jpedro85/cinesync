@@ -51,6 +51,29 @@
                                 </NavLink>
                             </div>
 
+                            <div class="menu-item-conteiner @IsActive">
+                                <NavLink href="/Messages" @onclick="CloseMenu">
+                                    <div class="menu-item @IsActive">
+
+                                        <div class="ButtonIcon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 15 15">
+                                                <path fill="currentColor" fill-rule="evenodd" d="M0 1.5C0 .67.671 0 1.5 0h12c.829 0 1.5.67 1.5 1.5v8.994c0 .829-.671 1.499-1.5 1.499H9.768l-1.852 2.775a.5.5 0 0 1-.832 0l-1.851-2.775H1.5c-.829 0-1.5-.67-1.5-1.5zM11 5H4V4h7zm-1 3H5V7h5z" clip-rule="evenodd" />
+                                            </svg>
+                                           @*  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
+                                                <path fill="currentColor" d="m16 464l480-208L16 48v160l320 48l-320 48Z" />
+                                            </svg> *@
+                                            @* <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 1792 1792">
+                                                <path fill="currentColor" d="M1764 11q33 24 27 64l-256 1536q-5 29-32 45q-14 8-31 8q-11 0-24-5l-453-185l-242 295q-18 23-49 23q-13 0-22-4q-19-7-30.5-23.5T640 1728v-349l864-1059l-1069 925l-395-162q-37-14-40-55q-2-40 32-59L1696 9q15-9 32-9q20 0 36 11" />
+                                            </svg> *@
+                                        </div>
+                                        <div class="ButtonText @IsActive">
+                                            Messages
+                                        </div>
+
+                                    </div>
+                                </NavLink>
+                            </div>
+
                             <div class="menu-item-conteiner">
                                 <div class="sidebar-separator"></div>
                                 <div class="separator-text @IsActive">Collections</div>

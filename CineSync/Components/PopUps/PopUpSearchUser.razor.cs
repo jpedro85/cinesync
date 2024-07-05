@@ -18,10 +18,11 @@ namespace CineSync.Components.PopUps
         private string _id = "PopUpSearchUser_";
 
         [Parameter]
-        public string Title { get; set; } = "Search User" ;
+        public string Title { get; set; } = "Send Message to ..." ;
 
 		[Parameter]
-		public EventCallback<ApplicationUser> OnClickUser { get; set; }
+		public NewMessageFunc OnClickUser { get; set; } = (e,f) => { };
+		public delegate void NewMessageFunc (ApplicationUser user, bool foolowing);
 
         [Inject]
         public UserManager DbUserManager { get; set; } = default!;

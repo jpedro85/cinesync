@@ -1,0 +1,49 @@
+﻿@using CineSync.Components.Account.Component
+@using CineSync.Components.Buttons
+@using CineSync.Components.Layout
+@using CineSync.Components.Envites
+
+<div class="converssation-container">
+
+	<div class="top-container">
+		<ItemUser 
+			User="@SendToUser"
+			Short=false
+			Style="width:50px; height:50px;"
+		>
+		</ItemUser>
+	</div>
+
+	@if (_isloading)
+	{
+		<Loading FontPalceHeight="20"
+				 FontSize="18"
+				 LineHeight="30"
+				 LetterSpacing="0"
+				 MarginLeterLine="5"
+				 MaxWidth="120">
+		</Loading>
+	}
+	else
+	{
+		<div class="messages center">
+			<div>
+				<div class="no-converation">
+					You do not have any messages with this user at this time.
+				</div>
+				<div class="no-converation-request">
+					Send a message request to strat one.
+				</div>
+			</div>
+			<RectColoredButton 
+				Text="Send Request"
+				OnClick="OnClickSendRequest">
+			</RectColoredButton>
+
+			<div class="error">
+				@_error
+			</div>
+		</div>
+	}
+
+</div>

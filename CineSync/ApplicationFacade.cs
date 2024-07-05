@@ -11,6 +11,7 @@ using CineSync.Core.Adapters.ApiAdapters;
 using CineSync.Core.Email;
 using CineSync.Core.Logger;
 using CineSync.Core.Repository;
+using CineSync.Hubs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +64,10 @@ namespace CineSync
             AddDatabaseServices(services);
             AddAuthorizationPolicies(services);
             AddAdditionalServices(services);
-        }
+            AddSMTP(services);
+            AddSignalR(services);
+
+		}
 
         /// <summary>
         /// Adds and configures Razor component services, including server-side Blazor components and necessary scope services for identity management.
@@ -165,7 +169,8 @@ namespace CineSync
                     typeof(Comment),
                     typeof(CommentAttachment),
                     typeof(Notification),
-                    typeof(UsersNotifications)
+                    typeof(UsersNotifications),
+                    typeof(Message)
             };
             services.AddSingleton<IFactory>(sp => new Factory(types));
 
@@ -185,37 +190,66 @@ namespace CineSync
             services.AddScoped<UserImageManager>();
             services.AddScoped<DbManager<UserLikedDiscussion>>();
             services.AddScoped<DbManager<UserDislikedDiscussion>>();
+            services.AddScoped<DbManager<UserConversations>>();
             services.AddScoped<UserRoleManager<ApplicationUser>>();
             services.AddScoped<CollectionsManager>();
             services.AddScoped<CommentManager>();
             services.AddScoped<DiscussionManager>();
-            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5145") });
+            services.AddScoped<ConversationManager>();
+            services.AddScoped<InvitesManager>();
+
             // INFO: Solves the issue of supposedly loop of object when saving the parsed json to the database
             services.AddControllers().AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
-            services.Configure<SmtpSettings>(options =>
-                    {
-                        options.Server = Environment.GetEnvironmentVariable("SMTP_SERVER");
-                        options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT"));
-                        options.SenderName = Environment.GetEnvironmentVariable("SMTP_SENDER_NAME");
-                        options.SenderEmail = Environment.GetEnvironmentVariable("SMTP_SENDER_EMAIL");
-                        options.Username = Environment.GetEnvironmentVariable("SMTP_USERNAME");
-                        options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
-                    });
-            services.AddTransient<IEmailSender, EmailSender>();
-            //services.AddSingleton<NavBarEvents>();
-            //services.AddSingleton<LayoutService>();
-            //services.AddSingleton<MenuService>();
-
         }
 
-        /// <summary>
-        /// Initializes the database with required roles and user data.
-        /// </summary>
-        /// <param name="app">The WebApplication instance to access services for initialization.</param>
-        private void InitializeDb(WebApplication app)
+		/// <summary>
+		/// Adds an SMTP Service to send emails.
+		/// </summary>
+		/// <param name="services">The IServiceCollection to configure.</param>
+		private void AddSMTP( IServiceCollection services )
+        {
+			services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5145") });
+			// INFO: Solves the issue of supposedly loop of object when saving the parsed json to the database
+			
+			services.Configure<SmtpSettings>(options =>
+			{
+				options.Server = Environment.GetEnvironmentVariable("SMTP_SERVER")!;
+				options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT")!);
+				options.SenderName = Environment.GetEnvironmentVariable("SMTP_SENDER_NAME")!;
+				options.SenderEmail = Environment.GetEnvironmentVariable("SMTP_SENDER_EMAIL")!;
+				options.Username = Environment.GetEnvironmentVariable("SMTP_USERNAME")!;
+				options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD")!;
+			});
+			services.AddTransient<IEmailSender, EmailSender>();
+		}
+
+		/// <summary>
+		/// Add SignalR service
+		/// </summary>
+		/// <param name="services">The IServiceCollection to configure.</param>
+		private void AddSignalR( IServiceCollection services ) 
+        {
+            services.AddSignalR();
+		}
+
+
+		/// <summary>
+		/// Add SignalR service
+		/// </summary>
+		/// <param name="app">The WebApplication instance to access services for initialization.</param>
+        private void MapHubs(WebApplication app) 
+        {
+			app.MapHub<MessageHub>("/MessageHub");
+		}
+
+		/// <summary>
+		/// Initializes the database with required roles and user data.
+		/// </summary>
+		/// <param name="app">The WebApplication instance to access services for initialization.</param>
+		private void InitializeDb(WebApplication app)
         {
             var services = app.Services.CreateScope().ServiceProvider;
             var dbContext = services.GetRequiredService<ApplicationDbContext>();
@@ -247,7 +281,9 @@ namespace CineSync
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(CineSync.Client._Imports).Assembly);
 
-            app.MapAdditionalIdentityEndpoints();
+            MapHubs(app);
+
+			app.MapAdditionalIdentityEndpoints();
         }
 
         /// <summary>

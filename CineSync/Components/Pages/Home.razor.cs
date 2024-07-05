@@ -23,7 +23,6 @@ namespace CineSync.Components.Pages
 
         private bool showNavMenu = false;
         private System.Timers.Timer _timer;
-        private SearchButton SearchButton { get; set; }
 
         private PageLayout _pageLayout;
 
@@ -42,13 +41,13 @@ namespace CineSync.Components.Pages
 
         //}
 
-        protected override void OnAfterRender(bool firstRender)
-        {
-            if (firstRender)
-            {
-                SearchButton.OnSearch += OnSearch;
-            }
-		}
+  //      protected override void OnAfterRender(bool firstRender)
+  //      {
+  //          if (firstRender)
+  //          {
+  //              SearchButton.OnSearch += OnSearch;
+  //          }
+		//}
 
         //private void ToggleNavMenu()
         //{
