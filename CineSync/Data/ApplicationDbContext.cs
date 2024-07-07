@@ -44,6 +44,7 @@ namespace CineSync.Data
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlite("Data Source=CineSyncData.db");
-        }
+			optionsBuilder.EnableSensitiveDataLogging();
+		}
 	}
 }

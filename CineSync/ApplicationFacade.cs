@@ -197,6 +197,7 @@ namespace CineSync
             services.AddScoped<DiscussionManager>();
             services.AddScoped<ConversationManager>();
             services.AddScoped<InvitesManager>();
+            services.AddScoped<MessageManager>();
 
             // INFO: Solves the issue of supposedly loop of object when saving the parsed json to the database
             services.AddControllers().AddJsonOptions(options =>

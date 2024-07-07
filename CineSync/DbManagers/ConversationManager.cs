@@ -136,11 +136,25 @@ namespace CineSync.DbManagers
 		{
 			Conversation? fetchedConversation = await GetFirstByConditionAsync(c => c.Id == conversation.Id,
 														"Messages",
-														"Messages.Autor");
+														"Messages.Autor",
+														"Messages.Reactions",
+														"Messages.Attachements"
+														);
+
 			if (fetchedConversation == null)
 				return [];
 
 			return fetchedConversation.Messages ?? new List<Message>();
 		}
-	}
+
+        /// <summary>
+        /// Retrives all messages.
+        /// </summary>
+        /// <param name="conversation">The conversarion to get messages.</param>
+        /// <returns>A collection of users <see cref="Message"/>.</returns>
+		public string GetGroupName(Conversation conversation) 
+		{
+			return conversation.IsGroupConversation ? "Group_" : "Message_" + conversation.Id.ToString() ;
+		}
+    }
 }

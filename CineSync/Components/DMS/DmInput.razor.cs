@@ -1,6 +1,9 @@
 using System.Collections.Concurrent;
+using System.Net;
 using CineSync.Components.PopUps;
 using CineSync.Components.Utils;
+using CineSync.Data;
+using CineSync.Data.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -9,10 +12,24 @@ namespace CineSync.Components.DMS
 {
     public partial class DmInput : ComponentBase, IDisposable
     {
+		[Parameter, EditorRequired]
+		public ApplicationUser AuthenticateUser { get; set; } = default!;
+
+		[Parameter, EditorRequired]
+        public EventCallback<Message> OnNewMessage { get; set; } = default!;
+
+		[Parameter, EditorRequired]
+		public EventCallback<Message> OnRemoveReply { get; set; }
+
+		[Parameter]
+        public string SelectedFileStyle { get; set; } = string.Empty;
+
+		[Parameter]
+		public string SelectedClass { get; set; } = string.Empty;
+
+
         // Maxsize is 4MB
         private readonly long MaxFileSize = 4 * 1024 * 1024;
-
-        private string message = string.Empty;
 
         private ConcurrentDictionary<IBrowserFile, byte[]> selectedFilesWithPreviews = new();
 
@@ -20,7 +37,7 @@ namespace CineSync.Components.DMS
 
         private ConcurrentBag<string> ErrorMessages = new();
 
-        private PopUpAttachementView _attachmentViwer;
+        //private PopUpAttachementView _attachmentViwer;
 
         private bool _clickRemoveAttachment = false;
 
@@ -28,19 +45,62 @@ namespace CineSync.Components.DMS
 
         private bool showEmojiPicker = false;
 
+        private bool _show = true;
 
-        private void SendMessage()
+        private Message newMessage = default!;
+
+		protected override void OnInitialized()
+		{
+			newMessage = new Message()
+			{
+				Autor = AuthenticateUser,
+			};
+		}
+
+
+		private void SendMessage()
         {
-            if (!string.IsNullOrWhiteSpace(message))
+
+            if(selectedFilesWithPreviews.Count > 0) 
             {
-                Console.WriteLine($"Sending message: {message}");
-                message = string.Empty;
+                AddAttachements();
+				OnNewMessage.InvokeAsync(newMessage);
+				newMessage = new Message()
+				{
+					Autor = AuthenticateUser,
+				};
+
+                selectedFilesWithPreviews.Clear();
+            }
+            else if (!string.IsNullOrWhiteSpace(newMessage.Content)) 
+            { 
+				OnNewMessage.InvokeAsync(newMessage);
+                newMessage = new Message()
+                {
+                    Autor = AuthenticateUser,
+                };
+
+                selectedFilesWithPreviews.Clear();
             }
         }
 
-        private void HandleKeyPress(KeyboardEventArgs e)
+        private void AddAttachements() 
         {
-            if (e.Key == "Enter" && !e.ShiftKey)
+			newMessage.Attachements = new List<MessageAttachement>();
+
+			foreach (var kvp in selectedFilesWithPreviews)
+			{
+				var attachment = new MessageAttachement()
+				{
+					Attachment = kvp.Value,
+				};
+				newMessage.Attachements.Add(attachment);
+			}
+		}
+
+		private void HandleKeyPress(KeyboardEventArgs e)
+        {
+            if (e.Key == "Enter")
             {
                 SendMessage();
             }
@@ -53,7 +113,7 @@ namespace CineSync.Components.DMS
 
         private void AddEmoji(string emoji)
         {
-            message += emoji;
+			newMessage.Content += emoji;
             showEmojiPicker = false;
         }
         
@@ -114,12 +174,11 @@ namespace CineSync.Components.DMS
             await InvokeAsync(StateHasChanged);
         }
 
-        private void OpenAttachment(byte[] attachment, string fileName)
+        public void AddReply( Message message) 
         {
-            _attachmentViwer.Attachment = attachment;
-            _attachmentViwer.Name = fileName;
-            _attachmentViwer.TrigerStatehasChanged();
-            _attachmentViwer.Open();
+            newMessage.ReplayMessageId = message.Id;
+            newMessage.ReplayMessage = message;
+            InvokeAsync(StateHasChanged);
         }
 
         public void Dispose()

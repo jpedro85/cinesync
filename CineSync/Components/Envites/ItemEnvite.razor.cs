@@ -29,6 +29,9 @@ namespace CineSync.Components.Envites
         [Parameter]
 		public bool ShowUser { get; set; } = true;
 
+		[Parameter]
+		public bool AllowCancel { get; set; } = true;
+
 
 		[Inject]
 		public InvitesManager EnvitesManager { get; set; } = default!;
@@ -36,11 +39,11 @@ namespace CineSync.Components.Envites
 		[Inject]
 		public ConversationManager ConverssationManager { get; set; } = default!;
 
-		//private bool _isAutor = false;
+		private bool _isAutor = false;
 
 		protected override void OnParametersSet()
 		{
-			//_isAutor = Invite.Sender.Equals(Authenticateduser);
+			_isAutor = Invite.Sender.Equals(Authenticateduser);
 			StateHasChanged();
 		}
 

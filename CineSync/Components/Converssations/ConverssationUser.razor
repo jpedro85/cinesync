@@ -2,7 +2,9 @@
 @using CineSync.Components.Buttons
 @using CineSync.Components.Layout
 @using CineSync.Components.Envites
+@using CineSync.Components.DMS
 @using CineSync.Data.Models;
+@* @using CineSync.Components.Utils *@
 
 <div class="converssation-container" >
 	
@@ -17,6 +19,8 @@
 			MaxWidth="120"
 		>
 		</Loading>
+
+		GetMessages();
 	}
 	else
 	{
@@ -98,28 +102,64 @@
 
 			<div class="messages">
 
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget pulvinar purus. Pellentesque vulputate sapien eget odio mollis, in congue dui pharetra. Mauris libero ipsum, dictum eget elit non, aliquam pellentesque ex. Mauris nec iaculis odio. Sed finibus vulputate ex, non porta diam. Quisque risus nisl, interdum ut sagittis sit amet, tincidunt at libero. Nam vel ex elementum leo bibendum tincidunt ac sed mi. Morbi nec felis consectetur, tempor eros sed, imperdiet est. Nullam aliquet, leo eget vulputate semper, quam libero tempor enim, a gravida justo tortor nec odio. Quisque non porttitor erat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam euismod faucibus magna, sed tincidunt orci varius et.
+				@{
+					int index = 0;
+					DateTime lasttime = DateTime.Now;
+					TimeSpan timeDiferençe;
+				}
 
-				Etiam eu urna orci. Duis vel felis nec mi tempus eleifend id nec leo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla facilisi. Integer orci metus, ultrices eget facilisis sit amet, egestas in velit. Donec laoreet magna ut tristique fringilla. Nunc vel hendrerit lorem. Aliquam vehicula, metus a tristique mattis, metus ipsum accumsan tellus, et rhoncus augue eros et odio. Donec tempus sollicitudin finibus. Morbi semper felis sit amet metus feugiat molestie. Donec pulvinar, dolor eget porta fermentum, sem lorem pellentesque nisl, at feugiat dolor felis consectetur erat. Nunc nec porttitor nibh. Donec in odio eu nisl dapibus pretium sit amet id sem.
-
-				Nam lacinia, ligula eu interdum cursus, sapien neque semper purus, eget convallis est elit quis nibh. Vivamus odio nisi, maximus ut nibh in, tempus sodales diam. Aliquam consequat nulla id ex dignissim, vel malesuada ligula lacinia. Maecenas luctus orci sapien, dictum lacinia odio vehicula id. Etiam mollis molestie venenatis. Aliquam faucibus molestie nisl a rhoncus. Proin at gravida nisi.
-
-				placerat sed. Mauris malesuada commodo metus ut cursus. Donec non feugiat enim. In ullamcorper tincidunt consectetur. Donec quis tincidunt erat. Vestibulum dignissim et lectus ac ultricies. Duis vel finibus felis. Phasellus molestie placerat nisi vel finibus. Nunc in felis nisl.
-			
 				@foreach( Message message in Conversation.Messages )
 				{
+
+					if (index == 0 || (message.TimeStamp - lasttime).Days > 1)
+					{
+						timeDiferençe = DateTime.Now - message.TimeStamp;
+						if (timeDiferençe.Days <= 1)
+						{
+							<div class="time">
+								Today
+								<hr>
+							</div>
+						}
+						else
+						{
+							<div class="time">
+								@message.TimeStamp.Date.ToString();
+								<hr>
+							</div>
+						}
+					}
+
+					index++;
+					lasttime = message.TimeStamp;
+
 					<div style="z-index:0;">
-						message.Id;
+						<ItemMessage
+							@ref="@ImteMessageRef"
+							AuthenticatedUser="@AuthenticatedUser"
+							Message="@message"	
+							OnReply="@OnMessageReply"
+							OnRemove="(e)=>{}"
+						/>
 					</div>
 				}
+
+				<div class="space">
+				</div>
 			</div>
 
 		</div>
 
 		<div class="new-message">
-			<NewMessage>
-
-			</NewMessage>
+			<DmInput
+				AuthenticateUser="AuthenticatedUser"
+				SelectedFileStyle="background-color:rgb(25,25,25);  "
+				SelectedClass=" selected-file-left2 "
+				OnNewMessage="OnNewMessage"
+				OnRemoveReply="OnRemoveReply"
+				@ref="@_dminpput"
+			>
+			</DmInput>
 		</div>
 	}
 

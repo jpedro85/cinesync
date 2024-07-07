@@ -1,13 +1,16 @@
 ﻿using CineSync.Data.Models;
 using Microsoft.AspNetCore.SignalR;
+using Org.BouncyCastle.Utilities;
+using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace CineSync.Hubs
 {
 	public class MessageHub : Hub, IRoom
 	{
-		public Task JoinRoom( string roomName )
+        public Task JoinRoom( string roomName )
 		{
-			return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
 		}
 
 		public Task LeaveRoom( string roomName )
@@ -15,17 +18,23 @@ namespace CineSync.Hubs
 			return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
 		}
 
-		public async Task UpdateYourRequestState(Invite invite) 
+		public Task NotifyGroupNewMessage( string roomName, uint messageId )
+        {
+            Console.WriteLine($"Alive {messageId}");
+			return Clients.OthersInGroup(roomName).SendAsync( "UpdateMessages" , messageId);
+		}
+
+        public async Task UpdateYourRequestState(Invite invite) 
 		{
-			Console.WriteLine("CalledOnServer");
             await Clients.Others.SendAsync("UpdateMyRequestState", invite);
         }
 
         public async Task UpdateMyRequestState(Invite invite)
         {
-            Console.WriteLine("CalledOnServer2");
             await Clients.Others.SendAsync("UpdateYourRequestState", invite);
         }
+
+
 
         public async Task test()
         {
