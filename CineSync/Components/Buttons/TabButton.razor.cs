@@ -18,7 +18,10 @@ namespace CineSync.Components.Buttons
 		[Parameter]
         public string Text { get; set; } = "Tab Button";
 
-		protected override void OnInitialized()
+        [Parameter]
+        public int FontSize { get; set; } = 24;
+
+        protected override void OnInitialized()
 		{
 			if(StartActive)
             {

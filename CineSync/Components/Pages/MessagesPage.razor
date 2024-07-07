@@ -1,0 +1,117 @@
+﻿@page "/Messages/{ConversationId?}"
+@attribute [Authorize]
+
+@rendermode InteractiveServer
+
+@using CineSync.Components.Layout
+@using CineSync.Components.Buttons
+@using CineSync.Components.Converssations
+@using CineSync.Components.PopUps
+@using CineSync.Components.Envites
+@using CineSync.Data.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.SignalR.Client
+
+<PageLayout
+    @ref="@_pageLayout" 
+	GetInstance="GetPagelayout"   
+>
+
+    @{
+        Initialize();
+    }
+
+    @if(_initialized)
+    {
+       <CascadingValue Value="_pageLayout" Name="PageLayout" TValue="PageLayout">
+        <CascadingValue Value="MessageHubConnection" Name="MessageHubConnection" TValue="HubConnection">
+
+            <div class="conversations-container">
+
+                <div class="conversations">
+
+                    <div class="conversations-sidebar">
+
+                        <PageMessageConversations 
+                            AuthenticatedUser="@AuthenticatedUser"
+                            OnClickUser="OnClickUser"
+                            OnClickConversation="OnClickConversation"
+                            OnClickInviteConversation="OnClickConversation"
+                            @ref="@_pageMessageConversations"
+                        ></PageMessageConversations>
+
+                     @*    <PageGroupConversation 
+                            AuthenticatedUser="@AuthenticatedUser"
+                            OnClickUser="OnClickUser"
+
+                            @ref="@_pageGroupConversations"
+                        ></PageGroupConversation> *@
+
+                        <PopUpSearchUser 
+                            Id="SearchUser"
+                            AuthenticatedUser="@AuthenticatedUser"
+                            OnClickUser="OnClickUser"
+                            @ref="@_popupSearchUser"
+                        >
+                        </PopUpSearchUser>
+
+                    </div>
+
+                    <div class="conversations-info">
+
+                        @switch (_actualState)
+                        {
+                            case State.NEW_MESSAGE:
+                            {
+                                <NewConversationUser 
+                                    AuthenticatedUser="@AuthenticatedUser"
+                                    SendToUser="@_userToSend"
+                                    PageMessageConversations="@_pageMessageConversations"
+                                    OnCratedConversation="OnNewMessage"
+                                >
+                                </NewConversationUser>
+      
+                                break;
+                            }
+
+                            case State.MESSAGE:
+                            {
+                                <ConverssationUser 
+                                    AuthenticatedUser="@AuthenticatedUser"
+                                    PageMessageConversations="@_pageMessageConversations"
+                                    Conversation="@_conversation"
+                                    OnRemoveMessage="OnRemoveMessage"
+                                >
+                                </ConverssationUser>
+
+                                break;
+                            }
+
+                            default:
+                            {
+                                <div class="tocenter">
+                                    <div class="send-text">Send a message to someone.</div>
+                                    <RectColoredButton Text="New Message" OnClick="()=>{ _popupSearchUser.Open(); }"></RectColoredButton>
+                                </div>
+                                break;
+                            }
+                        }
+                       
+                    </div>
+
+                </div>
+            </div>
+
+         </CascadingValue>
+        </CascadingValue>
+    }
+    else
+    {
+        <div class="conversations-container">
+            <div class="loading-containor">
+                <Loading></Loading>
+            </div>
+        </div>
+    }
+
+</PageLayout>

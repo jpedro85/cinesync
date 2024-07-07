@@ -2,6 +2,9 @@
 using CineSync.Core.Logger;
 using CineSync.Core.Logger.Enums;
 using System.Linq.Expressions;
+using CineSync.Data.Models;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CineSync.DbManagers
 {
@@ -14,6 +17,7 @@ namespace CineSync.DbManagers
         protected readonly ILoggerStrategy _logger;
         protected readonly IUnitOfWorkAsync _unitOfWork;
         protected readonly IRepositoryAsync<TEntity> _repository;
+        protected readonly Type _entityType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbManager{TEntity}"/> class.
@@ -22,6 +26,7 @@ namespace CineSync.DbManagers
         /// <param name="logger">The logger for logging activity within this manager.</param>
         public DbManager(IUnitOfWorkAsync unitOfWork, ILoggerStrategy logger)
         {
+            _entityType = typeof(TEntity);
             _unitOfWork = unitOfWork;
             _repository =  _unitOfWork.GetRepositoryAsync<TEntity>();
             _logger = logger;
@@ -101,5 +106,44 @@ namespace CineSync.DbManagers
         {
             return await _repository.GetAllAsync();
         }
-    }
+
+
+        /// <summary>
+        /// Upadates all specifyed TEntity properties.
+        /// </summary>
+        /// <param name="entity">The Entity to update.</param>
+        /// <param name="properties"> The properties to update.</param>
+        /// <returns>Returns True if upddated false otherwise.</returns>
+        public async Task<bool> UpdateEntity( TEntity entity, params string[] properties)
+        {
+            TEntity? _dbentity = await _repository.GetFirstByConditionAsync(m => m.Equals(entity));
+
+            if (_dbentity == null) return false;
+
+            PropertyInfo[] messageProperrties = _entityType.GetProperties();
+            PropertyInfo? objectProperty;
+
+            foreach (var property in properties)
+            {
+                objectProperty = messageProperrties.Where(p => p.Name == property).FirstOrDefault();
+
+                if (objectProperty == null)
+                    throw new ArgumentException($"'{property}' is not a valid property or field of type {_entityType.Name}.");
+
+                objectProperty.SetValue(_dbentity, objectProperty.GetValue(entity));
+            }
+
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public void Dettach( TEntity entity)
+        {
+            _repository.Dettach(entity);
+        }
+
+		public void Attach(TEntity entity)
+		{
+			_repository.Attach(entity);
+		}
+	}
 }

@@ -11,7 +11,7 @@ namespace CineSync.Components.Account.Component
         [Inject]
         public DbManager<UserImage> DbUserImageManager {  get; set; }
 
-        [Parameter]
+        [Parameter,EditorRequired]
         public ApplicationUser User { get; set; }
 
         [Parameter]
@@ -33,7 +33,8 @@ namespace CineSync.Components.Account.Component
 
         private async void GetImage()
         {
-            _image = await DbUserImageManager.GetFirstByConditionAsync( uImage => uImage.UserId == User.Id );
+            if(User.UserImage == null) 
+                _image = await DbUserImageManager.GetFirstByConditionAsync( uImage => uImage.UserId == User.Id );
         }
 
     }

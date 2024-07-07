@@ -7,6 +7,12 @@ namespace CineSync.Components.DMS
 {
     public partial class ImageAttachments : ComponentBase, IDisposable
     {
+        [Parameter]
+        public string SelectedFileStyle { get; set; } = string.Empty;
+
+        [Parameter]
+        public string SelectedClass { get; set; } = string.Empty;
+
         [Parameter] 
         public ConcurrentDictionary<IBrowserFile, byte[]> SelectedFilesWithPreviews { get; set; }
 

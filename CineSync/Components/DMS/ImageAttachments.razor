@@ -2,12 +2,13 @@
 @using CineSync.Components.PopUps
 
 <div class="files-container">
+
     @foreach (var kvp in SelectedFilesWithPreviews)
     {
         var localKvp = kvp;
         <div class="selected-file"
              @onclick="(e) => { if (_clickRemoveAttachment) return; OpenAttachment(localKvp.Value, localKvp.Key.Name); }">
-            <div class="selected-file-left ">
+            <div style="@SelectedFileStyle" class="selected-file-left @SelectedClass">
                 <img class="attachment" src="@(ImageConverter.ConverBytesTo64(kvp.Value))" alt="@kvp.Key.Name"/>
                 <div>
                     @if (@kvp.Key.Name.Length > 20)
@@ -24,7 +25,8 @@
                  data-toggle="modal"
                  data-target="#RemoveFormAttachmentModal_@kvp.Key.GetHashCode()"
                  @onclick="(e) => { _clickRemoveAttachment = true; }"
-                 @onmouseleave="(e) => { _clickRemoveAttachment = false; }">
+                 @onmouseleave="(e) => { _clickRemoveAttachment = false; }"
+                 >
 
                 <svg class="svg-size" viewBox="0 0 31 31" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9.79552 13.8865C9.43386 13.8865 9.08702 14.0301 8.83128 14.2859C8.57555 14.5416 8.43188 14.8885 8.43188 15.2501C8.43188 15.6118 8.57555 15.9586 8.83128 16.2143C9.08702 16.4701 9.43386 16.6137 9.79552 16.6137H20.7046C21.0663 16.6137 21.4131 16.4701 21.6688 16.2143C21.9246 15.9586 22.0682 15.6118 22.0682 15.2501C22.0682 14.8885 21.9246 14.5416 21.6688 14.2859C21.4131 14.0301 21.0663 13.8865 20.7046 13.8865H9.79552Z" fill="currentcolor"/>
@@ -35,5 +37,5 @@
         </div>
         <RemoveAttachment KeyHash="@kvp.Key.GetHashCode()" OnRemove="OnRemove"/>
     }
-    <PopUpAttachementView Id="attachmentViewerPopUp" @ref="@_attachmentViwer"/>
 </div>
+    <PopUpAttachementView Id="attachmentViewerPopUp1" @ref="@_attachmentViwer"/>

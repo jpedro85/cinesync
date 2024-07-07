@@ -9,18 +9,24 @@
             @* TabButtons[_activeTab].deactivate();
             _activeTab=indice;
             OnTabChange( TabNames[indice] ); *@
-            <TabButton Text="@TabNames[indice]"
-            StartActive=true
-            OnActionClick="@(() => { ChangeTab(indice); })" @ref=@(TabButtons[indice]) />
+            <TabButton 
+                Text="@TabNames[indice]"
+                StartActive=true
+                OnActionClick="@(() => { ChangeTab(indice); })" @ref=@(TabButtons[indice]) 
+                FontSize="@FontSize"
+            />
         }
         else
         {
             @* TabButtons[_activeTab].deactivate();
             _activeTab=indice;
             OnTabChange( TabNames[indice] ); *@
-            <TabButton Text="@TabNames[indice]"
-            StartActive=false
-            OnActionClick="@(() => { ChangeTab(indice); })" @ref=@(TabButtons[indice]) />
+            <TabButton 
+                Text="@TabNames[indice]"
+                StartActive=false
+                OnActionClick="@(() => { ChangeTab(indice); })" @ref=@(TabButtons[indice])
+                FontSize="@FontSize" 
+            />
         }
     }
 
