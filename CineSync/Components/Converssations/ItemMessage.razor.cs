@@ -30,12 +30,11 @@ namespace CineSync.Components.Converssations
 		private PopUpAttachementView _attachementView = default!;
         private bool _showImojiPicker = false;
         private bool _highlight = false;
-        private bool _loading = false;
+        private bool _loading = true;
 
 		protected override void OnInitialized()
 		{
-   //         _loading = true;
-			//getInfoTask = Task.Run(GetInfo);
+            _loading = true;
 		}
 
         private async void GetInfo() 

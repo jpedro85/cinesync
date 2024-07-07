@@ -42,7 +42,8 @@
     flex-direction:column;
     justify-content:flex-end;
     min-width:30px;
-
+    height:100%;
+    padding-bottom:5px;
 }
 
 .content-c

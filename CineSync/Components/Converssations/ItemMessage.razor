@@ -9,13 +9,8 @@
 	@( AuthenticatedUser.Equals(Message.Autor) ? " rigth" : " left")
 	@( _highlight ? " highlight" : "")
 ">
-	@if(_loading)
-	{
-		<div style="display:flex; justify-content:center; align-items:center;">
-			<Loading2></Loading2>
-		</div>
-	}
-	else
+	
+	@if (!_loading)
 	{
 		
 		<div class="message-conteiner-hover" >
@@ -106,19 +101,6 @@
 				<div class="options-container"
 					style="@( AuthenticatedUser.Equals(Message.Autor) ? "flex-direction: row-reverse; " : "")">
 
-					<div class="button-hover-container" 
-						@onclick=" () => 
-							{ 
-								_highlight = true;  
-								OnReply.InvokeAsync(Message); 
-								StateHasChanged();
-							}" 
-						>
-						<div class="button-hover">
-							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="m4 10l-.707.707L2.586 10l.707-.707zm17 8a1 1 0 1 1-2 0zM8.293 15.707l-5-5l1.414-1.414l5 5zm-5-6.414l5-5l1.414 1.414l-5 5zM4 9h10v2H4zm17 7v2h-2v-2zm-7-7a7 7 0 0 1 7 7h-2a5 5 0 0 0-5-5z" /></svg>
-						</div>
-					</div>
-
 					<div class="imojiContainer">
 
 
@@ -150,11 +132,31 @@
 
 					</div>
 
+					<div class="button-hover-container"
+						 @onclick=" () =>
+							{
+								_highlight = true;
+								OnReply.InvokeAsync(Message);
+								StateHasChanged();
+							}">
+						<div class="button-hover">
+							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="m4 10l-.707.707L2.586 10l.707-.707zm17 8a1 1 0 1 1-2 0zM8.293 15.707l-5-5l1.414-1.414l5 5zm-5-6.414l5-5l1.414 1.414l-5 5zM4 9h10v2H4zm17 7v2h-2v-2zm-7-7a7 7 0 0 1 7 7h-2a5 5 0 0 0-5-5z" /></svg>
+						</div>
+					</div>
+
 				</div>
 
 			</div>
 
 		</div>
+	}
+	else
+	{
+		<div style="display:flex; justify-content:center; align-items:center;">
+			<Loading2></Loading2>
+		</div>
+
+		GetInfo();
 	}
 
 </div>

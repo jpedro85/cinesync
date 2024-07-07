@@ -55,15 +55,16 @@ namespace CineSync.Components.Converssations
 
 		protected override void OnInitialized()
         {
-            SubscribeEvents();
+			_isloading = true;
+			SubscribeEvents();
         }
 
         protected override async Task OnParametersSetAsync()
 		{
+			_isloading = true;
 			itemMessages.Clear();
 			itemMessages = new List<ItemMessage>();
 			GetUserToSend();
-			_isloading = true;
 			StateHasChanged();
 		}
 
@@ -99,7 +100,7 @@ namespace CineSync.Components.Converssations
 		private async Task GetMessages() 
 		{
 			Conversation.Messages = await ConversationManager.GetMessages(Conversation);
-            _isloading = false;
+			_isloading = false;
 			StateHasChanged();
         }
 
