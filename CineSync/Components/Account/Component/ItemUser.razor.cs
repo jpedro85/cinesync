@@ -28,8 +28,11 @@ namespace CineSync.Components.Account.Component
 
         private async void GetImage()
         {
-            _image = await DbUserImageManager.GetFirstByConditionAsync(uImage => uImage.UserId == User.Id);
-            StateHasChanged();
-        }
+            if (User.UserImage == null)
+                _image = await DbUserImageManager.GetFirstByConditionAsync(uImage => uImage.UserId == User.Id);
+		    else
+				_image = User.UserImage;
+		}
+
     }
 }
