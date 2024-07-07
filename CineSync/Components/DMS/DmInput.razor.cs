@@ -36,9 +36,7 @@ namespace CineSync.Components.DMS
         private ConcurrentDictionary<int, IBrowserFile> fileHashCodes = new();
 
         private ConcurrentBag<string> ErrorMessages = new();
-
-        //private PopUpAttachementView _attachmentViwer;
-
+        
         private bool _clickRemoveAttachment = false;
 
         private ICollection<string> emojis = new[] { "😊", "😂", "😍", "😭", "😒", "👍" };
@@ -60,10 +58,10 @@ namespace CineSync.Components.DMS
 
 		private void SendMessage()
         {
-
+            ErrorMessages.Clear();
             if(selectedFilesWithPreviews.Count > 0) 
             {
-                AddAttachements();
+                AddAttachments();
 				OnNewMessage.InvokeAsync(newMessage);
 				newMessage = new Message()
 				{
@@ -84,7 +82,7 @@ namespace CineSync.Components.DMS
             }
         }
 
-        private void AddAttachements() 
+        private void AddAttachments() 
         {
 			newMessage.Attachements = new List<MessageAttachement>();
 

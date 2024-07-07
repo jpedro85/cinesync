@@ -1,7 +1,7 @@
 ﻿.message-main-conteiner {
     height: fit-content;
     padding: 5px 20px;
-    z-index:0;
+    /*z-index:0;*/
 }
 
 .left {
@@ -111,7 +111,7 @@
     max-height: 200px;
     overflow-x: auto;
     overflow-y: hidden;
-    z-index: 0;
+    /*z-index: 0;*/
 }
 
 .attachments {
@@ -130,7 +130,7 @@
         max-height: 4rem;
         height: auto;
         display: block;
-        z-index: 0;
+        /*z-index: 0;*/
     }
 
     .attachments .view {
@@ -145,7 +145,7 @@
         color: white;
         font-size: 12px;
         font-family: Roboto;
-        z-index: 1;
+        /*z-index: 1;*/
         width: 100%;
         height: 100%;
         box-shadow: inset 0 0 15px 2px rgba(255, 255, 255,0.6);
@@ -165,11 +165,11 @@
 .imojiContainer {
     display: flex;
     flex-direction: column;
-    z-index:0;
+    /*z-index:0;*/
 }
 
 .imojipicker {
-    z-index: 1;
+    /*z-index: 1;*/
     position:relative;
     
 }

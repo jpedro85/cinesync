@@ -111,10 +111,7 @@
 
         Logger.LogInformation("User created a new account with password.");
 
-        await SendConfirmationEmailLinkAsync(user);
-
-
-        await SignInManager.SignInAsync(user, isPersistent: false);
+        SendConfirmationEmailLinkAsync(user);
         RedirectManager.RedirectTo(ReturnUrl);
     }
 

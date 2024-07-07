@@ -5,16 +5,16 @@
 .header-left {
     display: flex;
     flex-direction: row;
-    gap:10px;
+    gap: 10px;
 }
 
 .modal-content {
-    background-color: rgb(0,0,0);
+    background-color: rgb(0, 0, 0);
     outline: none !important;
     border: none;
     border-radius: 15px;
     overflow: clip;
-    box-shadow: 0px 0px 10px 0px rgba(255,255,255,0.75);
+    box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
     /*min-height: 30% !important;
     min-width:30%;
     height: fit-content !important;
@@ -26,7 +26,7 @@
     outline: none !important;
     border: none;
     background-color: rgb(12, 18, 85);
-    background: linear-gradient( to bottom, rgb(7, 16, 46) 80%, rgba(0,0,0) 100% );
+    background: linear-gradient(to bottom, rgb(7, 16, 46) 80%, rgba(0, 0, 0) 100%);
     padding-bottom: 25px;
 }
 
@@ -44,26 +44,26 @@
     outline: none !important;
     border: none;
     padding-top: 25px;
-    background: linear-gradient( to top, rgb(7, 16, 46) 80%, rgba(0,0,0) 100% );
+    background: linear-gradient(to top, rgb(7, 16, 46) 80%, rgba(0, 0, 0) 100%);
     display: flex !important;
-    justify-content:center !important;
-    align-items:center !important;
+    justify-content: center !important;
+    align-items: center !important;
 
 }
 
 .buttonClose {
-    color:white;
-    background-color:transparent;
-    outline:none;
-    border:none;
-    width:fit-content;
-    height:fit-content;
+    color: white;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    width: fit-content;
+    height: fit-content;
 }
 
-    .buttonClose:hover {
-        color:rgb(128, 128, 128);
-    }
+.buttonClose:hover {
+    color: rgb(128, 128, 128);
+}
 
-    .buttonClosea:active {
-        color: white;
-    }
+.buttonClosea:active {
+    color: white;
+}
