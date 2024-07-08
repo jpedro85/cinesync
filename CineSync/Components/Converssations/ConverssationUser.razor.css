@@ -35,10 +35,11 @@
     font-size: 15px;
 }
 
-.messages .time hr {
-    margin: 0 5px;
-    margin-left: 20px;
-}
+    .messages .time hr {
+        margin: 0 5px;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
 
 
 .bottom {
@@ -113,6 +114,6 @@
 }
 
 .space {
-    height: 100px;
+    min-height: 100px;
     width: 100%;
 }

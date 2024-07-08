@@ -8,21 +8,7 @@
 
 <div class="converssation-container" >
 	
-	@if( _isloading )
-	{
-		<Loading 
-			FontPalceHeight="20"
-			FontSize="18"
-			LineHeight="30"
-			LetterSpacing="0"
-			MarginLeterLine="5"
-			MaxWidth="120"
-		>
-		</Loading>
-
-		GetMessages();
-	}
-	else
+	@if( !_isloading)
 	{
 		<div class="top-container">
 			<ItemUser 
@@ -100,7 +86,7 @@
 
 			</dvi>
 
-			<div class="messages">
+			<div id="scrollable_messages" class="messages">
 
 				@{
 					int index = 0;
@@ -139,12 +125,15 @@
 							AuthenticatedUser="@AuthenticatedUser"
 							Message="@message"	
 							OnReply="@OnMessageReply"
+							OnOpenImojiPiker="@OnOpenImojiPiker"
 							OnRemove="(e)=>{}"
+							Group="@_messageHubGroupName" 
 						/>
 					</div>
 				}
 
 				<div class="space">
+					<div></div>
 				</div>
 			</div>
 
@@ -162,5 +151,27 @@
 			</DmInput>
 		</div>
 	}
+	else
+	{
+		<Loading FontPalceHeight="20"
+				 FontSize="18"
+				 LineHeight="30"
+				 LetterSpacing="0"
+				 MarginLeterLine="5"
+				 MaxWidth="120">
+		</Loading>
+
+		GetMessages();
+	}
 
 </div>
+<script>
+
+	window.scrollToBottom = (elementId) => {
+		let element = document.getElementById(elementId);
+		if (element) {
+			element.scrollTop = element.scrollHeight + 100;
+		}
+	};
+
+</script>

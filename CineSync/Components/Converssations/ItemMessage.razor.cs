@@ -3,12 +3,20 @@ using CineSync.Data;
 using CineSync.Data.Models;
 using Microsoft.AspNetCore.Components;
 using CineSync.DbManagers;
+using CineSync.Hubs;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CineSync.Components.Converssations
 {
     public partial class ItemMessage : ComponentBase
     {
+		[CascadingParameter(Name = "MessageHubConnection")]
+		public HubConnection MessageHubConnection { get; set; } = default!;
+
         [Parameter, EditorRequired]
+        public string Group { get; set; } = default!;
+
+		[Parameter, EditorRequired]
         public ApplicationUser AuthenticatedUser { get; set; } = default!;
 
         [Parameter, EditorRequired]
@@ -17,11 +25,11 @@ namespace CineSync.Components.Converssations
         [Parameter, EditorRequired]
         public EventCallback<Message> OnReply { get; set; }
 
-        [Parameter, EditorRequired]
-        public EventCallback<Message> OnRemove {  get; set; }
+		[Parameter, EditorRequired]
+		public EventCallback<Message> OnOpenImojiPiker { get; set; }
 
-        [Parameter]
-        public ItemMessage lastItemMessage { get; set; } = default!;
+		[Parameter, EditorRequired]
+        public EventCallback<Message> OnRemove {  get; set; }
 
         [Inject]
         private MessageManager MessageManager { get; set; } = default!;
@@ -30,12 +38,11 @@ namespace CineSync.Components.Converssations
 		private PopUpAttachementView _attachementView = default!;
         private bool _showImojiPicker = false;
         private bool _highlight = false;
-        private bool _loading = false;
+        private bool _loading = true;
 
 		protected override void OnInitialized()
 		{
-   //         _loading = true;
-			//getInfoTask = Task.Run(GetInfo);
+            _loading = true;
 		}
 
         private async void GetInfo() 
@@ -57,8 +64,9 @@ namespace CineSync.Components.Converssations
 			_attachementView.Open();
 		}
 
-        private void AddEmoji(string emoji)
+        private async void AddEmoji(string emoji)
         {
+
             if(Message.Reactions == null)
 				Message.Reactions = new List<Reaction>();
 
@@ -69,7 +77,11 @@ namespace CineSync.Components.Converssations
 			    }
             );;
 
+            await MessageManager.UpdateEntity(Message, "Reactions");
+            await MessageHubConnection.InvokeAsync("NotifyGroupNewReaction", Group ,Message.Id, emoji);
+
             _showImojiPicker = false;
+			await InvokeAsync(StateHasChanged);
 		}
 
         public void Highlight( bool state ) 
@@ -80,9 +92,20 @@ namespace CineSync.Components.Converssations
             InvokeAsync(StateHasChanged);
 		}
 
-        public Message GetMessage() 
+        public void CloseImojiPiker() 
         {
-            return Message;
+            _showImojiPicker = false;
+            InvokeAsync(StateHasChanged);
+        }
+
+        public void AddReaction(string reaction) 
+        {
+            if (Message.Reactions == null)
+				Message.Reactions = new List<Reaction>();
+
+			Message.Reactions?.Add( new Reaction { ReactionContent = reaction });
+
+            InvokeAsync(StateHasChanged);
         }
 	}
 }

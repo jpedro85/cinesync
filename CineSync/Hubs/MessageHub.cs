@@ -20,11 +20,15 @@ namespace CineSync.Hubs
 
 		public Task NotifyGroupNewMessage( string roomName, uint messageId )
         {
-            Console.WriteLine($"Alive {messageId}");
 			return Clients.OthersInGroup(roomName).SendAsync( "UpdateMessages" , messageId);
 		}
 
-        public async Task UpdateYourRequestState(Invite invite) 
+		public Task NotifyGroupNewReaction(string roomName, uint messageId, string reaction)
+		{
+			return Clients.OthersInGroup(roomName).SendAsync("UpdateReaction", messageId, reaction);
+		}
+
+		public async Task UpdateYourRequestState(Invite invite) 
 		{
             await Clients.Others.SendAsync("UpdateMyRequestState", invite);
         }
@@ -33,8 +37,6 @@ namespace CineSync.Hubs
         {
             await Clients.Others.SendAsync("UpdateYourRequestState", invite);
         }
-
-
 
         public async Task test()
         {

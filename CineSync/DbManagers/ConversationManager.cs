@@ -136,9 +136,9 @@ namespace CineSync.DbManagers
 		{
 			Conversation? fetchedConversation = await GetFirstByConditionAsync(c => c.Id == conversation.Id,
 														"Messages",
-														"Messages.Autor",
-														"Messages.Reactions",
-														"Messages.Attachements"
+														"Messages.Autor"
+														//"Messages.Reactions",
+														//"Messages.Attachements"
 														);
 
 			if (fetchedConversation == null)

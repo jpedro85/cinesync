@@ -16,20 +16,24 @@ namespace CineSync.Components.Account.Component
 
         [Parameter] public string Style { get; set; } = "";
 
-        private UserImage _image = null;
+        private UserImage? _image = null;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            if (firstRender) 
             {
                 GetImage();
+                StateHasChanged();
             }
         }
 
         private async void GetImage()
         {
-            _image = await DbUserImageManager.GetFirstByConditionAsync(uImage => uImage.UserId == User.Id);
-            StateHasChanged();
-        }
+            if (User.UserImage == null)
+                _image = await DbUserImageManager.GetFirstByConditionAsync(uImage => uImage.UserId == User.Id);
+		    else
+				_image = User.UserImage;
+		}
+
     }
 }

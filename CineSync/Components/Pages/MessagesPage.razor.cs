@@ -32,6 +32,7 @@ namespace CineSync.Components.Pages
 
         private ApplicationUser _userToSend = default!;
         private Conversation _conversation = default!;
+        private ConverssationUser? _conversationUser = null;
 
         private bool _initialized = false;
         private bool _Foolowing = false;
@@ -84,12 +85,15 @@ namespace CineSync.Components.Pages
             StateHasChanged();
 		}
 
-        private void OnClickConversation( Conversation conversation ) 
+        private async void OnClickConversation( Conversation conversation ) 
         {
             _actualState = State.MESSAGE;
             _conversation = conversation;
 
-            InvokeAsync(StateHasChanged);
+            if (_conversationUser != null)
+                await _conversationUser.SetLoading();
+            
+            await InvokeAsync(StateHasChanged);
         }
 
         private void OnNewMessage( Conversation conversation ) 

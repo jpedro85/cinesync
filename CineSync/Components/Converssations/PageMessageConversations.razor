@@ -86,59 +86,66 @@
             }
             else if (_activeTab == _tabs[1]) // MyRequestes
             {
-                if (InvitesFromMeFiltered.Count() == 0)
+
+                bool added = false;
+
+                foreach (Invite invite in InvitesFromMeFiltered)
+                {
+                    if (invite.HideBySender) continue;
+
+                    <div class="ItemEnvite-containor-clickable"
+                        @onclick="()=>{ 
+                                Conversation conversation = Conversations.Where(c =>c.ConversationId == invite.ConversationId )
+                                                            .First().Conversation;
+                                OnClickInviteConversation.InvokeAsync(conversation);
+                        }">
+                        <ItemEnvite 
+                            Authenticateduser="@AuthenticatedUser"
+                            Invite="@invite"
+                            OnAccept="OnUpdateMyRequestState"
+                            OnDecline="OnUpdateMyRequestState"
+                            OnRemove="RemoveMyRequest"
+                            ShowSender="false"
+                        ></ItemEnvite>
+                    </div>
+
+                    added = true;
+                }
+
+                if ( !added )
                 {
                     <div class="loading-containor">
                         <div>No Invites where found.</div>
                     </div>
-                }
-                else
-                {
-                    foreach (Invite invite in InvitesFromMeFiltered)
-                    {
-                        if (invite.HideBySender) continue;
-
-                        <div class="ItemEnvite-containor-clickable"
-                            @onclick="()=>{ 
-                                 Conversation conversation = Conversations.Where(c =>c.ConversationId == invite.ConversationId )
-                                                                .First().Conversation;
-                                 OnClickInviteConversation.InvokeAsync(conversation);
-                            }">
-                            <ItemEnvite 
-                                Authenticateduser="@AuthenticatedUser"
-                                Invite="@invite"
-                                OnAccept="OnUpdateMyRequestState"
-                                OnDecline="OnUpdateMyRequestState"
-                                OnRemove="RemoveMyRequest"
-                            ></ItemEnvite>
-                        </div>
-                    }
                 }
             }
             else if (_activeTab == _tabs[2]) // Requests
             {
-                if (InvitesToMeFiltered.Count() == 0)
+                bool added = false;
+
+                foreach (Invite invite in InvitesToMeFiltered)
+                {
+                    if (invite.HideByTarget ) continue;
+
+                    <div class="ItemEnvite-containor">
+                        <ItemEnvite 
+                            Authenticateduser="@AuthenticatedUser"
+                            Invite="@invite"
+                            OnAccept="OnUpdateRequestState"
+                            OnDecline="OnUpdateRequestState"
+                            OnRemove="RemoveRequest"
+                        ></ItemEnvite>
+                    </div>
+
+                    added = true;
+                }
+
+                if ( !added )
+
                 {
                     <div class="loading-containor">
                         <div>No Invites where found.</div>
                     </div>
-                }
-                else
-                {
-                    foreach (Invite invite in InvitesToMeFiltered)
-                    {
-                        if (invite.HideByTarget ) continue;
-
-                        <div class="ItemEnvite-containor">
-                            <ItemEnvite 
-                                Authenticateduser="@AuthenticatedUser"
-                                Invite="@invite"
-                                OnAccept="OnUpdateRequestState"
-                                OnDecline="OnUpdateRequestState"
-                                OnRemove="RemoveRequest"
-                            ></ItemEnvite>
-                        </div>
-                    }
                 }
             }
                                
