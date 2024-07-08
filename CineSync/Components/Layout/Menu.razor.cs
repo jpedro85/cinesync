@@ -1,4 +1,6 @@
 ﻿using CineSync.Data;
+using CineSync.Data.Models;
+using CineSync.DbManagers;
 using CineSync.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -7,19 +9,22 @@ namespace CineSync.Components.Layout
 {
     public partial class Menu : ComponentBase
     {
-
-        [Parameter]
+        [Parameter] 
         public GetInstanceDelegate GetInstance { get; set; } = (m) => { };
+
         public delegate void GetInstanceDelegate(Menu menu);
 
-        [Parameter,EditorRequired]
+        [Parameter, EditorRequired] 
         public ApplicationUser? AuthenticatedUser { get; set; }
 
-        [Parameter, EditorRequired]
+        [Parameter, EditorRequired] 
         public ICollection<string> UserRoles { get; set; }
 
-        [Parameter, EditorRequired]
+        [Parameter, EditorRequired] 
         public NavBarEvents NavBarEvents { get; set; }
+
+        [Inject] 
+        public CollectionsManager CollectionsManager { get; set; }
 
 
         private const int MAX_NOT_OPEN_ALLOWED_FOLLOWING_USERS = 4;
@@ -27,28 +32,28 @@ namespace CineSync.Components.Layout
         private bool _showAll = false;
 
         private string IsActive { get; set; } = string.Empty;
+        private IEnumerable<MovieCollection> defaultCollections;
 
-        public int Teste { get; set; } = 69;
-
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             NavBarEvents.OnMenuChange += this.ChangeState;
             GetInstance(this);
+            if (AuthenticatedUser != null)
+            {
+                defaultCollections = await CollectionsManager.GetUserDefaultCollectionsWithoutMovies(AuthenticatedUser.Id);
+            }
         }
 
-        public void CloseMenu( MouseEventArgs e)
+        public void CloseMenu(MouseEventArgs e)
         {
             IsActive = "";
 
             NavBarEvents.IsMenuOpen = false;
 
-            InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
+            InvokeAsync(() => { StateHasChanged(); });
         }
 
-        public void ChangeState( bool active)
+        public void ChangeState(bool active)
         {
             if (active)
             {
@@ -59,11 +64,7 @@ namespace CineSync.Components.Layout
                 IsActive = "";
             }
 
-            InvokeAsync( () =>
-            {
-                StateHasChanged();
-            });
-
+            InvokeAsync(() => { StateHasChanged(); });
         }
 
         private void OnClickShowAll(MouseEventArgs e)

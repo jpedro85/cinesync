@@ -191,6 +191,7 @@ namespace CineSync
             services.AddScoped<DbManager<UserLikedDiscussion>>();
             services.AddScoped<DbManager<UserDislikedDiscussion>>();
             services.AddScoped<DbManager<UserConversations>>();
+            services.AddScoped<DbManager<FollowedCollection>>();
             services.AddScoped<UserRoleManager<ApplicationUser>>();
             services.AddScoped<CollectionsManager>();
             services.AddScoped<CommentManager>();
