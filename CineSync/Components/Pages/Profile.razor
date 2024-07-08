@@ -191,10 +191,10 @@
                                                     }
                                                     @if (!_visit)
                                                     {
-                                                    @foreach (var collection in followedCollections)
-                                                    {
-                                                    <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection.MovieCollection" SuffixName="@collection.MovieCollection.ApplicationUser.UserName"/>
-                                                    }
+                                                        @foreach (var collection in followedCollections)
+                                                        {
+                                                            <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection.MovieCollection" SuffixName="@collection.MovieCollection.ApplicationUser.UserName"/>
+                                                        }
                                                     }
                                                 </div>
                                             </div>
