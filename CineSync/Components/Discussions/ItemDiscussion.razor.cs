@@ -7,6 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Components.Web;
 using CineSync.Components.Layout;
 using CineSync.Components.PopUps;
+using Microsoft.AspNetCore.SignalR.Client;
+using SQLitePCL;
+using Microsoft.JSInterop;
 
 namespace CineSync.Components.Discussions
 {
@@ -14,6 +17,9 @@ namespace CineSync.Components.Discussions
     {
         [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; } = default!;
+
+        [CascadingParameter(Name = "DiscussionHubConnection")]
+        public HubConnection DiscussionHubConnection { get; set; } = default!;
 
         [Inject]
         private MovieManager MovieManager { get; set; } = default!;
@@ -65,6 +71,8 @@ namespace CineSync.Components.Discussions
         public bool AllowNavegation { get; set; } = false;
         //private bool _isNaveGationClick = true;
 
+        [Inject]
+        public IJSRuntime JS { get; set; } = default!;
 
         private RemoveDiscussion _popupRemove = default!;
 
@@ -84,8 +92,13 @@ namespace CineSync.Components.Discussions
 
         private bool _fetchedInfo = false;
 
+        private string _GroupName = default!;
+
         protected override void OnInitialized()
         {
+            _GroupName = DiscussionManager.GetGroupName(Discussion);
+            DiscussionHubConnection.InvokeAsync("JoinRoom", _GroupName);
+            SubscriveToEvents();
             _authenticatedUser = PageLayout.AuthenticatedUser;
             _userRoles = PageLayout.UserRoles;
             _Liked = LikedDiscussions.Any(uLike => uLike.Discussion.Equals(Discussion));
@@ -93,13 +106,44 @@ namespace CineSync.Components.Discussions
             _allowSee = !Discussion.HasSpoiler;
         }
         
-        protected async void GetDiscutionInfo()
+        private async void GetDiscutionInfo()
         {
             Discussion.Comments = await CommentManager.GetCommentsOfDiscussion(Discussion.Id);
             GetUserStatusComments();
             UpdateSpoilerState();
             StateHasChanged();
             _fetchedInfo = true;
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if(firstRender)
+                await JS.InvokeVoidAsync("scrollToBottom", "scrollable_messages");
+        }
+
+        private void SubscriveToEvents() 
+        {
+
+            DiscussionHubConnection.On<string, int, int>("Update", 
+                    (roomName, nlikes, nDislikes) => 
+                    { 
+                        if (roomName == _GroupName) UpdateLikesDislikes(nlikes, nDislikes); 
+                    }
+                );
+
+            DiscussionHubConnection.On<string, uint>("NewComment",
+                    (roomName, commentId) =>
+                    {
+                        if (roomName == _GroupName) UpdateNewComment(commentId);
+                    }
+                );
+
+            DiscussionHubConnection.On<string, uint>("RemoveComment",
+                    (roomName, commentId) =>
+                    {
+                        if (roomName == _GroupName) UpdateRemoveComment(commentId);
+                    }
+                );
         }
 
         private void GetUserStatusComments()
@@ -190,6 +234,13 @@ namespace CineSync.Components.Discussions
                 await DiscussionManager.AddDesLikeAsync(Discussion, _authenticatedUser!.Id);
                 _Disliked = true;
             }
+
+            DiscussionHubConnection.InvokeAsync("NotifyGroupUpdateDiscussion",
+                                                    _GroupName,
+                                                    Discussion.NumberOfLikes,
+                                                    Discussion.NumberOfDeslikes
+                                                );
+
             UpdateDislike(_Disliked);
             StateHasChanged();
         }
@@ -277,6 +328,9 @@ namespace CineSync.Components.Discussions
                 StateHasChanged();
             }
 
+            await DiscussionHubConnection.InvokeAsync("NotifyGroupNewComment", _GroupName, commentToAdd.Id);
+
+            await JS.InvokeVoidAsync("scrollToBottom", "scrollable_messages");
 
         }
 
@@ -292,7 +346,6 @@ namespace CineSync.Components.Discussions
             _DoComment = !_DoComment;
         }
 
-        //TODO call this when a comment is removed or edited
         public async void UpdateSpoilerState()
         {
             bool newSpoilerState = false;
@@ -325,6 +378,45 @@ namespace CineSync.Components.Discussions
             }
 
             //_isNaveGationClick = true;
+        }
+
+        private void UpdateLikesDislikes(int nLikes,int nDislikes) 
+        {
+            Discussion.NumberOfLikes = nLikes;
+            Discussion.NumberOfDeslikes = nDislikes;
+
+            InvokeAsync(StateHasChanged);
+        }
+
+        private async void UpdateNewComment(uint commentId) 
+        {
+
+            Comment? comment = await CommentManager.GetFirstByConditionAsync(c => c.Id == commentId, "Attachements", "Autor");
+
+            if (comment != null)
+            {
+                if (Discussion.Comments == null)
+                    Discussion.Comments = new List<Comment>();
+
+                Discussion.Comments.Add(comment);
+
+                await InvokeAsync(StateHasChanged);
+
+                await JS.InvokeVoidAsync("scrollToBottom", "scrollable_messages");
+            }
+        }
+
+        private void UpdateRemoveComment(uint commentId)
+        {
+            Comment? comment = Discussion.Comments?.Where(c => c.Id == commentId).FirstOrDefault();
+
+            if (comment != null)
+            {
+
+                Discussion.Comments!.Remove(comment);
+
+                InvokeAsync(StateHasChanged);
+            }
         }
     }
 }

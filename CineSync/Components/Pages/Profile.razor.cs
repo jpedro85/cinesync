@@ -4,6 +4,7 @@ using CineSync.DbManagers;
 using CineSync.Data.Models;
 using Microsoft.AspNetCore.Components;
 using CineSync.Components.Layout;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CineSync.Components.Pages
 {
@@ -54,6 +55,8 @@ namespace CineSync.Components.Pages
 
         public ApplicationUser AuthenticatedUser { get; set; }
 
+        public HubConnection DiscussionHubConnection { get; set; } = default!;
+
         public UserImage? UserImage { get; set; }
 
         private ICollection<MovieCollection>? _movieCollections = null;
@@ -89,26 +92,42 @@ namespace CineSync.Components.Pages
         {
             AuthenticatedUser = _pageLayout.AuthenticatedUser!;
 
-            if (string.IsNullOrEmpty(UserId) || UserId == AuthenticatedUser.Id)
+            if (!_initialized) 
             {
-                _visit = false;
-                User = AuthenticatedUser;
-            }
-            else
-            {
-                User = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId, "Following", "Followers");
-                if (User == null || UserId == "0")
+                if (string.IsNullOrEmpty(UserId) || UserId == AuthenticatedUser.Id)
                 {
-                    _invalid = true;
+                    _visit = false;
+                    User = AuthenticatedUser;
                 }
                 else
                 {
-                    _visit = true;
+                    User = await UserManager.GetFirstByConditionAsync(u => u.Id == UserId, "Following", "Followers");
+                    if (User == null || UserId == "0")
+                    {
+                        _invalid = true;
+                    }
+                    else
+                    {
+                        _visit = true;
+                    }
+
                 }
 
+                await ConnectToMessageHub();
             }
 
             _initialized = true;
+        }
+
+        private async Task ConnectToMessageHub()
+        {
+            DiscussionHubConnection = new HubConnectionBuilder()
+              .WithUrl(NavigationManager.ToAbsoluteUri("/DiscussionHub"))
+              .Build();
+
+            await DiscussionHubConnection.StartAsync();
+
+            StateHasChanged();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -226,6 +245,18 @@ namespace CineSync.Components.Pages
         private void OnTabChange(string tabName)
         {
             _activeTab = tabName;
+            if(_tabNames[0] == _activeTab) 
+            {
+                _movieCollections = null;
+            }
+            else if (_tabNames[1] == _activeTab)
+            {
+                _comments = null;
+            }
+            else if (_tabNames[2] == _activeTab)
+            {
+                _discussions = null;
+            }
             InvokeAsync(StateHasChanged);
         }
 

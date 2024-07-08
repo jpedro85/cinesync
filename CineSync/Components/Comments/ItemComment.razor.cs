@@ -6,6 +6,7 @@ using CineSync.Data;
 using CineSync.Components.PopUps;
 using Microsoft.AspNetCore.Components.Web;
 using CineSync.Components.Layout;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CineSync.Components.Comments
 {
@@ -13,6 +14,9 @@ namespace CineSync.Components.Comments
     {
         [CascadingParameter(Name = "PageLayout")]
         public PageLayout PageLayout { get; set; } = default!;
+
+        [CascadingParameter(Name = "DiscussionHubConnection")]
+        public HubConnection? DiscussionHubConnection { get; set; } = default;
 
 
         [Inject]
@@ -26,6 +30,9 @@ namespace CineSync.Components.Comments
 
         [Inject]
         private CommentManager CommentManager { get; set; } = default!;
+
+        [Inject]
+        private DiscussionManager DiscussionManager { get; set; } = default!;
 
 
         [Parameter,EditorRequired]
@@ -73,8 +80,16 @@ namespace CineSync.Components.Comments
 
         private PopUpStartDiscussion _newDiscussionPopUp = default!;
 
+        private string _GroupName = default!;
+
         protected override void OnInitialized()
 		{
+            if(DiscussionHubConnection != null && Comment.DiscussionId != null)
+            {
+                _GroupName = DiscussionManager.GetGroupName( (uint)(Comment.DiscussionId) );
+                DiscussionHubConnection.InvokeAsync("JoinRoom", _GroupName);
+            }
+
             _authenticatedUser = PageLayout.AuthenticatedUser!;
             _userRoles = PageLayout.UserRoles;
             _Liked = LikedComments.Any(uLike => uLike.Comment.Equals(Comment));
@@ -240,7 +255,12 @@ namespace CineSync.Components.Comments
         {
 			_isNaveGationClick = false;
 
-			await OnRemove.InvokeAsync(Comment.Id);
+            await OnRemove.InvokeAsync(Comment.Id);
+
+            DiscussionHubConnection?.InvokeAsync("NotifyGroupRemovedComment",
+                                                    _GroupName,
+                                                    Comment.Id
+                                                );
         }
 
         private async void Navegate() 

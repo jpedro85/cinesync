@@ -244,7 +244,8 @@ namespace CineSync
         private void MapHubs(WebApplication app) 
         {
 			app.MapHub<MessageHub>("/MessageHub");
-		}
+            app.MapHub<DiscussionsHub>("/DiscussionHub");
+        }
 
 		/// <summary>
 		/// Initializes the database with required roles and user data.
