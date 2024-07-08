@@ -33,6 +33,9 @@ namespace CineSync.Components.Pages
 
         [Inject]
         public DbManager<UserDislikedDiscussion> DbUserDislikedDiscussion { get; set; }
+        
+        [Inject]
+        public DbManager<FollowedCollection> DbFollowedCollections { get; set; }
 
         [Inject]
         public CollectionsManager CollectionManager { get; set; }
@@ -60,6 +63,7 @@ namespace CineSync.Components.Pages
         public UserImage? UserImage { get; set; }
 
         private ICollection<MovieCollection>? _movieCollections = null;
+        private IEnumerable<FollowedCollection>? followedCollections = null;
 
         private ICollection<Comment>? _comments = null;
 
@@ -157,6 +161,8 @@ namespace CineSync.Components.Pages
         private void UpdateMovieCollections()
         {
             _movieCollections = CollectionManager.GetUserCollections(User!.Id).Result;
+            followedCollections = DbFollowedCollections.GetByConditionAsync(
+                c => c.ApplicationUserId == AuthenticatedUser.Id, "MovieCollection.CollectionMovies.Movie").Result;
             StateHasChanged();
         }
 

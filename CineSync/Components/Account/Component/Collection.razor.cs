@@ -21,6 +21,9 @@ namespace CineSync.Components.Account.Component
         [Parameter]
         public EventCallback OnRemove { get; set; }
 
+        [Parameter]
+        public string SuffixName { get; set; } = string.Empty;
+
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
@@ -40,7 +43,7 @@ namespace CineSync.Components.Account.Component
 
         private void GoToCollectionManager()
         {
-            NavigationManager.NavigateTo($"ManageCollection/{MovieCollection.Name!.Replace(" ", "_")}");
+            NavigationManager.NavigateTo($"ManageCollection/{MovieCollection.Id}");
         }
 
     }

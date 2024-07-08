@@ -1,12 +1,11 @@
-﻿@page "/ManageCollection/{CollectionName?}"
+﻿@page "/ManageCollection/{CollectionId}"
 @attribute [Authorize]
 
+@using System.Collections.ObjectModel
 @using Microsoft.AspNetCore.Authorization
 @using CineSync.Components.Layout
 @using CineSync.Components.Buttons
 @using CineSync.Components.Movies
-@using CineSync.Core.Adapters.ApiAdapters
-@using CineSync.Data.Models
 @using CineSync.Components.PopUps
 
 
@@ -15,48 +14,70 @@
 
 <PageLayout
     @ref="@_pageLayout"
-	GetInstance="GetPagelayout"
->
+    GetInstance="GetPagelayout">
 
-    @{ Initialize(); }    
+    @{ Initialize(); }
 
 
     <CascadingValue Name="PageLayout" Value="_pageLayout" TValue="PageLayout">
 
-        @if(_inicialized)
-        {
-            <div class="main-content">
-
+        <div class="main-content">
+            @if (_inicialized && ((_visit && Collection.IsPublic) || !_visit))
+            {
                 <div class="content">
 
                     <div class="Subtilte">
                         <div>
-                            @Collection.Name
+                           @( _visit ? @Collection.ApplicationUser.UserName + " "+ @Collection.Name : @Collection.Name )
                         </div>
-                        <div class="toggle-button">
-                            <ToggleButton OnChange="OnChangePublic" InitialState="Collection.IsPublic" />
+                        @if (!_visit)
+                        {
+                            <div class="toggle-button">
+                                <ToggleButton OnChange="OnChangePublic" InitialState="Collection.IsPublic"/>
 
-                            @if (!DefaultCollection.Contains(Collection.Name))
-                            {
-                                <button class="EditName" data-toggle="modal" data-target="#POPUPINPUT">Edit Name</button>
-                            }
-                        </div>
+                                @if (!DefaultCollection.Contains(Collection.Name))
+                                {
+                                    <button class="EditName" data-toggle="modal" data-target="#POPUPINPUT">Edit Name</button>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex ml-auto mr-5">
+                                @if (!_follows)
+                                {
+                                    <RectButton1 Text="Follow" OnClick="() => { FollowCollection(); }"/>
+                                }
+                                else
+                                {
+                                    <RectButton1 Text="UnFollow" OnClick="() => { UnFollowCollection(); }"/>
+                                }
+                            </div>
+                        }
                     </div>
 
-                    <PopUpInput Tilte="Change Collection Name" Question="Insert new name" PlaceHolder="New collection name" OnSave="OnChangeName"></PopUpInput>
+                    @if (!_visit)
+                    {
+                        <PopUpInput Tilte="Change Collection Name" Question="Insert new name" PlaceHolder="New collection name" OnSave="OnChangeName"></PopUpInput>
+                    }
 
                     <ManagerCollectionMovies AuthenticatedUser="AuthenticatedUser" Collection="Collection"></ManagerCollectionMovies>
-      
+
                 </div>
-  
-            </div>
-        }
-        else 
-        {
-            <div class="main-content">
+            }
+            else if ((_visit && !Collection.IsPublic) || _isInvalid)
+            {
+                <div class="p-2 w-100 h-100 d-flex justify-content-center align-items-center">
+                    <div class="Fade d-flex align-items-center justify-content-center text-center">
+                        <span class="text-white display-5 user-select-none">The content you are trying to access is unavailable.</span>
+                    </div>
+                </div>
+            }
+            else
+            {
                 <Loading></Loading>
-            </div>
-        }
+            }
+        </div>
 
     </CascadingValue>
 

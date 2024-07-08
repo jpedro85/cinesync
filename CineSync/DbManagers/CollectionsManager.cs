@@ -11,7 +11,7 @@ namespace CineSync.DbManagers
     {
         private readonly IRepositoryAsync<ApplicationUser> _userRepository;
         private readonly IRepositoryAsync<Movie> _movieRepository;
-        private readonly ICollection<string> collectionNames = new string[] { "Favorites", "Watched", "Classified", "Watch Later" };
+        private readonly ICollection<string> _defaultCollectionNames = new string[] { "Favorites", "Watched", "Classified", "Watch Later" };
         private readonly string WatchTimeCollection = "Watched";
 
         /// <summary>
@@ -35,6 +35,12 @@ namespace CineSync.DbManagers
             ApplicationUser user = await _userRepository.GetFirstByConditionAsync(u => u.Id == userId, "Collections.CollectionMovies.Movie");
             return user!.Collections!;
         }
+        
+        public async Task<IEnumerable<MovieCollection>> GetUserDefaultCollectionsWithoutMovies(string userId)
+        {
+            ApplicationUser user = await _userRepository.GetFirstByConditionAsync(u => u.Id == userId,"Collections");
+            return user?.Collections!.Where(c=> _defaultCollectionNames.Contains(c.Name));
+        }
 
         /// <summary>
         /// Initializes default collections for a new user.
@@ -44,7 +50,7 @@ namespace CineSync.DbManagers
         public async Task<bool> InitializeUserCollectionsAsync(string userId)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            foreach (string name in collectionNames)
+            foreach (string name in _defaultCollectionNames)
             {
                 user.Collections!.Add(new MovieCollection { Name = name, IsPublic = false, CollectionMovies = new List<CollectionsMovies>(0) });
             }
@@ -60,7 +66,7 @@ namespace CineSync.DbManagers
         public async Task<bool> CreateNewCollectionAsync(string userId, string collectionName)
         {
             ApplicationUser user = await GetUserByIdAsync(userId);
-            if (collectionNames.Contains(collectionName))
+            if (_defaultCollectionNames.Contains(collectionName))
             {
                 return true;
             }
@@ -194,7 +200,7 @@ namespace CineSync.DbManagers
         /// <param name="collectionId">The Id of the collection to change the Name of.</param>
         /// <param name="newCollectionName">The newName of the Collection.</param>
         /// <returns>True if sucessefull otherwise False</returns>
-        public async Task<bool> ChangeCollectioName(uint collectionId, string newCollectionName)
+        public async Task<bool> ChangeCollectionName(uint collectionId, string newCollectionName)
         {
             MovieCollection? collection = await _repository.GetFirstByConditionAsync(c => c.Id == collectionId);
             if (collection == null)

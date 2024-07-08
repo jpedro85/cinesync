@@ -35,6 +35,10 @@
 
                                     <Collection OnRemove="OnCollectionsEdit" MovieCollection="collection" />
                                 }
+                                @foreach (var collection in FollowedCollections)
+                                {
+                                    <Collection OnRemove="OnCollectionsEdit" MovieCollection="collection.MovieCollection" SuffixName="@collection.MovieCollection.ApplicationUser.UserName"/>
+                                }
                             </div>
                         </div>
                     </div>

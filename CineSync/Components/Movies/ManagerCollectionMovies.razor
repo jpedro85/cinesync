@@ -8,7 +8,7 @@
         @foreach (CollectionsMovies collectionsMovies in Collection.CollectionMovies)
         {
             <div class="MovieConteainer" @onclick="(e) => MovieClickHandler(collectionsMovies.Movie)">
-                @if (Collection.Name != "Classified")
+                @if (Collection.Name != "Classified" && Collection.ApplicationUser.Id == AuthenticatedUser.Id)
                 {
                     <div class="remove-movie" @onclick:stopPropagation @onclick=" () => { RemoveMovieFromCollection(collectionsMovies); }">
                         <RemoveMovieButton/>
