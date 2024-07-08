@@ -17,5 +17,8 @@ namespace CineSync.Data.Models
 
         [JsonIgnore]
         public ApplicationUser ApplicationUser { get; set; }
+
+        public ICollection<FollowedCollection> FollowedCollections { get; set; }
+
     }
 }

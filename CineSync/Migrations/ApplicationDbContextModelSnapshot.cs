@@ -251,6 +251,28 @@ namespace CineSync.Migrations
                     b.ToTable("Discutions");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.FollowedCollection", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("MovieCollectionId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("MovieCollectionId");
+
+                    b.ToTable("FollowedCollection");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -895,6 +917,25 @@ namespace CineSync.Migrations
                     b.Navigation("Autor");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.FollowedCollection", b =>
+                {
+                    b.HasOne("CineSync.Data.ApplicationUser", "ApplicationUser")
+                        .WithMany("FollowedCollections")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.Models.MovieCollection", "MovieCollection")
+                        .WithMany("FollowedCollections")
+                        .HasForeignKey("MovieCollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("MovieCollection");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.Invite", b =>
                 {
                     b.HasOne("CineSync.Data.Models.Conversation", "Conversation")
@@ -1209,6 +1250,8 @@ namespace CineSync.Migrations
 
                     b.Navigation("DislikedDiscussions");
 
+                    b.Navigation("FollowedCollections");
+
                     b.Navigation("LikedComments");
 
                     b.Navigation("LikedDiscussions");
@@ -1260,6 +1303,8 @@ namespace CineSync.Migrations
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>
                 {
                     b.Navigation("CollectionMovies");
+
+                    b.Navigation("FollowedCollections");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Notification", b =>

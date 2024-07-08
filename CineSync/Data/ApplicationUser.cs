@@ -14,14 +14,16 @@ namespace CineSync.Data
 
         public uint FollowersCount { get; set; }
 
-		[JsonIgnore]
-		public ICollection<ApplicationUser>? Following { get; set; }
+        [JsonIgnore]
+        public ICollection<ApplicationUser>? Following { get; set; }
 
         public uint FollowingCount { get; set; }
 
         public float WatchTime { get; set; } = 0;
 
         public ICollection<MovieCollection>? Collections { get; set; }
+
+        public ICollection<FollowedCollection> FollowedCollections { get; set; }
 
         public ICollection<UsersNotifications>? Notifications { get; set; }
 
