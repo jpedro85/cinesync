@@ -20,8 +20,11 @@ namespace CineSync.Components.Account.Component
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            GetImage();
-            StateHasChanged();
+            if (firstRender) 
+            {
+                GetImage();
+                StateHasChanged();
+            }
         }
 
         private async void GetImage()

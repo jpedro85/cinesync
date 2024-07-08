@@ -5,6 +5,7 @@ using CineSync.Data.Models;
 using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.JSInterop;
 using MimeKit.Cryptography;
 
 namespace CineSync.Components.Converssations
@@ -42,6 +43,9 @@ namespace CineSync.Components.Converssations
 		[Inject]
 		public UserManager UserManager { get; set; } = default!;
 
+		[Inject]
+		public IJSRuntime JS { get; set; } = default!;
+
 
 		private string _messageHubGroupName = string.Empty;
         private bool _isloading = true;
@@ -68,18 +72,12 @@ namespace CineSync.Components.Converssations
 			StateHasChanged();
 		}
 
-		//protected override void OnAfterRender(bool firstRender)
-		//{
-		//	//if (firstRender)
-		//	//{
-		//	//	GetUserToSend();
-		//	//	GetMessages();
-		//	//	_isloading = false;
-		//	//	StateHasChanged();
-		//	//}
-		//}
-	
-        private void GetUserToSend() 
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+		{
+			await JS.InvokeVoidAsync("scrollToBottom", "scrollable_messages");
+		}
+
+		private void GetUserToSend() 
         {
 			if (Conversation.Participants.Count > 1)
 			{
@@ -125,6 +123,7 @@ namespace CineSync.Components.Converssations
             MessageHubConnection.InvokeAsync("JoinRoom", _messageHubGroupName );
             MessageHubConnection.On<Invite>("UpdateMyRequestState", UpdateInviteState);
             MessageHubConnection.On<uint>("UpdateMessages", OnUpdateMessage);
+			MessageHubConnection.On<uint, string>("UpdateReaction", OnUpdateReaction);
         }
 
         public async void UpdateInviteState( Invite invite ) 
@@ -157,10 +156,14 @@ namespace CineSync.Components.Converssations
         private async void OnUpdateMessage(uint messageid)
         {
 			Message message = (await MessageManager.GetFirstByConditionAsync(m => m.Id == messageid))!;
-			//MessageManager.Dettach(message);
-          //  Conversation.Messages.Add( message );
             InvokeAsync(StateHasChanged);
         }
+
+		private async void OnUpdateReaction(uint messageid,string reaction)
+		{
+			ItemMessage? itemMessage = itemMessages.Where(iM => iM.Message.Id == messageid).FirstOrDefault();
+			itemMessage?.AddReaction(reaction);
+		}
 
 		private void OnMessageReply( Message message ) 
 		{
@@ -183,5 +186,22 @@ namespace CineSync.Components.Converssations
 			ItemMessage? itemMessage = itemMessages.Where( iM => iM.Message.Id == message.Id ).FirstOrDefault();
 			itemMessage?.Highlight(false);
         }
-    }
+
+		private void OnOpenImojiPiker(Message message) 
+		{
+			foreach (var itemMessage in itemMessages)
+			{
+				if (itemMessage.Message.Id == message.Id)
+					continue;
+
+				itemMessage.CloseImojiPiker();
+			}
+		}
+
+		public Task SetLoading() 
+		{
+			_isloading = true;
+			return InvokeAsync(StateHasChanged);
+		}
+	}
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore.Update.Internal;
+using Microsoft.IdentityModel.Tokens;
 using Mono.TextTemplating;
 using System.Dynamic;
 using System.Formats.Tar;
@@ -74,34 +75,37 @@ namespace CineSync.Components.Converssations
         private void OnSearch(string search)
         {
 
-
-            _shearchImput = search;
-            string searchTreated = search.Trim().ToLower();
-            string searchNormalize = KeyNormalizer.NormalizeName(search);
-
-            if (_activeTab == _tabs[0]) // Messages
+            if( search.IsNullOrEmpty()) 
             {
-                //Conversations = Conversations.Where(
-                //    c => c.Conversation.Participants.Any(u =>
-                //        u.User.NormalizedUserName == searchNormalize) ||
-                //    c.Conversation.Name.ToLower().Contains(searchTreated)
-                //);
+                ConversationsFiltered = Conversations;
+                InvitesFromMeFiltered = InvitesFromMe;
+                InvitesToMeFiltered = InvitesToMe;
             }
-            else if (_activeTab == _tabs[1]) // MyRequests
+            else 
             {
-                //InvitesFromMe = MyInvitesGroupMessage.Where(
-                //    c => c.Conversation.Name.Contains(search) ||
-                //    c.Conversation.Participants.Any(u =>
-                //        u.User.NormalizedUserName == searchNormalize)
-                //);
-            }
-            else if (_activeTab == _tabs[2]) // Requests
-            {
-                //InvitesGroupMessageFiltered = InvitesGroupMessage.Where(
-                //    c => c.Conversation.Name.Contains(search) ||
-                //    c.Conversation.Participants.Any(u =>
-                //        u.User.NormalizedUserName == searchNormalize)
-                //);
+                _shearchImput = search;
+                string searchNormalize = KeyNormalizer.NormalizeName(search.Trim());
+
+                if (_activeTab == _tabs[0]) // Messages
+                {
+                    ConversationsFiltered = Conversations.Where( c => 
+                            c.Conversation.Participants.Any(u => 
+                                !u.User.Equals(AuthenticatedUser) &&
+                                u.User.NormalizedUserName!.Contains(searchNormalize)) == true
+                    );
+                }
+                else if (_activeTab == _tabs[1]) // MyRequests
+                {
+                    InvitesFromMeFiltered = InvitesFromMe.Where( i =>
+                            i.Target.NormalizedUserName!.Contains(searchNormalize)
+                    ); 
+                }
+                else if (_activeTab == _tabs[2]) // Requests
+                {
+                    InvitesToMeFiltered = InvitesToMe.Where(i =>
+                            i.Target.NormalizedUserName!.Contains(searchNormalize)
+                    );
+                }
             }
 
             StateHasChanged();
@@ -225,7 +229,10 @@ namespace CineSync.Components.Converssations
             if (!invite.Sender.Equals(AuthenticatedUser))
                 return;
 
-            Invite localInvite = InvitesFromMe.Where(i => i.Equals(invite)).First();
+            Invite? localInvite = InvitesFromMe.Where(i => i.Equals(invite)).FirstOrDefault();
+
+            if (localInvite == null) return;
+
             localInvite.State = invite.State;
 
             localInvite = InvitesFromMeFiltered.Where(i => i.Equals(invite)).First();
@@ -239,7 +246,7 @@ namespace CineSync.Components.Converssations
 
         private void UpdateRequestState( Invite invite )
         {
-            if (!invite.Sender.Equals(AuthenticatedUser))
+            if (!invite.Target.Equals(AuthenticatedUser))
                 return;
 
             Invite localInvite = InvitesToMe.Where(i => i.Equals(invite)).First();

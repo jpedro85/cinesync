@@ -12,14 +12,27 @@
 
 		@if(ShowUser)
 		{
-			<div class="type-containor-user">
-				<ItemUser 
-					User="@Invite.Sender"
-					Short=false
-					Style="ItemUserStyle"
-				>
-				</ItemUser>
-			</div>
+			if(ShowSender)
+			{
+				<div class="type-containor-user">
+					<ItemUser 
+						User="@Invite.Sender"
+						Short=false
+						Style="ItemUserStyle"
+					>
+					</ItemUser>
+				</div>
+			}
+			else
+			{
+				<div class="type-containor-user">
+					<ItemUser 
+						User="@Invite.Target"
+						Short=false
+						Style="ItemUserStyle">
+					</ItemUser>
+				</div>
+			}
 		}
 
 	</div>
@@ -40,7 +53,7 @@
 
 	<div class="bottom-container">
 
-		@if (AllowCancel)
+		@if (AllowCancel && Invite.State != InviteStates.DEFAULT)
 		{
 			<div class="cancel"
 			@onclick:stopPropagation

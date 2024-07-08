@@ -30,6 +30,9 @@ namespace CineSync.Components.Envites
 		public bool ShowUser { get; set; } = true;
 
 		[Parameter]
+		public bool ShowSender { get; set; } = true;
+
+		[Parameter]
 		public bool AllowCancel { get; set; } = true;
 
 

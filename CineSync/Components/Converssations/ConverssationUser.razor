@@ -86,7 +86,7 @@
 
 			</dvi>
 
-			<div class="messages">
+			<div id="scrollable_messages" class="messages">
 
 				@{
 					int index = 0;
@@ -125,12 +125,15 @@
 							AuthenticatedUser="@AuthenticatedUser"
 							Message="@message"	
 							OnReply="@OnMessageReply"
+							OnOpenImojiPiker="@OnOpenImojiPiker"
 							OnRemove="(e)=>{}"
+							Group="@_messageHubGroupName" 
 						/>
 					</div>
 				}
 
 				<div class="space">
+					<div></div>
 				</div>
 			</div>
 
@@ -162,3 +165,13 @@
 	}
 
 </div>
+<script>
+
+	window.scrollToBottom = (elementId) => {
+		let element = document.getElementById(elementId);
+		if (element) {
+			element.scrollTop = element.scrollHeight + 100;
+		}
+	};
+
+</script>
