@@ -51,13 +51,14 @@ namespace CineSync.Components.PopUps
 
         private async Task OnValidSubmitAsync()
         {
-            if (Input.NewEmail is null || Input.NewEmail == email)
+            var result = await UserManager.FindByEmailAsync(Input.NewEmail);
+            if ( Input.NewEmail is null || Input.NewEmail == email || result != null)
             {
                 message = "Your email is unchanged.";
                 StateHasChanged();
                 return;
             }
-
+            
             await SendConfirmationEmailLinkAsync(user);
 
             message = "Confirmation link to change email sent. Please check your email.";

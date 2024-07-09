@@ -47,8 +47,10 @@
     private async Task OnValidSubmitAsync()
     {
         var user = await UserManager.FindByEmailAsync(Input.Email!);
-        if (user is null)
+        if (user is null || await UserManager.IsEmailConfirmedAsync(user))
         {
+            // If user has already changed email and confirmed its account there is no need to 
+            // resend email
             message = "Verification email sent. Please check your email.";
             return;
         }
@@ -78,7 +80,9 @@
 
     private sealed class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; } = "";
+        [Required]
+        [EmailAddress] 
+        public string Email { get; set; } = "";
     }
 
 }

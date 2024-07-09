@@ -21,8 +21,6 @@
 @inject CollectionsManager CollectionManager;
 @inject MovieManager MovieManager;
 
-<PageTitle>Register</PageTitle>
-
 <div style="background-color:rgb(0 164 255); height:100vh;">
 
     <div class="navbar">
@@ -142,11 +140,9 @@
         if (UserManager.Options.SignIn.RequireConfirmedAccount)
         {
             SendConfirmationEmailLinkAsync(user);
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+            RedirectManager.RedirectTo("Account/RegisterConfirmation", new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
         }
-
+        RedirectManager.RedirectTo(ReturnUrl);
     }
 
     private ApplicationUser CreateUser()
