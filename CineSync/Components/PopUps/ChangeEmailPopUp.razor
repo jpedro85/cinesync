@@ -22,24 +22,24 @@
             <DataAnnotationsValidator/>
             <ValidationSummary class="text-danger" role="alert"/>
             <div class="form-floating mb-3 prevent-select">
-                <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Email</span>
                 <div class="form-floating mb-3 input-group">
                     <span class="form-control prevent-select" style="font-size: 1.3rem; background-color: #bfbfbf; border-right-color: #bfbfbf">@email</span>
+                    <label class="form-label prevent-select text-black">Current Email</label>
                     <div class="input-group-append prevent-select">
                         <span class="h-100 input-group-text text-success font-weight-bold prevent-select" style="background-color: #bfbfbf; border-left: #bfbfbf">✓</span>
                     </div>
                 </div>
             </div>
             <div class="form-floating mb-3">
-                <ValidationMessage For="() => Input.NewEmail" class="text-danger"/>
-                <span class="form-label subtitle">New email</span>
                 <InputText @bind-Value="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email."/>
+                <label for="newEmail" class="form-label text-black">New email</label>
+                <ValidationMessage For="() => Input.NewEmail" class="text-danger"/>
             </div>
         </EditForm>
     </div>
     </Body>
     <Footer>
-        <RectButton2 Text="Cancel" OnClick="PopUpLayout.Close" />
-        <RectButton1 Text="Change email" OnClick="async ()=> await OnValidSubmitAsync()" />
+        <RectButton2 Text="Cancel" OnClick="PopUpLayout.Close"/>
+        <RectButton1 Text="Change email" OnClick="async () => await OnValidSubmitAsync()"/>
     </Footer>
 </PopUpLayout>

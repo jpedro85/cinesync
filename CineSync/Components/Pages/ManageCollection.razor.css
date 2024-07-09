@@ -1,9 +1,10 @@
 ﻿.main-content {
-    background-image: url("BackgorundHome.png");
+    background-image: url("BackgorundHome.webp");
     height: 100%;
     max-height: 100%;
     position: relative;
 }
+
 .content {
     background-color: rgba(79, 79, 79, 0.2);
     display: flex;
@@ -41,27 +42,29 @@
     width: 100%;
     height: 50px;
     padding-left: 20px;
-    border-top-left-radius:30px;
-    border-top-right-radius:30px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
 }
+
 .row-items {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .toggle-button {
-    display:flex;
+    display: flex;
     margin-left: auto;
     margin-right: 30px;
     height: 100%;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
 }
 
 
 .edit-collection-input {
     color: black;
-    font-size:20px;
+    font-size: 20px;
     border: none;
     background-color: transparent;
     outline: none;
@@ -81,13 +84,24 @@
     font-weight: 700;
     font-size: 20px;
     font-family: Itim;
-    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0,50);
-    border: solid 2px rgb(255,255,255);
+    box-shadow: inset 0 0 10px 2px rgb(0, 0, 0, 50);
+    border: solid 2px rgb(255, 255, 255);
 }
 
-    .EditName:hover {
-        transition: width 0.1s ease;
-        box-shadow: inset 0 0 20px 2px rgb(255, 255, 255,50);
-        width: 170px;
-        color: black;
-    }
+.EditName:hover {
+    transition: width 0.1s ease;
+    box-shadow: inset 0 0 20px 2px rgb(255, 255, 255, 50);
+    width: 170px;
+    color: black;
+}
+
+.Fade {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+}
+
+.error{
+    font-size: 2rem;
+}

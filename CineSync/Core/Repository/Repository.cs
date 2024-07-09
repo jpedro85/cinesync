@@ -61,6 +61,16 @@ namespace CineSync.Core.Repository
             return Factory.Create<TEntity>(args);
         }
 
+		public void Attach(TEntity item)
+		{
+			Context.Entry(item).State = EntityState.Detached;
+		}
+
+		public void Dettach(TEntity item) 
+        {
+            Context.Entry(item).State = EntityState.Detached;
+        }
+
         public void Insert(TEntity item)
         {
             Context.Set<TEntity>().Add(item);

@@ -6,6 +6,7 @@ using CineSync.Components.Layout;
 using CineSync.Components.PopUps;
 using CineSync.Components.Buttons;
 using Microsoft.JSInterop;
+using Microsoft.AspNetCore.SignalR.Client;
 
 
 namespace CineSync.Components.Pages
@@ -44,7 +45,10 @@ namespace CineSync.Components.Pages
 		[Inject]
         private MovieManager MovieManager { get; set; } = default!;
 
-        [Inject]
+		[Inject]
+		private NavigationManager NavigationManager { get; set; } = default!;
+
+		[Inject]
         private IJSRuntime JSRuntime { get; set; } = default!;
 
 		private PageLayout _pageLayout = default!;
@@ -76,6 +80,7 @@ namespace CineSync.Components.Pages
         private VideoTrailer VideoTrailer = default!;
 		private TabButtonsBar _TabBar = default!;
         private int _initialTab = 0;
+		private HubConnection DiscussionHubConnection { get; set; } = default!;
 
 
 		protected async void Initialize()
@@ -106,9 +111,22 @@ namespace CineSync.Components.Pages
 
                 StateHasChanged();
             }
+
+            await ConnectToMessageHub();
 		}
 
-        private async Task<bool> HasUserRatedMovieAsync()
+		private async Task ConnectToMessageHub()
+		{
+			DiscussionHubConnection = new HubConnectionBuilder()
+			  .WithUrl(NavigationManager.ToAbsoluteUri("/DiscussionHub"))
+			  .Build();
+
+			await DiscussionHubConnection.StartAsync();
+
+			StateHasChanged();
+		}
+
+		private async Task<bool> HasUserRatedMovieAsync()
         {
             string ratedMoviesCollectionName = "Classified";
             var ratedMovies = await CollectionsManager.GetFirstByConditionAsync(

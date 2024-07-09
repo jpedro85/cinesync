@@ -11,14 +11,14 @@
     <Body>
         <div class="modal-body">
             <StateMessage message="@ErrorMessage" />
-            <div class="form-group">
+            <div class="form-container">
                 <div class="form-floating mb-3 prevent-select">
-                    <span class="form-label prevent-select subtitle" style="color: #ffffff">Current Username</span>
-                    <span class="form-control prevent-select d-flex align-items-center" style="font-size: 1.3rem; background-color: #bfbfbf">@AuthenticatedUser</span>
+                    <span class="form-control prevent-select" style="font-size: 1.3rem; background-color: #bfbfbf">@AuthenticatedUser</span>
+                    <label for="currentName" class="form-label prevent-select text-black">Current Username</label>
                 </div>
                 <div class="form-floating mb-3 prevent-select">
-                    <span class="form-label subtitle">New Username</span>
-                    <InputText @bind-Value="_newUserName" class="form-control d-flex align-items-center" placeholder="Enter new username" @oninput="HandleInputChange"/>
+                    <InputText @bind-Value="_newUserName" class="form-control" placeholder="Enter new username" @oninput="HandleInputChange"/>
+                    <label for="newUsername" class="form-label text-black">New Username</label>
                 </div>
             </div>
         </div>

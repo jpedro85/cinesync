@@ -11,29 +11,27 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Log in</PageTitle>
 <div class="page">
-
     <div class="main-content">
         <div class="form-container">
-            <h1 class="text-center">Log in</h1>
+            <h1 class="text-center text-white">Log in</h1>
             <div class="row">
                 <div class="col-md-12">
                     <section>
-                        <StatusMessage Message="@errorMessage" />
+                        <StatusMessage Message="@errorMessage"/>
                         <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
-                            <DataAnnotationsValidator />
-                            <hr />
-                            <ValidationSummary class="text-danger" role="alert" />
+                            <DataAnnotationsValidator/>
+                            <hr class="text-white"/>
+                            <ValidationSummary class="text-danger" role="alert"/>
                             <div class="form-floating mb-3">
-                                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
                                 <label for="email" class="form-label">Email</label>
-                                <ValidationMessage For="() => Input.Email" class="text-danger" />
+                                <ValidationMessage For="() => Input.Email" class="text-danger"/>
                             </div>
                             <div class="form-floating mb-3">
-                                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password"/>
                                 <label for="password" class="form-label">Password</label>
-                                <ValidationMessage For="() => Input.Password" class="text-danger" />
+                                <ValidationMessage For="() => Input.Password" class="text-danger"/>
                             </div>
                             <div class="login-container">
                                 <button type="submit" class="login-btn">Log in</button>
@@ -57,9 +55,7 @@
     </div>
 
     <div class="logo-container-main">
-        <div class="logo-container">
-            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
-        </div>
+        <img id="logo" src="../logo.png" alt="CineSync Main Logo">
     </div>
 
 </div>
@@ -67,13 +63,13 @@
 @code {
     private string? errorMessage;
 
-    [CascadingParameter]
+    [CascadingParameter] 
     private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromForm]
+    [SupplyParameterFromForm] 
     private InputModel Input { get; set; } = new();
 
-    [SupplyParameterFromQuery]
+    [SupplyParameterFromQuery] 
     private string? ReturnUrl { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -95,6 +91,7 @@
             errorMessage = "Error: Invalid Email.";
             return;
         }
+
         SignInResult result = await SignInManager.PasswordSignInAsync(User, Input.Password, Input.RememberMe, false);
         if (result.Succeeded)
         {
@@ -106,7 +103,7 @@
             Logger.LogWarning("User account locked out.");
             RedirectManager.RedirectTo("Account/Lockout");
         }
-        else if(result.IsNotAllowed)
+        else if (result.IsNotAllowed)
         {
             errorMessage = "Error: Your account is not activated. Please check your email for the activation link";
         }
@@ -118,15 +115,13 @@
 
     private sealed class InputModel
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; } = "";
+        [Required] [EmailAddress] public string Email { get; set; } = "";
 
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; } = "";
 
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        [Display(Name = "Remember me?")] public bool RememberMe { get; set; }
     }
+
 }

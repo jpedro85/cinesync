@@ -1,0 +1,10 @@
+<div class="emoji-picker-container" @onclick:stopPropagation="true">
+    <div class="emoji-picker">
+        @foreach (var emoji in Emojis)
+        {
+            <button class="emoji-button" @onclick="() => OnEmojiSelected.InvokeAsync(emoji)">
+                @emoji
+            </button>
+        }
+    </div>
+</div>

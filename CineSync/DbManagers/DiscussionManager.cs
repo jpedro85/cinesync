@@ -29,13 +29,22 @@ namespace CineSync.DbManagers
             _commentRepository = _unitOfWork.GetRepositoryAsync<Comment>();
         }
 
+        public string GetGroupName(Discussion discussion) 
+        {
+            return "dicussion_" + discussion.Id;
+        }
 
-		/// <summary>
-		/// Return the comment of a movie.
-		/// </summary>
-		/// <param name="movieId">The ID of the movie to which the comment is being added.</param>
-		/// <returns>Return the comment of a movie</returns>
-		public async Task<ICollection<Discussion>> GetDiscussionsOfMovie(int movieId)
+        public string GetGroupName(uint discussionId)
+        {
+            return "dicussion_" + discussionId;
+        }
+
+        /// <summary>
+        /// Return the comment of a movie.
+        /// </summary>
+        /// <param name="movieId">The ID of the movie to which the comment is being added.</param>
+        /// <returns>Return the comment of a movie</returns>
+        public async Task<ICollection<Discussion>> GetDiscussionsOfMovie(int movieId)
 		{
             Movie? movie = await _movieRepository.GetFirstByConditionAsync(movie => movie.MovieId == movieId, "Discussions", "Discussions.Autor");
 

@@ -26,10 +26,25 @@ namespace CineSync.Data
 
         public DbSet<UserDislikedDiscussion> UserDislikedDiscussion { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<Conversation> Conversations { get; set; }
+
+        public DbSet<UserConversations> UserConversations { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<UserSeenMessages> UserSeenMessages {  get; set; }
+
+        public DbSet<MessageAttachement> MessageAttachements { get; set; }
+
+        public DbSet<Reaction> Reactions {  get; set; }
+
+        public DbSet<Invite> Invites { get; set; }
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlite("Data Source=CineSyncData.db");
-        }
-    }
+			optionsBuilder.EnableSensitiveDataLogging();
+		}
+	}
 }

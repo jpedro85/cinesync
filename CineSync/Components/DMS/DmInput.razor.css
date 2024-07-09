@@ -1,0 +1,206 @@
+.dminput-main-container
+{
+    position:absolute;
+    bottom:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    width:100%;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.dm-input-container {
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    border: 1px solid #444;
+    border-radius: 25px;
+    background-color: #000;
+    color: #fff;
+    width: 100%;
+    margin: auto;
+    padding-left: 0px;
+    padding-right: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.attachment-container {
+    border-radius: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x:hidden;
+    background-color: #000;
+    padding: 10px;
+    border: 1px solid #444;
+    margin-right:10px;
+    margin-left:10px;
+}
+
+.dm-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    border-radius: 25px;
+    background-color: #000;
+    color: #fff;
+    font-size: 16px;
+    min-width: 10px;
+}
+
+.icon-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin: 0 4px;
+    color: white;
+}
+
+    .icon-button:hover
+    {
+        color:#555555
+    }
+
+    .icon-button:active {
+        color: #808080
+    }
+
+    .emoji-icon, .image-icon {
+        width: 25px;
+        height: 25px;
+        color: white;
+    }
+
+.send-icon {
+    width: 25px;
+    height: 25px;
+    color: white;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}
+
+.attchements-button-containor
+{
+    display:flex;
+    color:#fff;
+    cursor:pointer;
+}
+
+    .attchements-button-containor:hover
+    {
+        color:#808080;
+    }
+
+    .attchements-button-containor:active {
+        color: #9b9b9b;
+    }
+
+.attchements-rigth {
+    display: flex;
+    justify-content: center;
+    flex-grow:1;
+}
+
+.back:hover
+{
+    background-color:#3c3c3c;
+    border-radius:5px;
+    color:white !important;
+    width:fit-content;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.back:active {
+    background-color: #454444;
+}
+
+/*
+     @if (newMessage.ReplayMessage != null)
+    {
+        <div class="replying-container">
+
+            <div class="replying">
+                Replaying to:
+            </div>
+            <hr>
+
+            <div class="replay-content-conteiner">
+
+                <div class="" >
+
+                    @if( !string.IsNullOrEmpty( newMessage.ReplayMessage.Content ) )
+                    {
+                        <div>
+                            @newMessage.ReplayMessage.Content
+                        </div>
+                    }
+                    else if ( newMessage.ReplayMessage.Attachements != null && newMessage.ReplayMessage.Attachements.Count > 0)
+                    {
+                        <div>
+                            Anexo
+                        </div>
+                    }
+
+                </div>
+
+                <div class="button-cancel" @onclick=" ()=>{ newMessage.ReplayMessage = null; StateHasChanged(); } ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><path fill="currentColor" d="M16 2C8.2 2 2 8.2 2 16s6.2 14 14 14s14-6.2 14-14S23.8 2 16 2m0 26C9.4 28 4 22.6 4 16S9.4 4 16 4s12 5.4 12 12s-5.4 12-12 12"/><path fill="currentColor" d="M21.4 23L16 17.6L10.6 23L9 21.4l5.4-5.4L9 10.6L10.6 9l5.4 5.4L21.4 9l1.6 1.6l-5.4 5.4l5.4 5.4z"/></svg>
+                </div>
+            </div>
+            
+        </div>           
+    }
+*/
+
+.replying-container
+{
+    background-color:black;
+    padding:10px;
+    border-radius:10px;
+}
+
+    .replying-container hr 
+    {
+        margin:5px 0;
+    }
+
+    .replying-container .replying 
+    {
+        font-size:12px;
+        font-family:Roboto;
+    }
+
+.replay-content-conteiner
+{
+    display:flex;
+    flex-direction:row;
+}
+
+    .replay-content-conteiner > div:first-child {
+        padding: 0 5px;
+        display:flex;
+        flex-grow: 1;
+        align-items:center;
+    }
+
+.button-cancel
+{
+    color:white;
+}
+
+    .button-cancel:hover
+    {
+        color:rgb(105,105,105);
+    }
+
+    .button-cancel:active 
+    {
+        color: rgb(140,140,140);
+    }

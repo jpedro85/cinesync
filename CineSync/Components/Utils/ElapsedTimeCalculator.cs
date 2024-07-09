@@ -49,5 +49,36 @@ namespace CineSync.Components.Utils
 
             return $"{(int)(timeDifference.TotalDays / 365)} years ago";
         }
+
+		/// <summary>
+		/// Formats the time difference into a human-readable string.
+		/// </summary>
+		/// <param name="timeDifference">The time difference to format.</param>
+		/// <returns>A string representing the time difference in a human-readable format.</returns>
+		public static string FormatTimeDifferenceShort(TimeSpan timeDifference)
+		{
+			if (timeDifference.TotalMinutes < 1)
+			{
+				return "just now";
+			}
+			if (timeDifference.TotalMinutes < 60)
+			{
+				return $"{(int)timeDifference.TotalMinutes}min ago";
+			}
+			if (timeDifference.TotalHours < 24)
+			{
+				return $"{(int)timeDifference.TotalHours}h ago";
+			}
+			if (timeDifference.TotalDays < 30)
+			{
+				return $"{(int)timeDifference.TotalDays}d ago";
+			}
+			if (timeDifference.TotalDays < 365)
+			{
+				return $"{(int)(timeDifference.TotalDays / 30)} months ago";
+			}
+
+			return $"{(int)(timeDifference.TotalDays / 365)} years ago";
+		}
     }
 }

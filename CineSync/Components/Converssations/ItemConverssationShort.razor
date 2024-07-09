@@ -1,0 +1,99 @@
+﻿@using CineSync.Data.Models
+@using CineSync.Components.Account.Component
+
+<div class="container-item" @onclick="(e)=>{ if(OnClick.HasDelegate) { Console.WriteLine('a'); OnClick.InvokeAsync(Conversation); }}">
+
+	@if (Conversation.IsGroupConversation)
+	{
+		<div class="converssation-name">
+			<div class="converssation-participants-left">
+				@Conversation.Name
+			</div>
+			<div class="converssation-participants-rigth">
+				@if(_hasNewMessage)
+				{
+					<div id="Notification"></div>
+				}
+			</div>
+		</div>
+
+		<div class="converssation-participants-container">
+			<div class="converssation-participants-left">
+
+				@{
+					int showCount = 0;
+				}
+
+				@foreach (UserConversations userConversation in Conversation.Participants)
+				{
+					if (showCount >= MaxGroupParticipantsToShow)
+						break;
+
+					<ItemUser User="@userConversation.User" Short="true"></ItemUser>
+
+					showCount++;
+				}
+
+				@foreach (Invite invite in Conversation.Invites)
+				{
+
+					if (showCount >= MaxGroupParticipantsToShow)
+						break;
+
+					<ItemUser User="@invite.Target" Short="true"></ItemUser>
+
+					showCount++;
+				}
+			</div>
+
+			@if (Conversation.Participants.Count > MaxGroupParticipantsToShow)
+			{
+				<div class="converssation-participants-rigth">
+					+ @(Conversation.Participants.Count - MaxGroupParticipantsToShow)
+				</div>
+			}
+		</div>
+	}
+	else
+	{
+		<div class="converssation-name-padding">
+
+			@if (Conversation.Participants.Count > 1)
+			{
+				
+				@foreach (UserConversations userConversation in Conversation.Participants)
+				{
+					if (!userConversation.User.Equals(AuthenticatedUser))
+					{
+						<ItemUser User="@userConversation.User" Short="false"></ItemUser>
+
+						<div class="converssation-participants-rigth">
+							@if (_hasNewMessage)
+							{
+								<div id="Notification"></div>
+							}
+						</div>
+					}
+				}
+
+			}
+			else
+			{
+				
+				@foreach (Invite invite in Conversation.Invites)
+				{
+					<ItemUser User="@invite.Target" Short="false"></ItemUser>
+
+					<div class="converssation-participants-rigth">
+						@if (_hasNewMessage)
+						{
+							<div id="Notification"></div>
+						}
+					</div>
+				}
+			}
+
+		</div>
+	}
+
+</div>

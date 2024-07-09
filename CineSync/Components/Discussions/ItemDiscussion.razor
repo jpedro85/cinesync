@@ -146,7 +146,7 @@
         else
         {
             string fit = (Discussion.Comments != null && Discussion.Comments.Count > 0) ? "min-height: calc(100vh - 350px); max-height: calc(100vh - 350px);" : "";
-            <div class="discution-comments-container" style="@fit">
+            <div id="scrollable_messages" class="discution-comments-container" style="@fit">
 
                 @if (!_fetchedInfo) 
                 {
@@ -301,3 +301,13 @@
     </RoleCkeck>
 
 </div>
+<script>
+
+    window.scrollToBottom = (elementId) => {
+        let element = document.getElementById(elementId);
+        if (element) {
+            element.scrollTop = element.scrollHeight + 100;
+        }
+    };
+
+</script>

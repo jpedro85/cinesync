@@ -47,8 +47,6 @@ namespace CineSync.Components.PopUps
             user = PageLayout.AuthenticatedUser;
             email = user.Email;
             isEmailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
-
-            Input.NewEmail ??= email;
         }
 
         private async Task OnValidSubmitAsync()
@@ -75,8 +73,13 @@ namespace CineSync.Components.PopUps
                 NavigationManager.ToAbsoluteUri("Account/ConfirmEmailChange").AbsoluteUri,
                 new Dictionary<string, object?> { ["userId"] = userId, ["email"] = Input.NewEmail, ["code"] = code });
 
-            await EmailSender.SendEmailAsync(Input.NewEmail, "Confirm New Email Link",
-                HtmlEncoder.Default.Encode(callbackUrl));
+            var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "ChangeEmail.html");
+            var htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+
+            var emailContent = htmlTemplate
+                .Replace("{{callbackUrl}}", HtmlEncoder.Default.Encode(callbackUrl));
+
+            await EmailSender.SendEmailAsync(Input.NewEmail, "Confirm New Email", emailContent);
         }
 
         private sealed class InputModel

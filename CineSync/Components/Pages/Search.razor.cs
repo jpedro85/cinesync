@@ -38,22 +38,21 @@ namespace CineSync.Components.Pages
 
         private string _isLoading = string.Empty;
 
-        private const int MOVIELIMIT =18;
+        private const int MOVIELIMIT = 18;
         protected override async Task OnParametersSetAsync()
-        {
+        {;
             if (!string.IsNullOrEmpty(Query))
             {
                 _currentSearchQuery = Query;
-                await SearchMovies(Query);
             }
         }
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 _pageLayout.NavBar.SetVisibleSearchButton(false);
-                SearchButton.OnSearch += SearchMoviesSearchButtonHandler;
+                await SearchMovies(Query);
             }
 
         }

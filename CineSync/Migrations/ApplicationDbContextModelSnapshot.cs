@@ -195,6 +195,24 @@ namespace CineSync.Migrations
                     b.ToTable("CommentAttachments");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.Conversation", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsGroupConversation")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Conversations");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.Discussion", b =>
                 {
                     b.Property<uint>("Id")
@@ -233,6 +251,28 @@ namespace CineSync.Migrations
                     b.ToTable("Discutions");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.FollowedCollection", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("MovieCollectionId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("MovieCollectionId");
+
+                    b.ToTable("FollowedCollection");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -249,6 +289,106 @@ namespace CineSync.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genre");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.Invite", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("ConversationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedTimestanp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("HideBySender")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HideByTarget")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TargetId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("Invites");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.Message", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AutorId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("ConversationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint?>("ReplayMessageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AutorId");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("ReplayMessageId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.MessageAttachement", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("Attachment")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<uint>("MessageId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.ToTable("MessageAttachements");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Movie", b =>
@@ -346,6 +486,53 @@ namespace CineSync.Migrations
                     b.HasIndex("CommentId");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.Reaction", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AutorId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint?>("MessageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ReactionContent")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AutorId");
+
+                    b.HasIndex("MessageId");
+
+                    b.ToTable("Reactions");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.UserConversations", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("ConversationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserConversations");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UserDislikedComment", b =>
@@ -460,6 +647,28 @@ namespace CineSync.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserLikedDiscussion");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.UserSeenMessages", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("MessageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserSeenMessages");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UsersNotifications", b =>
@@ -708,6 +917,86 @@ namespace CineSync.Migrations
                     b.Navigation("Autor");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.FollowedCollection", b =>
+                {
+                    b.HasOne("CineSync.Data.ApplicationUser", "ApplicationUser")
+                        .WithMany("FollowedCollections")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.Models.MovieCollection", "MovieCollection")
+                        .WithMany("FollowedCollections")
+                        .HasForeignKey("MovieCollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("MovieCollection");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.Invite", b =>
+                {
+                    b.HasOne("CineSync.Data.Models.Conversation", "Conversation")
+                        .WithMany("Invites")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.ApplicationUser", "Target")
+                        .WithMany()
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("Sender");
+
+                    b.Navigation("Target");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.Message", b =>
+                {
+                    b.HasOne("CineSync.Data.ApplicationUser", "Autor")
+                        .WithMany()
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.Models.Conversation", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.Models.Message", "ReplayMessage")
+                        .WithMany()
+                        .HasForeignKey("ReplayMessageId");
+
+                    b.Navigation("Autor");
+
+                    b.Navigation("ReplayMessage");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.MessageAttachement", b =>
+                {
+                    b.HasOne("CineSync.Data.Models.Message", "Message")
+                        .WithMany("Attachements")
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Message");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>
                 {
                     b.HasOne("CineSync.Data.ApplicationUser", "ApplicationUser")
@@ -726,6 +1015,38 @@ namespace CineSync.Migrations
                         .IsRequired();
 
                     b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.Reaction", b =>
+                {
+                    b.HasOne("CineSync.Data.ApplicationUser", "Autor")
+                        .WithMany()
+                        .HasForeignKey("AutorId");
+
+                    b.HasOne("CineSync.Data.Models.Message", null)
+                        .WithMany("Reactions")
+                        .HasForeignKey("MessageId");
+
+                    b.Navigation("Autor");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.UserConversations", b =>
+                {
+                    b.HasOne("CineSync.Data.Models.Conversation", "Conversation")
+                        .WithMany("Participants")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.ApplicationUser", "User")
+                        .WithMany("Conversations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.UserDislikedComment", b =>
@@ -811,6 +1132,25 @@ namespace CineSync.Migrations
                         .IsRequired();
 
                     b.Navigation("Discussion");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.UserSeenMessages", b =>
+                {
+                    b.HasOne("CineSync.Data.Models.Message", "Message")
+                        .WithMany("SeenByUsers")
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineSync.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Message");
 
                     b.Navigation("User");
                 });
@@ -904,9 +1244,13 @@ namespace CineSync.Migrations
                 {
                     b.Navigation("Collections");
 
+                    b.Navigation("Conversations");
+
                     b.Navigation("DislikedComments");
 
                     b.Navigation("DislikedDiscussions");
+
+                    b.Navigation("FollowedCollections");
 
                     b.Navigation("LikedComments");
 
@@ -926,9 +1270,27 @@ namespace CineSync.Migrations
                     b.Navigation("LikedByUsers");
                 });
 
+            modelBuilder.Entity("CineSync.Data.Models.Conversation", b =>
+                {
+                    b.Navigation("Invites");
+
+                    b.Navigation("Messages");
+
+                    b.Navigation("Participants");
+                });
+
             modelBuilder.Entity("CineSync.Data.Models.Discussion", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("CineSync.Data.Models.Message", b =>
+                {
+                    b.Navigation("Attachements");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("SeenByUsers");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Movie", b =>
@@ -941,6 +1303,8 @@ namespace CineSync.Migrations
             modelBuilder.Entity("CineSync.Data.Models.MovieCollection", b =>
                 {
                     b.Navigation("CollectionMovies");
+
+                    b.Navigation("FollowedCollections");
                 });
 
             modelBuilder.Entity("CineSync.Data.Models.Notification", b =>

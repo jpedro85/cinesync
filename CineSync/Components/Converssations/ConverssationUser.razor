@@ -1,0 +1,177 @@
+﻿@using CineSync.Components.Account.Component
+@using CineSync.Components.Buttons
+@using CineSync.Components.Layout
+@using CineSync.Components.Envites
+@using CineSync.Components.DMS
+@using CineSync.Data.Models;
+@* @using CineSync.Components.Utils *@
+
+<div class="converssation-container" >
+	
+	@if( !_isloading)
+	{
+		<div class="top-container">
+			<ItemUser 
+				User="@UserToSend"
+				Short=false
+				Style="width:50px; height:50px;"
+			>
+			</ItemUser>
+		</div>
+
+		<div class="content-container">
+
+			<dvi class="hover-container">
+
+				<div class="notifications-container">
+
+					@if (Conversation.Participants.Count < 2 )
+					{
+						<div class="notification">
+							<div class="notification-title">
+								<span style="font-weight:600">@UserToSend.UserName</span>have not accepted your invite yet."
+							</div>
+							<div>
+								@foreach (Invite invite in Conversation.Invites)
+								{
+									<ItemEnvite
+										Authenticateduser="AuthenticatedUser"
+										Invite="@invite"
+										OnRemove="(e)=>{}"
+										ShowUser="false"
+										AllowCancel="false"
+									>
+									</ItemEnvite>
+
+									if ( invite.State == InviteStates.DECLINED )
+									{
+										<div class="invie-buttons-options">
+											<RectButton2 
+												Text="Remove Message"
+												OnClick="RemoveMessage"
+											></RectButton2>
+											<RectButton1 
+												Text="Resend Invite"
+												OnClick="() => {ResendInvite(invite);}"
+											></RectButton1>
+										</div>
+									}
+
+								}
+							</div>
+						</div>
+
+						
+					}
+					else if( Conversation.Participants.Count != 2 )
+					{
+						<div class="notification">
+							<div class="">
+								You are the only one in here.
+							</div>
+							<div>
+								@if ( Conversation.Messages.Any(m => m.Autor.Equals(UserToSend) ) )
+								{
+									@($"{UserToSend.UserName} has left this conversation.")
+								}
+								else
+								{
+									@($"{UserToSend.UserName} has rejected the invite.")
+								}
+							</div>
+						</div>
+					}
+
+				</div>
+
+			</dvi>
+
+			<div id="scrollable_messages" class="messages">
+
+				@{
+					int index = 0;
+					DateTime lasttime = DateTime.Now;
+					TimeSpan timeDiferençe;
+				}
+
+				@foreach( Message message in Conversation.Messages )
+				{
+
+					if (index == 0 || (message.TimeStamp - lasttime).Days > 1)
+					{
+						timeDiferençe = DateTime.Now - message.TimeStamp;
+						if (timeDiferençe.Days <= 1)
+						{
+							<div class="time">
+								Today
+								<hr>
+							</div>
+						}
+						else
+						{
+							<div class="time">
+								@message.TimeStamp.Date.ToString();
+								<hr>
+							</div>
+						}
+					}
+
+					index++;
+					lasttime = message.TimeStamp;
+
+					<div>
+						<ItemMessage
+							@ref="@ImteMessageRef"
+							AuthenticatedUser="@AuthenticatedUser"
+							Message="@message"	
+							OnReply="@OnMessageReply"
+							OnOpenImojiPiker="@OnOpenImojiPiker"
+							OnRemove="(e)=>{}"
+							Group="@_messageHubGroupName" 
+						/>
+					</div>
+				}
+
+				<div class="space">
+					<div></div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="new-message">
+			<DmInput
+				AuthenticateUser="AuthenticatedUser"
+				SelectedFileStyle="background-color:rgb(25,25,25);  "
+				SelectedClass=" selected-file-left2 "
+				OnNewMessage="OnNewMessage"
+				OnRemoveReply="OnRemoveReply"
+				@ref="@_dminpput"
+			>
+			</DmInput>
+		</div>
+	}
+	else
+	{
+		<Loading FontPalceHeight="20"
+				 FontSize="18"
+				 LineHeight="30"
+				 LetterSpacing="0"
+				 MarginLeterLine="5"
+				 MaxWidth="120">
+		</Loading>
+
+		GetMessages();
+	}
+
+</div>
+<script>
+
+	window.scrollToBottom = (elementId) => {
+		let element = document.getElementById(elementId);
+		if (element) {
+			element.scrollTop = element.scrollHeight + 100;
+		}
+	};
+
+</script>

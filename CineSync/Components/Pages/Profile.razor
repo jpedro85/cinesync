@@ -8,6 +8,7 @@
 @using CineSync.Components.PopUps;
 @using Microsoft.AspNetCore.Authorization;
 @using CineSync.Components.Discussions;
+@using Microsoft.AspNetCore.SignalR.Client;
 
 @rendermode InteractiveServer
 
@@ -25,323 +26,334 @@
     
         <CascadingValue Value="_pageLayout" Name="PageLayout" TValue="PageLayout">
 
-            <div class="profile-container">
+            <CascadingValue Value="DiscussionHubConnection" Name="DiscussionHubConnection" TValue="HubConnection">
 
-                <div class="Profile">
+                <div class="profile-container">
 
-                    @if(!_invalid)
-                    {
-                        <div class="Profile-sidebar">
+                    <div class="Profile">
 
-                            <div class="Profile-icon">
-                                <ProfileIcon ProfileWidth="150" ProfileImage=@UserImage />
-                                @if(!_visit)
-                                {
-                                    <div class="button-Conteiner">
-                                        <button data-toggle="modal" data-target="#editProfileModal" class="Edit-image-icon">
-                                            <?xml version="1.0" ?>
-                                            <svg class="edit-image" color="currentcolor" height="25" viewBox="0 0 24 24" width="25" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.8555 15.5002L16.3555 14.0002H6.25278C5.01076 14.0002 4.00391 15.007 4.00391 16.2491V16.8267C4.00391 17.7195 4.32242 18.583 4.90219 19.2619C6.29795 20.8964 8.34464 21.7932 10.9999 21.9691C10.9958 21.7863 11.016 21.5982 11.0636 21.4078L11.2946 20.484C8.92119 20.3643 7.18576 19.6262 6.04287 18.2878C5.69502 17.8805 5.50391 17.3624 5.50391 16.8267V16.2491C5.50391 15.8355 5.83919 15.5002 6.25278 15.5002H14.8555ZM12.0004 2.00488C14.7618 2.00488 17.0004 4.24346 17.0004 7.00488C17.0004 9.76631 14.7618 12.0049 12.0004 12.0049C9.23894 12.0049 7.00036 9.76631 7.00036 7.00488C7.00036 4.24346 9.23894 2.00488 12.0004 2.00488ZM12.0004 3.50488C10.0674 3.50488 8.50036 5.07189 8.50036 7.00488C8.50036 8.93788 10.0674 10.5049 12.0004 10.5049C13.9334 10.5049 15.5004 8.93788 15.5004 7.00488C15.5004 5.07189 13.9334 3.50488 12.0004 3.50488ZM19.0999 12.6695L13.1974 18.5719C12.8533 18.916 12.6092 19.3472 12.4911 19.8194L12.0334 21.6501C11.8344 22.4462 12.5556 23.1674 13.3517 22.9683L15.1824 22.5106C15.6545 22.3926 16.0857 22.1485 16.4299 21.8043L22.3323 15.9019C23.2249 15.0093 23.2249 13.5621 22.3323 12.6695C21.4397 11.7768 19.9925 11.7768 19.0999 12.6695Z" color="currentcolor" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                }
-                            </div>
-                            <AddImageProfile OnImageChange=OnProfileEdit />
-                            <div class="User-Followers">
-                                <div class="Followers">@User.UserName</div>
-                            </div>
+                        @if(!_invalid)
+                        {
+                            <div class="Profile-sidebar">
 
-                            <div class="Buttons">
-
-                                @if(!_visit ){
-
-                                    <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal">Change Username</button>
-                                    <UsernameEdit OnUsernameChange=OnProfileEdit />
-
-                                    @* <NavLink href="/Account/Manage/ChangePassword"> *@
-                                    @*     <button class="buttonProfile">Change Password</button> *@
-                                    @* </NavLink> *@
-                                    <button class="buttonProfile" data-toggle="modal" data-target="#changePasswordPopUp">Change Password</button>
-                                    <ChangePasswordPopUp />
-
-                                    <button class="buttonProfile" data-toggle="modal" data-target="#changeEmailPopUp">Change Email</button>
-                                    <ChangeEmailPopUp />
-                                    
-                                    <form action="Account/Logout" method="post">
-                                        <AntiforgeryToken/>
-                                        <input type="hidden" name="ReturnUrl" value=""/>
-                                        <button class="buttonProfile">Logout</button>
-                                    </form>
-                                    
-                                    <button class="DeleteBTN" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
-                                    <DeleteACC />
-                                }
-                                else
-                                {
-                                    @if (AuthenticatedUser.Following == null || !AuthenticatedUser.Following.Any(user => user.Equals(User)))
+                                <div class="Profile-icon">
+                                    <ProfileIcon ProfileWidth="150" ProfileImage=@UserImage />
+                                    @if(!_visit)
                                     {
-                                        <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal" @onclick="(e)=>{ Follow();}">
-                                            <div>Follow</div>
-                                                <div class="addToFollowing" @onclick="@((e)=>{ Follow();})">
+                                        <div class="button-Conteiner">
+                                            <button data-toggle="modal" data-target="#editProfileModal" class="Edit-image-icon">
+                                                <?xml version="1.0" ?>
+                                                <svg class="edit-image" color="currentcolor" height="25" viewBox="0 0 24 24" width="25" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14.8555 15.5002L16.3555 14.0002H6.25278C5.01076 14.0002 4.00391 15.007 4.00391 16.2491V16.8267C4.00391 17.7195 4.32242 18.583 4.90219 19.2619C6.29795 20.8964 8.34464 21.7932 10.9999 21.9691C10.9958 21.7863 11.016 21.5982 11.0636 21.4078L11.2946 20.484C8.92119 20.3643 7.18576 19.6262 6.04287 18.2878C5.69502 17.8805 5.50391 17.3624 5.50391 16.8267V16.2491C5.50391 15.8355 5.83919 15.5002 6.25278 15.5002H14.8555ZM12.0004 2.00488C14.7618 2.00488 17.0004 4.24346 17.0004 7.00488C17.0004 9.76631 14.7618 12.0049 12.0004 12.0049C9.23894 12.0049 7.00036 9.76631 7.00036 7.00488C7.00036 4.24346 9.23894 2.00488 12.0004 2.00488ZM12.0004 3.50488C10.0674 3.50488 8.50036 5.07189 8.50036 7.00488C8.50036 8.93788 10.0674 10.5049 12.0004 10.5049C13.9334 10.5049 15.5004 8.93788 15.5004 7.00488C15.5004 5.07189 13.9334 3.50488 12.0004 3.50488ZM19.0999 12.6695L13.1974 18.5719C12.8533 18.916 12.6092 19.3472 12.4911 19.8194L12.0334 21.6501C11.8344 22.4462 12.5556 23.1674 13.3517 22.9683L15.1824 22.5106C15.6545 22.3926 16.0857 22.1485 16.4299 21.8043L22.3323 15.9019C23.2249 15.0093 23.2249 13.5621 22.3323 12.6695C21.4397 11.7768 19.9925 11.7768 19.0999 12.6695Z" color="currentcolor" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                                <AddImageProfile OnImageChange=OnProfileEdit />
+                                <div class="User-Followers">
+                                    <div class="Followers">@User.UserName</div>
+                                </div>
+
+                                <div class="Buttons">
+
+                                    @if(!_visit ){
+
+                                        <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal">Change Username</button>
+                                        <UsernameEdit OnUsernameChange=OnProfileEdit />
+
+                                        @* <NavLink href="/Account/Manage/ChangePassword"> *@
+                                        @*     <button class="buttonProfile">Change Password</button> *@
+                                        @* </NavLink> *@
+                                        <button class="buttonProfile" data-toggle="modal" data-target="#changePasswordPopUp">Change Password</button>
+                                        <ChangePasswordPopUp />
+
+                                        <button class="buttonProfile" data-toggle="modal" data-target="#changeEmailPopUp">Change Email</button>
+                                        <ChangeEmailPopUp />
+                                    
+                                        <form action="Account/Logout" method="post">
+                                            <AntiforgeryToken/>
+                                            <input type="hidden" name="ReturnUrl" value=""/>
+                                            <button class="buttonProfile">Logout</button>
+                                        </form>
+                                    
+                                        <button class="DeleteBTN" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
+                                        <DeleteACC />
+                                    }
+                                    else
+                                    {
+                                        @if (AuthenticatedUser.Following == null || !AuthenticatedUser.Following.Any(user => user.Equals(User)))
+                                        {
+                                            <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal" @onclick="(e)=>{ Follow();}">
+                                                <div>Follow</div>
+                                                    <div class="addToFollowing" @onclick="@((e)=>{ Follow();})">
+                                                        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <g clip-path="url(#clip0_391_2435)">
+                                                                <path d="M20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5ZM37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H39.5801V45.8301H35.4102V39.5801H29.1602V35.4102H35.4102V29.1602H39.5801V35.4102H45.8301V39.5801Z" fill="currentcolor" />
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="clip0_391_2435">
+                                                                    <rect width="50" height="50" fill="currentcolor" />
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+                                                    </div>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal" @onclick="(e)=>{ UnFollow();}">
+                                                <div>Unfollow</div>
+                                                <div class="removeFromFollowing" >
                                                     <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip0_391_2435)">
-                                                            <path d="M20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5ZM37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H39.5801V45.8301H35.4102V39.5801H29.1602V35.4102H35.4102V29.1602H39.5801V35.4102H45.8301V39.5801Z" fill="currentcolor" />
+                                                        <g clip-path="url(#clip0_391_2437)">
+                                                            <path d="M37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H29.1699V35.4102H45.8398V39.5801H45.8301ZM20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5Z" fill="currentcolor" />
                                                         </g>
                                                         <defs>
-                                                            <clipPath id="clip0_391_2435">
+                                                            <clipPath id="clip0_391_2437">
                                                                 <rect width="50" height="50" fill="currentcolor" />
                                                             </clipPath>
                                                         </defs>
                                                     </svg>
                                                 </div>
-                                        </button>
+                                            </button>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <button class="buttonProfile" data-toggle="modal" data-target="#editUsernameModal" @onclick="(e)=>{ UnFollow();}">
-                                            <div>Unfollow</div>
-                                            <div class="removeFromFollowing" >
-                                                <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <g clip-path="url(#clip0_391_2437)">
-                                                        <path d="M37.5 25C30.5957 25 25 30.5957 25 37.5C25 44.4043 30.5957 50 37.5 50C44.4043 50 50 44.4043 50 37.5C50 30.5957 44.4043 25 37.5 25ZM45.8301 39.5801H29.1699V35.4102H45.8398V39.5801H45.8301ZM20.8301 37.5C20.8301 29.0039 27.1973 22.002 35.4102 20.9766V20.8301C35.9473 20.0488 37.4902 18.75 37.4902 16.6602C37.4902 14.5703 35.4102 12.4902 35.4102 11.4551C35.4199 3.125 31.1719 0 25 0C19.0918 0 14.5801 3.125 14.5801 11.4551C14.5801 12.5 12.5 14.5801 12.5 16.6602C12.5 18.7402 13.9844 20.1172 14.5801 20.8301C14.5801 20.8301 14.5801 22.9102 15.625 26.0352C15.625 27.0801 17.7051 28.1152 18.75 29.1602C18.75 30.2051 18.75 31.2402 17.7051 33.3301L6.25 35.4199C2.08008 36.4551 0 43.75 0 50H26.5039C23.0371 46.9434 20.8301 42.4805 20.8301 37.5Z" fill="currentcolor" />
-                                                    </g>
-                                                    <defs>
-                                                        <clipPath id="clip0_391_2437">
-                                                            <rect width="50" height="50" fill="currentcolor" />
-                                                        </clipPath>
-                                                    </defs>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    }
-                                }
 
-                            </div>
-
-                        </div>
-                    }
-
-                    <div class="Profile-info">
-
-                        @if (_invalid)
-                        {
-                            <div class="error" >Invalid user id</div>
-                        }
-                        else
-                        {
-
-                            <div class="Statistics">
-                                <div class="PageSubtitle">Statistics</div>
-                                <div class="Statistics-conteine">
-                                    <div class="User-item">
-                                        Watch Time: @User.WatchTime
-                                    </div>
-
-                                    <div class="User-item">
-                                        Following: @User.FollowingCount
-                                    </div>
-
-                                    <div class="User-item">
-                                        Followers: @User.FollowersCount
-                                    </div>
                                 </div>
 
                             </div>
+                        }
 
-                            <TabButtonsBar ActiveTab="0" OnTabChange="OnTabChange" TabNames="@_tabNames"
-                                Background_Style="
-                                    background-color:black;
-                                    border-radius:15px;
-                                "
-                            />
+                        <div class="Profile-info">
 
-                            <div class="tab-content">
+                            @if (_invalid)
+                            {
+                                <div class="error" >Invalid user id</div>
+                            }
+                            else
+                            {
 
-                                @if (_activeTab == _tabNames[0] ) // collections
-                                {
-
-                                    if (_movieCollections == null)
-                                    {
-                                        UpdateMovieCollections();
-                                        <div class="Loading-container">
-                                            <Loading></Loading>
+                                <div class="Statistics">
+                                    <div class="PageSubtitle">Statistics</div>
+                                    <div class="Statistics-conteine">
+                                        <div class="User-item">
+                                            Watch Time: @User.WatchTime min
                                         </div>
-                                    }
-                                    else if(_movieCollections.Count == 0)
-                                    {
-                                        <div class="noFound">
-                                            No collections where found !
+
+                                        <div class="User-item">
+                                            Following: @User.FollowingCount
                                         </div>
-                                    }
-                                    else
+
+                                        <div class="User-item">
+                                            Followers: @User.FollowersCount
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <TabButtonsBar ActiveTab="0" OnTabChange="OnTabChange" TabNames="@_tabNames"
+                                    Background_Style="
+                                        background-color:black;
+                                        border-radius:15px;
+                                    "
+                                />
+
+                                <div class="tab-content">
+
+                                    @if (_activeTab == _tabNames[0] ) // collections
                                     {
-                                        var _movieCollectionsToShow = _movieCollections.Where(c => !_visit || c.IsPublic);
-                                        bool _hasNoCollectionToShow = _movieCollectionsToShow.Count() == 0;
 
-                                        <div class="Collections">
-                                            <div class="Collections-colum">
-
-                                                @foreach (var collection in _movieCollectionsToShow)
-                                                {
-                                                    <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection"/>
-                                                }
+                                        if (_movieCollections == null)
+                                        {
+                                            <div class="Loading-container">
+                                                <Loading></Loading>
                                             </div>
-                                        </div>
-
-                                        if (_hasNoCollectionToShow)
+                                            UpdateMovieCollections();
+                                        }
+                                        else if(_movieCollections.Count == 0)
                                         {
                                             <div class="noFound">
                                                 No collections where found !
                                             </div>
                                         }
-                                    }
+                                        else
+                                        {
+                                            var _movieCollectionsToShow = _movieCollections.Where(c => !_visit || c.IsPublic);
+                                            bool _hasNoCollectionToShow = _movieCollectionsToShow.Count() == 0;
 
-                                }
-                                else if ( _activeTab == _tabNames[1]) // comments
-                                {
-                                    if ( _comments == null)
-                                    {
-                                        UpdateComments();
-                                        <div class="Loading-container">
-                                            <Loading></Loading>
-                                        </div>
-                                    }
-                                    else if (_comments.Count == 0)
-                                    {
-                                        <div class="noFound">
-                                            No Comments where found.
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="Collections">
-                                            <div class="Collections-colum">
-                                                @foreach (var comment in _comments)
-                                                {
-                                                <ItemComment 
-                                                    AllowNavegation=true
-                                                    AllowStartDiscusion="false"
-                                                    Comment="comment"
-                                                    AllowFollow="false"
-                                                    LikedComments="@_likedComents"
-                                                    DislikedComments="@_dislikedComents"
-                                                    OnChange="() => { InvokeAsync(StateHasChanged); }"
-                                                    OnCreateDiscussion="() => { OnDiscussionCreate(comment.MovieId); }" 
-                                                    OnRemove="(commentId) =>
+                                            <div class="Collections">
+                                                <div class="Collections-colum">
+
+                                                    @foreach (var collection in _movieCollectionsToShow)
                                                     {
-                                                        _comments = _comments.Where(c =>  c.Id != commentId ).ToList();
-                                                        InvokeAsync(StateHasChanged);
-                                                    }"
-                                                >     
-                                                </ItemComment>
-                                                }
+                                                        <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection"/>
+                                                    }
+                                                    @if (!_visit)
+                                                    {
+                                                        @foreach (var collection in followedCollections)
+                                                        {
+                                                            <Collection OnRemove="() => { InvokeAsync(StateHasChanged); }" MovieCollection="collection.MovieCollection" SuffixName="@collection.MovieCollection.ApplicationUser.UserName"/>
+                                                        }
+                                                    }
+                                                </div>
                                             </div>
-                                        </div>
-                                    }
-                                }
-                                else if (_activeTab == _tabNames[2]) // discusiions
-                                {
 
-                                    if (_discussions == null)
-                                    {
-                                        UpdateDiscussions();
-                                        <div class="Loading-container">
-                                            <Loading></Loading>
-                                        </div>
+                                            if (_hasNoCollectionToShow)
+                                            {
+                                                <div class="noFound">
+                                                    No collections where found !
+                                                </div>
+                                            }
+                                        }
+
                                     }
-                                    else if (_discussions.Count == 0)
+                                    else if ( _activeTab == _tabNames[1]) // comments
                                     {
-                                        <div class="noFound">
-                                            This user has not created any discussions yet !
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="Collections">
-                                            <div class="Collections-colum">
-                                                @foreach (var discussion in _discussions)
-                                                {
-                                                    <ItemDiscussion 
+                                        if ( _comments == null)
+                                        {
+                                            <div class="Loading-container">
+                                                <Loading></Loading>
+                                            </div>
+                                            UpdateComments();
+                                        }
+                                        else if (_comments.Count == 0)
+                                        {
+                                            <div class="noFound">
+                                                No Comments where found.
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="Collections">
+                                                <div class="Collections-colum">
+                                                    @foreach (var comment in _comments)
+                                                    {
+                                                    <ItemComment 
                                                         AllowNavegation=true
-                                                        AllowFollow=false
-                                                        Discussion="@discussion"
-                                                        LikedDiscussions="@_likedDiscussions"
-                                                        DislikedDiscussions="@_dislikedDiscussions"
+                                                        AllowStartDiscusion="false"
+                                                        Comment="comment"
+                                                        AllowFollow="false"
+                                                        LikedComments="@_likedComents"
+                                                        DislikedComments="@_dislikedComents"
                                                         OnChange="() => { InvokeAsync(StateHasChanged); }"
-                                                        OnRemove="(discussionId) => 
-                                                            { 
-                                                                _discussions = _discussions.Where(d =>  d.Id != discussionId ).ToList(); 
-                                                                InvokeAsync(StateHasChanged);   
-                                                            }"
-                                                        >
-                                                    </ItemDiscussion>
+                                                        OnCreateDiscussion="() => { OnDiscussionCreate(comment.MovieId); }" 
+                                                        OnRemove="(commentId) =>
+                                                        {
+                                                            _comments = _comments.Where(c =>  c.Id != commentId ).ToList();
+                                                            InvokeAsync(StateHasChanged);
+                                                        }"
+                                                    >     
+                                                    </ItemComment>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else if (_activeTab == _tabNames[2]) // discusiions
+                                    {
+
+                                        if (_discussions == null)
+                                        {
+                                            <div class="Loading-container">
+                                                <Loading></Loading>
+                                            </div>
+                                            UpdateDiscussions();
+                                        }
+                                        else if (_discussions.Count == 0)
+                                        {
+                                            <div class="noFound">
+                                                This user has not created any discussions yet !
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="Collections">
+                                                <div class="Collections-colum">
+                                                    @foreach (var discussion in _discussions)
+                                                    {
+                                                        <ItemDiscussion 
+                                                            AllowNavegation=true
+                                                            AllowFollow=false
+                                                            Discussion="@discussion"
+                                                            LikedDiscussions="@_likedDiscussions"
+                                                            DislikedDiscussions="@_dislikedDiscussions"
+                                                            OnChange="() => { InvokeAsync(StateHasChanged); }"
+                                                            OnRemove="(discussionId) => 
+                                                                { 
+                                                                    _discussions = _discussions.Where(d =>  d.Id != discussionId ).ToList(); 
+                                                                    InvokeAsync(StateHasChanged);   
+                                                                }"
+                                                            >
+                                                        </ItemDiscussion>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }                                   
+                                    }
+                                    else if (_activeTab == _tabNames[3]) // Following
+                                    {
+                                        if (User.Following != null && User.Following.Count > 0)
+                                        {
+                                            <div class="user-list">
+                                                @foreach (var user in User.Following)
+                                                {
+                                                    string srcHref = (user.Id == AuthenticatedUser.Id) ? "" : "/" + user.Id;
+                                                    <NavLink href="@($"/Profile{srcHref}")">
+                                                        <div class="user-item">
+                                                            <ItemUser
+                                                                User="@user"
+                                                                Style="@( "width: 35px; height: 35px; border-radius:50%;")">
+                                                            </ItemUser>
+                                                        </div>
+                                                   </NavLink>
                                                 }
                                             </div>
-                                        </div>
-                                    }                                   
-                                }
-                                else if (_activeTab == _tabNames[3]) // Following
-                                {
-                                    if (User.Following != null && User.Following.Count > 0)
-                                    {
-                                        <div class="user-list">
-                                            @foreach (var user in User.Following)
-                                            {
-                                                string srcHref = (user.Id == AuthenticatedUser.Id) ? "" : "/" + user.Id;
-                                                <NavLink href="@($"/Profile{srcHref}")">
-                                                    <div class="user-item">
-                                                        <ItemUser
-                                                            User="@user"
-                                                            Style="@( "width: 35px; height: 35px; border-radius:50%;")">
-                                                        </ItemUser>
-                                                    </div>
-                                               </NavLink>
-                                            }
-                                        </div>
 
+                                        }
+                                        else
+                                        {
+                                            <div class="noFound">
+                                                This user is not following anyone yet !
+                                            </div>
+                                        }
                                     }
-                                    else
+                                    else if (_activeTab == _tabNames[4]) // Followers
                                     {
-                                        <div class="noFound">
-                                            This user is not following anyone yet !
-                                        </div>
-                                    }
-                                }
-                                else if (_activeTab == _tabNames[4]) // Followers
-                                {
-                                    if (User.Followers != null && User.Followers.Count > 0)
-                                    {
-                                        <div class="user-list">
-                                            @foreach (var user in User.Followers)
-                                            {
-                                                string srcHref = (user.Id == AuthenticatedUser.Id) ? "" : "/" + user.Id;
-                                                <NavLink href="@($"/Profile{srcHref}")">
-                                                    <div class="user-item">
-                                                        <ItemUser
-                                                            User="@user"
-                                                            Style="@( "width: 35px; height: 35px; border-radius:50%;")">
-                                                        </ItemUser>
-                                                    </div>
-                                                </NavLink>
+                                        if (User.Followers != null && User.Followers.Count > 0)
+                                        {
+                                            <div class="user-list">
+                                                @foreach (var user in User.Followers)
+                                                {
+                                                    string srcHref = (user.Id == AuthenticatedUser.Id) ? "" : "/" + user.Id;
+                                                    <NavLink href="@($"/Profile{srcHref}")">
+                                                        <div class="user-item">
+                                                            <ItemUser
+                                                                User="@user"
+                                                                Style="@( "width: 35px; height: 35px; border-radius:50%;")">
+                                                            </ItemUser>
+                                                        </div>
+                                                    </NavLink>
 
-                                            }
-                                       </div>
+                                                }
+                                           </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="noFound">
+                                                No one is following yet !
+                                            </div>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <div class="noFound">
-                                            No one is following yet !
-                                        </div>
-                                    }
-                                }
 
-                            </div>
-                        }
+                                </div>
+                            }
 
+                        </div>
                     </div>
                 </div>
-            </div>
+
+            </CascadingValue>
 
         </CascadingValue>
     }

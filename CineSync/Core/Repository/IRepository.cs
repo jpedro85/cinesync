@@ -13,6 +13,8 @@ namespace CineSync.Core.Repository
 
         TEntity? Create(params object?[]? args);
 
+        void Attach(TEntity item);
+		void Dettach(TEntity item);
         void Insert(TEntity item);
         void Update(TEntity item);
         void Delete(TEntity item);

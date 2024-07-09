@@ -1,0 +1,69 @@
+﻿.container-item {
+    background: linear-gradient(to right, rgb(26, 54, 92,1) 70%, rgb(8, 89, 142) 100%);
+    border-radius: 10px;
+    overflow: clip;
+    outline: solid 2px black;
+}
+
+    .container-item:hover {
+        outline: solid 2px rgb(150, 150, 150);
+    }
+
+    .container-item:active {
+        outline: solid 2px white;
+    }
+
+.converssation-name-padding,
+.converssation-name {
+    display: flex;
+    background-color: rgb(26, 54, 92,1);
+    font-size: 20px;
+    font-family: Itim;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.converssation-name-padding
+{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.converssation-participants-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding: 5px 10px 5px 10px;
+}
+
+.converssation-participants-left {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    flex-grow: 1;
+    justify-content: left;
+    align-items: center;
+}
+
+.converssation-participants-rigth {
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content: end;
+    flex-grow: 0;
+    min-width: 50px;
+    color: white;
+    font-size: 20px;
+    font-family: Itim;
+}
+
+#Notification
+{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background-color:rgb(75, 172, 255);
+}

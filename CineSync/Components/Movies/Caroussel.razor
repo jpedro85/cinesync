@@ -1,6 +1,6 @@
 @using CineSync.Components.Layout
 
-@if (AllRatedMovies == null)
+@if (!hasLoaded)
 {
     <Loading></Loading>
 }

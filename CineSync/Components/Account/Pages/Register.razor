@@ -23,49 +23,47 @@
 
 <PageTitle>Register</PageTitle>
 <div class="page">
-    
+
     <div class="main-content">
         <div class="form-container">
-            <StatusMessage Message="@Message" />
+            <StatusMessage Message="@Message"/>
             <EditForm id="form" Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
-                <DataAnnotationsValidator />
-                <h2>Create a new account.</h2>
-                <hr />
-                <ValidationSummary class="text-danger" role="alert" />
+                <DataAnnotationsValidator/>
+                <h1 class="text-center text-white">Create a new account.</h1>
+                <hr class="text-white"/>
+                <ValidationSummary class="text-danger" role="alert"/>
                 <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
                     <label for="email">Email</label>
-                    <ValidationMessage For="() => Input.Email" class="text-danger" />
+                    <ValidationMessage For="() => Input.Email" class="text-danger"/>
                 </div>
                 <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
                     <label for="password">Password</label>
-                    <ValidationMessage For="() => Input.Password" class="text-danger" />
+                    <ValidationMessage For="() => Input.Password" class="text-danger"/>
                 </div>
                 <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
                     <label for="confirm-password">Confirm Password</label>
-                    <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+                    <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger"/>
                 </div>
                 <div class="register-conteiner">
                     <button type="submit" class="register">Register</button>
                 </div>
             </EditForm>
-        <div>
-            <p>
-                <a href="Account/Login">I Already Have an Account</a>
-            </p>
-            <p>
-                <a href="Account/ForgotPassword">Forgot your password?</a>
-            </p>
-        </div>
+            <div>
+                <p>
+                    <a href="Account/Login">I Already Have an Account</a>
+                </p>
+                <p>
+                    <a href="Account/ForgotPassword">Forgot your password?</a>
+                </p>
+            </div>
         </div>
     </div>
 
     <div class="logo-container-main">
-        <div class="logo-container">
-            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
-        </div>
+        <img id="logo" src="../logo.png" alt="CineSync Main Logo">
     </div>
 
 </div>
@@ -74,10 +72,10 @@
 
     private IEnumerable<IdentityError>? identityErrors;
 
-    [SupplyParameterFromForm]
+    [SupplyParameterFromForm] 
     private InputModel Input { get; set; } = new();
 
-    [SupplyParameterFromQuery]
+    [SupplyParameterFromQuery] 
     private string? ReturnUrl { get; set; }
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
@@ -97,7 +95,7 @@
             return;
         }
 
-        if ( !await UserRoleManager.AddRoleAsync(user, "user") )
+        if (!await UserRoleManager.AddRoleAsync(user, "user"))
         {
             UserManager.DeleteAsync(user);
             Logger.LogError("The Role was not set on register");
@@ -113,11 +111,7 @@
 
         Logger.LogInformation("User created a new account with password.");
 
-        await SendConfirmationEmailLinkAsync(user);
-
-        
-
-        await SignInManager.SignInAsync(user, isPersistent: false);
+        SendConfirmationEmailLinkAsync(user);
         RedirectManager.RedirectTo(ReturnUrl);
     }
 
@@ -130,7 +124,7 @@
         catch
         {
             throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
-                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
+                                                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
         }
     }
 
@@ -143,8 +137,14 @@
             NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
             new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
 
-        await EmailSender.SendEmailAsync(user.Email, "ConfirmationLink", HtmlEncoder.Default.Encode(callbackUrl));
+        var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", "Register.html");
+        var htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+
+        var emailContent = htmlTemplate
+            .Replace("{{callbackUrl}}", HtmlEncoder.Default.Encode(callbackUrl));
         
+        await EmailSender.SendEmailAsync(user.Email, "Confirm Your Account", emailContent);
+
         if (UserManager.Options.SignIn.RequireConfirmedAccount)
         {
             RedirectManager.RedirectTo(
@@ -152,13 +152,14 @@
                 new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
         }
     }
-    
+
     private IUserEmailStore<ApplicationUser> GetEmailStore()
     {
         if (!UserManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
+
         return (IUserEmailStore<ApplicationUser>)UserStore;
     }
 
@@ -180,4 +181,5 @@
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
     }
+
 }

@@ -17,5 +17,25 @@ namespace CineSync.Data.Models
 
         [JsonIgnore]
         public ApplicationUser ApplicationUser { get; set; }
+
+        public ICollection<FollowedCollection> FollowedCollections { get; set; }
+
+        protected bool Equals(MovieCollection other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((MovieCollection)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)Id;
+        }
     }
 }

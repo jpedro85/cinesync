@@ -1,0 +1,119 @@
+﻿.converssation-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: clip;
+    /*z-index: 1051;*/
+}
+
+.top-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: black;
+    height: 80px;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+    height: 0;
+    gap: 10px;
+    padding-top: 20px;
+}
+
+.messages .time {
+    text-align: center;
+    font-size: 15px;
+}
+
+    .messages .time hr {
+        margin: 0 5px;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+
+
+.bottom {
+    width: 100%;
+    height: fit-content;
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.ItemEnvite-container {
+    width: 100%;
+    padding: 10px;
+}
+
+.top-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: black;
+    height: 80px;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.hover-container {
+    /*z-index: 5;*/
+    top: 0px;
+    position: relative;
+    height: 0;
+}
+
+.notifications-container {
+    height: fit-content;
+    margin: 10px;
+}
+
+.notification {
+
+    border-radius: 10px;
+    background-color: rgb(75, 2, 2);
+    box-shadow: rgb(152 99 99) 0px 1px 15px 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification-title {
+    font-family: Roboto;
+    font-size: 20px;
+    text-align: center;
+}
+
+.new-message {
+    margin-top: 5px;
+    position: relative;
+    bottom: 10px;
+    height: 55.7px;
+    width: 100%;
+    /*z-index: 2;*/
+}
+
+.space {
+    min-height: 10px;
+    width: 100%;
+}

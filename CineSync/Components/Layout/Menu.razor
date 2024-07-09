@@ -1,9 +1,10 @@
 ﻿@rendermode InteractiveServer
 
-@using Microsoft.AspNetCore.Identity;
 @using CineSync.Components.Utils.Authorization;
 @using CineSync.Components.Account.Component;
 @using CineSync.Data;
+
+@inject NavigationManager NavigationManager
 
 
 <div class="menu-container">
@@ -51,6 +52,29 @@
                                 </NavLink>
                             </div>
 
+                            <div class="menu-item-conteiner @IsActive">
+                                <NavLink href="/Messages" @onclick="CloseMenu">
+                                    <div class="menu-item @IsActive">
+
+                                        <div class="ButtonIcon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 15 15">
+                                                <path fill="currentColor" fill-rule="evenodd" d="M0 1.5C0 .67.671 0 1.5 0h12c.829 0 1.5.67 1.5 1.5v8.994c0 .829-.671 1.499-1.5 1.499H9.768l-1.852 2.775a.5.5 0 0 1-.832 0l-1.851-2.775H1.5c-.829 0-1.5-.67-1.5-1.5zM11 5H4V4h7zm-1 3H5V7h5z" clip-rule="evenodd" />
+                                            </svg>
+                                           @*  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
+                                                <path fill="currentColor" d="m16 464l480-208L16 48v160l320 48l-320 48Z" />
+                                            </svg> *@
+                                            @* <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 1792 1792">
+                                                <path fill="currentColor" d="M1764 11q33 24 27 64l-256 1536q-5 29-32 45q-14 8-31 8q-11 0-24-5l-453-185l-242 295q-18 23-49 23q-13 0-22-4q-19-7-30.5-23.5T640 1728v-349l864-1059l-1069 925l-395-162q-37-14-40-55q-2-40 32-59L1696 9q15-9 32-9q20 0 36 11" />
+                                            </svg> *@
+                                        </div>
+                                        <div class="ButtonText @IsActive">
+                                            Messages
+                                        </div>
+
+                                    </div>
+                                </NavLink>
+                            </div>
+
                             <div class="menu-item-conteiner">
                                 <div class="sidebar-separator"></div>
                                 <div class="separator-text @IsActive">Collections</div>
@@ -74,7 +98,7 @@
                             </div>
 
                             <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Favorites" @onclick="CloseMenu">
+                                <NavLink href="@($"/ManageCollection/{defaultCollections.ElementAt(0).Id}")" @onclick="CloseMenu">
                                     <div class="menu-item @IsActive">
 
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +114,7 @@
                             </div>
 
                             <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Watch_Later" @onclick="CloseMenu">
+                                <NavLink href="@($"/ManageCollection/{defaultCollections.ElementAt(3).Id}")" @onclick="CloseMenu">
                                     <div class="menu-item @IsActive">
 
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,11 +131,11 @@
                             </div>
 
                             <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Watched" @onclick="CloseMenu">
+                                <NavLink href="@($"/ManageCollection/{defaultCollections.ElementAt(1).Id}")" @onclick="CloseMenu">
                                     <div class="menu-item @IsActive">
 
                                         <svg width="25" height="20" viewBox="0 0 25 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12.5 6C11.5959 6 10.7287 6.42143 10.0894 7.17157C9.45008 7.92172 9.09091 8.93913 9.09091 10C9.09091 11.0609 9.45008 12.0783 10.0894 12.8284C10.7287 13.5786 11.5959 14 12.5 14C13.4041 14 14.2713 13.5786 14.9106 12.8284C15.5499 12.0783 15.9091 11.0609 15.9091 10C15.9091 8.93913 15.5499 7.92172 14.9106 7.17157C14.2713 6.42143 13.4041 6 12.5 6ZM12.5 16.6667C10.9931 16.6667 9.5479 15.9643 8.48235 14.714C7.4168 13.4638 6.81818 11.7681 6.81818 10C6.81818 8.23189 7.4168 6.5362 8.48235 5.28595C9.5479 4.03571 10.9931 3.33333 12.5 3.33333C14.0069 3.33333 15.4521 4.03571 16.5177 5.28595C17.5832 6.5362 18.1818 8.23189 18.1818 10C18.1818 11.7681 17.5832 13.4638 16.5177 14.714C15.4521 15.9643 14.0069 16.6667 12.5 16.6667ZM12.5 0C6.81818 0 1.96591 4.14667 0 10C1.96591 15.8533 6.81818 20 12.5 20C18.1818 20 23.0341 15.8533 25 10C23.0341 4.14667 18.1818 0 12.5 0Z" fill="white" />
+                                            <path d="M12.5 6C11.5959 6 10.7287 6.42143 10.0894 7.17157C9.45008 7.92172 9.09091 8.93913 9.09091 10C9.09091 11.0609 9.45008 12.0783 10.0894 12.8284C10.7287 13.5786 11.5959 14 12.5 14C13.4041 14 14.2713 13.5786 14.9106 12.8284C15.5499 12.0783 15.9091 11.0609 15.9091 10C15.9091 8.93913 15.5499 7.92172 14.9106 7.17157C14.2713 6.42143 13.4041 6 12.5 6ZM12.5 16.6667C10.9931 16.6667 9.5479 15.9643 8.48235 14.714C7.4168 13.4638 6.81818 11.7681 6.81818 10C6.81818 8.23189 7.4168 6.5362 8.48235 5.28595C9.5479 4.03571 10.9931 3.33333 12.5 3.33333C14.0069 3.33333 15.4521 4.03571 16.5177 5.28595C17.5832 6.5362 18.1818 8.23189 18.1818 10C18.1818 11.7681 17.5832 13.4638 16.5177 14.714C15.4521 15.9643 14.0069 16.6667 12.5 16.6667ZM12.5 0C6.81818 0 1.96591 4.14667 0 10C1.96591 15.8533 6.81818 20 12.5 20C18.1818 20 23.0341 15.8533 25 10C23.0341 4.14667 18.1818 0 12.5 0Z" fill="white"/>
                                         </svg>
 
                                         <div class="ButtonText @IsActive">
@@ -123,7 +147,7 @@
                             </div>
 
                             <div class="menu-item-conteiner @IsActive">
-                                <NavLink href="/ManageCollection/Classified" @onclick="CloseMenu">
+                                <NavLink href="@($"/ManageCollection/{defaultCollections.ElementAt(2).Id}")" @onclick="CloseMenu">
                                     <div class="menu-item @IsActive">
 
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -199,10 +223,10 @@
                                 }
 
                                 <div class="menu-item-conteiner @IsActive following-fonteiner">
-                                    <div class="menu-item2 @IsActive">
-                                        <NavLink href="@($"/Profile/{following.Id}")" @onclick="CloseMenu">
-                                            <ItemUser User="@following" Short="@_short" />
-                                        </NavLink>
+                                    <div class="menu-item2 @IsActive" @onclick='() => { NavigationManager.NavigateTo($"/Profile/{following.Id}"); }'>
+                                        <div class="menu-item2 p-0">
+                                            <ItemUser User="@following" Short="@_short"/>
+                                        </div>
                                     </div>
                                 </div>
 

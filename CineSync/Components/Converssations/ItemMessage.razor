@@ -1,0 +1,164 @@
+﻿@using CineSync.Components.Account.Component
+@using CineSync.Components.Utils
+@using CineSync.Data.Models
+@using CineSync.Components.PopUps
+@using CineSync.Components.DMS
+@using CineSync.Components.Layout
+
+<div class="message-main-conteiner 
+	@( AuthenticatedUser.Equals(Message.Autor) ? " rigth" : " left")
+	@( _highlight ? " highlight" : "")
+">
+	
+	@if (!_loading)
+	{
+		
+		<div class="message-conteiner-hover" >
+
+			@if (!AuthenticatedUser.Equals(Message.Autor))
+			{
+				<div class="autor-containor">
+					<ItemUser Short=true
+							  User="Message.Autor"
+							  Style="width:30px; height:30px;">
+					</ItemUser>
+				</div>
+			}
+
+
+			<div style="
+					display:flex; 
+					flex-grow:1; 
+					gap:5px;
+					@( AuthenticatedUser.Equals(Message.Autor) ? "flex-direction: row-reverse; " : "")"
+				>
+
+				<div class="message-conteiner @( AuthenticatedUser.Equals(Message.Autor) ? "colorRigth" : "colorLeft")">
+
+					<div class="content-c">
+						@Message.Content
+					</div>
+					@if (Message.Attachements != null && Message.Attachements.Count > 0 )
+					{
+						<div class="Attachment-container">
+							@foreach (MessageAttachement attachment in Message.Attachements )
+							{
+								<div class="attachments">
+									<img src="@(ImageConverter.ConverBytesTo64(attachment.Attachment))" alt="Selected File" />
+
+									<div class="view" @onclick="(e) => { OpenAttachment(attachment.Attachment); }">
+										<div>
+											View
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+
+						<PopUpAttachementView
+							Id="@("_attachementView2" + Message.Id.ToString())"
+							@ref="_attachementView"
+						></PopUpAttachementView>
+					}
+
+					@if(Message.SeenByUsers != null)
+					{
+						<div class="SeenByUsers-container">
+							@foreach (UserSeenMessages userSeenMessage in Message.SeenByUsers)
+							{
+								<div class="SeenByUsers">
+									<ItemUser 
+										Short=true
+										User="userSeenMessage.User">
+										Style=""
+									</ItemUser>
+								</div>
+							}
+						</div>
+					}
+
+					@if (Message.Reactions != null)
+					{
+						<div class="Reactions-container">
+
+							@foreach (Reaction reaction in Message.Reactions.DistinctBy( r => r.ReactionContent) )
+							{
+							<div class="reaction-user">
+								<div>
+									@reaction.ReactionContent
+								</div>
+								<div class="text">
+									@Message.Reactions.Where(r =>r.ReactionContent == reaction.ReactionContent).Count() 
+								</div>
+							</div>
+							}
+
+						</div>
+					}
+
+				</div>
+		 
+
+				<div class="options-container"
+					style="@( AuthenticatedUser.Equals(Message.Autor) ? "flex-direction: row-reverse; " : "")">
+
+					<div class="button-hover-container" 
+						 @onclick=" () =>
+							{
+								_highlight = true;
+								OnReply.InvokeAsync(Message);
+								StateHasChanged();
+							}">
+						<div class="button-hover" style="@( _showImojiPicker ? "display:flex !important;" : "")">
+							<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="m4 10l-.707.707L2.586 10l.707-.707zm17 8a1 1 0 1 1-2 0zM8.293 15.707l-5-5l1.414-1.414l5 5zm-5-6.414l5-5l1.414 1.414l-5 5zM4 9h10v2H4zm17 7v2h-2v-2zm-7-7a7 7 0 0 1 7 7h-2a5 5 0 0 0-5-5z" /></svg>
+						</div>
+					</div>
+
+					@if( !Message.Autor.Equals(AuthenticatedUser) )
+					{
+						<div class="button-hover-container" 
+						@onclick=" async () => 
+								{
+									await OnOpenImojiPiker.InvokeAsync(Message);
+									_showImojiPicker = !_showImojiPicker;
+									StateHasChanged();
+								}"
+							>
+							<div class="button-hover" style="@( _showImojiPicker ? "display:flex !important;" : "")">
+								<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 512 512"><path fill="currentColor" d="M256 16C123.452 16 16 123.452 16 256s107.452 240 240 240s240-107.452 240-240S388.548 16 256 16m147.078 387.078a207.253 207.253 0 1 1 44.589-66.125a207.332 207.332 0 0 1-44.589 66.125" /><path fill="currentColor" d="M152 200h40v40h-40zm168 0h40v40h-40zm18.289 107.2A83.6 83.6 0 0 1 260.3 360h-8.6a83.6 83.6 0 0 1-77.992-52.8l-1.279-3.2h-34.461L144 319.081A116 116 0 0 0 251.7 392h8.6A116 116 0 0 0 368 319.081L374.032 304h-34.464Z" /></svg>
+							</div>
+						</div> 
+					}
+
+ 					<div class="imojiContainer"> 
+
+
+						<div class="imojipicker">
+
+							@if (_showImojiPicker)
+							{
+								<EmojiPicker 
+									OnEmojiSelected="AddEmoji" 
+								/>
+							}
+
+						</div> 
+
+					 </div> 
+
+				</div>
+
+			</div>
+
+		</div>
+	}
+	else
+	{
+		<div style="display:flex; justify-content:center; align-items:center;">
+			<Loading2></Loading2>
+		</div>
+
+		GetInfo();
+	}
+
+</div>

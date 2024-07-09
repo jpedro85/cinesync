@@ -8,23 +8,19 @@ namespace CineSync.Components.Account.Component
 {
     public partial class ItemUser
     {
-        [Inject]
-        public DbManager<UserImage> DbUserImageManager {  get; set; }
+        [Inject] public DbManager<UserImage> DbUserImageManager { get; set; }
 
-        [Parameter]
-        public ApplicationUser User { get; set; }
+        [Parameter, EditorRequired] public ApplicationUser User { get; set; }
 
-        [Parameter]
-        public bool Short { get; set; } = false;
+        [Parameter] public bool Short { get; set; } = false;
 
-        [Parameter]
-        public string Style { get; set; } = "";
+        [Parameter] public string Style { get; set; } = "";
 
-        private UserImage _image = null;
+        private UserImage? _image = null;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            if (firstRender) 
             {
                 GetImage();
                 StateHasChanged();
@@ -33,8 +29,11 @@ namespace CineSync.Components.Account.Component
 
         private async void GetImage()
         {
-            _image = await DbUserImageManager.GetFirstByConditionAsync( uImage => uImage.UserId == User.Id );
-        }
+            if (User.UserImage == null)
+                _image = await DbUserImageManager.GetFirstByConditionAsync(uImage => uImage.UserId == User.Id);
+		    else
+				_image = User.UserImage;
+		}
 
     }
 }

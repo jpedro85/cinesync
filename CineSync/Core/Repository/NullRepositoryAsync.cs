@@ -34,7 +34,14 @@ namespace CineSync.Core.Repository
             return Task.FromResult( Enumerable.Empty<T>() );
         }
 
-        public void Insert( T item )
+        public void Attach(T item) 
+        {
+        }
+		public void Dettach(T item) 
+        {
+        }
+
+		public void Insert( T item )
         {
         }
 
