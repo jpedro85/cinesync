@@ -44,7 +44,7 @@
                 <NavLink href="/">
                     <button class="login-button">Home</button>
                 </NavLink>
-            </div>        
+            </div>
 
         </div>
     </div>
@@ -100,10 +100,10 @@
 
     private IEnumerable<IdentityError>? identityErrors;
 
-    [SupplyParameterFromForm] 
+    [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
-    [SupplyParameterFromQuery] 
+    [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
@@ -139,8 +139,14 @@
 
         Logger.LogInformation("User created a new account with password.");
 
-        SendConfirmationEmailLinkAsync(user);
-        RedirectManager.RedirectTo(ReturnUrl);
+        if (UserManager.Options.SignIn.RequireConfirmedAccount)
+        {
+            SendConfirmationEmailLinkAsync(user);
+            RedirectManager.RedirectTo(
+                "Account/RegisterConfirmation",
+                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+        }
+
     }
 
     private ApplicationUser CreateUser()
@@ -170,15 +176,9 @@
 
         var emailContent = htmlTemplate
             .Replace("{{callbackUrl}}", HtmlEncoder.Default.Encode(callbackUrl));
-        
+
         await EmailSender.SendEmailAsync(user.Email, "Confirm Your Account", emailContent);
 
-        if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        {
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-        }
     }
 
     private IUserEmailStore<ApplicationUser> GetEmailStore()
