@@ -11,53 +11,80 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<div class="page">
-    <div class="main-content">
-        <div class="form-container">
-            <h1 class="text-center text-white">Log in</h1>
-            <div class="row">
-                <div class="col-md-12">
-                    <section>
-                        <StatusMessage Message="@errorMessage"/>
-                        <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
-                            <DataAnnotationsValidator/>
-                            <hr class="text-white"/>
-                            <ValidationSummary class="text-danger" role="alert"/>
-                            <div class="form-floating mb-3">
-                                <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
-                                <label for="email" class="form-label">Email</label>
-                                <ValidationMessage For="() => Input.Email" class="text-danger"/>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password"/>
-                                <label for="password" class="form-label">Password</label>
-                                <ValidationMessage For="() => Input.Password" class="text-danger"/>
-                            </div>
-                            <div class="login-container">
-                                <button type="submit" class="login-btn">Log in</button>
-                            </div>
-                            <div>
-                                <p>
-                                    <a href="Account/ForgotPassword">Forgot your password?</a>
-                                </p>
-                                <p>
-                                    <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
-                                </p>
-                                <p>
-                                    <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
-                                </p>
-                            </div>
-                        </EditForm>
-                    </section>
+<div style="background-color:rgb(0 164 255); height:100vh;">
+
+    <div class="navbar">
+        <div class="navbar-left">
+
+            <NavLink href="/">
+                <div class="home-button">
+                    <div class="navbar-item-conteiner">
+                        <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+                    </div>
+                    <div class="navbar-item-conteiner navbar-title">CineSync</div>
                 </div>
-            </div>
+            </NavLink>
+
+        </div>
+        <div class="navbar-rigth">
+
+            <div class="navbar-item-conteiner">
+                <NavLink href="/">
+                    <button class="login-button">Home</button>
+                </NavLink>
+            </div>        
+
         </div>
     </div>
 
-    <div class="logo-container-main">
-        <img id="logo" src="../logo.png" alt="CineSync Main Logo">
-    </div>
+    <div class="page">
+        <div class="main-content">
+            <div class="form-container">
+                <h1 class="text-center text-white">Log in</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <section>
+                            <StatusMessage Message="@errorMessage"/>
+                            <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+                                <DataAnnotationsValidator/>
+                                <hr class="text-white"/>
+                                <ValidationSummary class="text-danger" role="alert"/>
+                                <div class="form-floating mb-3">
+                                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
+                                    <label for="email" class="form-label">Email</label>
+                                    <ValidationMessage For="() => Input.Email" class="text-danger"/>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password"/>
+                                    <label for="password" class="form-label">Password</label>
+                                    <ValidationMessage For="() => Input.Password" class="text-danger"/>
+                                </div>
+                                <div class="login-container">
+                                    <button type="submit" class="login-btn">Log in</button>
+                                </div>
+                                <div>
+                                    <p>
+                                        <a href="Account/ForgotPassword">Forgot your password?</a>
+                                    </p>
+                                    <p>
+                                        <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
+                                    </p>
+                                    <p>
+                                        <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
+                                    </p>
+                                </div>
+                            </EditForm>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="logo-container-main">
+            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+        </div>
+
+    </div>
 </div>
 
 @code {

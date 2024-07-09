@@ -3,18 +3,21 @@
     background-size: cover;
     background-position: center;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 50px;
     gap: 50px;
-    height: 100%;
+    height: 100vh;
+
+    padding-bottom:130px;
 }
 
 .main-content {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-grow:1;
 }
 
 .form-container {
@@ -27,16 +30,17 @@
     outline: auto;
 }
 
-.login-container {
-    padding-bottom: 20px;
+.logo-container-main {
     flex-grow: 1;
     align-items: center;
     justify-content: center;
     display: flex;
+    height: fit-content;
+    flex-grow:0;
 }
 
 #logo {
-    width: 400px;
+    width: 200px;
 }
 
 .logo-container {
@@ -72,3 +76,133 @@
     width: 170px;
     color: black;
 }
+
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+
+.navbar {
+    background: linear-gradient(to bottom, black 90%, rgba(0, 0, 0, 0.1) );
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    vertical-align: central;
+    z-index: 999;
+    padding: 0;
+}
+
+.navbar-left {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    height: 100%;
+    flex-wrap: wrap;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    align-content: center;
+    vertical-align: central;
+    gap: 2rem;
+}
+
+
+
+.navbar-rigth {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    padding-right: 1rem;
+    align-content: center;
+    vertical-align: central;
+    gap: 1rem;
+}
+
+.navbar-title {
+    margin: 0;
+    font-size: 35px;
+    margin-right: 10px;
+    color: white;
+    text-decoration: none !important;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-item-conteiner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: fit-content;
+    height: 100% !important;
+    align-content: center;
+    justify-content: center;
+}
+
+.home-button {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    gap: 0.5rem;
+}
+
+.Minilogo {
+    width: 70px;
+    height: 60px;
+}
+
+.menuButton {
+    width: 35px !important;
+    height: 35px !important;
+    fill: white;
+}
+
+    .menuButton:hover {
+        cursor: pointer;
+        fill: rgb(75, 75, 75);
+    }
+
+.login-button {
+    font-family: Itim;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: rgb(255,255,255);
+    color: black;
+    padding: 10px 30px;
+    border-radius: 5px;
+    /*transition: 752ms;
+    transform: translateY(0);*/
+    align-items: center;
+    cursor: pointer;
+    margin-left: auto;
+    width: fit-content;
+    border: none;
+}
+
+    .login-button:hover {
+        /*transition: 752ms;*/
+        /*padding: 10px 50px;*/
+        /*transform: translateY(-0px);*/
+        /*background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);*/
+        color: black;
+        background-color: rgb(128, 128, 128);
+        box-shadow: rgb(255, 255, 255) 0px 0px 15px 8px;
+    }
+
+    .login-button:active {
+        /*transition: 752ms;*/
+        /*padding: 10px 50px;*/
+        /*transform: translateY(-0px);*/
+        /*background: linear-gradient(90deg, #4892db 0%, #5f00cc 100%);*/
+        background-color: rgb(148, 148, 148);
+    }
