@@ -13,19 +13,45 @@
 @inject IdentityRedirectManager RedirectManager
 @inject NavigationManager Navigation
 
-<div class="page">
-    <div class="main-content">
-        <div class="form-container">
-            <h1 class="text-center text-white">Confirm email change</h1>
-            <hr class="text-white"/>
-            <StateMessage Message="@message"/>
-            <div class="logo-container-main">
-                <div @onclick="GoHome">
-                    <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+<div style="background-color:rgb(0 164 255); height:100vh;">
+
+    <div class="navbar">
+        <div class="navbar-left">
+
+            <NavLink href="/">
+                <div class="home-button">
+                    <div class="navbar-item-conteiner user-select-none">
+                        <img class="Minilogo" src="MiniLogo.png" alt="CineSync MiniLogo">
+                    </div>
+                    <div class="navbar-item-conteiner navbar-title user-select-none">CineSync</div>
                 </div>
+            </NavLink>
+
+        </div>
+        <div class="navbar-rigth">
+
+            <div class="navbar-item-conteiner">
+                <NavLink href="/">
+                    <button class="login-button user-select-none">Home</button>
+                </NavLink>
             </div>
-            <div class="d-flex justify-content-center">
-                <RectButton1 Text="Home" OnClick="GoHome"/>
+
+        </div>
+    </div>
+    <div class="page">
+        <div class="main-content">
+            <div class="form-container">
+                <h1 class="text-center text-white">Confirm email change</h1>
+                <hr class="text-white"/>
+                <StateMessage Message="@message"/>
+                <div class="logo-container-main">
+                    <div @onclick="GoHome">
+                        <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <RectButton1 Text="Home" OnClick="GoHome"/>
+                </div>
             </div>
         </div>
     </div>
@@ -34,18 +60,14 @@
 @code {
     private string? message;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery]
-    private string? UserId { get; set; }
+    [SupplyParameterFromQuery] private string? UserId { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? Email { get; set; }
+    [SupplyParameterFromQuery] private string? Email { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? Code { get; set; }
-    
+    [SupplyParameterFromQuery] private string? Code { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         if (UserId is null || Email is null || Code is null)
@@ -64,12 +86,13 @@
         var result = await UserManager.ChangeEmailAsync(user, Email, code);
         if (!result.Succeeded)
         {
-            if (result.Errors.Any(e=> e.Code == "InvalidToken"))
+            if (result.Errors.Any(e => e.Code == "InvalidToken"))
             {
                 message = "Error: Email already has been changed.";
                 StateHasChanged();
                 return;
             }
+
             message = "Your email is unchanged.";
             StateHasChanged();
             return;
@@ -87,9 +110,10 @@
         // await SignInManager.RefreshSignInAsync(user);
         message = "Thank you for confirming your email change.";
     }
-    
+
     private void GoHome()
     {
         Navigation.NavigateTo("/");
     }
+
 }

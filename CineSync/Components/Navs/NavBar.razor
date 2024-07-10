@@ -11,10 +11,10 @@
 
         <NavLink href="/">
             <div class="home-button">
-                <div class="navbar-item-conteiner">
-                    <img class="Minilogo" src="MiniLogo.png" alt=" CineSync MiniLogo">
+                <div class="navbar-item-conteiner user-select-none">
+                    <img class="Minilogo" src="MiniLogo.png" alt="CineSync MiniLogo">
                 </div>
-                <div class="navbar-item-conteiner navbar-title">CineSync</div>
+                <div class="navbar-item-conteiner navbar-title user-select-none">CineSync</div>
             </div>
         </NavLink>
 
@@ -25,7 +25,7 @@
         {
             <div class="navbar-item-conteiner">
                 <NavLink href="/Account/Login">
-                    <button class="login-button">Login</button>
+                    <button class="login-button user-select-none">Login</button>
                 </NavLink>
             </div>
         }
@@ -43,11 +43,11 @@
 
                             @if (UserImage != null)
                             {
-                                <img class="profileImage" src="@GetImage()" alt="User" />
+                                <img class="profileImage user-select-none" src="@GetImage()" alt="User" />
                             }
                             else
                             {
-                                <img class="profileImage" src="NoProfilePic.png" alt="User" />
+                                <img class="profileImage user-select-none" src="NoProfilePic.png" alt="User" />
                             }
 
                         </div>
