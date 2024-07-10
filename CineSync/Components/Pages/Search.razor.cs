@@ -63,7 +63,7 @@ namespace CineSync.Components.Pages
             _currentPage = 1;
             _isLastpage = false;
             SearchResults.Clear();
-            _currentSearchQuery = searchQuery;
+            _currentSearchQuery = searchQuery.Trim();
 
             await LoadPage(searchQuery, _currentPage);
         }
