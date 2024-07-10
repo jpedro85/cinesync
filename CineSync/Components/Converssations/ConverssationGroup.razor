@@ -1,5 +1,208 @@
-﻿<h3>ConverssationGroup</h3>
+﻿@using CineSync.Components.Account.Component
+@using CineSync.Components.Buttons
+@using CineSync.Components.Layout
+@using CineSync.Components.Envites
+@using CineSync.Components.PopUps;
+@using CineSync.Components.DMS
+@using CineSync.Data.Models;
 
-@code {
+@* @using CineSync.Components.Utils *@
 
-}
+<div class="converssation-container">
+
+	<PopUpSearchUser 
+		Title="Invite User"
+		AuthenticatedUser="AuthenticatedUser"
+		Id="SearchUser1234"
+		OnClickUser="(u,f)=>{ CreateInvite(u); }"
+		@ref="_popupSearchUser">
+	</PopUpSearchUser>
+
+	@if (!_isloading)
+	{
+		<div class="top-container">
+			<div class="Title-Conteiner">
+				@Conversation.Name
+			</div>
+			<div class="message-group-top-add" @onclick="OnOpenParticipants">
+				<div class="message-group-top-add-button"> @* data-toggle="modal" data-target="#PopUpSearchUser_SearchUser123">*@
+					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 18.72a9.1 9.1 0 0 0 3.741-.479q.01-.12.01-.241a3 3 0 0 0-4.692-2.478m.94 3.197l.001.031q0 .337-.037.666A11.94 11.94 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6 6 0 0 1 6 18.719m12 0a5.97 5.97 0 0 0-.941-3.197m0 0A6 6 0 0 0 12 12.75a6 6 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72a9 9 0 0 0 3.74.477m.94-3.197a5.97 5.97 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0a3 3 0 0 1 6 0m6 3a2.25 2.25 0 1 1-4.5 0a2.25 2.25 0 0 1 4.5 0m-13.5 0a2.25 2.25 0 1 1-4.5 0a2.25 2.25 0 0 1 4.5 0" /></svg>
+				</div>
+			</div>
+			<div class="message-group-top-add">
+				<div class="message-group-top-add-button" data-toggle="modal" data-target="#PopUpSearchUser_SearchUser1234">
+					<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 2048 2048">
+						<path fill="currentColor" d="M1250 1333q68 34 123 85t93 118h-157q-54-61-128-94t-157-34q-80 0-149 30t-122 82t-83 123t-30 149H512q0-73 20-141t57-129t91-108t118-81q-75-54-116-135t-42-174q0-53-20-99t-55-82t-81-55t-100-20q-53 0-99 20t-82 55t-55 81t-20 100H0q0-52 14-102t39-93t63-80t83-61q-34-35-52-81t-19-95q0-53 20-99t55-82t81-55t100-20q53 0 99 20t82 55t55 81t20 100q0 49-18 95t-53 81q42 23 75 55t60 70q27-40 62-72t76-54t87-35t95-12q48 0 94 12t87 34t77 55t62 72q26-38 59-70t76-55q-34-35-52-81t-19-95q0-53 20-99t55-82t81-55t100-20q53 0 99 20t82 55t55 81t20 100q0 49-18 95t-53 81q46 25 83 61t62 79t40 94t14 102h-128q0-53-20-99t-55-82t-81-55t-100-20q-53 0-99 20t-82 55t-55 81t-20 100q0 92-41 173t-117 136m414-949q-27 0-50 10t-40 27t-28 41t-10 50q0 27 10 50t27 40t41 28t50 10q27 0 50-10t40-27t28-41t10-50q0-27-10-50t-27-40t-41-28t-50-10M384 640q27 0 50-10t40-27t28-41t10-50q0-27-10-50t-27-40t-41-28t-50-10q-27 0-50 10t-40 27t-28 41t-10 50q0 27 10 50t27 40t41 28t50 10m640 640q53 0 99-20t82-55t55-81t20-100q0-53-20-99t-55-82t-81-55t-100-20q-53 0-99 20t-82 55t-55 81t-20 100q0 53 20 99t55 82t81 55t100 20m768 384h256v128h-256v256h-128v-256h-256v-128h256v-256h128z" />
+					</svg>
+				</div>
+			</div>
+		</div>
+
+		<PopUpParticipants 
+			ApplicationUser="@AuthenticatedUser"
+			Conversation="@Conversation"
+			OnClickInvite="()=>{_popupSearchUser.Open();}"
+			@ref="@_popUpParticipants"
+		></PopUpParticipants>
+
+		if(Conversation.Participants.Count == 1)
+		{
+
+			<div class="notification notifications-container">
+				<div class="notification-title">
+					You are the only one in this group !
+				</div>
+				<div class="notification-button-conteiner">
+					<RectButton2 Text="Leave Group" ></RectButton2>
+					<RectButton1 Text="Invite People"></RectButton1>
+				</div>
+			</div>
+			
+		}
+
+		<div class="content-container">
+
+			<dvi class="hover-container">
+
+				<div class="notifications-container">
+
+					@* @if (Conversation.Participants.Count < 2)
+					{
+						<div class="notification">
+							<div class="notification-title">
+								<span style="font-weight:600">@UserToSend.UserName</span>have not accepted your invite yet."
+							</div>
+							<div>
+								@foreach (Invite invite in Conversation.Invites)
+								{
+									<ItemEnvite Authenticateduser="AuthenticatedUser"
+												Invite="@invite"
+												OnRemove="(e)=>{}"
+												ShowUser="false"
+												AllowCancel="false">
+									</ItemEnvite>
+
+									if (invite.State == InviteStates.DECLINED)
+									{
+										<div class="invie-buttons-options">
+											<RectButton2 Text="Remove Message"
+														 OnClick="RemoveMessage"></RectButton2>
+											<RectButton1 Text="Resend Invite"
+														 OnClick="() => {ResendInvite(invite);}"></RectButton1>
+										</div>
+									}
+
+								}
+							</div>
+						</div>
+
+
+					}
+					else if (Conversation.Participants.Count != 2)
+					{
+						<div class="notification">
+							<div class="">
+								You are the only one in here.
+							</div>
+							<div>
+								@if (Conversation.Messages.Any(m => m.Autor.Equals(UserToSend)))
+								{
+									@($"{UserToSend.UserName} has left this conversation.")
+								}
+								else
+								{
+									@($"{UserToSend.UserName} has rejected the invite.")
+								}
+							</div>
+						</div>
+					} *@
+
+				</div>
+
+			</dvi>
+
+			<div id="scrollable_messages" class="messages">
+
+				@{
+					int index = 0;
+					DateTime lasttime = DateTime.Now;
+					TimeSpan timeDiferençe;
+				}
+
+				@foreach (Message message in Conversation.Messages)
+				{
+
+					if (index == 0 || (message.TimeStamp - lasttime).Days > 1)
+					{
+						timeDiferençe = DateTime.Now - message.TimeStamp;
+						if (timeDiferençe.Days <= 1)
+						{
+							<div class="time">
+								Today
+								<hr>
+							</div>
+						}
+						else
+						{
+							<div class="time">
+								@message.TimeStamp.Day/@message.TimeStamp.Month/@message.TimeStamp.Year
+								<hr>
+							</div>
+						}
+					}
+
+					index++;
+					lasttime = message.TimeStamp;
+
+					<div>
+						<ItemMessage @ref="@ImteMessageRef"
+									 AuthenticatedUser="@AuthenticatedUser"
+									 Message="@message"
+									 OnReply="@OnMessageReply"
+									 OnOpenImojiPiker="@OnOpenImojiPiker"
+									 OnRemove="(e)=>{}"
+									 Group="@_messageHubGroupName" />
+					</div>
+				}
+
+				<div class="space">
+					<div></div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="new-message">
+			<DmInput AuthenticateUser="AuthenticatedUser"
+					 SelectedFileStyle="background-color:rgb(25,25,25);  "
+					 SelectedClass=" selected-file-left2 "
+					 OnNewMessage="OnNewMessage"
+					 OnRemoveReply="OnRemoveReply"
+					 @ref="@_dminpput">
+			</DmInput>
+		</div>
+	}
+	else
+	{
+		<Loading FontPalceHeight="20"
+				 FontSize="18"
+				 LineHeight="30"
+				 LetterSpacing="0"
+				 MarginLeterLine="5"
+				 MaxWidth="120">
+		</Loading>
+
+		GetMessages();
+	}
+
+</div>
+<script>
+
+	window.scrollToBottom = (elementId) => {
+		let element = document.getElementById(elementId);
+		if (element) {
+			element.scrollTop = element.scrollHeight + 100;
+		}
+	};
+
+</script>

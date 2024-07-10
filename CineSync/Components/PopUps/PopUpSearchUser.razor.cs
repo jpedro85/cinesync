@@ -1,10 +1,8 @@
 ﻿using CineSync.Data;
 using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections;
 
 namespace CineSync.Components.PopUps
 {
@@ -24,7 +22,7 @@ namespace CineSync.Components.PopUps
 		public NewMessageFunc OnClickUser { get; set; } = (e,f) => { };
 		public delegate void NewMessageFunc (ApplicationUser user, bool foolowing);
 
-        [Inject]
+		[Inject]
         public UserManager DbUserManager { get; set; } = default!;
 
 		[Inject]
@@ -34,7 +32,9 @@ namespace CineSync.Components.PopUps
 
 		private string _searchContent = string.Empty;
 		private bool _isLoading = false;
+		private bool _searchedInDeb = false;
 		private bool _MoreResultsLoading = false;
+		private List<ApplicationUser> _OmtiedUser = [];
 		private IEnumerable<ApplicationUser> _followingResults = [];
 		private IEnumerable<ApplicationUser> _DbResults = [];
         public ICollection<ApplicationUser> _Following { get; set; } = [];
@@ -59,6 +59,7 @@ namespace CineSync.Components.PopUps
 
         private void OnClickSearch( string searchUsername ) 
         {
+			_searchedInDeb = false;
 			_searchContent = searchUsername;
 			_DbResults = [];
 			_followingResults = [];
@@ -80,7 +81,12 @@ namespace CineSync.Components.PopUps
 													u.NormalizedUserName != null &&
 													u.NormalizedUserName.Contains(searchUsername)
 												);
-			if (_followingResults.Count() == 0)
+
+			if ( _followingResults.Count() == 0 || 
+				(_OmtiedUser.Count == _followingResults.Count() && 
+				 _OmtiedUser.All( u => _followingResults.Any( u2 => u2.Equals(u)) ) 
+				)
+			)
 			{
 				SearchUsernameInDb(searchUsername);
 			}
@@ -100,6 +106,7 @@ namespace CineSync.Components.PopUps
 
             Task.Run(() => { SearchUsernameInDb(normalizedUsername); });
 
+			_searchedInDeb = true;
 			_MoreResultsLoading = true;
 			StateHasChanged();
 		}
@@ -127,5 +134,16 @@ namespace CineSync.Components.PopUps
 			}
 		}
 
-    }
+		public void OmitResultUser(ApplicationUser user) 
+		{
+			if(!_OmtiedUser.Contains(user))
+				_OmtiedUser.Add(user);
+		}
+
+		public void RemoveOmitedResultUser(ApplicationUser user)
+		{
+			_OmtiedUser.Remove(user);
+		}
+
+	}
 }

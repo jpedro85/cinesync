@@ -1,0 +1,82 @@
+﻿.vertival-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Roboto';
+    font-size: 24px;
+    color: white;
+}
+
+.user-container {
+    display:flex;
+    flex-direction:column;
+    min-height: 300px;
+    gap:10px;
+    max-height: 300px;
+    overflow-y:auto;
+}
+
+.participants-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .participants-container hr 
+    {
+        margin:0;
+    }
+
+
+    .participants-line {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+    }
+
+.participant-column
+{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.participant-rigth
+{
+    display:flex;
+    flex-grow:1;
+    justify-content:flex-end;
+}
+
+.participants-title {
+    flex-grow: 1;
+    font-size: 20px;
+}
+
+.invite {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 255, 255);
+    font-size:22px;
+    flex-grow:20;
+}
+
+.message-group-top-add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    width: 35px;
+    height: 35px;
+    background-color: rgb(50, 50, 50, 1);
+    cursor: pointer;
+}
+
+    .message-group-top-add-button:hover {
+        background-color: rgb(128, 128, 128);
+        color: black;
+    }

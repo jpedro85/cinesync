@@ -1,0 +1,101 @@
+﻿@using CineSync.Components.Buttons
+@using CineSync.Components.Account.Component
+
+<PopUpLayout Id="@_Id" @ref="@_popUpLayout">
+	<Header>
+		<div class="vertival-center">
+			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" /><path fill="currentColor" d="M8 7a3 3 0 1 1 6 0a3 3 0 0 1-6 0m3-5a5 5 0 1 0 0 10a5 5 0 0 0 0-10M4 18.5c0-.18.09-.489.413-.899c.316-.4.804-.828 1.451-1.222C7.157 15.589 8.977 15 11 15q.563 0 1.105.059a1 1 0 1 0 .211-1.99A13 13 0 0 0 11 13c-2.395 0-4.575.694-6.178 1.672c-.8.488-1.484 1.064-1.978 1.69C2.358 16.976 2 17.713 2 18.5c0 .845.411 1.511 1.003 1.986c.56.45 1.299.748 2.084.956C6.665 21.859 8.771 22 11 22q.346 0 .685-.005a1 1 0 1 0-.027-2Q11.333 20 11 20c-2.19 0-4.083-.143-5.4-.492c-.663-.175-1.096-.382-1.345-.582C4.037 18.751 4 18.622 4 18.5M17.5 16a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3M14 17.5a3.5 3.5 0 1 1 6.58 1.665l.834.835A1 1 0 1 1 20 21.414l-.835-.835A3.5 3.5 0 0 1 14 17.5" /></g></svg>
+		</div>
+		<div class="title">
+			@Conversation.Name
+		</div>
+	</Header>
+	<Body>
+		<div class="participants-container">
+			<div class="participants-line">
+				<div class="participants-title">
+					Participants
+				</div>
+
+				<div class="message-group-top-add" @onclick="OnClickAdd">
+					<div class="message-group-top-add-button">
+						<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 2048 2048" b-beq2el9whb=""><path fill="currentColor" d="M1250 1333q68 34 123 85t93 118h-157q-54-61-128-94t-157-34q-80 0-149 30t-122 82t-83 123t-30 149H512q0-73 20-141t57-129t91-108t118-81q-75-54-116-135t-42-174q0-53-20-99t-55-82t-81-55t-100-20q-53 0-99 20t-82 55t-55 81t-20 100H0q0-52 14-102t39-93t63-80t83-61q-34-35-52-81t-19-95q0-53 20-99t55-82t81-55t100-20q53 0 99 20t82 55t55 81t20 100q0 49-18 95t-53 81q42 23 75 55t60 70q27-40 62-72t76-54t87-35t95-12q48 0 94 12t87 34t77 55t62 72q26-38 59-70t76-55q-34-35-52-81t-19-95q0-53 20-99t55-82t81-55t100-20q53 0 99 20t82 55t55 81t20 100q0 49-18 95t-53 81q46 25 83 61t62 79t40 94t14 102h-128q0-53-20-99t-55-82t-81-55t-100-20q-53 0-99 20t-82 55t-55 81t-20 100q0 92-41 173t-117 136m414-949q-27 0-50 10t-40 27t-28 41t-10 50q0 27 10 50t27 40t41 28t50 10q27 0 50-10t40-27t28-41t10-50q0-27-10-50t-27-40t-41-28t-50-10M384 640q27 0 50-10t40-27t28-41t10-50q0-27-10-50t-27-40t-41-28t-50-10q-27 0-50 10t-40 27t-28 41t-10 50q0 27 10 50t27 40t41 28t50 10m640 640q53 0 99-20t82-55t55-81t20-100q0-53-20-99t-55-82t-81-55t-100-20q-53 0-99 20t-82 55t-55 81t-20 100q0 53 20 99t55 82t81 55t100 20m768 384h256v128h-256v256h-128v-256h-256v-128h256v-256h128z" b-beq2el9whb=""></path></svg>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="user-container">
+
+				@foreach( var uc in Conversation.Participants )
+				{
+					if ( uc.User.Equals(ApplicationUser) )
+					{
+						<div class="participants-line">
+							<div style="width:25px;">
+								<ItemUser
+									Short="true"
+									User="uc.User"
+								></ItemUser>
+							</div>
+							<div style="margin-left:10px;">
+								Me
+							</div>
+							<div class="participant-rigth">
+								<div class="message-group-top-add" @onclick="()=> { OnClickLeave(uc.User);}">
+									<div class="message-group-top-add-button">
+										<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M13 11a3 3 0 1 0-3-3a3 3 0 0 0 3 3m0-4a1 1 0 1 1-1 1a1 1 0 0 1 1-1m4.11 3.86a5 5 0 0 0 0-5.72A2.9 2.9 0 0 1 18 5a3 3 0 0 1 0 6a2.9 2.9 0 0 1-.89-.14M13 13c-6 0-6 4-6 4v2h12v-2s0-4-6-4m-4 4c0-.29.32-2 4-2c3.5 0 3.94 1.56 4 2m7 0v2h-3v-2a5.6 5.6 0 0 0-1.8-3.94C24 13.55 24 17 24 17M8 12H0v-2h8Z" /></svg>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+					else
+					{
+						<div class="participants-line">
+							<ItemUser 
+								Short="false"
+								User="uc.User">
+							</ItemUser>
+							<div class="participant-rigth">
+								<div class="message-group-top-add" @onclick="()=> { OnClickLeave(uc.User);}">
+									<div class="message-group-top-add-button">
+										<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M13 11a3 3 0 1 0-3-3a3 3 0 0 0 3 3m0-4a1 1 0 1 1-1 1a1 1 0 0 1 1-1m4.11 3.86a5 5 0 0 0 0-5.72A2.9 2.9 0 0 1 18 5a3 3 0 0 1 0 6a2.9 2.9 0 0 1-.89-.14M13 13c-6 0-6 4-6 4v2h12v-2s0-4-6-4m-4 4c0-.29.32-2 4-2c3.5 0 3.94 1.56 4 2m7 0v2h-3v-2a5.6 5.6 0 0 0-1.8-3.94C24 13.55 24 17 24 17M8 12H0v-2h8Z" /></svg>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				}
+
+				@foreach( var invite in Conversation.Invites )
+				{
+					if (invite.State == Data.Models.InviteStates.DEFAULT)
+					{
+						<div class="participant-column">
+							<ItemUser 
+								Short="false"
+								User="invite.Target">
+							</ItemUser>
+							<div class="participants-line">
+								<div class="invite">
+									@invite.GetStateAsString()
+								</div>
+								<div class="participant-rigth">
+									<div class="message-group-top-add" @onclick="()=> { OnClickRemoveInvite(invite);}">
+										<div class="message-group-top-add-button">
+											<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M13 11a3 3 0 1 0-3-3a3 3 0 0 0 3 3m0-4a1 1 0 1 1-1 1a1 1 0 0 1 1-1m4.11 3.86a5 5 0 0 0 0-5.72A2.9 2.9 0 0 1 18 5a3 3 0 0 1 0 6a2.9 2.9 0 0 1-.89-.14M13 13c-6 0-6 4-6 4v2h12v-2s0-4-6-4m-4 4c0-.29.32-2 4-2c3.5 0 3.94 1.56 4 2m7 0v2h-3v-2a5.6 5.6 0 0 0-1.8-3.94C24 13.55 24 17 24 17M8 12H0v-2h8Z" /></svg>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				}
+
+			</div>
+		</div>
+	</Body>
+	<Footer>
+		<RectButton1 Text="Close" DataDismiss="modal"></RectButton1>
+	</Footer>
+</PopUpLayout>

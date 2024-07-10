@@ -4,16 +4,25 @@ using CineSync.Data.Models;
 using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CineSync.Components.Converssations
 {
 	public partial class PageGroupConversation : ComponentBase
 	{
+		[CascadingParameter(Name = "MessageHubConnection")]
+		public HubConnection MessageHubConnection { get; set; } = default!;
+
+
 		[Parameter, EditorRequired]
 		public ApplicationUser AuthenticatedUser { get; set; } = default!;
 
 		[Parameter, EditorRequired]
-		public PopUpSearchUser.NewMessageFunc OnClickUser { get; set; } = default!;
+		public EventCallback OnNewConversationGroup { get; set; } = default!;
+
+		[Parameter, EditorRequired]
+		public EventCallback<Conversation> OnClickConversation { get; set; } = default!;
+
 
 		[Inject]
 		private InvitesManager EnvitesManager { get; set; } = default!;
@@ -119,10 +128,12 @@ namespace CineSync.Components.Converssations
 		{
 			Conversations = await DbUserConversations.GetByConditionAsync(
 								uc => uc.UserId == AuthenticatedUser.Id
-								&& !uc.Conversation.IsGroupConversation
+								&& uc.Conversation.IsGroupConversation
 								, "Conversation"
 								, "Conversation.Participants"
 								, "Conversation.Participants.User"
+								, "Conversation.Invites"
+								, "Conversation.Invites.Target"
 							);
 
 			ConversationsFiltered = Conversations;
@@ -134,9 +145,10 @@ namespace CineSync.Components.Converssations
 		private async void UpdateRequests()
 		{
 			InvitesToMe = await EnvitesManager.GetByConditionAsync(i =>
-							(i.Type == InviteTypes.MESSAGE)
+							(i.Type == InviteTypes.GROUP)
 							&& i.Target.Equals(AuthenticatedUser)
 							, "Target"
+							, "Sender"
 						);
 
 			InvitesToMeFiltered = InvitesToMe;
@@ -148,15 +160,93 @@ namespace CineSync.Components.Converssations
 		private async void UpdateMyRequests()
 		{
 			InvitesFromMe = await EnvitesManager.GetByConditionAsync(i =>
-							i.Type == InviteTypes.MESSAGE 
+							i.Type == InviteTypes.GROUP
 							&& i.Sender.Equals(AuthenticatedUser)
 							, "Sender"
+							, "Target"
 						);
 
 			InvitesFromMeFiltered = InvitesFromMe;
 
 			_isLoading = false;
 			await InvokeAsync(StateHasChanged);
+		}
+
+        public void UpdateConversations(Conversation conversation)
+        {
+			UserConversations userConversations = new UserConversations()
+			{
+				Conversation = conversation,
+				ConversationId = conversation.Id,
+				User = AuthenticatedUser,
+				UserId = AuthenticatedUser.Id
+			};
+
+            Conversations = Conversations.Append(userConversations);
+            ConversationsFiltered = ConversationsFiltered.Append(userConversations);
+
+            InvokeAsync(StateHasChanged);
+        }
+
+        public void UpdateRemoveConversations(Conversation conversation)
+        {
+            Conversations = Conversations.Where(uc => uc.ConversationId != conversation.Id);
+            ConversationsFiltered = ConversationsFiltered.Where(uc => uc.ConversationId != conversation.Id);
+
+            InvokeAsync(StateHasChanged);
+        }
+
+		private void SubscribeEvents()
+		{
+			MessageHubConnection.On<Invite>("UpdateMyRequestState", UpdateMyRequestState);
+			MessageHubConnection.On<Invite>("UpdateYourRequestState", UpdateRequestState);
+		}
+
+		private void UpdateMyRequestState(Invite invite)
+		{
+			if (!invite.Sender.Equals(AuthenticatedUser))
+				return;
+
+			Invite? localInvite = InvitesFromMe.Where(i => i.Equals(invite)).FirstOrDefault();
+
+			if (localInvite == null) return;
+
+			localInvite.State = invite.State;
+
+			localInvite = InvitesFromMeFiltered.Where(i => i.Equals(invite)).First();
+			localInvite.State = invite.State;
+
+			if (_activeTab == _tabs[1]) // my Requests
+			{
+				InvokeAsync(StateHasChanged);
+			}
+		}
+
+		private void UpdateRequestState(Invite invite)
+		{
+			if (!invite.Target.Equals(AuthenticatedUser))
+				return;
+
+			Invite localInvite = InvitesToMe.Where(i => i.Equals(invite)).First();
+			localInvite.State = invite.State;
+
+			localInvite = InvitesToMeFiltered.Where(i => i.Equals(invite)).First();
+			localInvite.State = invite.State;
+
+			if (_activeTab == _tabs[2]) // Requests
+			{
+				InvokeAsync(StateHasChanged);
+			}
+		}
+
+		private async void OnUpdateMyRequestState(Invite invite)
+		{
+			await MessageHubConnection.InvokeAsync("UpdateMyRequestState", invite);
+		}
+
+		private async void OnUpdateRequestState(Invite invite)
+		{
+			await MessageHubConnection.InvokeAsync("UpdateYourRequestState", invite);
 		}
 	}
 }

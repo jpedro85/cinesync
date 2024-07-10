@@ -20,6 +20,9 @@ namespace CineSync.Components.Converssations
 		[Parameter, EditorRequired]
 		public EventCallback<Conversation> OnCratedConversation { get; set; } = default!;
 
+		[Parameter, EditorRequired]
+		public EventCallback OnCancel { get; set; } = default!;
+
 
 		[Inject]
 		public InvitesManager EnvitesManager { get; set; } = default!;
@@ -53,6 +56,7 @@ namespace CineSync.Components.Converssations
 		public async void OnClickSendRequest(MouseEventArgs e)
 		{
 			Conversation? newConversation = await ConversationManager.CreateConversation(
+												$"{AuthenticatedUser.Id}_{SendToUser.Id}",
 												$"{AuthenticatedUser.Id}_{SendToUser.Id}",
 												false,
 												AuthenticatedUser.Id
