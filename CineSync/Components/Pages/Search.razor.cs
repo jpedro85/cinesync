@@ -73,7 +73,7 @@ namespace CineSync.Components.Pages
         {
             _currentSearchQuery = searchQuery.Trim();
 	    await UpdateUrlWithSearchQuery(searchQuery.Trim());
-            await SearchMovies(searchQuery);
+            await SearchMovies(searchQuery.Trim());
             StateHasChanged();
         }
 
