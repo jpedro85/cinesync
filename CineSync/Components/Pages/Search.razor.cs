@@ -53,6 +53,7 @@ namespace CineSync.Components.Pages
             {
                 _pageLayout.NavBar.SetVisibleSearchButton(false);
                 await SearchMovies(Query);
+                StateHasChanged();
             }
 
         }
@@ -70,7 +71,8 @@ namespace CineSync.Components.Pages
 
         private async void SearchMoviesSearchButtonHandler(string searchQuery)
         {
-            await UpdateUrlWithSearchQuery(searchQuery);
+            _currentSearchQuery = searchQuery;
+			await UpdateUrlWithSearchQuery(searchQuery);
             await SearchMovies(searchQuery);
             StateHasChanged();
         }
@@ -142,7 +144,8 @@ namespace CineSync.Components.Pages
 
         private async Task UpdateUrlWithSearchQuery(string searchQuery)
         {
-            await JSRuntime.InvokeVoidAsync("updateUrl", searchQuery);
+            Query = searchQuery;
+			await JSRuntime.InvokeVoidAsync("updateUrl", searchQuery);
         }
     }
 }
