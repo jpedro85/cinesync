@@ -40,12 +40,12 @@
                             @ref="@_pageMessageConversations"
                         ></PageMessageConversations>
 
-                     @*    <PageGroupConversation 
+                        <PageGroupConversation 
                             AuthenticatedUser="@AuthenticatedUser"
-                            OnClickUser="OnClickUser"
-
+                            OnNewConversationGroup="OnClickNewGroup"
+                            OnClickConversation="OnClickConversationGroup"
                             @ref="@_pageGroupConversations"
-                        ></PageGroupConversation> *@
+                        ></PageGroupConversation>
 
                         <PopUpSearchUser 
                             Id="SearchUser"
@@ -68,6 +68,7 @@
                                     SendToUser="@_userToSend"
                                     PageMessageConversations="@_pageMessageConversations"
                                     OnCratedConversation="OnNewMessage"
+                                    OnCancel="OnCanel"
                                 >
                                 </NewConversationUser>
       
@@ -78,11 +79,34 @@
                             {
                                 <ConverssationUser 
                                     AuthenticatedUser="@AuthenticatedUser"
-                                    PageMessageConversations="@_pageMessageConversations"
                                     Conversation="@_conversation"
                                     OnRemoveMessage="OnRemoveMessage"
                                     @ref="@_conversationUser">
                                 </ConverssationUser>
+
+                                break;
+                            }
+
+                            case State.NEW_GROUP:
+                            {
+                                <NewConversationGroup 
+                                    AuthenticatedUser="@AuthenticatedUser"
+                                    OnCreateConversation="OnCreateGroupConversation"
+                                    OnCancel="OnCanel">
+                                </NewConversationGroup>
+
+                                break;
+                            }
+
+                            case State.GROUP:
+                            {
+                                <ConverssationGroup
+                                    AuthenticatedUser="@AuthenticatedUser"
+                                    Conversation="@_conversation"
+                                    OnRemoveMessage="OnRemoveMessage"
+                                    @ref="@_conversationGroup"
+                                >
+                                </ConverssationGroup>
 
                                 break;
                             }

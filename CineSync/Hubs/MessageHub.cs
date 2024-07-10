@@ -20,12 +20,12 @@ namespace CineSync.Hubs
 
 		public Task NotifyGroupNewMessage( string roomName, uint messageId )
         {
-			return Clients.OthersInGroup(roomName).SendAsync( "UpdateMessages" , messageId);
+			return Clients.OthersInGroup(roomName).SendAsync( "UpdateMessages" , roomName, messageId);
 		}
 
 		public Task NotifyGroupNewReaction(string roomName, uint messageId, string reaction)
 		{
-			return Clients.OthersInGroup(roomName).SendAsync("UpdateReaction", messageId, reaction);
+			return Clients.OthersInGroup(roomName).SendAsync("UpdateReaction", roomName, messageId, reaction);
 		}
 
 		public async Task UpdateYourRequestState(Invite invite) 

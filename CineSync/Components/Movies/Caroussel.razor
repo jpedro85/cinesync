@@ -11,7 +11,7 @@ else
         {
             foreach (var movie in CurrentMovies)
             {
-                <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
+                <div class="movie-item user-select-none" @onclick="(e) => MovieClickHandler(movie)">
                     <MovieAdapterPlace Movie="movie"/>
                 </div>
             }
@@ -20,7 +20,7 @@ else
         {
             foreach (var movie in AllRatedMovies)
             {
-                <div class="movie-item" @onclick="(e) => MovieClickHandler(movie)">
+                <div class="movie-item user-select-none" @onclick="(e) => MovieClickHandler(movie)">
                     <MovieAdapterPlace Movie="movie"/>
                 </div>
             }

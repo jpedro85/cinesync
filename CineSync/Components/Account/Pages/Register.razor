@@ -21,61 +21,87 @@
 @inject CollectionsManager CollectionManager;
 @inject MovieManager MovieManager;
 
-<PageTitle>Register</PageTitle>
-<div class="page">
+<div style="background-color:rgb(0 164 255); height:100vh;">
 
-    <div class="main-content">
-        <div class="form-container">
-            <StatusMessage Message="@Message"/>
-            <EditForm id="form" Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
-                <DataAnnotationsValidator/>
-                <h1 class="text-center text-white">Create a new account.</h1>
-                <hr class="text-white"/>
-                <ValidationSummary class="text-danger" role="alert"/>
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
-                    <label for="email">Email</label>
-                    <ValidationMessage For="() => Input.Email" class="text-danger"/>
+    <div class="navbar">
+        <div class="navbar-left">
+
+            <NavLink href="/">
+                <div class="home-button">
+                    <div class="navbar-item-conteiner user-select-none">
+                        <img class="Minilogo" src="MiniLogo.png" alt="CineSync MiniLogo">
+                    </div>
+                    <div class="navbar-item-conteiner navbar-title user-select-none">CineSync</div>
                 </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
-                    <label for="password">Password</label>
-                    <ValidationMessage For="() => Input.Password" class="text-danger"/>
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
-                    <label for="confirm-password">Confirm Password</label>
-                    <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger"/>
-                </div>
-                <div class="register-conteiner">
-                    <button type="submit" class="register">Register</button>
-                </div>
-            </EditForm>
-            <div>
-                <p>
-                    <a href="Account/Login">I Already Have an Account</a>
-                </p>
-                <p>
-                    <a href="Account/ForgotPassword">Forgot your password?</a>
-                </p>
+            </NavLink>
+
+        </div>
+        <div class="navbar-rigth">
+
+            <div class="navbar-item-conteiner">
+                <NavLink href="/">
+                    <button class="login-button user-select-none">Home</button>
+                </NavLink>
             </div>
+
         </div>
     </div>
 
-    <div class="logo-container-main">
-        <img id="logo" src="../logo.png" alt="CineSync Main Logo">
-    </div>
+    <div class="page">
 
+        <div class="main-content">
+            <div class="form-container">
+                <StatusMessage Message="@Message"/>
+                <EditForm id="form" Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                    <DataAnnotationsValidator/>
+                    <h1 class="text-center text-white">Create a new account.</h1>
+                    <hr class="text-white"/>
+                    <ValidationSummary class="text-danger" role="alert"/>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
+                        <label for="email">Email</label>
+                        <ValidationMessage For="() => Input.Email" class="text-danger"/>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
+                        <label for="password">Password</label>
+                        <ValidationMessage For="() => Input.Password" class="text-danger"/>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
+                        <label for="confirm-password">Confirm Password</label>
+                        <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger"/>
+                    </div>
+                    <div class="register-conteiner">
+                        <button type="submit" class="register">Register</button>
+                    </div>
+                </EditForm>
+                <div>
+                    <p>
+                        <a href="Account/Login">I Already Have an Account</a>
+                    </p>
+                    <p>
+                        <a href="Account/ForgotPassword">Forgot your password?</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-container-main">
+            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+        </div>
+
+    </div>
 </div>
 
 @code {
 
     private IEnumerable<IdentityError>? identityErrors;
 
-    [SupplyParameterFromForm] 
+    [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
-    [SupplyParameterFromQuery] 
+    [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
     private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
@@ -111,7 +137,11 @@
 
         Logger.LogInformation("User created a new account with password.");
 
-        SendConfirmationEmailLinkAsync(user);
+        if (UserManager.Options.SignIn.RequireConfirmedAccount)
+        {
+            SendConfirmationEmailLinkAsync(user);
+            RedirectManager.RedirectTo("Account/RegisterConfirmation", new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+        }
         RedirectManager.RedirectTo(ReturnUrl);
     }
 
@@ -142,15 +172,9 @@
 
         var emailContent = htmlTemplate
             .Replace("{{callbackUrl}}", HtmlEncoder.Default.Encode(callbackUrl));
-        
+
         await EmailSender.SendEmailAsync(user.Email, "Confirm Your Account", emailContent);
 
-        if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        {
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-        }
     }
 
     private IUserEmailStore<ApplicationUser> GetEmailStore()

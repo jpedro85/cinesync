@@ -80,6 +80,7 @@ namespace CineSync.Components.Pages
         private VideoTrailer VideoTrailer = default!;
 		private TabButtonsBar _TabBar = default!;
         private int _initialTab = 0;
+        private bool _isInvalid = false;
 		private HubConnection DiscussionHubConnection { get; set; } = default!;
 
 
@@ -97,8 +98,18 @@ namespace CineSync.Components.Pages
 				
                 _activeTab = _tabNames[_initialTab];
 				_authenticatedUser = _pageLayout.AuthenticatedUser;
-                _userRoles = _pageLayout!.UserRoles;
-                Movie = (await GetMovieDetails())!;
+                _userRoles = _pageLayout.UserRoles;
+                
+                Movie? movieResult = await GetMovieDetails();
+                if (movieResult is null)
+                {
+                    _isInvalid = true;
+                    _initialized = true;
+                    StateHasChanged();
+                    return;
+                }
+                
+                Movie = movieResult;
                 GetUserStatusComments();
                 GetUserStatusDiscussions();
 
@@ -214,7 +225,7 @@ namespace CineSync.Components.Pages
 
         private void GetPageLayout( PageLayout instance)
         {
-            if( _pageLayout == null)
+            if( _pageLayout == null )
                 _pageLayout = instance;
         }
 

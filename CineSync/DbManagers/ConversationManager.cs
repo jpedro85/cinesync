@@ -23,10 +23,11 @@ namespace CineSync.DbManagers
 		/// Creates a conversation.
 		/// </summary>
 		/// <param name="name">The name of the group for the invites.</param>
+		/// <param name="ownerId">The name of the group for the invites.</param>
 		/// <param name="isGroup">If the conversation isGroup </param>
 		/// <param name="userIds">Participipants ids</param>
 		/// <returns>A collection of created <see cref="Invite"/> instances if successful, otherwise null.</returns>
-		public async Task<Conversation?> CreateConversation(string name, bool isGroup, params string[] userIds)
+		public async Task<Conversation?> CreateConversation(string name, string ownerId, bool isGroup, params string[] userIds)
 		{
 			if (userIds.Length < 1)
 				return null;
@@ -39,6 +40,7 @@ namespace CineSync.DbManagers
 			Conversation conversation = new Conversation();
 			conversation.Name = name;
 			conversation.IsGroupConversation = isGroup;
+			conversation.OwnerId = ownerId;
 			conversation.Participants = new List<UserConversations>(participants.Length);
 
 			foreach (ApplicationUser? user in participants)

@@ -12,30 +12,56 @@
 @inject IEmailSender EmailSender
 @inject NavigationManager NavigationManager
 
-<div class="page d-flex justify-content-center">
-    <div class="main-content justify-content-center">
-        <div class="form-container">
-            <h1 class="text-white text-center">Resend email confirmation</h1>
-            <StatusMessage Message="@message"/>
-            <hr class="text-white"/>
-            <div class="row">
-                <EditForm Model="Input" FormName="resend-email-confirmation" OnValidSubmit="OnValidSubmitAsync" method="post">
-                    <DataAnnotationsValidator/>
-                    <ValidationSummary class="text-danger" role="alert"/>
-                    <div class="form-floating mb-3">
-                        <InputText @bind-Value="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com"/>
-                        <label for="email" class="form-label">Email</label>
-                        <ValidationMessage For="() => Input.Email" class="text-danger"/>
+<div style="background-color:rgb(0 164 255); height:100vh;">
+
+    <div class="navbar">
+        <div class="navbar-left">
+
+            <NavLink href="/">
+                <div class="home-button">
+                    <div class="navbar-item-conteiner user-select-none">
+                        <img class="Minilogo" src="MiniLogo.png" alt="CineSync MiniLogo">
                     </div>
-                    <button type="submit" class="w-100 btn btn-lg btn-primary">Resend</button>
-                </EditForm>
-            </div>
+                    <div class="navbar-item-conteiner navbar-title user-select-none">CineSync</div>
+                </div>
+            </NavLink>
+
         </div>
-        <div class="logo-container-main">
-            <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+        <div class="navbar-rigth">
+
+            <div class="navbar-item-conteiner">
+                <NavLink href="/">
+                    <button class="login-button user-select-none">Home</button>
+                </NavLink>
+            </div>
+
         </div>
     </div>
+    <div class="page d-flex justify-content-center">
+        <div class="main-content justify-content-center">
+            <div class="form-container">
+                <h1 class="text-white text-center">Resend email confirmation</h1>
+                <StatusMessage Message="@message"/>
+                <hr class="text-white"/>
+                <div class="row">
+                    <EditForm Model="Input" FormName="resend-email-confirmation" OnValidSubmit="OnValidSubmitAsync" method="post">
+                        <DataAnnotationsValidator/>
+                        <ValidationSummary class="text-danger" role="alert"/>
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com"/>
+                            <label for="email" class="form-label">Email</label>
+                            <ValidationMessage For="() => Input.Email" class="text-danger"/>
+                        </div>
+                        <button type="submit" class="w-100 btn btn-lg btn-primary">Resend</button>
+                    </EditForm>
+                </div>
+            </div>
+            <div class="logo-container-main">
+                <img id="logo" src="../logo.png" alt="CineSync Main Logo">
+            </div>
+        </div>
 
+    </div>
 </div>
 
 @code {
@@ -47,8 +73,10 @@
     private async Task OnValidSubmitAsync()
     {
         var user = await UserManager.FindByEmailAsync(Input.Email!);
-        if (user is null)
+        if (user is null || await UserManager.IsEmailConfirmedAsync(user))
         {
+            // If user has already changed email and confirmed its account there is no need to 
+            // resend email
             message = "Verification email sent. Please check your email.";
             return;
         }
@@ -72,7 +100,7 @@
 
         var emailContent = htmlTemplate
             .Replace("{{callbackUrl}}", HtmlEncoder.Default.Encode(callbackUrl));
-        
+
         await EmailSender.SendEmailAsync(user.Email, "Confirm Your Account", emailContent);
     }
 

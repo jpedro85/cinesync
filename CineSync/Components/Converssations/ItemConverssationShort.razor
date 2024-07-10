@@ -29,12 +29,14 @@
 					if (showCount >= MaxGroupParticipantsToShow)
 						break;
 
-					<ItemUser User="@userConversation.User" Short="true"></ItemUser>
+					<div style="width:25px;">
+						<ItemUser User="@userConversation.User" Short="true"></ItemUser>
+					</div>
 
 					showCount++;
 				}
 
-				@foreach (Invite invite in Conversation.Invites)
+				@* @foreach (Invite invite in Conversation.Invites)
 				{
 
 					if (showCount >= MaxGroupParticipantsToShow)
@@ -43,7 +45,7 @@
 					<ItemUser User="@invite.Target" Short="true"></ItemUser>
 
 					showCount++;
-				}
+				} *@
 			</div>
 
 			@if (Conversation.Participants.Count > MaxGroupParticipantsToShow)
