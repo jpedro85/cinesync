@@ -43,7 +43,7 @@ namespace CineSync.Components.Pages
         {;
             if (!string.IsNullOrEmpty(Query))
             {
-                _currentSearchQuery = Query;
+                _currentSearchQuery = Query.Trim();
             }
         }
 
@@ -71,8 +71,8 @@ namespace CineSync.Components.Pages
 
         private async void SearchMoviesSearchButtonHandler(string searchQuery)
         {
-            _currentSearchQuery = searchQuery;
-			await UpdateUrlWithSearchQuery(searchQuery);
+            _currentSearchQuery = searchQuery.Trim();
+	    await UpdateUrlWithSearchQuery(searchQuery.Trim());
             await SearchMovies(searchQuery);
             StateHasChanged();
         }
