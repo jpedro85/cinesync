@@ -11,6 +11,8 @@ namespace CineSync.Data.Models
 
         public bool IsGroupConversation { get; set; } = false;
 
+        public string OwnerId { get; set; } = default!;
+
         public ICollection<UserConversations> Participants { get; set; } = default!;
 
 		public ICollection<Invite> Invites { get; set; } = new List<Invite>(0);

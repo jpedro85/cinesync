@@ -27,6 +27,7 @@
     width: 35px;
     height: 35px;
     background-color: rgb(50, 50, 50, 1);
+    cursor:pointer;
 }
 
     .message-group-top-add-button:hover {

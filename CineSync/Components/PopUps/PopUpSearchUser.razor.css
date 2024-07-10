@@ -78,3 +78,9 @@
         align-items: center;
         flex-grow: 1;
     }
+
+.noresults
+{
+    font-size:15px;
+    color:white;
+}

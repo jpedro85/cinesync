@@ -40,6 +40,14 @@
 				OnClick="OnClickSendRequest">
 			</RectColoredButton>
 
+			<div class="cancel-button-conteiner">
+				<RectButton2 
+					Text="Cancel" 
+					OnClick="() =>{OnCancel.InvokeAsync();}"
+					Style="height:40px;"
+				></RectButton2>
+			</div>
+
 			<div class="error">
 				@_error
 			</div>

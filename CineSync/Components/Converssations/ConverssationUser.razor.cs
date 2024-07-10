@@ -6,7 +6,6 @@ using CineSync.DbManagers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
-using MimeKit.Cryptography;
 
 namespace CineSync.Components.Converssations
 {
@@ -17,9 +16,6 @@ namespace CineSync.Components.Converssations
 
         [Parameter,EditorRequired]
         public ApplicationUser AuthenticatedUser { get; set; } = default!;
-
-		[Parameter, EditorRequired]
-		public PageMessageConversations PageMessageConversations { get; set; } = default!;
 
         [Parameter, EditorRequired]
         public Conversation Conversation { get; set; } = default!;
@@ -122,8 +118,8 @@ namespace CineSync.Components.Converssations
 			_messageHubGroupName = ConversationManager.GetGroupName(Conversation);
             MessageHubConnection.InvokeAsync("JoinRoom", _messageHubGroupName );
             MessageHubConnection.On<Invite>("UpdateMyRequestState", UpdateInviteState);
-            MessageHubConnection.On<uint>("UpdateMessages", OnUpdateMessage);
-			MessageHubConnection.On<uint, string>("UpdateReaction", OnUpdateReaction);
+            MessageHubConnection.On<string, uint>("UpdateMessages", OnUpdateMessage);
+			MessageHubConnection.On<string, uint, string>("UpdateReaction", OnUpdateReaction);
         }
 
         public async void UpdateInviteState( Invite invite ) 
@@ -153,14 +149,20 @@ namespace CineSync.Components.Converssations
 
 		}
 
-        private async void OnUpdateMessage(uint messageid)
+        private async void OnUpdateMessage(string groupName,uint messageid)
         {
-			Message message = (await MessageManager.GetFirstByConditionAsync(m => m.Id == messageid))!;
-            InvokeAsync(StateHasChanged);
+			if(groupName == _messageHubGroupName) 
+			{
+				Message message = (await MessageManager.GetFirstByConditionAsync(m => m.Id == messageid))!;
+				await InvokeAsync(StateHasChanged);
+			}
         }
 
-		private async void OnUpdateReaction(uint messageid,string reaction)
+		private async void OnUpdateReaction(string groupName, uint messageid,string reaction)
 		{
+			if (groupName != _messageHubGroupName)
+				return;
+
 			ItemMessage? itemMessage = itemMessages.Where(iM => iM.Message.Id == messageid).FirstOrDefault();
 			itemMessage?.AddReaction(reaction);
 		}

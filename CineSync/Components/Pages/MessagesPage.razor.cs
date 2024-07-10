@@ -33,6 +33,7 @@ namespace CineSync.Components.Pages
         private ApplicationUser _userToSend = default!;
         private Conversation _conversation = default!;
         private ConverssationUser? _conversationUser = null;
+        private ConverssationGroup? _conversationGroup = null;
 
         private bool _initialized = false;
         private bool _Foolowing = false;
@@ -87,12 +88,25 @@ namespace CineSync.Components.Pages
 
         private async void OnClickConversation( Conversation conversation ) 
         {
+
             _actualState = State.MESSAGE;
             _conversation = conversation;
 
             if (_conversationUser != null)
                 await _conversationUser.SetLoading();
             
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async void OnClickConversationGroup(Conversation conversation)
+        {
+
+            _actualState = State.GROUP;
+            _conversation = conversation;
+
+            if (_conversationGroup != null)
+                await _conversationGroup.SetLoading();
+
             await InvokeAsync(StateHasChanged);
         }
 
@@ -118,5 +132,22 @@ namespace CineSync.Components.Pages
             _pageMessageConversations.UpdateRemoveConversations(conversation);
         }
 
+
+        private void OnClickNewGroup() 
+        {
+            _actualState = State.NEW_GROUP;
+        }
+
+        private void OnCreateGroupConversation(Conversation conversation) 
+        {
+            _actualState = State.GROUP;
+            _pageGroupConversations.UpdateConversations(conversation);
+        }
+
+        private void OnCanel() 
+        {
+			_actualState = null;
+			StateHasChanged();
+		}
     }
 }

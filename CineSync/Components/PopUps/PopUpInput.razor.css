@@ -51,3 +51,21 @@
 img {
     width: 25px;
 }
+
+.vertival-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Roboto';
+    font-size: 24px;
+    color: white;
+}
+
+.error {
+    font-family: 'Roboto';
+    font-size: 20px;
+    color: red;
+}

@@ -3,6 +3,7 @@ using CineSync.Core.Repository;
 using CineSync.Data;
 using CineSync.Data.Models;
 using Microsoft.VisualStudio.TextTemplating;
+using MimeKit;
 
 namespace CineSync.DbManagers
 {
@@ -72,41 +73,50 @@ namespace CineSync.DbManagers
 		/// <param name="groupName">The name of the group for the invites.</param>
 		/// <param name="senderId">The ID of the user sending the invites.</param>
 		/// <param name="conversation">The user converssation.</param>
-		/// <param name="tragetsId">An array of IDs of the users receiving the invites.</param>
+		/// <param name="tragetsIds">An array of IDs of the users receiving the invites.</param>
 		/// <returns>A collection of created <see cref="Invite"/> instances if successful, otherwise null.</returns>
-		public async Task<ICollection<Invite?>> CreatGroupEnvitesAsync(string groupName, string senderId, Conversation conversation, params string[] tragetsId)
+		public async Task<ICollection<Invite?>> CreatGroupEnvitesAsync(string groupName, string senderId, Conversation conversation, ICollection<string> tragetsIds)
 		{
-			ApplicationUser? sender = await _userRepository.GetFirstByConditionAsync(u => u.Id == senderId);
-			if (sender == null) return [];
+            ApplicationUser? sender = await _userRepository.GetFirstByConditionAsync(u => u.Id == senderId);
+            if (sender == null) return [];
 
-			ApplicationUser?[] targets = new ApplicationUser[tragetsId.Length];
-			for (int i = 0; i < tragetsId.Length; i++)
+            ApplicationUser?[] targets = new ApplicationUser[tragetsIds.Count];
+
+			int index = 0;
+			foreach (string userid in tragetsIds) 
 			{
-				targets[i] = await _userRepository.GetFirstByConditionAsync(u => u.Id == tragetsId[i]);
-				if (targets[i] == null) return [];
-			}
+				targets[index] = await _userRepository.GetFirstByConditionAsync(u => u.Id == userid);
+                if (targets[index] == null) return [];
+				index++;
+            }
 
-			Invite?[] envites = new Invite?[targets.Length];
-			Task[] envitesTasks = new Task[targets.Length];
+            Invite?[] envites = new Invite?[targets.Length];
 
-			for (int i = 0; i < tragetsId.Length; i++)
-			{
-				envitesTasks[i] = Task.Run(async () =>
-				{
-					envites[i] = await CreatGroupEnviteAsync(
-											sender,
-											targets[i]!,
-											conversation,
-											groupName
-										);
+            for (int i = 0; i < tragetsIds.Count; i++)
+            {
+                envites[i] = await CreatGroupEnviteAsync(
+                                        sender,
+                                        targets[i]!,
+                                        conversation,
+                                        groupName
+                                    );
+            }
 
-				});
+            return envites;
+        }
 
-			}
-
-			Task.WaitAll(envitesTasks);
-			return envites;
-		}
+        /// <summary>
+        /// Creates a group invite.
+        /// </summary>
+        /// <param name="groupName">The name of the group for the invites.</param>
+        /// <param name="senderId">The ID of the user sending the invites.</param>
+        /// <param name="conversation">The user converssation.</param>
+        /// <param name="targetsIds">An array of IDs of the users receiving the invites.</param>
+        /// <returns>A collection of created <see cref="Invite"/> instances if successful, otherwise null.</returns>
+        public async Task<ICollection<Invite?>> CreatGroupEnvitesAsync(string groupName, string senderId, Conversation conversation, params string[] targetsIds)
+		{
+            return await CreatGroupEnvitesAsync(groupName, senderId, conversation, (ICollection<string>)targetsIds);
+        }
 
 		/// <summary>
 		/// Creates a single group invite.
