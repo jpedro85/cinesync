@@ -47,3 +47,4 @@ This project is developed in C# and uses ASP.NET and Blazor.
     dotnet build
     dotnet run
     ```
+After this you just need to head to the browser and access http://localhost:5145
