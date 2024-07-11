@@ -27,6 +27,9 @@ namespace CineSync.Components.Envites
         public EventCallback<Invite> OnDecline { get; set; }
 
         [Parameter]
+        public EventCallback<Invite> OnHide { get; set; }
+
+        [Parameter]
 		public bool ShowUser { get; set; } = true;
 
 		[Parameter]

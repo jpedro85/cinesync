@@ -27,7 +27,7 @@
                           InputWidth="100"
                           PadingBorder="10"
                           SearchButtonIconSize="0"
-                          PlaceHolder="Search User ..."
+                          PlaceHolder="Search Group ..."
                           ShowButton=false
                           SearchInput="@_shearchImput"
                           OnInput="OnSearch">
@@ -90,15 +90,18 @@
                 {
                     foreach (Invite invite in InvitesFromMeFiltered)
                     {
-                        <div class="ItemEnvite-containor">
-                            <ItemEnvite 
-                                Authenticateduser="@AuthenticatedUser"
-                                Invite="@invite"
-                                ShowSender="false"
-                                OnAccept="OnUpdateMyRequestState"
-                                OnDecline="OnUpdateMyRequestState"
-                            ></ItemEnvite>
-                        </div>
+                        if(!invite.HideBySender)
+                        {
+                            <div class="ItemEnvite-containor">
+                                <ItemEnvite 
+                                    Authenticateduser="@AuthenticatedUser"
+                                    Invite="@invite"
+                                    ShowSender="false"
+                                    OnAccept="OnUpdateMyRequestState"
+                                    OnDecline="OnUpdateMyRequestState"
+                                    OnRemove="RemoveMyRequest"></ItemEnvite>
+                            </div>
+                        }
                     }
                 }
             }
@@ -114,15 +117,18 @@
                 {
                     foreach (Invite invite in InvitesToMeFiltered)
                     {
-                        <div class="ItemEnvite-containor">
-                            <ItemEnvite 
-                                Authenticateduser="@AuthenticatedUser"
-                                Invite="@invite"
-                                ShowSender="true"
-                                OnAccept="OnUpdateRequestState"
-                                OnDecline="OnUpdateRequestState"
-                            ></ItemEnvite>
-                        </div>
+                        if(!invite.HideByTarget)
+                        {
+                            <div class="ItemEnvite-containor">
+                                <ItemEnvite 
+                                    Authenticateduser="@AuthenticatedUser"
+                                    Invite="@invite"
+                                    ShowSender="true"
+                                    OnAccept="OnUpdateRequestState"
+                                    OnDecline="OnUpdateRequestState"
+                                    OnRemove="RemoveRequest"></ItemEnvite>
+                            </div>
+                        }
                     }
                 }
             }

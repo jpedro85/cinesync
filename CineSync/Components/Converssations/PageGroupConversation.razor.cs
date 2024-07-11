@@ -74,27 +74,23 @@ namespace CineSync.Components.Converssations
 
 			if (_activeTab == _tabs[0]) // Groups
             {
-				//Conversations = Conversations.Where(
-				//    c => c.Conversation.Participants.Any(u =>
-				//        u.User.NormalizedUserName == searchNormalize) ||
-				//    c.Conversation.Name.ToLower().Contains(searchTreated)
-				//);
+				ConversationsFiltered = Conversations.Where(
+					c => c.Conversation.Participants.Any( u =>
+						u.User.NormalizedUserName?.Contains(searchNormalize) ?? false ) ||
+					c.Conversation.Name.ToLower().Contains(searchTreated)
+				);
 			}
 			else if (_activeTab == _tabs[1]) // MyInvites
 			{
-				//InvitesFromMe = MyInvitesGroupMessage.Where(
-				//    c => c.Conversation.Name.Contains(search) ||
-				//    c.Conversation.Participants.Any(u =>
-				//        u.User.NormalizedUserName == searchNormalize)
-				//);
+				InvitesFromMeFiltered = InvitesFromMe.Where(i =>
+					i.Target.NormalizedUserName?.Contains(searchNormalize) ?? false
+				);
 			}
 			else if (_activeTab == _tabs[2]) // invites
 			{
-				//InvitesGroupMessageFiltered = InvitesGroupMessage.Where(
-				//    c => c.Conversation.Name.Contains(search) ||
-				//    c.Conversation.Participants.Any(u =>
-				//        u.User.NormalizedUserName == searchNormalize)
-				//);
+				InvitesToMeFiltered = InvitesToMe.Where( i => 
+					i.Sender.NormalizedUserName?.Contains(searchNormalize) ?? false 
+				);
 			}
 
 			StateHasChanged();
@@ -248,5 +244,19 @@ namespace CineSync.Components.Converssations
 		{
 			await MessageHubConnection.InvokeAsync("UpdateYourRequestState", invite);
 		}
-	}
+
+        public void RemoveMyRequest(uint inviteId)
+        {
+            InvitesFromMe = InvitesFromMe.Where(i => i.Id != inviteId);
+            InvitesFromMeFiltered = InvitesFromMeFiltered.Where(i => i.Id != inviteId);
+            InvokeAsync(StateHasChanged);
+        }
+
+        public void RemoveRequest(uint inviteId)
+        {
+            InvitesFromMe = InvitesFromMe.Where(i => i.Id != inviteId);
+            InvitesFromMeFiltered = InvitesFromMeFiltered.Where(i => i.Id != inviteId);
+			InvokeAsync(StateHasChanged);
+        }
+    }
 }
