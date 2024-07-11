@@ -74,13 +74,16 @@ namespace CineSync.Components.Converssations
 			if (newConversation == null)
 			{
 				_error = $"Could'not create group !";
+				Console.WriteLine("Could'not create group !");
 				return;
+			}
+			else 
+			{
+				SenInvite(_groupName, newConversation);
+				await OnCreateConversation.InvokeAsync( newConversation );
 			}
 
 
-			SenInvite(_groupName, newConversation);
-
-			await OnCreateConversation.InvokeAsync(newConversation);
 		}
 
 		private async void SenInvite(string groupName, Conversation conversation) 

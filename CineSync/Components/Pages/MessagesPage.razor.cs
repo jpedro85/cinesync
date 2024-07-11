@@ -141,6 +141,7 @@ namespace CineSync.Components.Pages
         private void OnCreateGroupConversation(Conversation conversation) 
         {
             _actualState = State.GROUP;
+            _conversation = conversation;
             _pageGroupConversations.UpdateConversations(conversation);
         }
 
