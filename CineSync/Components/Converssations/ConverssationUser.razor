@@ -4,13 +4,15 @@
 @using CineSync.Components.Envites
 @using CineSync.Components.DMS
 @using CineSync.Data.Models;
+
+@inject NavigationManager NavigationManager
 @* @using CineSync.Components.Utils *@
 
 <div class="converssation-container" >
 	
 	@if( !_isloading)
 	{
-		<div class="top-container">
+		<div class="top-container" @onclick="@((e) => {NavigationManager.NavigateTo($"/Profile/{UserToSend.Id}");})">
 			<ItemUser 
 				User="@UserToSend"
 				Short=false
@@ -34,6 +36,7 @@
 							<div>
 								@foreach (Invite invite in Conversation.Invites)
 								{
+
 									<ItemEnvite
 										Authenticateduser="AuthenticatedUser"
 										Invite="@invite"

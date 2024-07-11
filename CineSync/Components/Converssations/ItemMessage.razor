@@ -5,6 +5,8 @@
 @using CineSync.Components.DMS
 @using CineSync.Components.Layout
 
+@inject NavigationManager NavigationManager
+
 <div class="message-main-conteiner 
 	@( AuthenticatedUser.Equals(Message.Autor) ? " rigth" : " left")
 	@( _highlight ? " highlight" : "")
@@ -17,7 +19,7 @@
 
 			@if (!AuthenticatedUser.Equals(Message.Autor))
 			{
-				<div class="autor-containor">
+				<div class="autor-containor" @onclick="@((e)=>{NavigationManager.NavigateTo($"/Profile/{Message.Autor.Id}");})">
 					<ItemUser Short=true
 							  User="Message.Autor"
 							  Style="width:30px; height:30px;">
