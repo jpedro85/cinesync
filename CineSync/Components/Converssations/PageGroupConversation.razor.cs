@@ -244,5 +244,19 @@ namespace CineSync.Components.Converssations
 		{
 			await MessageHubConnection.InvokeAsync("UpdateYourRequestState", invite);
 		}
-	}
+
+        public void RemoveMyRequest(uint inviteId)
+        {
+            InvitesFromMe = InvitesFromMe.Where(i => i.Id != inviteId);
+            InvitesFromMeFiltered = InvitesFromMeFiltered.Where(i => i.Id != inviteId);
+            InvokeAsync(StateHasChanged);
+        }
+
+        public void RemoveRequest(uint inviteId)
+        {
+            InvitesFromMe = InvitesFromMe.Where(i => i.Id != inviteId);
+            InvitesFromMeFiltered = InvitesFromMeFiltered.Where(i => i.Id != inviteId);
+			InvokeAsync(StateHasChanged);
+        }
+    }
 }
