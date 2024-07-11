@@ -39,12 +39,11 @@ This project is developed in C# and uses ASP.NET and Blazor.
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/your-username/CineSync.git
-   cd cinesync/CineSync
-  ´´´
+   cd cinesync/CineSync```
 
 2.  **Install the dependencies and run the Project**
     ```bash
     dotnet restore
     dotnet build
     dotnet run
-    ´´´
+    ```
