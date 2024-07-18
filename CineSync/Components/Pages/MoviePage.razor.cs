@@ -118,12 +118,12 @@ namespace CineSync.Components.Pages
                     _hasRatedMovie = await HasUserRatedMovieAsync();
                 }
             
+                await ConnectToMessageHub();
                 _initialized = true;
 
                 StateHasChanged();
             }
 
-            await ConnectToMessageHub();
 		}
 
 		private async Task ConnectToMessageHub()
